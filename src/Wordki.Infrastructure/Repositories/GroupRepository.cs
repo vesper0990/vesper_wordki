@@ -65,7 +65,7 @@ namespace Wordki.Infrastructure.Repositories
             return context.Groups;
         }
 
-        public async Task Remove(long id)
+        public async Task RemoveAsync(long id)
         {
             var group = await GetAsync(id);
             context.Groups.Remove(group);

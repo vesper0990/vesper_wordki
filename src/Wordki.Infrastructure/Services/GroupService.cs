@@ -51,5 +51,16 @@ namespace Wordki.Infrastructure.Services
             });
 
         }
+
+        public async Task RemoveGroupAsync(long id)
+        {
+            await groupRepository.RemoveAsync(id);
+        }
+
+        public async Task UpdateGroupAsync(GroupDTO groupDto)
+        {
+            var group = mapper.Map<Group>(groupDto);
+            await groupRepository.UpdateAsync(group);
+        }
     }
 }

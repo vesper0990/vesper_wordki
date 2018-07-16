@@ -22,7 +22,6 @@ namespace Wordki.Api.Controllers
         [HttpGet("getAll/{userId}")]
         public async Task<IActionResult> GetAll(long userId)
         {
-            logger.Debug("test");
             var groups = await groupService.GetGroupItemsAsync(userId);
             return Json(groups);
         }
@@ -39,6 +38,22 @@ namespace Wordki.Api.Controllers
             long userId = await authorizer.AuthorizeAsync(Request);
             group = await groupService.AddGroupAsync(group, userId);
             return Json(group);
+        }
+
+        [HttpPut("updateGroup")]
+        public async Task<IActionResult> UpdateGroup([FromBody] GroupDTO group)
+        {
+            long userId = await authorizer.AuthorizeAsync(Request);
+            await groupService.UpdateGroupAsync(group);
+            return Ok();
+        }
+
+        [HttpDelete("removeGroup")]
+        public async Task<IActionResult> RemoveGroup([FromBody] long id)
+        {
+            long userId = await authorizer.AuthorizeAsync(Request);
+            await groupService.RemoveGroupAsync(id);
+            return Ok();
         }
     }
 }

@@ -12,6 +12,6 @@ namespace Wordki.Core.Repositories
         Task<IEnumerable<Group>> GetAllByUserAsync(long userId, bool withChildren);
         Task AddAsync(Group group);
         Task UpdateAsync(Group group);
-        Task Remove(long id);
+        Task RemoveAsync(long id);
     }
 }

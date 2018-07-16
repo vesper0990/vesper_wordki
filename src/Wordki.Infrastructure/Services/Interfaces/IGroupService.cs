@@ -9,5 +9,7 @@ namespace Wordki.Infrastructure.Services
         Task<IEnumerable<GroupDTO>> GetGroupItemsAsync(long userId);
         Task<GroupDetailsDTO> GetGroupDetailsAsync(long groupId);
         Task<GroupDTO> AddGroupAsync(GroupDTO group, long userId);
+        Task UpdateGroupAsync(GroupDTO groupDto);
+        Task RemoveGroupAsync(long id);
     }
 }

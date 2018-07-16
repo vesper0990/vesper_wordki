@@ -8,5 +8,13 @@ namespace Wordki.Api.Controllers
 {
     public class WordsController : Controller
     {
+
+
+
+        public WordsController()
+        {
+
+        }
+
     }
 }
