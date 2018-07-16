@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Wordki.Core;
 using Wordki.Core.Repositories;
 using Wordki.Infrastructure.EntityFramework;
@@ -11,7 +13,7 @@ namespace Wordki.Infrastructure.Repositories
     public class WordRepository : IWordRepository
     {
 
-        private readonly WordkiDbContext context = context;
+        private readonly WordkiDbContext context;
 
         public WordRepository(WordkiDbContext context){
             this.context = context;
@@ -23,7 +25,7 @@ namespace Wordki.Infrastructure.Repositories
             await context.SaveChangesAsync();
         }
 
-        public Task AddRangeAsync(IEnumerable<Word> words){
+        public async Task AddAllAsync(IEnumerable<Word> words){
             await context.Words.AddRangeAsync(words);
             await context.SaveChangesAsync();
         }
@@ -39,19 +41,25 @@ namespace Wordki.Infrastructure.Repositories
         }
 
         public async Task<Word> GetAsync(long id){
-            return await context.Words.SingleOrDefaultAsync(x => x.Id = id);
+            return await context.Words.SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task RemoveAsync(long id)
         {
             var word = await GetAsync(id);
             context.Words.Remove(word);
-            context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(Word word)
         {
-            await context.Words.Update(word);
+            context.Words.Update(word);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAllAsync(IEnumerable<Word> words){
+            context.Words.UpdateRange(words);
+            await context.SaveChangesAsync();
         }
     }
 }

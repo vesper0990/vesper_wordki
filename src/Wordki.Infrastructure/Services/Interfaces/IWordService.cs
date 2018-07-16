@@ -8,11 +8,10 @@ namespace Wordki.Infrastructure.Services
 {
     public interface IWordService : IService
     {
-
-        Task<WordDTO> AddWordAsync(WordDTO wordDto);
-        Task<IEnumerable<WordDTO>> AddWordRangeAsync(IEnumerable<WordDTO> words);
+        Task<WordDTO> AddAsync(WordDTO wordDto, long userId);
+        Task<IEnumerable<WordDTO>> AddAllAsync(IEnumerable<WordDTO> words, long userId);
         Task UpdateAsync(WordDTO wordDto);
-        Task UpdateRangeAsync(IEnumerable<WordDTO> wordsDto);
+        Task UpdateAllAsync(IEnumerable<WordDTO> wordsDto);
         Task RemoveAsync(long id);
     }
 }
