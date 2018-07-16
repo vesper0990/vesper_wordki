@@ -1,7 +1,7 @@
 using System;
 using Wordki.Core.Enums;
 
-namespace Wordki.Infrasctructure.DTO
+namespace Wordki.Infrastructure.DTO
 {
     public class ResultDTO
     {

@@ -23,6 +23,9 @@ namespace Wordki.Infrastructure.Services
         public async Task<bool> CheckUserExistingAsync(string userName)
             => await context.Users.CountAsync(x => x.Name.Equals(userName)) != 0;
 
+        public async Task<bool> CheckUserExistingAsync(long id, string password)
+            => await context.Users.CountAsync(x => x.Id == id && x.Password.Equals(encrypter.Md5Hash(password))) != 0;
+
         public async Task<bool> CheckUserToLoginAsync(string userName, string password)
             => await context.Users.CountAsync(x => x.Name.Equals(userName) && x.Password.Equals(encrypter.Md5Hash(password))) != 0;
 

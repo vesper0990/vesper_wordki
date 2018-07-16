@@ -8,6 +8,8 @@ using NLog.Extensions.Logging;
 using Wordki.Infrastructure.Services;
 using Wordki.Infrastructure.IoC.Modules;
 using Wordki.Infrastructure.Mapper;
+using NLog.Web;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace Wordki
 {
@@ -35,6 +37,7 @@ namespace Wordki
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
                                                              .AllowAnyMethod()
                                                               .AllowAnyHeader()));
+            services.AddTransient<Api.Framework.ExceptionHandlerMiddleware>();
             services.AddMvc();
         }
 
@@ -48,7 +51,7 @@ namespace Wordki
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime appLifeTime)
         {
             loggerFactory.AddNLog();
-            //env.ConfigureNLog("nlog.config");
+            env.ConfigureNLog("nlog.config");
 
             if (env.IsDevelopment())
             {
@@ -58,10 +61,10 @@ namespace Wordki
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                //app.UseExceptionHandler("/Home/Error");
             }
             app.UseCors("AllowAll");
-            //app.UseMiddleware(typeof(Framework.ExceptionHandlerMiddleware));
+            app.UseMiddleware(typeof(Api.Framework.ExceptionHandlerMiddleware));
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseMvc(routes =>

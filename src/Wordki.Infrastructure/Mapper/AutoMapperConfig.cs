@@ -11,6 +11,16 @@ namespace Wordki.Infrastructure.Mapper
             {
                 config.CreateMap<User, UserDTO>();
                 config.CreateMap<UserDTO, User>();
+
+                config.CreateMap<Group, GroupDTO>();
+                config.CreateMap<GroupDTO, Group>();
+                config.CreateMap<Group, GroupDetailsDTO>();
+
+                config.CreateMap<Word, WordDTO>();
+                config.CreateMap<WordDTO, Word>();
+
+                config.CreateMap<Result, ResultDTO>();
+                config.CreateMap<ResultDTO, Result>();
             })
             .CreateMapper();
     }

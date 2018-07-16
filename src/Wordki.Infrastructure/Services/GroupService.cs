@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Wordki.Core.Repositories;
 using Wordki.Infrastructure.DTO;
+using AutoMapper;
+using Wordki.Core;
 
 namespace Wordki.Infrastructure.Services
 {
@@ -10,10 +12,25 @@ namespace Wordki.Infrastructure.Services
     {
 
         private readonly IGroupRepository groupRepository;
+        private readonly IMapper mapper;
 
-        public GroupService(IGroupRepository groupRepository)
+        public GroupService(IGroupRepository groupRepository, IMapper mapper)
         {
             this.groupRepository = groupRepository;
+            this.mapper = mapper;
+        }
+
+        public async Task<GroupDTO> AddGroupAsync(GroupDTO groupDto, long userId)
+        {
+            var group = mapper.Map<Group>(groupDto);
+            group.UserId = userId;
+            await groupRepository.AddAsync(group);
+            return mapper.Map<Group, GroupDTO>(group);
+        }
+
+        public async Task<GroupDetailsDTO> GetGroupDetailsAsync(long groupId)
+        {
+            return mapper.Map<Group, GroupDetailsDTO>(await groupRepository.GetAsync(groupId, true));
         }
 
         public async Task<IEnumerable<GroupDTO>> GetGroupItemsAsync(long userId)
