@@ -4,34 +4,54 @@ using System.Text;
 using System.Threading.Tasks;
 using Wordki.Core;
 using Wordki.Core.Repositories;
+using Wordki.Infrastructure.EntityFramework;
 
 namespace Wordki.Infrastructure.Repositories
 {
     public class WordRepository : IWordRepository
     {
-        public Task AddWordAsync(Word word)
-        {
-            throw new NotImplementedException();
+
+        private readonly WordkiDbContext context = context;
+
+        public WordRepository(WordkiDbContext context){
+            this.context = context;
         }
 
-        public Task<IEnumerable<Word>> GetAllAsync()
+        public async Task AddAsync(Word word)
         {
-            throw new NotImplementedException();
+            await context.Words.AddAsync(word);
+            await context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Word>> GetAllAsync(long userId)
-        {
-            throw new NotImplementedException();
+        public Task AddRangeAsync(IEnumerable<Word> words){
+            await context.Words.AddRangeAsync(words);
+            await context.SaveChangesAsync();
         }
 
-        public Task RemoveWordAsync(long id)
+        public async Task<IEnumerable<Word>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await context.Words.ToListAsync();
         }
 
-        public Task UpdateWordAsync(Word word)
+        public async Task<IEnumerable<Word>> GetAllAsync(long userId)
         {
-            throw new NotImplementedException();
+            return await context.Words.Where(x => x.UserId == userId).ToListAsync();
+        }
+
+        public async Task<Word> GetAsync(long id){
+            return await context.Words.SingleOrDefaultAsync(x => x.Id = id);
+        }
+
+        public async Task RemoveAsync(long id)
+        {
+            var word = await GetAsync(id);
+            context.Words.Remove(word);
+            context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(Word word)
+        {
+            await context.Words.Update(word);
         }
     }
 }

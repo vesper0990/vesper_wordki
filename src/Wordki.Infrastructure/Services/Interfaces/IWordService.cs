@@ -10,5 +10,9 @@ namespace Wordki.Infrastructure.Services
     {
 
         Task<WordDTO> AddWordAsync(WordDTO wordDto);
+        Task<IEnumerable<WordDTO>> AddWordRangeAsync(IEnumerable<WordDTO> words);
+        Task UpdateAsync(WordDTO wordDto);
+        Task UpdateRangeAsync(IEnumerable<WordDTO> wordsDto);
+        Task RemoveAsync(long id);
     }
 }

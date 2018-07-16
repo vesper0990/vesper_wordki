@@ -9,12 +9,40 @@ namespace Wordki.Api.Controllers
     public class WordsController : Controller
     {
 
+        private readonly IWordService wordService;
+        private readonly IAuthorizer authorizer;
 
-
-        public WordsController()
+        public WordsController(IWordService wordService, IAuthorizer authorizer)
         {
-
+            this.wordService = wordService;
+            this.authorizer = authorizer;
         }
 
+        [HttpPost("add")]
+        public async Task<IActionResult> AddWord([FromBody] WordDTO wordDto){
+            var userId = await authorizer.Authorize(Request);
+            wordDto = await wordService.AddAsync(wordDto, userId);
+            return Json(wordDto);
+        }
+
+        [HttpPost("addAll")]
+        public async Task<IActionResult> AddAll([FromBody] IEnumerable<WordDTO> wordsDto){
+            var userId = await authorizer.Authorize(Request);
+            wordsDto = await wordService.AddRangeAsync(wordsDto, userId);
+            return Json(wordsDto);
+        }
+
+        [HttpDelete("remove")]
+        public async Task<IActionResult> Remove([FromBody] long wordId){
+            var userId = await authorizer.Authorize(Request);
+            await wordService.RemoveAsync(wordId);
+            return Ok();
+        }
+
+        public async Task<IActionResult> Update([FromBody] WordDTO wordDto){
+            var userId = await authorizer.Authorize(Request);
+            await wordService.UpdateAsync(wordDto);
+            return Ok();
+        }
     }
 }

@@ -7,8 +7,9 @@ namespace Wordki.Core.Repositories
     {
         Task<IEnumerable<Word>> GetAllAsync();
         Task<IEnumerable<Word>> GetAllAsync(long userId);
-        Task AddWordAsync(Word word);
-        Task UpdateWordAsync(Word word);
-        Task RemoveWordAsync(long id);
+        Task AddAsync(Word word);
+        Task AddRangeAsync(IEnumerable<Word> words);
+        Task UpdateAsync(Word word);
+        Task RemoveAsync(long id);
     }
 }
