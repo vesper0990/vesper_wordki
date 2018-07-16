@@ -23,5 +23,11 @@ namespace Wordki.Api.Controllers
             var groups = await groupService.GetGroupItemsAsync(1);
             return Json(groups);
         }
+
+        [HttpGet("getGroupDetails/{groupId}")]
+        public async Task<IActionResult> GetGroupDetails(long groupId){
+            var groupDetails = await groupService.GetGroupDetailsAsync();
+            return Json(groupDetails);
+        }
     }
 }
