@@ -1,32 +1,41 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Wordki.Core;
 using Wordki.Infrastructure.EntityFramework;
+using Wordki.Infrastructure.Settings;
+using NLog;
 
 namespace Wordki.Infrastructure.Services
 {
     public class DataInitializer : IDataInitializer
     {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         private readonly WordkiDbContext context;
         private readonly IEncrypter encrypter;
+        private readonly GeneralSettings settings;
 
-        public DataInitializer(WordkiDbContext context, IEncrypter encrypter)
+        public DataInitializer(WordkiDbContext context, IEncrypter encrypter, GeneralSettings settings)
         {
             this.context = context;
             this.encrypter = encrypter;
+            this.settings = settings;
         }
 
         public void Init()
         {
-            return;
-            context.Database.EnsureCreated();
-            UserSeed();
-            DataSeed();
-        }
-
-        private void CheckDatabase()
-        {
-
+            try
+            {
+                context.Database.EnsureCreated();
+                if(settings.SeedData && context.Users.Count() == 0){
+                    UserSeed();
+                    DataSeed();
+                }
+            }catch(Exception e)
+            {
+                logger.Error(e, "Database initialization failed");
+            }
         }
 
         private void UserSeed()

@@ -45,6 +45,7 @@ namespace Wordki
         {
             builder.RegisterInstance(AutoMapperConfig.Initialize()).SingleInstance();
             builder.RegisterModule<ServicesModule>();
+            builder.RegisterModule(new SettingsModule(Configuration));
             builder.RegisterModule<RepositoryModule>();
         }
 
