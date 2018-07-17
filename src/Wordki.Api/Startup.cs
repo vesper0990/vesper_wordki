@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
@@ -9,13 +10,14 @@ using Wordki.Infrastructure.Services;
 using Wordki.Infrastructure.IoC.Modules;
 using Wordki.Infrastructure.Mapper;
 using NLog.Web;
-using Microsoft.AspNetCore.Diagnostics;
 using Wordki.Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using System;
 
 namespace Wordki
 {
-    public class Startup
+    public class Startup : IStartup
     {
 
         public IContainer ApplicationContainer { get; private set; }
@@ -32,13 +34,12 @@ namespace Wordki
             Configuration = builder.Build();
         }
 
-        public void ConfigureServices(IServiceCollection services)
+        IServiceProvider IStartup.ConfigureServices(IServiceCollection services)
         {
-
             if (HostingEnvironment.IsEnvironment("Testing"))
             {
                 services.AddDbContext<WordkiDbContext>(options =>
-                options.UseMySql(@"Server=localhost;database=unittests;uid=root;pwd=Akuku123;"));
+                options.UseInMemoryDatabase("testDb"));
             }
             else
             {
@@ -53,20 +54,28 @@ namespace Wordki
                                                              .AllowAnyMethod()
                                                               .AllowAnyHeader()));
             services.AddTransient<Api.Framework.ExceptionHandlerMiddleware>();
-            services.AddSingleton(new ContainerBuilder());
+            services.AddAutofac();
             services.AddMvc();
-        }
 
-        public void ConfigureContainer(ContainerBuilder builder)
-        {
+            var builder = new ContainerBuilder();
+            builder.Populate(services);
+            builder.RegisterModule(new SettingsModule(Configuration));
             builder.RegisterInstance(AutoMapperConfig.Initialize()).SingleInstance();
             builder.RegisterModule<ServicesModule>();
             builder.RegisterModule(new SettingsModule(Configuration));
             builder.RegisterModule<RepositoryModule>();
+            ApplicationContainer = builder.Build();
+
+            return new AutofacServiceProvider(ApplicationContainer);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime appLifeTime)
+
+        public void Configure(IApplicationBuilder app)
         {
+            var env = app.ApplicationServices.GetService<IHostingEnvironment>();
+            var loggerFactory = app.ApplicationServices.GetService<ILoggerFactory>();
+            var appLifeTime = app.ApplicationServices.GetService<IApplicationLifetime>();
+
             loggerFactory.AddNLog();
             env.ConfigureNLog("nlog.config");
 

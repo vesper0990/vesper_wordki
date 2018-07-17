@@ -1,28 +1,30 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using System;
 using System.Net.Http;
+using System.Threading.Tasks;
+using Wordki.Infrastructure.EntityFramework;
 
 namespace Wordki.Tests.EndToEnd
 {
-    public class TestBase : IDisposable
+    public class TestBase
     {
-
         protected readonly TestServer server;
         protected readonly HttpClient client;
+        protected readonly WordkiDbContext dbContext;
 
         public TestBase()
         {
-            var builder = new WebHostBuilder();
-            builder.UseEnvironment("Testing");
-            builder.UseStartup<Startup>();
-            server = new TestServer(builder);
+            server = new TestServer(new WebHostBuilder()
+                .UseEnvironment("Testing")
+                .UseStartup<Startup>());
             client = server.CreateClient();
+            dbContext = server.Host.Services.GetService(typeof(WordkiDbContext)) as WordkiDbContext;
         }
 
-        public void Dispose()
+        public async Task ClearDatabase()
         {
-            throw new NotImplementedException();
+            await dbContext.Database.EnsureDeletedAsync();
+            await dbContext.Database.EnsureCreatedAsync();
         }
     }
 }
