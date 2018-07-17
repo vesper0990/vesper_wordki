@@ -13,5 +13,10 @@ namespace Wordki.Infrastructure.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public Task<IEnumerable<Result>> AddAllAsync(IEnumerable<Result> results)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

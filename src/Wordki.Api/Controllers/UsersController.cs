@@ -17,6 +17,17 @@ namespace Wordki.Api.Controllers
             this.userService = userService;
         }
 
+        [HttpGet("check/{userName}")]
+        public async Task<IActionResult> CheckIfExists(string userName)
+        {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                throw new ArgumentException("Invalid credential");
+            }
+            var isExists = await userService.CheckUserExistingAsync(userName);
+            return Json(isExists);
+        }
+
         [HttpGet("login/{userName}/{password}")]
         public async Task<IActionResult> Login(string userName, string password)
         {

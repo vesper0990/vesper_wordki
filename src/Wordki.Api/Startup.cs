@@ -10,6 +10,8 @@ using Wordki.Infrastructure.IoC.Modules;
 using Wordki.Infrastructure.Mapper;
 using NLog.Web;
 using Microsoft.AspNetCore.Diagnostics;
+using Wordki.Infrastructure.EntityFramework;
+using Microsoft.EntityFrameworkCore;
 
 namespace Wordki
 {
@@ -33,11 +35,25 @@ namespace Wordki
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<Infrastructure.EntityFramework.WordkiDbContext>();
+            if (HostingEnvironment.IsEnvironment("Testing"))
+            {
+                services.AddDbContext<WordkiDbContext>(options =>
+                options.UseMySql(@"Server=localhost;database=unittests;uid=root;pwd=Akuku123;"));
+            }
+            else
+            {
+                services.AddDbContext<WordkiDbContext>(options =>
+#if Debug
+                options.UseMySql(@"Server=localhost;database=test;uid=root;pwd=Akuku123;"));
+#else
+                options.UseMySql(@"Server=dbServer;database=wordki;uid=root;pwd=Akuku123;"));
+#endif
+            }
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
                                                              .AllowAnyMethod()
                                                               .AllowAnyHeader()));
             services.AddTransient<Api.Framework.ExceptionHandlerMiddleware>();
+            services.AddSingleton(new ContainerBuilder());
             services.AddMvc();
         }
 

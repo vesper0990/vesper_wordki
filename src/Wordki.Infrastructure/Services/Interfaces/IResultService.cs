@@ -4,8 +4,9 @@ using Wordki.Infrastructure.DTO;
 
 namespace Wordki.Infrastructure.Services
 {
-    public interface IResultService
+    public interface IResultService : IService
     {
+
         Task<IEnumerable<ResultDTO>> GetAllAsync();
         Task<IEnumerable<ResultDTO>> AddAllAsync(IEnumerable<ResultDTO> resultsDto, long userId);
     }

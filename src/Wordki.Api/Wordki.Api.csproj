@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;Debug;NETCOREAPP;NETCOREAPP2_1</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>    
 	<PackageReference Include="Autofac" Version="4.8.1" />
 	<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
