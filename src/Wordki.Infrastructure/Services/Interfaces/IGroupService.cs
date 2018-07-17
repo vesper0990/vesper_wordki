@@ -6,10 +6,10 @@ namespace Wordki.Infrastructure.Services
 {
     public interface IGroupService
     {
-        Task<IEnumerable<GroupDTO>> GetGroupItemsAsync(long userId);
-        Task<GroupDetailsDTO> GetGroupDetailsAsync(long groupId);
-        Task<GroupDTO> AddGroupAsync(GroupDTO group, long userId);
-        Task UpdateGroupAsync(GroupDTO groupDto);
-        Task RemoveGroupAsync(long id);
+        Task<IEnumerable<GroupDTO>> GetItemsAsync(long userId);
+        Task<GroupDetailsDTO> GetDetailsAsync(long groupId);
+        Task<GroupDTO> AddAsync(GroupDTO group, long userId);
+        Task UpdateAsync(GroupDTO groupDto);
+        Task RemoveAsync(long id);
     }
 }

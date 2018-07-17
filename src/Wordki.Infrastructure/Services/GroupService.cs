@@ -20,7 +20,7 @@ namespace Wordki.Infrastructure.Services
             this.mapper = mapper;
         }
 
-        public async Task<GroupDTO> AddGroupAsync(GroupDTO groupDto, long userId)
+        public async Task<GroupDTO> AddAsync(GroupDTO groupDto, long userId)
         {
             var group = mapper.Map<Group>(groupDto);
             group.UserId = userId;
@@ -28,12 +28,12 @@ namespace Wordki.Infrastructure.Services
             return mapper.Map<Group, GroupDTO>(group);
         }
 
-        public async Task<GroupDetailsDTO> GetGroupDetailsAsync(long groupId)
+        public async Task<GroupDetailsDTO> GetDetailsAsync(long groupId)
         {
             return mapper.Map<Group, GroupDetailsDTO>(await groupRepository.GetAsync(groupId, true));
         }
 
-        public async Task<IEnumerable<GroupDTO>> GetGroupItemsAsync(long userId)
+        public async Task<IEnumerable<GroupDTO>> GetItemsAsync(long userId)
         {
             return await Task.Run(() =>
             {
@@ -52,12 +52,12 @@ namespace Wordki.Infrastructure.Services
 
         }
 
-        public async Task RemoveGroupAsync(long id)
+        public async Task RemoveAsync(long id)
         {
             await groupRepository.RemoveAsync(id);
         }
 
-        public async Task UpdateGroupAsync(GroupDTO groupDto)
+        public async Task UpdateAsync(GroupDTO groupDto)
         {
             var group = mapper.Map<Group>(groupDto);
             await groupRepository.UpdateAsync(group);
