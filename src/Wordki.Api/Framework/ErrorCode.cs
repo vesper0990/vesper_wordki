@@ -8,5 +8,7 @@ namespace Wordki.Api.Framework
     public enum ErrorCode
     {
         Default,
+        NullArgument,
+        UserAlreadyExists,
     }
 }

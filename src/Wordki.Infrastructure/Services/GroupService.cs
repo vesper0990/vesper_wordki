@@ -10,7 +10,6 @@ namespace Wordki.Infrastructure.Services
 {
     public class GroupService : IGroupService, IService
     {
-
         private readonly IGroupRepository groupRepository;
         private readonly IMapper mapper;
 
