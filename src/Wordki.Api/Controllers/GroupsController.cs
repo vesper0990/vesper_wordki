@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
+using Wordki.Infrastructure;
 using Wordki.Infrastructure.DTO;
 using Wordki.Infrastructure.Services;
 
@@ -26,8 +27,15 @@ namespace Wordki.Api.Controllers
             return Json(groups);
         }
 
+        [HttpGet("getGroupItems/{userId}")]
+        public async Task<IActionResult> GetGroupItems(long userId){
+            var groupItems = await groupService.GetItemsAsync(userId);
+            return Json(groupItems);
+        }
+
         [HttpGet("getGroupDetails/{groupId}")]
-        public async Task<IActionResult> GetGroupDetails(long groupId){
+        public async Task<IActionResult> GetGroupDetails(long groupId)
+        {
             var groupDetails = await groupService.GetDetailsAsync(groupId);
             return Json(groupDetails);
         }
@@ -35,6 +43,14 @@ namespace Wordki.Api.Controllers
         [HttpPost("addGroup")]
         public async Task<IActionResult> AddGroup([FromBody] GroupDTO group)
         {
+            if (group == null)
+            {
+                throw new ApiException($"Parameter {nameof(group)} cannot be null", ErrorCode.NullArgument);
+            }
+            if (string.IsNullOrWhiteSpace(group.Name))
+            {
+                throw new ApiException($"Parameter {nameof(group.Name)} cannot be null", ErrorCode.NullArgument);
+            }
             long userId = await authorizer.AuthorizeAsync(Request);
             group = await groupService.AddAsync(group, userId);
             return Json(group);
@@ -43,6 +59,14 @@ namespace Wordki.Api.Controllers
         [HttpPut("updateGroup")]
         public async Task<IActionResult> UpdateGroup([FromBody] GroupDTO group)
         {
+            if (group == null)
+            {
+                throw new ApiException($"Parameter {nameof(group)} cannot be null", ErrorCode.NullArgument);
+            }
+            if (string.IsNullOrWhiteSpace(group.Name))
+            {
+                throw new ApiException($"Parameter {nameof(group.Name)} cannot be null", ErrorCode.NullArgument);
+            }
             long userId = await authorizer.AuthorizeAsync(Request);
             await groupService.UpdateAsync(group);
             return Ok();

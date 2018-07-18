@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Wordki.Core;
+using Microsoft.EntityFrameworkCore;
 
 namespace Wordki.Tests.EndToEnd.Controllers.Users
 {
