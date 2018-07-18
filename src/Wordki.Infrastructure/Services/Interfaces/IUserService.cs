@@ -10,5 +10,6 @@ namespace Wordki.Infrastructure.Services
         Task<bool> CheckUserToLoginAsync(string userName, string password);
         Task<UserDTO> LoginAsync(string userName, string password);
         Task<UserDTO> RegisterAsync(UserDTO userDto);
+        Task<UserDTO> UpdateAsync(UserDTO userDto);
     }
 }

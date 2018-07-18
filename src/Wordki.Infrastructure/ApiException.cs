@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Wordki.Infrastructure.DTO;
 
-namespace Wordki.Api.Framework
+namespace Wordki.Infrastructure
 {
     public class ApiException : Exception
     {

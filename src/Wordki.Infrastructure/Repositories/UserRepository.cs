@@ -16,7 +16,7 @@ namespace Wordki.Infrastructure.Repositories
             this.context = context;
         }
 
-        public async Task AddUserAsync(User user)
+        public async Task AddAsync(User user)
         {
             await context.Users.AddAsync(user);
             await context.SaveChangesAsync();
@@ -24,10 +24,14 @@ namespace Wordki.Infrastructure.Repositories
 
         public async Task<IEnumerable<User>> GetAllAsync() => await context.Users.ToListAsync();
 
-        public async Task<User> GetUserAsync(string name, string password) 
+        public async Task<User> GetAsync(string name, string password)
             => await context.Users.SingleOrDefaultAsync(x => x.Name.Equals(name) && x.Password.Equals(password));
 
-        public async Task UpdateUserAsync(User user)
+        public async Task<bool> IsExistsAsync(string name) => await context.Users.CountAsync(x => x.Name.Equals(name)) != 0;
+        public async Task<bool> IsExistsAsync(long id, string password) => await context.Users.CountAsync(x => x.Id == id && x.Password.Equals(password)) != 0;
+        public async Task<bool> IsExistsAsync(string name, string password) => await context.Users.CountAsync(x => x.Name.Equals(name) && x.Password.Equals(password)) != 0;
+
+        public async Task UpdateAsync(User user)
         {
             context.Users.Update(user);
             await context.SaveChangesAsync();

@@ -1,42 +1,49 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Wordki.Core;
+using Wordki.Core.Repositories;
 using Wordki.Infrastructure.DTO;
-using Wordki.Infrastructure.EntityFramework;
 
 namespace Wordki.Infrastructure.Services
 {
     public class UserService : IUserService
     {
-        private readonly WordkiDbContext context;
+        private readonly IUserRepository userRepository;
         private readonly IMapper mapper;
         private readonly IEncrypter encrypter;
 
-        public UserService(WordkiDbContext context, IMapper mapper, IEncrypter encrypter)
+        public UserService(IUserRepository userRepository, IMapper mapper, IEncrypter encrypter)
         {
-            this.context = context;
+            this.userRepository = userRepository;
             this.mapper = mapper;
             this.encrypter = encrypter;
         }
 
         public async Task<bool> CheckUserExistingAsync(string userName)
-            => await context.Users.CountAsync(x => x.Name.Equals(userName)) != 0;
+            => await userRepository.IsExistsAsync(userName);
 
         public async Task<bool> CheckUserExistingAsync(long id, string password)
-            => await context.Users.CountAsync(x => x.Id == id && x.Password.Equals(encrypter.Md5Hash(password))) != 0;
+            => await userRepository.IsExistsAsync(id, encrypter.Md5Hash(password));
 
         public async Task<bool> CheckUserToLoginAsync(string userName, string password)
-            => await context.Users.CountAsync(x => x.Name.Equals(userName) && x.Password.Equals(encrypter.Md5Hash(password))) != 0;
+            => await userRepository.IsExistsAsync(userName, encrypter.Md5Hash(password));
 
         public async Task<UserDTO> LoginAsync(string userName, string password)
-            => mapper.Map<User, UserDTO>(await context.Users.SingleOrDefaultAsync(x => x.Name.Equals(userName) && x.Password.Equals(encrypter.Md5Hash(password))));
+            => mapper.Map<User, UserDTO>(await userRepository.GetAsync(userName, encrypter.Md5Hash(password)));
 
         public async Task<UserDTO> RegisterAsync(UserDTO userDto)
         {
             var user = mapper.Map<UserDTO, User>(userDto);
             user.Password = encrypter.Md5Hash(user.Password);
-            await context.Users.AddAsync(user);
+            await userRepository.AddAsync(user);
+            return mapper.Map<User, UserDTO>(user);
+        }
+
+        public async Task<UserDTO> UpdateAsync(UserDTO userDto)
+        {
+            var user = mapper.Map<UserDTO, User>(userDto);
+            user.Password = encrypter.Md5Hash(user.Password);
+            await userRepository.UpdateAsync(user);
             return mapper.Map<User, UserDTO>(user);
         }
     }

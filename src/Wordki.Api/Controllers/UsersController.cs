@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
-using Wordki.Api.Framework;
+using Wordki.Infrastructure;
 using Wordki.Infrastructure.DTO;
 using Wordki.Infrastructure.Services;
 
@@ -11,10 +10,12 @@ namespace Wordki.Api.Controllers
     public class UserController : Controller
     {
         private readonly IUserService userService;
+        private readonly IAuthorizer authorizer;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IAuthorizer authorizer)
         {
             this.userService = userService;
+            this.authorizer = authorizer;
         }
 
         [HttpGet("check/{userName}")]
@@ -46,7 +47,7 @@ namespace Wordki.Api.Controllers
             {
                 throw new ApiException($"Parameter {nameof(userDto)} cannot be null.", ErrorCode.NullArgument);
             }
-            if (string.IsNullOrWhiteSpace(userDto.Name))
+            if (string.IsNullOrWhiteSpace(userDto.Name) || string.IsNullOrWhiteSpace(userDto.Password))
             {
                 throw new ApiException($"Parameter {nameof(userDto.Name)} cannot be null", ErrorCode.NullArgument);
             }
@@ -56,6 +57,22 @@ namespace Wordki.Api.Controllers
             }
             var user = await userService.RegisterAsync(userDto);
             return Json(user);
+        }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> Update([FromBody] UserDTO userDto) {
+            if (userDto == null)
+            {
+                throw new ApiException($"Parameter {nameof(userDto)} cannot be null.", ErrorCode.NullArgument);
+            }
+            if (string.IsNullOrWhiteSpace(userDto.Name) || string.IsNullOrWhiteSpace(userDto.Password))
+            {
+                throw new ApiException($"Parameter {nameof(userDto.Name)} cannot be null", ErrorCode.NullArgument);
+            }
+            long userId = await authorizer.AuthorizeAsync(Request);
+            userDto.Id = userId;
+            userDto = await userService.UpdateAsync(userDto);
+            return Json(userDto);
         }
     }
 }

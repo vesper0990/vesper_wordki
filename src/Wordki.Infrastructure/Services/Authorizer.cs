@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
+using Wordki.Infrastructure.DTO;
 
 namespace Wordki.Infrastructure.Services
 {
@@ -8,9 +9,9 @@ namespace Wordki.Infrastructure.Services
     {
         private static readonly string userIdKey = "userId";
         private static readonly string passwordKey = "password";
-        private readonly UserService userService;
+        private readonly IUserService userService;
 
-        public Authorizer(UserService userService)
+        public Authorizer(IUserService userService)
         {
             this.userService = userService;
         }
@@ -19,16 +20,16 @@ namespace Wordki.Infrastructure.Services
         {
             if (!request.Headers.ContainsKey(userIdKey))
             {
-                throw new Exception("header not contain userId");
+                throw new ApiException("UserId cannot find", ErrorCode.AuthenticaitonException);
             }
             if (!request.Headers.ContainsKey(passwordKey))
             {
-                throw new Exception("header not contain password");
+                throw new ApiException("Password cannot find", ErrorCode.AuthenticaitonException);
             }
             long userId = Convert.ToInt64(request.Headers[userIdKey]);
             if (!await userService.CheckUserExistingAsync(userId, request.Headers[passwordKey]))
             {
-                throw new Exception("Invalid Credential");
+                throw new ApiException("User not find", ErrorCode.AuthenticaitonException);
             }
             return userId;
 
