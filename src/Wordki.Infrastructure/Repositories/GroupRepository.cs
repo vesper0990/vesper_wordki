@@ -75,15 +75,26 @@ namespace Wordki.Infrastructure.Repositories
 
         public async Task RemoveAsync(long id)
         {
+            if(id <= 0){
+                throw new ApiException("Exception during removing group from db", DTO.ErrorCode.RemovingFromDbException);
+            }
             var group = await GetAsync(id);
+
             context.Groups.Remove(group);
             await context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(Group group)
         {
-            context.Groups.Update(group);
-            await context.SaveChangesAsync();
+            try
+            {
+                context.Groups.Update(group);
+                await context.SaveChangesAsync();
+            }
+            catch (ArgumentException e)
+            {
+                throw new ApiException("Exception during updating group in db", e, DTO.ErrorCode.UpdateInDbException);
+            }
         }
     }
 }

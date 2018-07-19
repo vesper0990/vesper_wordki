@@ -88,7 +88,7 @@ namespace Wordki.Tests.EndToEnd
             }
         }
 
-        public static IEnumerable<Word> GetWords(int groupId, long userId, int count = 10)
+        public static IEnumerable<Word> GetWords(long groupId, long userId, int count = 10)
         {
             for (int i = 1; i <= count; i++)
             {
@@ -96,7 +96,7 @@ namespace Wordki.Tests.EndToEnd
             }
         }
 
-        public static IEnumerable<Result> GetResults(int groupId, long userId, int count = 10)
+        public static IEnumerable<Result> GetResults(long groupId, long userId, int count = 10)
         {
             for (int i = 1; i <= count; i++)
             {
@@ -108,10 +108,8 @@ namespace Wordki.Tests.EndToEnd
         {
             content.Headers.Add("password", user.Password);
             user.Password = encrypter.Md5Hash(user.Password);
-            context.SaveChanges();
-            IList<User> users = context.Users.ToList();
-            context.Add(user);
-            context.SaveChanges();
+            await context.AddAsync(user);
+            await context.SaveChangesAsync();
             content.Headers.Add("userId", user.Id.ToString());
         }
     }

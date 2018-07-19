@@ -7,5 +7,7 @@
         UserAlreadyExistsException,
         AuthenticaitonException,
         InsertToDbException,
+        UpdateInDbException,
+        RemovingFromDbException;
     }
 }
