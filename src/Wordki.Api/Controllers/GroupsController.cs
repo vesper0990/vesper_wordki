@@ -27,53 +27,53 @@ namespace Wordki.Api.Controllers
             return Json(groups);
         }
 
-        [HttpGet("getGroupItems/{userId}")]
-        public async Task<IActionResult> GetGroupItems(long userId){
+        [HttpGet("getItems/{userId}")]
+        public async Task<IActionResult> GetItems(long userId){
             var groupItems = await groupService.GetItemsAsync(userId);
             return Json(groupItems);
         }
 
-        [HttpGet("getGroupDetails/{groupId}")]
-        public async Task<IActionResult> GetGroupDetails(long groupId)
+        [HttpGet("getDetails/{groupId}")]
+        public async Task<IActionResult> GetDetails(long groupId)
         {
             var groupDetails = await groupService.GetDetailsAsync(groupId);
             return Json(groupDetails);
         }
 
-        [HttpPost("addGroup")]
-        public async Task<IActionResult> AddGroup([FromBody] GroupDTO group)
+        [HttpPost("add")]
+        public async Task<IActionResult> Add([FromBody] GroupDetailsDTO group)
         {
             if (group == null)
             {
-                throw new ApiException($"Parameter {nameof(group)} cannot be null", ErrorCode.NullArgument);
+                throw new ApiException($"Parameter {nameof(group)} cannot be null", ErrorCode.NullArgumentException);
             }
             if (string.IsNullOrWhiteSpace(group.Name))
             {
-                throw new ApiException($"Parameter {nameof(group.Name)} cannot be null", ErrorCode.NullArgument);
+                throw new ApiException($"Parameter {nameof(group.Name)} cannot be null", ErrorCode.NullArgumentException);
             }
             long userId = await authorizer.AuthorizeAsync(Request);
             group = await groupService.AddAsync(group, userId);
             return Json(group);
         }
 
-        [HttpPut("updateGroup")]
-        public async Task<IActionResult> UpdateGroup([FromBody] GroupDTO group)
+        [HttpPut("update")]
+        public async Task<IActionResult> Update([FromBody] GroupDTO group)
         {
             if (group == null)
             {
-                throw new ApiException($"Parameter {nameof(group)} cannot be null", ErrorCode.NullArgument);
+                throw new ApiException($"Parameter {nameof(group)} cannot be null", ErrorCode.NullArgumentException);
             }
             if (string.IsNullOrWhiteSpace(group.Name))
             {
-                throw new ApiException($"Parameter {nameof(group.Name)} cannot be null", ErrorCode.NullArgument);
+                throw new ApiException($"Parameter {nameof(group.Name)} cannot be null", ErrorCode.NullArgumentException);
             }
             long userId = await authorizer.AuthorizeAsync(Request);
             await groupService.UpdateAsync(group);
             return Ok();
         }
 
-        [HttpDelete("removeGroup")]
-        public async Task<IActionResult> RemoveGroup([FromBody] long id)
+        [HttpDelete("remove")]
+        public async Task<IActionResult> Remove([FromBody] long id)
         {
             long userId = await authorizer.AuthorizeAsync(Request);
             await groupService.RemoveAsync(id);

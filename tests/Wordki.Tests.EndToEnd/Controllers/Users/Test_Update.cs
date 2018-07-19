@@ -1,14 +1,11 @@
 ﻿using Newtonsoft.Json;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Wordki.Core;
 using Wordki.Infrastructure.DTO;
-using Wordki.Infrastructure.Services;
 
 namespace Wordki.Tests.EndToEnd.Controllers.Users
 {
@@ -17,7 +14,6 @@ namespace Wordki.Tests.EndToEnd.Controllers.Users
     {
 
         private const string method = "User/update";
-        private readonly Encrypter encrypter = new Encrypter();
 
 
         public Test_Update(): base()
@@ -67,14 +63,15 @@ namespace Wordki.Tests.EndToEnd.Controllers.Users
             User user = new User
             {
                 Name = name,
-                Password = encrypter.Md5Hash(password),
+                Password = password,
             };
-            await dbContext.Users.AddAsync(user);
-            await dbContext.SaveChangesAsync();
-            user.Password = "aaaa";
-            var body = new StringContent(JsonConvert.SerializeObject(new { user.Name, user.Password }), Encoding.UTF8, "application/json");
-            body.Headers.Add("userId", "1");
-            body.Headers.Add("password", "test");
+            User userToSend = new User
+            {
+                Name = user.Name,
+                Password = "aaaa",
+            };
+            var body = new StringContent(JsonConvert.SerializeObject(new { userToSend.Name, userToSend.Password }), Encoding.UTF8, "application/json");
+            await Util.PrepareAuthorization(body, user, encrypter, dbContext);
             var respone = await client.PutAsync(method, body);
             Assert.AreEqual(HttpStatusCode.OK, respone.StatusCode, "StatusCode != OK");
 
@@ -83,7 +80,7 @@ namespace Wordki.Tests.EndToEnd.Controllers.Users
             var obj = JsonConvert.DeserializeObject<UserDTO>(message);
             Assert.AreEqual(user.Id , obj.Id, "Ids are not equal");
             Assert.AreEqual(user.Name, obj.Name, "Names are not equal");
-            Assert.AreEqual(encrypter.Md5Hash(user.Password), obj.Password, "Passwords are not equal");
+            Assert.AreEqual(encrypter.Md5Hash(userToSend.Password), obj.Password, "Passwords are not equal");
         }
 
 

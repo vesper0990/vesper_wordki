@@ -27,6 +27,8 @@ namespace Wordki.Core
             Language2 = LanguageType.Unknown;
             State = int.MaxValue;
             CreationDate = DateTime.Now;
+            Words = new List<Word>();
+            Results = new List<Result>();
         }
 
     }

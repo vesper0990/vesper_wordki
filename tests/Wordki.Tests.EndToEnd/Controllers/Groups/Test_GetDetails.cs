@@ -1,24 +1,23 @@
-using System.Linq;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Wordki.Core;
 using Wordki.Infrastructure.DTO;
-using Wordki.Infrastructure.Services;
 
 namespace Wordki.Tests.EndToEnd.Controllers.Groups
 {
     [TestFixture]
-    public class Test_GetAll : TestBase
+    public class Test_GetDetails : TestBase
     {
-        private const string method = "Groups/getAll";
-        public Test_GetAll() : base()
+
+        private const string method = "Groups/getDetails";
+
+        public Test_GetDetails() : base()
         {
 
         }
@@ -34,11 +33,7 @@ namespace Wordki.Tests.EndToEnd.Controllers.Groups
         public async Task Try_invoke_if_database_is_empty()
         {
             var response = await client.GetAsync($"{method}/1");
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-
-            var message = await response.Content.ReadAsStringAsync();
-            var obj = JsonConvert.DeserializeObject<IEnumerable<GroupDTO>>(message);
-            Assert.AreEqual(0, obj.Count());
+            Assert.AreNotEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Test]
@@ -48,17 +43,22 @@ namespace Wordki.Tests.EndToEnd.Controllers.Groups
             User user = Util.GetUser();
             await dbContext.Users.AddAsync(user);
             await dbContext.SaveChangesAsync();
-            
-            IEnumerable<Group> groups = Util.GetGroups(5, userId: user.Id);
+
+            IList<Group> groups = Util.GetGroups(5, userId: user.Id).ToList();
             await dbContext.Groups.AddRangeAsync(groups);
             await dbContext.SaveChangesAsync();
 
-            var respnse = await client.GetAsync($"{method}/{user.Id}");
+            var respnse = await client.GetAsync($"{method}/{groups[0].Id}");
             Assert.AreEqual(HttpStatusCode.OK, respnse.StatusCode, "StatusCode != Ok");
 
             var message = await respnse.Content.ReadAsStringAsync();
-            var obj = JsonConvert.DeserializeObject<IEnumerable<GroupDTO>>(message);
-            Assert.AreEqual(groups.Count(), obj.Count(), "Count of groups are not equel");
+            var obj = JsonConvert.DeserializeObject<GroupDetailsDTO>(message);
+
+            Assert.IsNotNull(obj);
+            Assert.AreEqual(groups[0].Words.Count, obj.Words.Count());
+            Assert.AreEqual(groups[0].Results.Count, obj.Results.Count());
+
         }
+
     }
 }

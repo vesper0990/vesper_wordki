@@ -3,8 +3,9 @@
     public enum ErrorCode
     {
         Default,
-        NullArgument,
-        UserAlreadyExists,
+        NullArgumentException,
+        UserAlreadyExistsException,
         AuthenticaitonException,
+        InsertToDbException,
     }
 }

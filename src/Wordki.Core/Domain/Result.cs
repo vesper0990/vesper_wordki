@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using Wordki.Core.Enums;
 
 namespace Wordki.Core
@@ -7,6 +8,7 @@ namespace Wordki.Core
     {
         public long Id { get; set; }
         public long GroupId { get; set; }
+        [JsonIgnore]
         public Group Group { get; set; }
         public long UserId { get; set; }
         public short Correct { get; set; }

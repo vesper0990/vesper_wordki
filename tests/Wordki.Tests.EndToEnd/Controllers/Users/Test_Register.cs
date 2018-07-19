@@ -22,7 +22,7 @@ namespace Wordki.Tests.EndToEnd.Controllers.Users
         }
 
         [Test]
-        public async Task Try_invoke_if_body_is_empty_check_status_code()
+        public async Task Try_invoke_if_body_is_empty()
         {
             var body = new StringContent("", Encoding.UTF8, "application/json");
             var respone = await client.PostAsync(method, body);
@@ -32,11 +32,11 @@ namespace Wordki.Tests.EndToEnd.Controllers.Users
 
             Assert.NotNull(message, $"{nameof(message)} unexpected is null");
             var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
-            Assert.AreEqual(ErrorCode.NullArgument, obj.Code, "ExceptionMessage.Code != NullArgument");
+            Assert.AreEqual(ErrorCode.NullArgumentException, obj.Code, "ExceptionMessage.Code != NullArgument");
         }
 
         [Test]
-        public async Task Try_invoke_if_user_name_is_empty_check_status_code()
+        public async Task Try_invoke_if_user_name_is_empty()
         {
             var body = new StringContent(JsonConvert.SerializeObject(new { Password = "test" }), Encoding.UTF8, "application/json");
             var respone = await client.PostAsync(method, body);
@@ -45,7 +45,7 @@ namespace Wordki.Tests.EndToEnd.Controllers.Users
             string message = await respone.Content.ReadAsStringAsync();
             Assert.NotNull(message, $"{nameof(message)} unexpected is null");
             var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
-            Assert.AreEqual(ErrorCode.NullArgument, obj.Code, "ExceptionMessage.Code != NullArgument");
+            Assert.AreEqual(ErrorCode.NullArgumentException, obj.Code, "ExceptionMessage.Code != NullArgument");
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace Wordki.Tests.EndToEnd.Controllers.Users
             string message = await respone.Content.ReadAsStringAsync();
             Assert.NotNull(message, $"{nameof(message)} unexpected is null");
             var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
-            Assert.AreEqual(ErrorCode.NullArgument, obj.Code, "ExceptionMessage.Code != NullArgument");
+            Assert.AreEqual(ErrorCode.NullArgumentException, obj.Code, "ExceptionMessage.Code != NullArgument");
         }
 
 
@@ -83,7 +83,7 @@ namespace Wordki.Tests.EndToEnd.Controllers.Users
             string message = await respone.Content.ReadAsStringAsync();
             Assert.NotNull(message, $"{nameof(message)} unexpected is null");
             var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
-            Assert.AreEqual(ErrorCode.UserAlreadyExists, obj.Code, "ExceptionMessage.Code != UserAlreadyExists");
+            Assert.AreEqual(ErrorCode.UserAlreadyExistsException, obj.Code, "ExceptionMessage.Code != UserAlreadyExists");
         }
 
         [Test]

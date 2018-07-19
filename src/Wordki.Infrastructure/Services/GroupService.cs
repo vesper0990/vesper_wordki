@@ -19,12 +19,12 @@ namespace Wordki.Infrastructure.Services
             this.mapper = mapper;
         }
 
-        public async Task<GroupDTO> AddAsync(GroupDTO groupDto, long userId)
+        public async Task<GroupDetailsDTO> AddAsync(GroupDetailsDTO groupDto, long userId)
         {
             var group = mapper.Map<Group>(groupDto);
             group.UserId = userId;
             await groupRepository.AddAsync(group);
-            return mapper.Map<Group, GroupDTO>(group);
+            return mapper.Map<Group, GroupDetailsDTO>(group);
         }
 
         public async Task<GroupDetailsDTO> GetDetailsAsync(long groupId)

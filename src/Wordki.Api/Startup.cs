@@ -39,16 +39,19 @@ namespace Wordki
             if (HostingEnvironment.IsEnvironment("Testing"))
             {
                 services.AddDbContext<WordkiDbContext>(options =>
-                options.UseInMemoryDatabase("testDb"));
+                options.UseInMemoryDatabase("testDb").EnableSensitiveDataLogging());
             }
             else
             {
                 services.AddDbContext<WordkiDbContext>(options =>
+                {
 #if Debug
-                options.UseMySql(@"Server=localhost;database=test;uid=root;pwd=Akuku123;"));
+                    options.UseMySql(@"Server=localhost;database=test;uid=root;pwd=Akuku123;").EnableSensitiveDataLogging();
+
 #else
-                options.UseMySql(@"Server=dbServer;database=wordki;uid=root;pwd=Akuku123;"));
+                options.UseMySql(@"Server=dbServer;database=wordki;uid=root;pwd=Akuku123;");
 #endif
+                });
             }
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
                                                              .AllowAnyMethod()

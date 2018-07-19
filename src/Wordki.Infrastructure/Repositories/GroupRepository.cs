@@ -5,6 +5,7 @@ using Wordki.Core;
 using Wordki.Core.Repositories;
 using Wordki.Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Wordki.Infrastructure.Repositories
 {
@@ -19,9 +20,16 @@ namespace Wordki.Infrastructure.Repositories
 
         public async Task AddAsync(Group group)
         {
-            await context.Groups.AddAsync(group);
-            await context.SaveChangesAsync();
-        }        
+            try
+            {
+                await context.Groups.AddAsync(group);
+                await context.SaveChangesAsync();
+            }
+            catch (ArgumentException e)
+            {
+                throw new ApiException("Exception during inserting group to db", e, DTO.ErrorCode.InsertToDbException);
+            }
+        }
 
         public async Task<IEnumerable<Group>> GetAllAsync(bool withChildren = false)
         {
@@ -52,11 +60,11 @@ namespace Wordki.Infrastructure.Repositories
         {
             if (withChildren)
             {
-                return await context.Groups.Include(x => x.Words).Include(x => x.Results).SingleOrDefaultAsync(x => x.Id == id);
+                return await context.Groups.Include(x => x.Words).Include(x => x.Results).SingleAsync(x => x.Id == id);
             }
             else
             {
-                return await context.Groups.SingleOrDefaultAsync(x => x.Id == id);
+                return await context.Groups.SingleAsync(x => x.Id == id);
             }
         }
 

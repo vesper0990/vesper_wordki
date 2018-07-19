@@ -13,7 +13,6 @@ namespace Wordki.Infrastructure.EntityFramework
 
         public WordkiDbContext(DbContextOptions<WordkiDbContext> options) : base(options)
         {
-
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -29,27 +28,27 @@ namespace Wordki.Infrastructure.EntityFramework
                 .ValueGeneratedOnAdd();
 
             builder.Entity<Group>()
-                .HasKey(g => new { g.Id, g.UserId });
+                .HasKey(g => new { g.Id});
 
             builder.Entity<Result>()
-                .HasKey(r => new { r.Id, r.UserId });
+                .HasKey(r => new { r.Id});
             builder.Entity<Result>()
                 .Property(g => g.Id)
                 .ValueGeneratedOnAdd();
             builder.Entity<Result>()
                 .HasOne(x => x.Group)
                 .WithMany(x => x.Results)
-                .HasForeignKey(x => new { x.GroupId, x.UserId });
+                .HasForeignKey(x => new { x.GroupId });
 
             builder.Entity<Word>()
-                .HasKey(r => new { r.Id, r.UserId });
+                .HasKey(r => new { r.Id});
             builder.Entity<Word>()
                 .Property(g => g.Id)
                 .ValueGeneratedOnAdd();
             builder.Entity<Word>()
                 .HasOne(x => x.Group)
                 .WithMany(x => x.Words)
-                .HasForeignKey(x => new { x.GroupId, x.UserId });
+                .HasForeignKey(x => new { x.GroupId });
         }
 
 
