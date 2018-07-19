@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -8,9 +7,8 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using Wordki.Core.Extensions;
 using Wordki.Infrastructure.DTO;
-using Wordki.Infrastructure.Services;
 
-namespace Wordki.Tests.EndToEnd
+namespace Wordki.Tests.EndToEnd.Controllers.Groups
 {
     [TestFixture]
     public class Test_Remove : TestBase
@@ -32,8 +30,8 @@ namespace Wordki.Tests.EndToEnd
 
             string message = await respone.Content.ReadAsStringAsync();
 
-            Assert.NotNull(message, $"{nameof(message)} unexpected is null");
             var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
+            Assert.NotNull(obj, $"{nameof(obj)} unexpected is null");
             Assert.AreEqual(ErrorCode.NullArgumentException, obj.Code, "ExceptionMessage.Code != NullArgument");
         }
 
@@ -48,8 +46,8 @@ namespace Wordki.Tests.EndToEnd
             Assert.AreNotEqual(HttpStatusCode.OK, respone.StatusCode, "StatusCode == OK");
 
             string message = await respone.Content.ReadAsStringAsync();
-            Assert.NotNull(message, $"{nameof(message)} unexpected is null");
             var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
+            Assert.NotNull(obj, $"{nameof(obj)} unexpected is null");
             Assert.AreEqual(ErrorCode.AuthenticaitonException, obj.Code);
         }
         [Test]

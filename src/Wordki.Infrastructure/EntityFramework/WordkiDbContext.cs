@@ -26,29 +26,34 @@ namespace Wordki.Infrastructure.EntityFramework
             builder.Entity<Group>()
                 .Property(g => g.Id)
                 .ValueGeneratedOnAdd();
+            builder.Entity<Group>()
+                .HasOne(x => x.User)
+                .WithMany(x => x.Groups)
+                .HasForeignKey(x => x.UserId);
+
 
             builder.Entity<Group>()
-                .HasKey(g => new { g.Id});
+                .HasKey(g => new { g.Id });
 
             builder.Entity<Result>()
-                .HasKey(r => new { r.Id});
+                .HasKey(r => new { r.Id });
             builder.Entity<Result>()
                 .Property(g => g.Id)
                 .ValueGeneratedOnAdd();
             builder.Entity<Result>()
                 .HasOne(x => x.Group)
                 .WithMany(x => x.Results)
-                .HasForeignKey(x => new { x.GroupId });
+                .HasForeignKey(x => x.GroupId);
 
             builder.Entity<Word>()
-                .HasKey(r => new { r.Id});
+                .HasKey(r => new { r.Id });
             builder.Entity<Word>()
                 .Property(g => g.Id)
                 .ValueGeneratedOnAdd();
             builder.Entity<Word>()
                 .HasOne(x => x.Group)
                 .WithMany(x => x.Words)
-                .HasForeignKey(x => new { x.GroupId });
+                .HasForeignKey(x => x.GroupId);
         }
 
 

@@ -31,11 +31,29 @@ namespace Wordki.Tests.EndToEnd
         {
             await dbContext.Database.EnsureDeletedAsync();
             await dbContext.Database.EnsureCreatedAsync();
+            dbContext.Set<Result>().Local.ToList().ForEach(x =>
+            {
+                dbContext.Entry(x).State = EntityState.Detached;
+            });
+            await dbContext.SaveChangesAsync();
+
             dbContext.Set<User>().Local.ToList().ForEach(x =>
             {
                 dbContext.Entry(x).State = EntityState.Detached;
             });
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
+
+            dbContext.Set<Group>().Local.ToList().ForEach(x =>
+            {
+                dbContext.Entry(x).State = EntityState.Detached;
+            });
+            await dbContext.SaveChangesAsync();
+
+            dbContext.Set<User>().Local.ToList().ForEach(x =>
+            {
+                dbContext.Entry(x).State = EntityState.Detached;
+            });
+            await dbContext.SaveChangesAsync();
         }
 
     }

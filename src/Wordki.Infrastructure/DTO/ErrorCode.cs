@@ -8,6 +8,6 @@
         AuthenticaitonException,
         InsertToDbException,
         UpdateInDbException,
-        RemovingFromDbException;
+        RemovingFromDbException,
     }
 }

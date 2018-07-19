@@ -28,7 +28,8 @@ namespace Wordki.Api.Controllers
         }
 
         [HttpGet("getItems/{userId}")]
-        public async Task<IActionResult> GetItems(long userId){
+        public async Task<IActionResult> GetItems(long userId)
+        {
             var groupItems = await groupService.GetItemsAsync(userId);
             return Json(groupItems);
         }
@@ -72,9 +73,13 @@ namespace Wordki.Api.Controllers
             return Ok();
         }
 
-        [HttpDelete("remove")]
+        [HttpPost("remove")]
         public async Task<IActionResult> Remove([FromBody] long id)
         {
+            if (id == 0)
+            {
+                throw new ApiException($"Parameter {nameof(id)} cannot be null", ErrorCode.NullArgumentException);
+            }
             long userId = await authorizer.AuthorizeAsync(Request);
             await groupService.RemoveAsync(id);
             return Ok();

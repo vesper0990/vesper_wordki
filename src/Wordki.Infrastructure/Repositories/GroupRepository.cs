@@ -78,7 +78,15 @@ namespace Wordki.Infrastructure.Repositories
             if(id <= 0){
                 throw new ApiException("Exception during removing group from db", DTO.ErrorCode.RemovingFromDbException);
             }
-            var group = await GetAsync(id);
+            Group group = null;
+            try
+            {
+                group = await GetAsync(id);
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new ApiException($"Group with id '{id} not exits'", e, DTO.ErrorCode.RemovingFromDbException);
+            }
 
             context.Groups.Remove(group);
             await context.SaveChangesAsync();
@@ -94,7 +102,11 @@ namespace Wordki.Infrastructure.Repositories
             catch (ArgumentException e)
             {
                 throw new ApiException("Exception during updating group in db", e, DTO.ErrorCode.UpdateInDbException);
+            }catch(DbUpdateConcurrencyException e)
+            {
+                throw new ApiException("Exception during updating group in db", e, DTO.ErrorCode.UpdateInDbException);
             }
+
         }
     }
 }
