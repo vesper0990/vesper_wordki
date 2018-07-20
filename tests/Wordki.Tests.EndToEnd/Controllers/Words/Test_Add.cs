@@ -2,14 +2,17 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Wordki.Infrastructure.DTO;
 
-namespace Wordki.Tests.EndToEnd.Controllers.Words{
+namespace Wordki.Tests.EndToEnd.Controllers.Words
+{
 
-[TestFixture]
-    public class Test_Add : TestBase{
+    [TestFixture]
+    public class Test_Add : TestBase
+    {
 
         private const string method = "Words/add";
 
@@ -46,7 +49,8 @@ namespace Wordki.Tests.EndToEnd.Controllers.Words{
         }
 
         [Test]
-        public async Task Try_invoke_if_parent_group_not_exists(){
+        public async Task Try_invoke_if_parent_group_not_exists()
+        {
             await ClearDatabase();
             var user = Util.GetUser();
             var wordToAdd = Util.GetWord();
@@ -60,15 +64,34 @@ namespace Wordki.Tests.EndToEnd.Controllers.Words{
         }
 
         [Test]
-        public async Task Try_invoke_if_word_is_not_assign_to_group(){
+        public async Task Try_invoke_if_word_is_not_assign_to_group()
+        {
             await ClearDatabase();
+
         }
 
         [Test]
-        public async Task Try_invoke_if_it_is_ok(){
+        public async Task Try_invoke_if_it_is_ok()
+        {
             await ClearDatabase();
+            var user = Util.GetUser();
+            var group = Util.GetGroup();
+            var wordToAdd = Util.GetWord();
+            var body = new StringContent(JsonConvert.SerializeObject(wordToAdd), Encoding.UTF8, "application/json");
+            await Util.PrepareAuthorization(body, user, encrypter, dbContext);
+            await dbContext.Groups.AddAsync(group);
+            await dbContext.SaveChangesAsync();
+
+            var response = await client.PostAsync(method, body);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+
+            var message = await response.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<WordDTO>(message);
+
+            Assert.IsNotNull(obj);
+            Assert.AreNotEqual(0, obj.Id);
+
+            Assert.AreEqual(1, await dbContext.Words.CountAsync());
         }
-
     }
-
 }

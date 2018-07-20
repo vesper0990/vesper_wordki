@@ -8,6 +8,7 @@ namespace Wordki.Infrastructure.Services
     {
 
         Task<IEnumerable<ResultDTO>> GetAllAsync();
+        Task<ResultDTO> AddAsync(ResultDTO resultDto, long userId);
         Task<IEnumerable<ResultDTO>> AddAllAsync(IEnumerable<ResultDTO> resultsDto, long userId);
     }
 }

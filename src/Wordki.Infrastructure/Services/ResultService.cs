@@ -31,6 +31,14 @@ namespace Wordki.Infrastructure.Services
             return mapper.Map<IEnumerable<Result>, IEnumerable<ResultDTO>>(results);
         }
 
+        public async Task<ResultDTO> AddAsync(ResultDTO resultDto, long userId)
+        {
+            var result = mapper.Map<ResultDTO, Result>(resultDto);
+            result.UserId = userId;
+            await resultRepository.AddAsync(result);
+            return mapper.Map<Result, ResultDTO>(result);
+        }
+
         public async Task<IEnumerable<ResultDTO>> GetAllAsync()
         {
             return mapper.Map<IEnumerable<Result>, IEnumerable<ResultDTO>>(await resultRepository.GetAllAsync());
