@@ -16,11 +16,9 @@ namespace Wordki.Tests.EndToEnd.Controllers.Groups
     {
 
         private const string method = "Groups/update";
-        private readonly IEncrypter encrypter;
 
         public Test_Update()
         {
-            encrypter = server.Host.Services.GetService(typeof(IEncrypter)) as IEncrypter;
         }
 
         [Test]

@@ -14,6 +14,7 @@ using Wordki.Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
+using Microsoft.Extensions.Logging.Console;
 
 namespace Wordki
 {

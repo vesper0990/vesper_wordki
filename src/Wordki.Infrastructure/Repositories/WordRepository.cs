@@ -21,6 +21,10 @@ namespace Wordki.Infrastructure.Repositories
 
         public async Task AddAsync(Word word)
         {
+            if(word.GroupId >= 0)
+            {
+                throw new ApiException($"Cannot insert word with groupId '{word.GroupId}'", DTO.ErrorCode.InsertToDbException);
+            }
             await context.Words.AddAsync(word);
             await context.SaveChangesAsync();
         }

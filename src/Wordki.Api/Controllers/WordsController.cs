@@ -9,6 +9,7 @@ using Wordki.Infrastructure.Services;
 
 namespace Wordki.Api.Controllers
 {
+    [Route("[controller]")]
     public class WordsController : Controller
     {
 

@@ -11,7 +11,7 @@ namespace Wordki.Tests.EndToEnd.Controllers.Words{
 [TestFixture]
     public class Test_Add : TestBase{
 
-        private const string method = "Wordki/add";
+        private const string method = "Words/add";
 
         [Test]
         public async Task Try_invoke_if_body_is_empty()
