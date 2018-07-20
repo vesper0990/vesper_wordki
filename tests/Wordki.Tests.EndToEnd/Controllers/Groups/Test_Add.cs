@@ -33,8 +33,8 @@ namespace Wordki.Tests.EndToEnd.Controllers.Groups
 
             string message = await respone.Content.ReadAsStringAsync();
 
-            Assert.NotNull(message, $"{nameof(message)} unexpected is null");
             var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
+            Assert.NotNull(obj, $"{nameof(obj)} unexpected is null");
             Assert.AreEqual(ErrorCode.NullArgumentException, obj.Code, "ExceptionMessage.Code != NullArgument");
         }
 
@@ -50,8 +50,8 @@ namespace Wordki.Tests.EndToEnd.Controllers.Groups
             Assert.AreNotEqual(HttpStatusCode.OK, respone.StatusCode, "StatusCode == OK");
 
             string message = await respone.Content.ReadAsStringAsync();
-            Assert.NotNull(message, $"{nameof(message)} unexpected is null");
             var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
+            Assert.NotNull(obj, $"{nameof(obj)} unexpected is null");
             Assert.AreEqual(ErrorCode.AuthenticaitonException, obj.Code);
         }
 
@@ -69,8 +69,8 @@ namespace Wordki.Tests.EndToEnd.Controllers.Groups
             Assert.AreNotEqual(HttpStatusCode.OK, respone.StatusCode, "StatusCode == OK");
 
             string message = await respone.Content.ReadAsStringAsync();
-            Assert.NotNull(message, $"{nameof(message)} unexpected is null");
             var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
+            Assert.NotNull(obj, $"{nameof(obj)} unexpected is null");
             Assert.AreEqual(ErrorCode.InsertToDbException, obj.Code);
         }
 

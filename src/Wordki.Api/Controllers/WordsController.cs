@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Wordki.Infrastructure;
 using Wordki.Infrastructure.DTO;
 using Wordki.Infrastructure.Services;
 
@@ -22,6 +23,9 @@ namespace Wordki.Api.Controllers
 
         [HttpPost("add")]
         public async Task<IActionResult> AddWord([FromBody] WordDTO wordDto){
+            if(wordDto == null){
+                throw new ApiException($"Parameter {nameof(wordDto)} cannot be null", ErrorCode.NullArgumentException);
+            }
             var userId = await authorizer.AuthorizeAsync(Request);
             wordDto = await wordService.AddAsync(wordDto, userId);
             return Json(wordDto);

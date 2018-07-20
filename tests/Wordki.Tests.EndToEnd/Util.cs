@@ -44,11 +44,11 @@ namespace Wordki.Tests.EndToEnd
         }
 
         public static Word GetWord(
-            long id,
-            long groupId,
-            long userId,
-            string language1,
-            string language2
+            long id = 0,
+            long groupId = 1,
+            long userId = 1,
+            string language1 = "Slowo",
+            string language2 = "Word"
         )
         {
             return new Word
