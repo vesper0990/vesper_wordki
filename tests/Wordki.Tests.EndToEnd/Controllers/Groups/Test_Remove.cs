@@ -73,10 +73,10 @@ namespace Wordki.Tests.EndToEnd.Controllers.Groups
             await ClearDatabase();
             var user = Util.GetUser();
             var groupToAdd = Util.GetGroup();
-            await dbContext.Groups.AddAsync(groupToAdd);
-            await dbContext.SaveChangesAsync();
             var body = new StringContent(groupToAdd.Id.ToString(), Encoding.UTF8, "application/json");
             await Util.PrepareAuthorization(body, user, encrypter, dbContext);
+            await dbContext.Groups.AddAsync(groupToAdd);
+            await dbContext.SaveChangesAsync();
 
             var response = await client.PostAsync(method, body);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -94,10 +94,10 @@ namespace Wordki.Tests.EndToEnd.Controllers.Groups
             var user = Util.GetUser();
             var groupToAdd = Util.GetGroup();
             groupToAdd.AddAllWords(Util.GetWords(groupToAdd.Id, user.Id)).AddAllResults(Util.GetResults(groupToAdd.Id, user.Id));
-            await dbContext.Groups.AddAsync(groupToAdd);
-            await dbContext.SaveChangesAsync();
             var body = new StringContent(groupToAdd.Id.ToString(), Encoding.UTF8, "application/json");
             await Util.PrepareAuthorization(body, user, encrypter, dbContext);
+            await dbContext.Groups.AddAsync(groupToAdd);
+            await dbContext.SaveChangesAsync();
 
             var response = await client.PostAsync(method, body);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);

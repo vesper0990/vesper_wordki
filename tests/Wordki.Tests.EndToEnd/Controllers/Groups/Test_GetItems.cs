@@ -30,6 +30,7 @@ namespace Wordki.Tests.EndToEnd.Controllers.Groups
         [Test]
         public async Task Try_invoke_if_database_is_empty()
         {
+            await ClearDatabase();
             var response = await client.GetAsync($"{method}/1");
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 

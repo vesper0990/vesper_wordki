@@ -77,11 +77,11 @@ namespace Wordki.Tests.EndToEnd.Controllers.Groups
             await ClearDatabase();
             var user = Util.GetUser();
             var groupToAdd = Util.GetGroup();
+            var body = new StringContent(JsonConvert.SerializeObject(groupToAdd), Encoding.UTF8, "application/json");
+            await Util.PrepareAuthorization(body, user, encrypter, dbContext);
             await dbContext.Groups.AddAsync(groupToAdd);
             await dbContext.SaveChangesAsync();
             groupToAdd.Name = nameAfterChange;
-            var body = new StringContent(JsonConvert.SerializeObject(groupToAdd), Encoding.UTF8, "application/json");
-            await Util.PrepareAuthorization(body, user, encrypter, dbContext);
 
             var response = await client.PutAsync(method, body);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);

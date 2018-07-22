@@ -61,10 +61,10 @@ namespace Wordki.Tests.EndToEnd.Controllers.Groups
             await ClearDatabase();
             var user = Util.GetUser();
             var groupToAdd = Util.GetGroup();
-            await dbContext.Groups.AddAsync(groupToAdd);
-            await dbContext.SaveChangesAsync();
             var body = new StringContent(JsonConvert.SerializeObject(groupToAdd), Encoding.UTF8, "application/json");
             await Util.PrepareAuthorization(body, user, encrypter, dbContext);
+            await dbContext.Groups.AddAsync(groupToAdd);
+            await dbContext.SaveChangesAsync();
             var respone = await client.PostAsync(method, body);
             Assert.AreNotEqual(HttpStatusCode.OK, respone.StatusCode, "StatusCode == OK");
 

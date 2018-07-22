@@ -21,12 +21,19 @@ namespace Wordki.Infrastructure.Repositories
 
         public async Task AddAsync(Word word)
         {
-            if(word.GroupId >= 0)
+            if(word.GroupId <= 0)
             {
                 throw new ApiException($"Cannot insert word with groupId '{word.GroupId}'", DTO.ErrorCode.InsertToDbException);
             }
-            await context.Words.AddAsync(word);
-            await context.SaveChangesAsync();
+            try
+            {
+                await context.Words.AddAsync(word);
+                await context.SaveChangesAsync();
+            }
+            catch(DbUpdateException e)
+            {
+                throw new ApiException("Exception during inserting Word to db", e, DTO.ErrorCode.InsertToDbException);
+            }
         }
 
         public async Task AddAllAsync(IEnumerable<Word> words){

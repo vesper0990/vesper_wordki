@@ -40,7 +40,9 @@ namespace Wordki
             if (HostingEnvironment.IsEnvironment("Testing"))
             {
                 services.AddDbContext<WordkiDbContext>(options =>
-                options.UseInMemoryDatabase("testDb").EnableSensitiveDataLogging());
+                //options.UseInMemoryDatabase("testDb").EnableSensitiveDataLogging()
+                options.UseMySql(@"Server=localhost;Port=3307;database=unittests;uid=root;pwd=Akuku123;").EnableSensitiveDataLogging()
+                );
             }
             else
             {

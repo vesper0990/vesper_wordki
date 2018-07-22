@@ -28,33 +28,34 @@ namespace Wordki.Tests.EndToEnd
             encrypter = server.Host.Services.GetService(typeof(IEncrypter)) as IEncrypter;
         }
 
-        public async Task ClearDatabase()
+        public Task ClearDatabase()
         {
-            await dbContext.Database.EnsureDeletedAsync();
-            await dbContext.Database.EnsureCreatedAsync();
-            dbContext.Set<Result>().Local.ToList().ForEach(x =>
-            {
-                dbContext.Entry(x).State = EntityState.Detached;
-            });
-            await dbContext.SaveChangesAsync();
+            dbContext.Database.EnsureDeleted();
+            dbContext.Database.EnsureCreated();
 
-            dbContext.Set<User>().Local.ToList().ForEach(x =>
+            if(dbContext.Set<Result>().Local.Count != 0)
             {
-                dbContext.Entry(x).State = EntityState.Detached;
-            });
-            await dbContext.SaveChangesAsync();
+                dbContext.Set<Result>().Local.ToList().ForEach(x => dbContext.Entry(x).State = EntityState.Detached);
+                dbContext.SaveChanges();
+            }
+            if (dbContext.Set<Word>().Local.Count != 0)
+            {
+                dbContext.Set<Word>().Local.ToList().ForEach(x => dbContext.Entry(x).State = EntityState.Detached);
+                dbContext.SaveChanges();
+            }
 
-            dbContext.Set<Group>().Local.ToList().ForEach(x =>
+            if (dbContext.Set<Group>().Local.Count != 0)
             {
-                dbContext.Entry(x).State = EntityState.Detached;
-            });
-            await dbContext.SaveChangesAsync();
+                dbContext.Set<Group>().Local.ToList().ForEach(x => dbContext.Entry(x).State = EntityState.Detached);
+                dbContext.SaveChanges();
+            }
 
-            dbContext.Set<User>().Local.ToList().ForEach(x =>
+            if (dbContext.Set<User>().Local.Count != 0)
             {
-                dbContext.Entry(x).State = EntityState.Detached;
-            });
-            await dbContext.SaveChangesAsync();
+                dbContext.Set<User>().Local.ToList().ForEach(x => dbContext.Entry(x).State = EntityState.Detached);
+                dbContext.SaveChanges();
+            }
+            return Task.CompletedTask;
         }
 
     }

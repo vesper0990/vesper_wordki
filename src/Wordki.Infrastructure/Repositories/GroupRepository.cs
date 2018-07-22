@@ -28,6 +28,9 @@ namespace Wordki.Infrastructure.Repositories
             catch (ArgumentException e)
             {
                 throw new ApiException("Exception during inserting group to db", e, DTO.ErrorCode.InsertToDbException);
+            }catch (DbUpdateException e)
+            {
+                throw new ApiException("Exception during inserting group to db", e, DTO.ErrorCode.InsertToDbException);
             }
         }
 

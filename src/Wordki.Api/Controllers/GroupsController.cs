@@ -69,7 +69,7 @@ namespace Wordki.Api.Controllers
                 throw new ApiException($"Parameter {nameof(group.Name)} cannot be null", ErrorCode.NullArgumentException);
             }
             long userId = await authorizer.AuthorizeAsync(Request);
-            await groupService.UpdateAsync(group);
+            await groupService.UpdateAsync(group, userId);
             return Ok();
         }
 

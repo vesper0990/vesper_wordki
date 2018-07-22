@@ -60,7 +60,10 @@ namespace Wordki.Tests.EndToEnd.Controllers.Words
             Assert.AreNotEqual(HttpStatusCode.OK, respone.StatusCode, "StatusCode == OK");
 
             string message = await respone.Content.ReadAsStringAsync();
-            //todo
+            var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
+            Assert.NotNull(obj);
+            Assert.AreEqual(ErrorCode.InsertToDbException, obj.Code);
+            
         }
 
         [Test]
