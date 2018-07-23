@@ -49,7 +49,7 @@ namespace Wordki.Api.Controllers
             return Json(wordsDto);
         }
 
-        [HttpPut("remove")]
+        [HttpPost("remove")]
         public async Task<IActionResult> Remove([FromBody] long wordId)
         {
             if(wordId == 0){

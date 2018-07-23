@@ -68,20 +68,39 @@ namespace Wordki.Infrastructure.Repositories
         public async Task RemoveAsync(long id)
         {
             var word = await GetAsync(id);
+            if (word == null)
+            {
+                throw new ApiException($"Group with id '{id} not exits'", DTO.ErrorCode.RemovingFromDbException);
+            }
             context.Words.Remove(word);
             await context.SaveChangesAsync();
+
         }
 
         public async Task UpdateAsync(Word word)
         {
-            context.Words.Update(word);
-            await context.SaveChangesAsync();
+            try
+            {
+                context.Words.Update(word);
+                await context.SaveChangesAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                throw new ApiException("Exception during updating word in db", e, DTO.ErrorCode.UpdateInDbException);
+            }
         }
 
         public async Task UpdateAllAsync(IEnumerable<Word> words)
         {
-            context.Words.UpdateRange(words);
-            await context.SaveChangesAsync();
+            try
+            {
+                context.Words.UpdateRange(words);
+                await context.SaveChangesAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                throw new ApiException("Exception during updating words in db", e, DTO.ErrorCode.UpdateInDbException);
+            }
         }
     }
 }
