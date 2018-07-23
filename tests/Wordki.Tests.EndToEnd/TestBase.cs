@@ -1,11 +1,16 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using NUnit.Framework;
 using System;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Wordki.Core;
+using Wordki.Infrastructure.DTO;
 using Wordki.Infrastructure.EntityFramework;
 using Wordki.Infrastructure.Services;
 
@@ -17,6 +22,7 @@ namespace Wordki.Tests.EndToEnd
         protected readonly HttpClient client;
         protected readonly WordkiDbContext dbContext;
         protected readonly IEncrypter encrypter;
+        protected string method;
 
         public TestBase()
         {
@@ -56,6 +62,53 @@ namespace Wordki.Tests.EndToEnd
                 dbContext.SaveChanges();
             }
             return Task.CompletedTask;
+        }
+
+        
+        public virtual async Task Try_invoke_if_body_is_empty()
+        {
+            await ClearDatabase();
+            var body = new StringContent("", Encoding.UTF8, "application/json");
+            var respone = await GetAction()(method, body);
+            Assert.AreNotEqual(HttpStatusCode.OK, respone.StatusCode, "StatusCode == OK");
+
+            string message = await respone.Content.ReadAsStringAsync();
+
+            var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
+            Assert.NotNull(obj, $"{nameof(obj)} unexpected is null");
+            Assert.AreEqual(ErrorCode.NullArgumentException, obj.Code, "ExceptionMessage.Code != NullArgument");
+        }
+
+        public async Task Try_invoke_if_authorization_is_failed(object objToPush)
+        {
+            await ClearDatabase();
+            var body = new StringContent(JsonConvert.SerializeObject(objToPush), Encoding.UTF8, "application/json");
+            body.Headers.Add("userId", "1");
+            body.Headers.Add("userId", "password");
+            var respone = await GetAction()(method, body);
+            Assert.AreNotEqual(HttpStatusCode.OK, respone.StatusCode, "StatusCode == OK");
+
+            string message = await respone.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
+            Assert.NotNull(obj, $"{nameof(obj)} unexpected is null");
+            Assert.AreEqual(ErrorCode.AuthenticaitonException, obj.Code);
+        }
+
+
+
+        private delegate Task<HttpResponseMessage> Action(string method, HttpContent content);
+
+        private Action GetAction()
+        {
+            if (method.Contains("update"))
+            {
+                return client.PutAsync;
+            }
+            if (method.Contains("add") || method.Contains("remove")|| method.Contains("register"))
+            {
+                return client.PostAsync;
+            }
+            return null;
         }
 
     }

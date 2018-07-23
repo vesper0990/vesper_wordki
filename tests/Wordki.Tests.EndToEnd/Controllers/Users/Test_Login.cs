@@ -10,11 +10,9 @@ namespace Wordki.Tests.EndToEnd.Controllers.Users
     [TestFixture]
     public class Test_Login : TestBase
     {
-        private const string method = "User/login";
-
         public Test_Login() : base()
         {
-
+            method = "User/login";
         }
 
         [Test]

@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -7,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Wordki.Infrastructure.DTO;
-using Wordki.Infrastructure.Services;
 
 namespace Wordki.Tests.EndToEnd.Controllers.Groups
 {
@@ -15,42 +13,22 @@ namespace Wordki.Tests.EndToEnd.Controllers.Groups
     public class Test_Update : TestBase
     {
 
-        private const string method = "Groups/update";
 
         public Test_Update()
         {
+            method = "Groups/update";
         }
 
         [Test]
-        public async Task Try_invoke_if_body_is_empty()
+        public override async Task Try_invoke_if_body_is_empty()
         {
-            await ClearDatabase();
-            var body = new StringContent("", Encoding.UTF8, "application/json");
-            var respone = await client.PutAsync(method, body);
-            Assert.AreNotEqual(HttpStatusCode.OK, respone.StatusCode, "StatusCode == OK");
-
-            string message = await respone.Content.ReadAsStringAsync();
-
-            var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
-            Assert.NotNull(obj, $"{nameof(obj)} unexpected is null");
-            Assert.AreEqual(ErrorCode.NullArgumentException, obj.Code, "ExceptionMessage.Code != NullArgument");
+            await base.Try_invoke_if_body_is_empty();
         }
 
         [Test]
-        public async Task Try_invoke_if_authorizatio_is_failed()
+        public async Task Try_invoke_if_authorization_is_failed()
         {
-            await ClearDatabase();
-            var groupToAdd = Util.GetGroup();
-            var body = new StringContent(JsonConvert.SerializeObject(groupToAdd), Encoding.UTF8, "application/json");
-            body.Headers.Add("userId", "1");
-            body.Headers.Add("userId", "password");
-            var respone = await client.PutAsync(method, body);
-            Assert.AreNotEqual(HttpStatusCode.OK, respone.StatusCode, "StatusCode == OK");
-
-            string message = await respone.Content.ReadAsStringAsync();
-            Assert.NotNull(message, $"{nameof(message)} unexpected is null");
-            var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
-            Assert.AreEqual(ErrorCode.AuthenticaitonException, obj.Code);
+            await Try_invoke_if_authorization_is_failed(Util.GetGroup());
         }
 
         [Test]

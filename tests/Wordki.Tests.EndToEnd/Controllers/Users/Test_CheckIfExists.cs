@@ -3,19 +3,17 @@ using System.Net;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Wordki.Core;
-using Microsoft.EntityFrameworkCore;
 
 namespace Wordki.Tests.EndToEnd.Controllers.Users
 {
     [TestFixture]
     public class Test_CheckIfExists : TestBase
     {
-        private const string method = "/User/check";
 
 
         public Test_CheckIfExists() : base()
         {
-
+            method = "/User/check";
         }
 
         [Test]

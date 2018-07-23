@@ -15,11 +15,10 @@ namespace Wordki.Tests.EndToEnd.Controllers.Groups
     public class Test_GetDetails : TestBase
     {
 
-        private const string method = "Groups/getDetails";
 
         public Test_GetDetails() : base()
         {
-
+            method = "Groups/getDetails";
         }
 
         [Test]

@@ -15,13 +15,14 @@ namespace Wordki.Infrastructure.Repositories
 
         private readonly WordkiDbContext context;
 
-        public WordRepository(WordkiDbContext context){
+        public WordRepository(WordkiDbContext context)
+        {
             this.context = context;
         }
 
         public async Task AddAsync(Word word)
         {
-            if(word.GroupId <= 0)
+            if (word.GroupId <= 0)
             {
                 throw new ApiException($"Cannot insert word with groupId '{word.GroupId}'", DTO.ErrorCode.InsertToDbException);
             }
@@ -30,15 +31,23 @@ namespace Wordki.Infrastructure.Repositories
                 await context.Words.AddAsync(word);
                 await context.SaveChangesAsync();
             }
-            catch(DbUpdateException e)
+            catch (DbUpdateException e)
             {
                 throw new ApiException("Exception during inserting Word to db", e, DTO.ErrorCode.InsertToDbException);
             }
         }
 
-        public async Task AddAllAsync(IEnumerable<Word> words){
-            await context.Words.AddRangeAsync(words);
-            await context.SaveChangesAsync();
+        public async Task AddAllAsync(IEnumerable<Word> words)
+        {
+            try
+            {
+                await context.Words.AddRangeAsync(words);
+                await context.SaveChangesAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                throw new ApiException("Exception during inserting Words to db", e, DTO.ErrorCode.InsertToDbException);
+            }
         }
 
         public async Task<IEnumerable<Word>> GetAllAsync()
@@ -51,7 +60,8 @@ namespace Wordki.Infrastructure.Repositories
             return await context.Words.Where(x => x.UserId == userId).ToListAsync();
         }
 
-        public async Task<Word> GetAsync(long id){
+        public async Task<Word> GetAsync(long id)
+        {
             return await context.Words.SingleOrDefaultAsync(x => x.Id == id);
         }
 
@@ -68,7 +78,8 @@ namespace Wordki.Infrastructure.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task UpdateAllAsync(IEnumerable<Word> words){
+        public async Task UpdateAllAsync(IEnumerable<Word> words)
+        {
             context.Words.UpdateRange(words);
             await context.SaveChangesAsync();
         }

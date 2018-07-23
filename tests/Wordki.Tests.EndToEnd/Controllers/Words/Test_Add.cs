@@ -14,38 +14,21 @@ namespace Wordki.Tests.EndToEnd.Controllers.Words
     public class Test_Add : TestBase
     {
 
-        private const string method = "Words/add";
+        public Test_Add()
+        {
+            method = "Words/add";
+        }
 
         [Test]
-        public async Task Try_invoke_if_body_is_empty()
+        public override async Task Try_invoke_if_body_is_empty()
         {
-            await ClearDatabase();
-            var body = new StringContent("", Encoding.UTF8, "application/json");
-            var respone = await client.PostAsync(method, body);
-            Assert.AreNotEqual(HttpStatusCode.OK, respone.StatusCode, "StatusCode == OK");
-
-            string message = await respone.Content.ReadAsStringAsync();
-
-            var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
-            Assert.NotNull(obj, $"{nameof(obj)} unexpected is null");
-            Assert.AreEqual(ErrorCode.NullArgumentException, obj.Code, "ExceptionMessage.Code != NullArgument");
+            await base.Try_invoke_if_body_is_empty();
         }
 
         [Test]
         public async Task Try_invoke_if_authorization_is_failed()
         {
-            await ClearDatabase();
-            var wordToAdd = Util.GetWord();
-            var body = new StringContent(JsonConvert.SerializeObject(wordToAdd), Encoding.UTF8, "application/json");
-            body.Headers.Add("userId", "1");
-            body.Headers.Add("userId", "password");
-            var respone = await client.PostAsync(method, body);
-            Assert.AreNotEqual(HttpStatusCode.OK, respone.StatusCode, "StatusCode == OK");
-
-            string message = await respone.Content.ReadAsStringAsync();
-            var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
-            Assert.NotNull(obj, $"{nameof(obj)} unexpected is null");
-            Assert.AreEqual(ErrorCode.AuthenticaitonException, obj.Code);
+            await Try_invoke_if_authorization_is_failed(Util.GetWord());
         }
 
         [Test]
@@ -70,7 +53,18 @@ namespace Wordki.Tests.EndToEnd.Controllers.Words
         public async Task Try_invoke_if_word_is_not_assign_to_group()
         {
             await ClearDatabase();
+            var user = Util.GetUser();
+            var wordToAdd = Util.GetWord(groupId: 0);
+            var body = new StringContent(JsonConvert.SerializeObject(wordToAdd), Encoding.UTF8, "application/json");
+            await Util.PrepareAuthorization(body, user, encrypter, dbContext);
+            var respone = await client.PostAsync(method, body);
+            Assert.AreNotEqual(HttpStatusCode.OK, respone.StatusCode, "StatusCode == OK");
 
+            string message = await respone.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
+            Assert.NotNull(obj);
+            Assert.AreEqual(ErrorCode.InsertToDbException, obj.Code);
+            Assert.AreEqual(0, await dbContext.Words.CountAsync());
         }
 
         [Test]

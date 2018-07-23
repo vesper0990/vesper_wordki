@@ -14,42 +14,24 @@ namespace Wordki.Tests.EndToEnd.Controllers.Groups
     public class Test_Remove : TestBase
     {
 
-        private const string method = "Groups/remove";
 
         public Test_Remove()
         {
+            method = "Groups/remove";
         }
 
         [Test]
-        public async Task Try_invoke_if_body_is_empty()
+        public override async Task Try_invoke_if_body_is_empty()
         {
-            await ClearDatabase();
-            var body = new StringContent("", Encoding.UTF8, "application/json");
-            var respone = await client.PostAsync(method, body);
-            Assert.AreNotEqual(HttpStatusCode.OK, respone.StatusCode, "StatusCode == OK");
-
-            string message = await respone.Content.ReadAsStringAsync();
-
-            var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
-            Assert.NotNull(obj, $"{nameof(obj)} unexpected is null");
-            Assert.AreEqual(ErrorCode.NullArgumentException, obj.Code, "ExceptionMessage.Code != NullArgument");
+            await base.Try_invoke_if_body_is_empty();
         }
 
         [Test]
-        public async Task Try_invoke_if_authorizatio_is_failed()
+        public async Task Try_invoke_if_authorization_is_failed()
         {
-            await ClearDatabase();
-            var body = new StringContent("1", Encoding.UTF8, "application/json");
-            body.Headers.Add("userId", "1");
-            body.Headers.Add("userId", "password");
-            var respone = await client.PostAsync(method, body);
-            Assert.AreNotEqual(HttpStatusCode.OK, respone.StatusCode, "StatusCode == OK");
-
-            string message = await respone.Content.ReadAsStringAsync();
-            var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
-            Assert.NotNull(obj, $"{nameof(obj)} unexpected is null");
-            Assert.AreEqual(ErrorCode.AuthenticaitonException, obj.Code);
+            await Try_invoke_if_authorization_is_failed(1);
         }
+
         [Test]
         public async Task Try_invoke_if_group_is_not_exists_in_database()
         {

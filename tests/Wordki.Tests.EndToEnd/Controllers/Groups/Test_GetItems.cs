@@ -14,10 +14,9 @@ namespace Wordki.Tests.EndToEnd.Controllers.Groups
     public class Test_GetItems : TestBase
     {
 
-        private const string method = "Groups/getItems";
         public Test_GetItems()
         {
-
+            method = "Groups/getItems";
         }
 
         [Test]

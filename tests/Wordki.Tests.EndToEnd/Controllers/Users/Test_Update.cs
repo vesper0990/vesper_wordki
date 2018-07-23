@@ -13,27 +13,21 @@ namespace Wordki.Tests.EndToEnd.Controllers.Users
     public class Test_Update : TestBase
     {
 
-        private const string method = "User/update";
-
-
         public Test_Update(): base()
         {
+            method = "User/update";
         }
 
         [Test]
-        public async Task Try_invoke_if_authorization_is_empty()
+        public override async Task Try_invoke_if_body_is_empty()
         {
-            await ClearDatabase();
-            string name = "test";
-            string password = "test";
-            var body = new StringContent(JsonConvert.SerializeObject(new { Name = name, Password = password }), Encoding.UTF8, "application/json");
-            var respone = await client.PutAsync(method, body);
-            Assert.AreNotEqual(HttpStatusCode.OK, respone.StatusCode, "StatusCode == OK");
+            await base.Try_invoke_if_body_is_empty();
+        }
 
-            string message = await respone.Content.ReadAsStringAsync();
-            Assert.NotNull(message, $"{nameof(message)} unexpected is null");
-            var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
-            Assert.AreEqual(ErrorCode.AuthenticaitonException, obj.Code);
+        [Test]
+        public async Task Try_invoke_if_authorization_is_failed()
+        {
+            await Try_invoke_if_authorization_is_failed(Util.GetUser());
         }
 
         [Test]

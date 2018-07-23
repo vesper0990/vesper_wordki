@@ -1,26 +1,20 @@
 using System.Linq;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using System;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Wordki.Core;
 using Wordki.Infrastructure.DTO;
-using Wordki.Infrastructure.Services;
 
 namespace Wordki.Tests.EndToEnd.Controllers.Groups
 {
     [TestFixture]
     public class Test_GetAll : TestBase
     {
-        private const string method = "Groups/getAll";
         public Test_GetAll() : base()
         {
-
+            method = "Groups/getAll";
         }
 
         [Test]
