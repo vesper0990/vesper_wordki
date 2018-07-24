@@ -17,6 +17,12 @@ namespace Wordki.Tests.EndToEnd.Controllers.Words
         public Test_Add()
         {
             method = "Words/add";
+            action = client.PostAsync;
+        }
+
+        [SetUp]
+        public async Task SetUp(){
+            await ClearDatabase();
         }
 
         [Test]
