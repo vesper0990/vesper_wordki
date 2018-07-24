@@ -62,9 +62,9 @@ namespace Wordki.Tests.EndToEnd
         }
 
         public static Result GetResult(
-            long id = 0,
-            long groupId = 1,
-            long userId = 1
+            long id,
+            long groupId,
+            long userId
         )
         {
             return new Result
