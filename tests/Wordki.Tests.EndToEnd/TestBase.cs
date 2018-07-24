@@ -10,7 +10,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Wordki.Core;
-using Wordki.Core.Repositories;
 using Wordki.Infrastructure.DTO;
 using Wordki.Infrastructure.EntityFramework;
 using Wordki.Infrastructure.Services;
@@ -24,12 +23,6 @@ namespace Wordki.Tests.EndToEnd
         protected readonly WordkiDbContext dbContext;
         protected readonly IEncrypter encrypter;
         protected string method;
-        protected Action action;
-
-        protected IUserRepository userRepository;
-        protected IGroupRepository groupRepository;
-        protected IWordRepository wordRepository;
-        protected IResultRepository resultRepository;
 
         public TestBase()
         {
@@ -39,12 +32,6 @@ namespace Wordki.Tests.EndToEnd
             client = server.CreateClient();
             dbContext = server.Host.Services.GetService(typeof(WordkiDbContext)) as WordkiDbContext;
             encrypter = server.Host.Services.GetService(typeof(IEncrypter)) as IEncrypter;
-            userRepository = server.Host.Services.GetService(typeof(IUserRepository)) as IUserRepository;
-            groupRepository = server.Host.Services.GetService(typeof(IGroupRepository)) as IGroupRepository;
-            wordRepository = server.Host.Services.GetService(typeof(IWordRepository)) as IWordRepository;
-            resultRepository = server.Host.Services.GetService(typeof(IResultRepository)) as IResultRepository;
-
-
         }
 
         public Task ClearDatabase()
@@ -80,8 +67,9 @@ namespace Wordki.Tests.EndToEnd
         
         public virtual async Task Try_invoke_if_body_is_empty()
         {
+            await ClearDatabase();
             var body = new StringContent("", Encoding.UTF8, "application/json");
-            var respone = await action(method, body);
+            var respone = await GetAction()(method, body);
             Assert.AreNotEqual(HttpStatusCode.OK, respone.StatusCode, "StatusCode == OK");
 
             string message = await respone.Content.ReadAsStringAsync();
@@ -93,33 +81,35 @@ namespace Wordki.Tests.EndToEnd
 
         public async Task Try_invoke_if_authorization_is_failed(object objToPush)
         {
-            var user = Util.GetUser();
+            await ClearDatabase();
             var body = new StringContent(JsonConvert.SerializeObject(objToPush), Encoding.UTF8, "application/json");
-            var respone = await action(method, body.AddAuthorizationHeaders(user));
-
+            body.Headers.Add("userId", "1");
+            body.Headers.Add("userId", "password");
+            var respone = await GetAction()(method, body);
             Assert.AreNotEqual(HttpStatusCode.OK, respone.StatusCode, "StatusCode == OK");
+
             string message = await respone.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
             Assert.NotNull(obj, $"{nameof(obj)} unexpected is null");
             Assert.AreEqual(ErrorCode.AuthenticaitonException, obj.Code);
         }
 
-        protected delegate Task<HttpResponseMessage> Action(string method, HttpContent content);
 
-        protected async Task<User> PrepareUser(User user){
-            var noEncryptedPassword = user.Password;
-            user.Password = encrypter.Md5Hash(user.Password);
-            await userRepository.AddAsync(user);
-            user.Password = noEncryptedPassword;
-            return user;
-        }
-    }
 
-    public static class TestExtensions{
-        public static HttpContent AddAuthorizationHeaders(this HttpContent content, User user){
-            content.Headers.Add("password", user.Password);
-            content.Headers.Add("userId", user.Id.ToString());
-            return content;
+        private delegate Task<HttpResponseMessage> Action(string method, HttpContent content);
+
+        private Action GetAction()
+        {
+            if (method.Contains("update"))
+            {
+                return client.PutAsync;
+            }
+            if (method.Contains("add") || method.Contains("remove")|| method.Contains("register"))
+            {
+                return client.PostAsync;
+            }
+            return null;
         }
+
     }
 }

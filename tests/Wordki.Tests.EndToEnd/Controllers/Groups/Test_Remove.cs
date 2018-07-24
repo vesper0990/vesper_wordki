@@ -18,13 +18,6 @@ namespace Wordki.Tests.EndToEnd.Controllers.Groups
         public Test_Remove()
         {
             method = "Groups/remove";
-            action = client.PostAsync;
-        }
-
-        [SetUp]
-        public async Task SetUp()
-        {
-            await ClearDatabase();
         }
 
         [Test]
@@ -42,6 +35,7 @@ namespace Wordki.Tests.EndToEnd.Controllers.Groups
         [Test]
         public async Task Try_invoke_if_group_is_not_exists_in_database()
         {
+            await ClearDatabase();
             var user = Util.GetUser();
             var body = new StringContent("1", Encoding.UTF8, "application/json");
             await Util.PrepareAuthorization(body, user, encrypter, dbContext);
@@ -58,6 +52,7 @@ namespace Wordki.Tests.EndToEnd.Controllers.Groups
         [Test]
         public async Task Try_invoke_if_group_in_database_is_empty()
         {
+            await ClearDatabase();
             var user = Util.GetUser();
             var groupToAdd = Util.GetGroup();
             var body = new StringContent(groupToAdd.Id.ToString(), Encoding.UTF8, "application/json");
@@ -77,6 +72,7 @@ namespace Wordki.Tests.EndToEnd.Controllers.Groups
 
         public async Task Try_invoke_if_group_in_database_has_children()
         {
+            await ClearDatabase();
             var user = Util.GetUser();
             var groupToAdd = Util.GetGroup();
             groupToAdd.AddAllWords(Util.GetWords(groupToAdd.Id, user.Id)).AddAllResults(Util.GetResults(groupToAdd.Id, user.Id));

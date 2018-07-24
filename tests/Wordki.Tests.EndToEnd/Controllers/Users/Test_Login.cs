@@ -36,9 +36,5 @@ namespace Wordki.Tests.EndToEnd.Controllers.Users
             var responseString = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(responseString.Contains("null"));
         }
-
-        public async Task Try_invoke_if_it_is_ok(){
-            
-        }
     }
 }
