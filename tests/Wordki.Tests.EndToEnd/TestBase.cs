@@ -52,7 +52,7 @@ namespace Wordki.Tests.EndToEnd
             dbContext.Database.EnsureDeleted();
             dbContext.Database.EnsureCreated();
 
-            if(dbContext.Set<Result>().Local.Count != 0)
+            if (dbContext.Set<Result>().Local.Count != 0)
             {
                 dbContext.Set<Result>().Local.ToList().ForEach(x => dbContext.Entry(x).State = EntityState.Detached);
                 dbContext.SaveChanges();
@@ -77,11 +77,12 @@ namespace Wordki.Tests.EndToEnd
             return Task.CompletedTask;
         }
 
-        
+
         public virtual async Task Try_invoke_if_body_is_empty()
         {
+            await ClearDatabase();
             var body = new StringContent("", Encoding.UTF8, "application/json");
-            var respone = await action(method, body);
+            var respone = await GetAction()(method, body);
             Assert.AreNotEqual(HttpStatusCode.OK, respone.StatusCode, "StatusCode == OK");
 
             string message = await respone.Content.ReadAsStringAsync();
@@ -93,20 +94,39 @@ namespace Wordki.Tests.EndToEnd
 
         public async Task Try_invoke_if_authorization_is_failed(object objToPush)
         {
-            var user = Util.GetUser();
+            await ClearDatabase();
             var body = new StringContent(JsonConvert.SerializeObject(objToPush), Encoding.UTF8, "application/json");
-            var respone = await action(method, body.AddAuthorizationHeaders(user));
-
+            body.Headers.Add("userId", "1");
+            body.Headers.Add("userId", "password");
+            var respone = await GetAction()(method, body);
             Assert.AreNotEqual(HttpStatusCode.OK, respone.StatusCode, "StatusCode == OK");
+
             string message = await respone.Content.ReadAsStringAsync();
             var obj = JsonConvert.DeserializeObject<ExceptionMessage>(message);
             Assert.NotNull(obj, $"{nameof(obj)} unexpected is null");
             Assert.AreEqual(ErrorCode.AuthenticaitonException, obj.Code);
         }
 
+
+
         protected delegate Task<HttpResponseMessage> Action(string method, HttpContent content);
 
-        protected async Task<User> PrepareUser(User user){
+        private Action GetAction()
+        {
+            if (method.Contains("update"))
+            {
+                return client.PutAsync;
+            }
+            if (method.Contains("add") || method.Contains("remove") || method.Contains("register"))
+            {
+                return client.PostAsync;
+            }
+            return null;
+        }
+
+
+        protected async Task<User> PrepareUser(User user)
+        {
             var noEncryptedPassword = user.Password;
             user.Password = encrypter.Md5Hash(user.Password);
             await userRepository.AddAsync(user);
@@ -115,8 +135,10 @@ namespace Wordki.Tests.EndToEnd
         }
     }
 
-    public static class TestExtensions{
-        public static HttpContent AddAuthorizationHeaders(this HttpContent content, User user){
+    public static class TestExtensions
+    {
+        public static HttpContent AddAuthorizationHeaders(this HttpContent content, User user)
+        {
             content.Headers.Add("password", user.Password);
             content.Headers.Add("userId", user.Id.ToString());
             return content;
