@@ -54,17 +54,20 @@ namespace Wordki.Tests.EndToEnd.Controllers.Users
             await ClearDatabase();
             string name = "test";
             string password = "test";
+            string apiKey = "test";
             User user = new User
             {
                 Name = name,
                 Password = password,
+                ApiKey = apiKey,
             };
             User userToSend = new User
             {
                 Name = user.Name,
                 Password = "aaaa",
+                ApiKey = "aaaa",
             };
-            var body = new StringContent(JsonConvert.SerializeObject(new { userToSend.Name, userToSend.Password }), Encoding.UTF8, "application/json");
+            var body = new StringContent(JsonConvert.SerializeObject(new { userToSend.Name, userToSend.Password, userToSend.ApiKey }), Encoding.UTF8, "application/json");
             await Util.PrepareAuthorization(body, user, encrypter, dbContext);
             var respone = await client.PutAsync(method, body);
             Assert.AreEqual(HttpStatusCode.OK, respone.StatusCode, "StatusCode != OK");

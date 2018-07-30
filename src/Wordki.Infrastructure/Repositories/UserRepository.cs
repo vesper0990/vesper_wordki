@@ -27,6 +27,10 @@ namespace Wordki.Infrastructure.Repositories
         public async Task<User> GetAsync(string name, string password)
             => await context.Users.SingleOrDefaultAsync(x => x.Name.Equals(name) && x.Password.Equals(password));
 
+        public async Task<User> GetByApiKeyAsync(string apiKey)
+            => await context.Users.SingleAsync(x => x.ApiKey.Equals(apiKey));
+
+        public async Task<bool> IsApiKeyExistsAsync(string apiKey) => await context.Users.CountAsync(x => x.ApiKey.Equals(apiKey)) != 0;
         public async Task<bool> IsExistsAsync(string name) => await context.Users.CountAsync(x => x.Name.Equals(name)) != 0;
         public async Task<bool> IsExistsAsync(long id, string password) => await context.Users.CountAsync(x => x.Id == id && x.Password.Equals(password)) != 0;
         public async Task<bool> IsExistsAsync(string name, string password) => await context.Users.CountAsync(x => x.Name.Equals(name) && x.Password.Equals(password)) != 0;

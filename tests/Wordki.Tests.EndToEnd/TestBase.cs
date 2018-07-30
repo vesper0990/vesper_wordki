@@ -39,7 +39,7 @@ namespace Wordki.Tests.EndToEnd
             dbContext.Database.EnsureDeleted();
             dbContext.Database.EnsureCreated();
 
-            if(dbContext.Set<Result>().Local.Count != 0)
+            if (dbContext.Set<Result>().Local.Count != 0)
             {
                 dbContext.Set<Result>().Local.ToList().ForEach(x => dbContext.Entry(x).State = EntityState.Detached);
                 dbContext.SaveChanges();
@@ -64,7 +64,7 @@ namespace Wordki.Tests.EndToEnd
             return Task.CompletedTask;
         }
 
-        
+
         public virtual async Task Try_invoke_if_body_is_empty()
         {
             await ClearDatabase();
@@ -94,9 +94,7 @@ namespace Wordki.Tests.EndToEnd
             Assert.AreEqual(ErrorCode.AuthenticaitonException, obj.Code);
         }
 
-
-
-        private delegate Task<HttpResponseMessage> Action(string method, HttpContent content);
+        protected delegate Task<HttpResponseMessage> Action(string method, HttpContent content);
 
         private Action GetAction()
         {
@@ -104,11 +102,32 @@ namespace Wordki.Tests.EndToEnd
             {
                 return client.PutAsync;
             }
-            if (method.Contains("add") || method.Contains("remove")|| method.Contains("register"))
+            if (method.Contains("add") || method.Contains("remove") || method.Contains("register"))
             {
                 return client.PostAsync;
             }
             return null;
+        }
+
+
+        protected async Task<User> PrepareUser(User user)
+        {
+            var noEncryptedPassword = user.Password;
+            user.Password = encrypter.Md5Hash(user.Password);
+            await userRepository.AddAsync(user);
+            user.Password = noEncryptedPassword;
+            return user;
+        }
+    }
+
+    public static class TestExtensions
+    {
+        public static HttpContent AddAuthorizationHeaders(this HttpContent content, User user)
+        {
+            //content.Headers.Add("password", user.Password);
+            //content.Headers.Add("userId", user.Id.ToString());
+            content.Headers.Add("apiKey", user.ApiKey);
+            return content;
         }
 
     }
