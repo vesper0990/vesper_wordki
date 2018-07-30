@@ -45,6 +45,7 @@ namespace Wordki.Infrastructure.Services
                 Id = 1,
                 Name = "admin",
                 Password = encrypter.Md5Hash("password"),
+                ApiKey = encrypter.Md5Hash("password"),
             };
             context.Users.Add(user);
             context.SaveChanges();

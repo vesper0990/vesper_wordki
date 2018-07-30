@@ -48,7 +48,7 @@ namespace Wordki
                 services.AddDbContext<WordkiDbContext>(options =>
                 {
 #if Debug
-                    options.UseMySql(@"Server=localhost;database=test;uid=root;pwd=Akuku123;").EnableSensitiveDataLogging();
+                    options.UseMySql(@"Server=localhost;Port=3307;database=test;uid=root;pwd=Akuku123;").EnableSensitiveDataLogging();
 
 #else
                 options.UseMySql(@"Server=dbServer;database=wordki;uid=root;pwd=Akuku123;");

@@ -1,7 +1,10 @@
-﻿namespace Wordki.Infrastructure.DTO
+﻿using Newtonsoft.Json;
+
+namespace Wordki.Infrastructure.DTO
 {
     public class UserDTO
     {
+        [JsonConverter(typeof(LongToStringConverter))]
         public long Id { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }

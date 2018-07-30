@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Wordki.Core
 {
@@ -14,6 +15,7 @@ namespace Wordki.Core
         public string Language2 { get; set; }
         public string Language1Example { get; set; }
         public string Language2Example { get; set; }
+        [Range(0, 5)]
         public byte Drawer { get; set; }
         public bool IsVisible { get; set; }
         public int State { get; set; }
