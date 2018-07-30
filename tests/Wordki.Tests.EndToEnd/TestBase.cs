@@ -139,8 +139,9 @@ namespace Wordki.Tests.EndToEnd
     {
         public static HttpContent AddAuthorizationHeaders(this HttpContent content, User user)
         {
-            content.Headers.Add("password", user.Password);
-            content.Headers.Add("userId", user.Id.ToString());
+            //content.Headers.Add("password", user.Password);
+            //content.Headers.Add("userId", user.Id.ToString());
+            content.Headers.Add("apiKey", user.ApiKey);
             return content;
         }
     }

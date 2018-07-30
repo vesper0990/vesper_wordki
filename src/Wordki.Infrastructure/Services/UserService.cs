@@ -19,6 +19,9 @@ namespace Wordki.Infrastructure.Services
             this.encrypter = encrypter;
         }
 
+        public async Task<bool> CheckApiKeyExistingAsync(string apiKey)
+            => await userRepository.IsApiKeyExistsAsync(apiKey);
+
         public async Task<bool> CheckUserExistingAsync(string userName)
             => await userRepository.IsExistsAsync(userName);
 
@@ -27,6 +30,9 @@ namespace Wordki.Infrastructure.Services
 
         public async Task<bool> CheckUserToLoginAsync(string userName, string password)
             => await userRepository.IsExistsAsync(userName, encrypter.Md5Hash(password));
+
+        public async Task<UserDTO> GetUserByApiKey(string apiKey)
+            => mapper.Map<User, UserDTO>(await userRepository.GetByApiKeyAsync(apiKey));
 
         public async Task<UserDTO> LoginAsync(string userName, string password)
             => mapper.Map<User, UserDTO>(await userRepository.GetAsync(userName, encrypter.Md5Hash(password)));

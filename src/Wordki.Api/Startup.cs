@@ -14,7 +14,6 @@ using Wordki.Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
-using Microsoft.Extensions.Logging.Console;
 
 namespace Wordki
 {
@@ -40,8 +39,8 @@ namespace Wordki
             if (HostingEnvironment.IsEnvironment("Testing"))
             {
                 services.AddDbContext<WordkiDbContext>(options =>
-                //options.UseInMemoryDatabase("testDb").EnableSensitiveDataLogging()
-                options.UseMySql(@"Server=77.55.214.44;Port=3306;database=test;uid=user_name_1;pwd=my-secret-pw;").EnableSensitiveDataLogging()
+                options.UseMySql(@"Server=localhost;database=unittest;uid=root;pwd=Akuku123;").EnableSensitiveDataLogging()
+                //options.UseMySql(@"Server=77.55.214.44;Port=3306;database=test;uid=user_name_1;pwd=my-secret-pw;").EnableSensitiveDataLogging()
                 );
             }
             else

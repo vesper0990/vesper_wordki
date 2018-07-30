@@ -16,13 +16,14 @@ namespace Wordki.Tests.EndToEnd
         public static int groupCounter = 1;
         public static int wordCounter = 1;
         public static int resultCounter = 1;
-        public static User GetUser(long id = 1, string name = "name", string password = "password")
+        public static User GetUser(long id = 1, string name = "name", string password = "password", string apiKey = "apiKey")
         {
             return new User
             {
                 Id = id,
                 Name = name,
                 Password = password,
+                ApiKey = apiKey,
             };
         }
 
@@ -106,11 +107,12 @@ namespace Wordki.Tests.EndToEnd
 
         public static async Task PrepareAuthorization(HttpContent content, User user, IEncrypter encrypter, WordkiDbContext context)
         {
-            content.Headers.Add("password", user.Password);
+            content.Headers.Add("apiKey", user.ApiKey);
+            //content.Headers.Add("password", user.Password);
             user.Password = encrypter.Md5Hash(user.Password);
             await context.AddAsync(user);
             await context.SaveChangesAsync();
-            content.Headers.Add("userId", user.Id.ToString());
+            //content.Headers.Add("userId", user.Id.ToString());
         }
     }
 }
