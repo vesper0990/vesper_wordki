@@ -47,8 +47,10 @@ namespace Wordki.Infrastructure.Services
 
         public async Task<UserDTO> UpdateAsync(UserDTO userDto)
         {
-            var user = mapper.Map<UserDTO, User>(userDto);
-            user.Password = encrypter.Md5Hash(user.Password);
+            var user = await userRepository.GetAsync(userDto.Id);
+            user.Password = encrypter.Md5Hash(userDto.Password);
+            user.ApiKey = encrypter.Md5Hash(userDto.Password);
+            user.Name = userDto.Name;
             await userRepository.UpdateAsync(user);
             return mapper.Map<User, UserDTO>(user);
         }

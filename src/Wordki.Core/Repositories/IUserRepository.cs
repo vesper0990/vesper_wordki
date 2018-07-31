@@ -9,10 +9,11 @@ namespace Wordki.Core.Repositories
         Task<bool> IsExistsAsync(long id, string password);
         Task<bool> IsExistsAsync(string name, string password);
         Task<bool> IsApiKeyExistsAsync(string apiKey);
-        Task<IEnumerable<User>> GetAllAsync();
         Task<User> GetAsync(string name, string password);
+        Task<User> GetAsync(long id);
+        Task<User> GetByApiKeyAsync(string apiKey);
+        Task<IEnumerable<User>> GetAllAsync();
         Task AddAsync(User user);
         Task UpdateAsync(User user);
-        Task<User> GetByApiKeyAsync(string apiKey);
     }
 }

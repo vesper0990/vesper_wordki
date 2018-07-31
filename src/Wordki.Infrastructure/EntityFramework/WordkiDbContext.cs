@@ -22,6 +22,8 @@ namespace Wordki.Infrastructure.EntityFramework
             builder.Entity<User>()
                 .Property(g => g.Id)
                 .ValueGeneratedOnAdd();
+            builder.Entity<User>()
+                .HasKey(x => x.Id);
 
             builder.Entity<Group>()
                 .Property(g => g.Id)
