@@ -14,6 +14,7 @@ using Wordki.Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
+using Wordki.Infrastructure.Settings;
 
 namespace Wordki
 {
@@ -30,9 +31,9 @@ namespace Wordki
             var builder = new ConfigurationBuilder()
                 .SetBasePath(HostingEnvironment.ContentRootPath)
 #if Debug
-                .AddJsonFile("debug_settings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("settings.debug.json", optional: true, reloadOnChange: true)
 #else
-                .AddJsonFile("release_settings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("settings.release.json", optional: true, reloadOnChange: true)
 #endif
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -40,26 +41,27 @@ namespace Wordki
 
         IServiceProvider IStartup.ConfigureServices(IServiceCollection services)
         {
-            var database = Configuration.GetValue<string>("Database");
-            if (HostingEnvironment.IsEnvironment("Testing"))
+            var config = Configuration.GetSection("General").Get<GeneralSettings>();
+            switch (config.Database)
             {
-                services.AddDbContext<WordkiDbContext>(options =>
-                options.UseMySql(@"Server=localhost;Port=3307;database=unittest;uid=root;pwd=Akuku123;").EnableSensitiveDataLogging()
-                //options.UseMySql(@"Server=77.55.214.44;Port=3306;database=test;uid=user_name_1;pwd=my-secret-pw;").EnableSensitiveDataLogging()
-                );
+                case DatabaseType.InMemory:
+                    {
+                        services.AddDbContext<WordkiDbContext>(options =>
+                            options.UseInMemoryDatabase("memoryDatabase").EnableSensitiveDataLogging()
+                        );
+                        break;
+                    }
+                case DatabaseType.MySql:
+                    {
+                        services.AddDbContext<WordkiDbContext>(options =>
+                            options.UseMySql(config.ConnectionString).EnableSensitiveDataLogging()
+                        );
+                        break;
+                    }
+                default:
+                    throw new Exception("No info about database in settings file");
             }
-            else
-            {
-                services.AddDbContext<WordkiDbContext>(options =>
-                {
-#if Debug
-                    options.UseMySql(@"Server=localhost;Port=3307;database=test;uid=root;pwd=Akuku123;").EnableSensitiveDataLogging();
 
-#else
-                options.UseMySql(@"Server=dbServer;database=wordki;uid=root;pwd=Akuku123;");
-#endif
-                });
-            }
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
                                                              .AllowAnyMethod()
                                                               .AllowAnyHeader()));

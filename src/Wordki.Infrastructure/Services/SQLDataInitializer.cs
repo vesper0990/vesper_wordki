@@ -8,7 +8,7 @@ using NLog;
 
 namespace Wordki.Infrastructure.Services
 {
-    public class DataInitializer : IDataInitializer
+    public class SQLDataInitializer : IDataInitializer
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -16,7 +16,7 @@ namespace Wordki.Infrastructure.Services
         private readonly IEncrypter encrypter;
         private readonly GeneralSettings settings;
 
-        public DataInitializer(WordkiDbContext context, IEncrypter encrypter, GeneralSettings settings)
+        public SQLDataInitializer(WordkiDbContext context, IEncrypter encrypter, GeneralSettings settings)
         {
             this.context = context;
             this.encrypter = encrypter;
