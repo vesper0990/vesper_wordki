@@ -29,13 +29,18 @@ namespace Wordki
             HostingEnvironment = hostingEnvironment;
             var builder = new ConfigurationBuilder()
                 .SetBasePath(HostingEnvironment.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+#if Debug
+                .AddJsonFile("debug_settings.json", optional: true, reloadOnChange: true)
+#else
+                .AddJsonFile("release_settings.json", optional: true, reloadOnChange: true)
+#endif
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
 
         IServiceProvider IStartup.ConfigureServices(IServiceCollection services)
         {
+            var database = Configuration.GetValue<string>("Database");
             if (HostingEnvironment.IsEnvironment("Testing"))
             {
                 services.AddDbContext<WordkiDbContext>(options =>

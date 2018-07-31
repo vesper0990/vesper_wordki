@@ -2,8 +2,8 @@
 {
     public class GeneralSettings
     {
-
-        public bool IsTest { get; set; }
+        public string Database { get; set; }
+        public string ConnectionString { get; set; }
         public bool SeedData { get; set; }
 
     }

@@ -6,7 +6,7 @@
     }
   },
   "General": {
-    "IsTest": true,
+    "Database": "memory",
     "SeedData": true
   }
 }
