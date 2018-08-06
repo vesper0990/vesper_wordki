@@ -53,6 +53,7 @@ namespace Wordki
                     }
                 case DatabaseType.MySql:
                     {
+			Console.WriteLine($"Connection to MySql database with conntectionString: {config.ConnectionString}");
                         services.AddDbContext<WordkiDbContext>(options =>
                             options.UseMySql(config.ConnectionString).EnableSensitiveDataLogging()
                         );
