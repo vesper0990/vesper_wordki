@@ -27,6 +27,7 @@ namespace Wordki.Infrastructure.Services
         {
             try
             {
+                logger.Info("Database initialization");
                 context.Database.EnsureCreated();
                 if(settings.SeedData && context.Users.Count() == 0){
                     UserSeed();

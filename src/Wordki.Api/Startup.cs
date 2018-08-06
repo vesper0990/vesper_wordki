@@ -15,11 +15,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using Wordki.Infrastructure.Settings;
+using NLog;
 
 namespace Wordki
 {
     public class Startup : IStartup
     {
+
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public IContainer ApplicationContainer { get; private set; }
         public IHostingEnvironment HostingEnvironment { get; }
@@ -46,6 +49,7 @@ namespace Wordki
             {
                 case DatabaseType.InMemory:
                     {
+                        logger.Error("InMemory database initialization");
                         services.AddDbContext<WordkiDbContext>(options =>
                             options.UseInMemoryDatabase("memoryDatabase").EnableSensitiveDataLogging()
                         );
@@ -53,7 +57,7 @@ namespace Wordki
                     }
                 case DatabaseType.MySql:
                     {
-			Console.WriteLine($"Connection to MySql database with conntectionString: {config.ConnectionString}");
+                        logger.Error($"Connection to MySql database with conntectionString: {config.ConnectionString}");
                         services.AddDbContext<WordkiDbContext>(options =>
                             options.UseMySql(config.ConnectionString).EnableSensitiveDataLogging()
                         );
