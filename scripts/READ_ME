@@ -1,0 +1,4 @@
+How to run:
+1) docker build -f ./Docker/App.dockerfile -t webapp:Debug --build-arg URL_PORT=7909 .
+
+2) docker run --name webapp.test -p 5000:7909 -it webapp:Debug
