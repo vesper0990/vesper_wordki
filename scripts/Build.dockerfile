@@ -3,7 +3,7 @@ ARG BUILD_CONFIG
 ARG BUILD_LOCATION
 ENV NUGET_XMLDOC_MODE skip
 WORKDIR /app
-COPY *.csproj .
+COPY ./src/Wordki.Api/*.csproj .
 run dotnet restore
 COPY . /app
 run dotnet publish --output ${BUILD_LOCATION} --configuration ${BUILD_CONFIG}
