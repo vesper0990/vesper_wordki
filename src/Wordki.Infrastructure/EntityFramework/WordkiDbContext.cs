@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MySql.Data.EntityFrameworkCore.Extensions;
 using Wordki.Core;
 
 namespace Wordki.Infrastructure.EntityFramework
@@ -32,10 +33,11 @@ namespace Wordki.Infrastructure.EntityFramework
                 .HasOne(x => x.User)
                 .WithMany(x => x.Groups)
                 .HasForeignKey(x => x.UserId);
-
-
+            builder.Entity<Group>().ForMySQLHasCharset("utf8");
+            builder.Entity<Group>().Property(x => x.Name).ForMySQLHasCharset("utf8");
             builder.Entity<Group>()
                 .HasKey(g => new { g.Id });
+
 
             builder.Entity<Result>()
                 .HasKey(r => new { r.Id });
@@ -56,6 +58,12 @@ namespace Wordki.Infrastructure.EntityFramework
                 .HasOne(x => x.Group)
                 .WithMany(x => x.Words)
                 .HasForeignKey(x => x.GroupId);
+            builder.Entity<Word>().ForMySQLHasCharset("utf8");
+            builder.Entity<Word>().Property(x => x.Language1).ForMySQLHasCharset("utf8");
+            builder.Entity<Word>().Property(x => x.Language2).ForMySQLHasCharset("utf8");
+            builder.Entity<Word>().Property(x => x.Language1Example).ForMySQLHasCharset("utf8");
+            builder.Entity<Word>().Property(x => x.Language2Example).ForMySQLHasCharset("utf8");
+            builder.Entity<Word>().Property(x => x.Comment).ForMySQLHasCharset("utf8");
         }
 
 
