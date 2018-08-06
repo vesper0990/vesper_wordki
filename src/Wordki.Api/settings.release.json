@@ -7,7 +7,7 @@
   },
   "General": {
     "Database": "MySql",
-    "ConnectionString" : "Server=dbServer;database=wordki;uid=root;pwd=Akuku123;",
+    "ConnectionString" : "Server=db;database=Wordki;uid=root;pwd=Akuku123;",
     "SeedData": true
   }
 }
