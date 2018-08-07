@@ -27,6 +27,7 @@ namespace Wordki.Infrastructure.Services
         {
             try
             {
+                logger.Info("Database initialization");
                 context.Database.EnsureCreated();
                 if(settings.SeedData && context.Users.Count() == 0){
                     UserSeed();
@@ -73,7 +74,7 @@ namespace Wordki.Infrastructure.Services
                         Id = DateTime.Now.Ticks,
                         Group = group,
                         UserId = 1,
-                        Language1 = $"Słowo {j}",
+                        Language1 = $"Slowo {j}",
                         Language2 = $"Word {j}",
                     };
                     group.Words.Add(word);

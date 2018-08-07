@@ -1,4 +1,5 @@
 docker rm -v wordki
 docker rm -v wordki.builder
-docker rmi $(docker images wordki)
+docker rmi wordki
+docker rmi builder
 docker volume rm docker_appbuild

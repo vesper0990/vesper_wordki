@@ -5,7 +5,7 @@ services:
   image: wordki
   build:
    context: ../
-   dockerfile: ./Docker/App.dockerfile
+   dockerfile: ./scripts/App.dockerfile
    args:
     URL_PORT: 7909
   ports:
@@ -25,10 +25,10 @@ services:
   image: wordki.builder
   build:
    context: ../
-   dockerfile: ./Docker/Build.dockerfile
+   dockerfile: ./scripts/Build.dockerfile
    args:
     BUILDER_VERSION: 0.1.0
-    BUILD_CONFIG: Debug
+    BUILD_CONFIG: Release
     BUILD_LOCATION: /app/out
   volumes:
    - appbuild:/app/out
