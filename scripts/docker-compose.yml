@@ -1,13 +1,12 @@
 version: '3'
 services:
- webapp:
+ wordki:
   container_name: wordki
   image: wordki
   build:
    context: ../
    dockerfile: ./Docker/App.dockerfile
    args:
-    WEBAPP_VERSION: 0.1.0
     URL_PORT: 7909
   ports:
    - "5000:7909"
@@ -23,7 +22,7 @@ services:
    - builder
  builder:
   container_name: builder
-  image: webapp:0.1.0.Debug
+  image: wordki.builder
   build:
    context: ../
    dockerfile: ./Docker/Build.dockerfile
@@ -42,7 +41,7 @@ services:
   volumes:
    - dbvol:/var/lib/mysql
   environment:
-   MYSQL_RANDOM_ROOT_PASSWORD: asdf
+   MYSQL_ROOT_PASSWORD: Akuku123
   env_file:
    - secrets.env
 volumes:
