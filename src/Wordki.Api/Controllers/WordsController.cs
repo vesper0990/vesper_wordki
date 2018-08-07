@@ -14,28 +14,28 @@ namespace Wordki.Api.Controllers
     {
 
         private readonly IWordService wordService;
-        private readonly IAuthorizer authorizer;
+        private readonly IAuthenticator<string> authenticator;
 
-        public WordsController(IWordService wordService, IAuthorizer authorizer)
+        public WordsController(IWordService wordService, IAuthenticator<string> authenticator)
         {
             this.wordService = wordService;
-            this.authorizer = authorizer;
+            this.authenticator = authenticator;
         }
 
         [HttpPost("add")]
-        public async Task<IActionResult> AddWord([FromBody] WordDTO wordDto)
+        public async Task<IActionResult> AddWord([FromBody] WordDTO wordDto, [FromHeader] string apiKey)
         {
             if (wordDto == null)
             {
                 throw new ApiException($"Parameter {nameof(wordDto)} cannot be null", ErrorCode.NullArgumentException);
             }
-            var userId = await authorizer.AuthorizeAsync(Request);
+            var userId = await authenticator.Authenticate(apiKey);
             wordDto = await wordService.AddAsync(wordDto, userId);
             return Json(wordDto);
         }
 
         [HttpPost("addAll")]
-        public async Task<IActionResult> AddAll([FromBody] IEnumerable<WordDTO> wordsDto)
+        public async Task<IActionResult> AddAll([FromBody] IEnumerable<WordDTO> wordsDto, [FromHeader] string apiKey)
         {
             if (wordsDto == null)
             {
@@ -44,36 +44,36 @@ namespace Wordki.Api.Controllers
             if (wordsDto.Count() == 0){
                 throw new ApiException($"Parameter {nameof(wordsDto)} cannot be empty", ErrorCode.NullArgumentException);
             }
-            var userId = await authorizer.AuthorizeAsync(Request);
+            var userId = await authenticator.Authenticate(apiKey);
             wordsDto = await wordService.AddAllAsync(wordsDto, userId);
             return Json(wordsDto);
         }
 
-        [HttpPost("remove")]
-        public async Task<IActionResult> Remove([FromBody] long wordId)
+        [HttpDelete("remove/{wordId}")]
+        public async Task<IActionResult> Remove(long wordId, [FromHeader] string apiKey)
         {
             if(wordId == 0){
                 throw new ApiException($"Parameter {nameof(wordId)} cannot be equal 0", ErrorCode.NullArgumentException);
             }
-            var userId = await authorizer.AuthorizeAsync(Request);
+            await authenticator.Authenticate(apiKey);
             await wordService.RemoveAsync(wordId);
             return Ok();
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> Update([FromBody] WordDTO wordDto)
+        public async Task<IActionResult> Update([FromBody] WordDTO wordDto, [FromHeader] string apiKey)
         {
             if (wordDto == null)
             {
                 throw new ApiException($"Parameter {nameof(wordDto)} cannot be null", ErrorCode.NullArgumentException);
             }
-            await authorizer.AuthorizeAsync(Request);
+            await authenticator.Authenticate(apiKey);
             await wordService.UpdateAsync(wordDto);
             return Ok();
         }
 
         [HttpPut("updateAll")]
-        public async Task<IActionResult> UpdateAll([FromBody] IEnumerable<WordDTO> wordsDto)
+        public async Task<IActionResult> UpdateAll([FromBody] IEnumerable<WordDTO> wordsDto, [FromHeader] string apiKey)
         {
             if (wordsDto == null)
             {
@@ -82,7 +82,7 @@ namespace Wordki.Api.Controllers
             if (wordsDto.Count() == 0){
                 throw new ApiException($"Parameter {nameof(wordsDto)} cannot be empty", ErrorCode.NullArgumentException);
             }
-            await authorizer.AuthorizeAsync(Request);
+            await authenticator.Authenticate(apiKey);
             await wordService.UpdateAllAsync(wordsDto);
             return Ok();
         }

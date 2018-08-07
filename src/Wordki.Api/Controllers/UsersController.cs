@@ -11,11 +11,13 @@ namespace Wordki.Api.Controllers
     {
         private readonly IUserService userService;
         private readonly IAuthorizer authorizer;
+        private readonly IAuthenticator<string> authenticator;
 
-        public UserController(IUserService userService, IAuthorizer authorizer)
+        public UserController(IUserService userService, IAuthorizer authorizer, IAuthenticator<string> authenticator)
         {
             this.userService = userService;
             this.authorizer = authorizer;
+            this.authenticator = authenticator;
         }
 
         [HttpGet("check/{userName}")]

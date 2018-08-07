@@ -116,7 +116,7 @@ namespace Wordki.Tests.EndToEnd
             user.Password = encrypter.Md5Hash(user.Password);
             //await userRepository.AddAsync(user);
             user.Password = noEncryptedPassword;
-            return user;
+            return await Task.FromResult(user);
         }
     }
 
