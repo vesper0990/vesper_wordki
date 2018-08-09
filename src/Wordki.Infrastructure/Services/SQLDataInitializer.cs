@@ -67,7 +67,7 @@ namespace Wordki.Infrastructure.Services
                     Words = new List<Word>(),
                     Results = new List<Result>()
                 };
-                for (int j = 0; j < 10; j++)
+                for (int j = 0; j < 2; j++)
                 {
                     var word = new Word
                     {
