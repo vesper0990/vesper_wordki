@@ -39,6 +39,10 @@ namespace Wordki.Api.Controllers
                 throw new ApiException($"Parameter {nameof(userName)} or {nameof(password)} cannot be null.", ErrorCode.NullArgumentException);
             }
             var user = await userService.LoginAsync(userName, password);
+            if(user == null)
+            {
+                throw new ApiException($"User not found", ErrorCode.AuthenticaitonException);
+            }
             return Json(user);
         }
 
