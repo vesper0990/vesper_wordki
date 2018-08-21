@@ -12,12 +12,12 @@ namespace Wordki.Api.Controllers
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly IGroupService groupService;
-        private readonly IAuthorizer authorizer;
+        private readonly IAuthenticator<string> authenticator;
 
-        public GroupsController(IGroupService groupService, IAuthorizer authorizer)
+        public GroupsController(IGroupService groupService, IAuthenticator<string> authenticator)
         {
             this.groupService = groupService;
-            this.authorizer = authorizer;
+            this.authenticator = authenticator;
         }
 
         [HttpGet("getAll/{userId}")]
@@ -42,7 +42,7 @@ namespace Wordki.Api.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<IActionResult> Add([FromBody] GroupDetailsDTO group)
+        public async Task<IActionResult> Add([FromBody] GroupDetailsDTO group, [FromHeader] string apiKey)
         {
             if (group == null)
             {
@@ -52,13 +52,13 @@ namespace Wordki.Api.Controllers
             {
                 throw new ApiException($"Parameter {nameof(group.Name)} cannot be null", ErrorCode.NullArgumentException);
             }
-            long userId = await authorizer.AuthorizeAsync(Request);
+            long userId = await authenticator.Authenticate(apiKey);
             group = await groupService.AddAsync(group, userId);
             return Json(group);
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> Update([FromBody] GroupDTO group)
+        public async Task<IActionResult> Update([FromBody] GroupDTO group, [FromHeader] string apiKey)
         {
             if (group == null)
             {
@@ -68,19 +68,19 @@ namespace Wordki.Api.Controllers
             {
                 throw new ApiException($"Parameter {nameof(group.Name)} cannot be null", ErrorCode.NullArgumentException);
             }
-            long userId = await authorizer.AuthorizeAsync(Request);
+            long userId = await authenticator.Authenticate(apiKey);
             await groupService.UpdateAsync(group, userId);
             return Ok();
         }
 
-        [HttpPost("remove")]
-        public async Task<IActionResult> Remove([FromBody] long id)
+        [HttpDelete("remove/{id}")]
+        public async Task<IActionResult> Remove([FromBody] long id, [FromHeader] string apiKey)
         {
             if (id == 0)
             {
                 throw new ApiException($"Parameter {nameof(id)} cannot be null", ErrorCode.NullArgumentException);
             }
-            long userId = await authorizer.AuthorizeAsync(Request);
+            long userId = await authenticator.Authenticate(apiKey);
             await groupService.RemoveAsync(id);
             return Ok();
         }

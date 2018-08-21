@@ -74,8 +74,11 @@ namespace Wordki.Infrastructure.Services
                         Id = DateTime.Now.Ticks,
                         Group = group,
                         UserId = 1,
-                        Language1 = $"Slowo {j}",
-                        Language2 = $"Word {j}",
+                        Language1 = $"Slowo {j}, slowo{j}",
+                        Language2 = $"Word {j}, word{j}",
+                        Language1Example = $"To jest jakis przykład dla Slowo {j} lub slowo{j}",
+                        Language2Example = $"This is an example for Word {j} or word{j}",
+                        RepeatingCounter = (ushort)j,
                     };
                     group.Words.Add(word);
 
