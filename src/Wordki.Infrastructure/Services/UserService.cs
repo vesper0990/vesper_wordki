@@ -41,6 +41,7 @@ namespace Wordki.Infrastructure.Services
         {
             var user = mapper.Map<UserDTO, User>(userDto);
             user.Password = encrypter.Md5Hash(user.Password);
+            user.ApiKey = encrypter.Md5Hash(user.Name);
             await userRepository.AddAsync(user);
             return mapper.Map<User, UserDTO>(user);
         }
