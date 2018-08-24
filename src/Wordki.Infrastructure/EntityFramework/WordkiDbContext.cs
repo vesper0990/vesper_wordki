@@ -59,6 +59,7 @@ namespace Wordki.Infrastructure.EntityFramework
                 .WithMany(x => x.Words)
                 .HasForeignKey(x => x.GroupId);
             builder.Entity<Word>().ForMySQLHasCharset("utf8");
+            builder.Entity<Word>().ForMySQLHasCollation("utf8_bin");
             builder.Entity<Word>().Property(x => x.Language1).ForMySQLHasCharset("utf8");
             builder.Entity<Word>().Property(x => x.Language2).ForMySQLHasCharset("utf8");
             builder.Entity<Word>().Property(x => x.Language1Example).ForMySQLHasCharset("utf8");
