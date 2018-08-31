@@ -44,8 +44,10 @@ namespace Wordki.Infrastructure.Services
                            Language1 = g.Language1,
                            Language2 = g.Language2,
                            Name = g.Name,
+                           CreationDate = g.CreationDate,
                            WordsCount = g.Words.Count(x => x.State >= 0),
                            ResultsCount = g.Results.Count(x => x.State >= 0),
+                           LastLessonDate = g.Results.LastOrDefault().DateTime,
                        };
             });
 

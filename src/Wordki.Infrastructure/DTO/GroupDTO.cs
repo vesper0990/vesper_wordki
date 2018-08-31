@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using Wordki.Core.Enums;
 
 namespace Wordki.Infrastructure.DTO
@@ -10,7 +11,9 @@ namespace Wordki.Infrastructure.DTO
         public string Name { get; set; }
         public LanguageType Language1 { get; set; }
         public LanguageType Language2 { get; set; }
+        public DateTime CreationDate { get; set; }
         public int WordsCount { get; set; }
         public int ResultsCount { get; set; }
+        public DateTime? LastLessonDate { get; set; }
     }
 }
