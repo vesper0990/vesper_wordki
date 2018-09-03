@@ -14,6 +14,6 @@ namespace Wordki.Infrastructure.DTO
         public DateTime CreationDate { get; set; }
         public int WordsCount { get; set; }
         public int ResultsCount { get; set; }
-        public DateTime? LastLessonDate { get; set; }
+        public DateTime LastLessonDate { get; set; }
     }
 }

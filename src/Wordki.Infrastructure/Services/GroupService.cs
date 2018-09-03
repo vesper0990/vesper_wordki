@@ -36,19 +36,19 @@ namespace Wordki.Infrastructure.Services
         {
             return await Task.Run(() =>
             {
-                return from g in groupRepository.GetGroups()
-                       where g.UserId == userId && g.State >= 0
-                       select new GroupDTO()
-                       {
-                           Id = g.Id,
-                           Language1 = g.Language1,
-                           Language2 = g.Language2,
-                           Name = g.Name,
-                           CreationDate = g.CreationDate,
-                           WordsCount = g.Words.Count(x => x.State >= 0),
-                           ResultsCount = g.Results.Count(x => x.State >= 0),
-                           LastLessonDate = g.Results.LastOrDefault().DateTime,
-                       };
+                return (from g in groupRepository.GetGroups()
+                        where g.UserId == userId && g.State >= 0
+                        select new GroupDTO()
+                        {
+                            Id = g.Id,
+                            Language1 = g.Language1,
+                            Language2 = g.Language2,
+                            Name = g.Name,
+                            CreationDate = g.CreationDate,
+                            WordsCount = g.Words.Count(x => x.State >= 0),
+                            ResultsCount = g.Results.Count(x => x.State >= 0),
+                            LastLessonDate = g.Results.Count(x => x.State >= 0) > 0 ? new System.DateTime() : g.Results.First().DateTime,
+                        }).ToList();
             });
 
         }
