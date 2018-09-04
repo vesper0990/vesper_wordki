@@ -55,6 +55,7 @@ namespace Wordki.Infrastructure.Services
         private void DataSeed()
         {
             List<Group> groups = new List<Group>();
+            Random random = new Random();
             for (int i = 0; i < 10; i++)
             {
                 var group = new Group
@@ -86,6 +87,7 @@ namespace Wordki.Infrastructure.Services
                     {
                         Id = DateTime.Now.Ticks,
                         UserId = 1,
+                        DateTime = DateTime.Now.AddDays(-random.Next(1, 10)),
                     };
                     group.Results.Add(result);
                 }

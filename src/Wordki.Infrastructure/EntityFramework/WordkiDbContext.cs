@@ -49,23 +49,16 @@ namespace Wordki.Infrastructure.EntityFramework
                 .WithMany(x => x.Results)
                 .HasForeignKey(x => x.GroupId);
 
-            builder.Entity<Word>()
-                .HasKey(r => new { r.Id });
-            builder.Entity<Word>()
-                .Property(g => g.Id)
-                .ValueGeneratedOnAdd();
-            builder.Entity<Word>()
-                .HasOne(x => x.Group)
-                .WithMany(x => x.Words)
-                .HasForeignKey(x => x.GroupId);
-            builder.Entity<Word>().ForMySQLHasCharset("utf8");
-            builder.Entity<Word>().ForMySQLHasCollation("utf8");
-            builder.Entity<Word>().Property(x => x.Language1).ForMySQLHasCharset("utf8");
-            builder.Entity<Word>().Property(x => x.Language1).ForMySQLHasCollation("utf8");
-            builder.Entity<Word>().Property(x => x.Language2).ForMySQLHasCharset("utf8");
-            builder.Entity<Word>().Property(x => x.Language1Example).ForMySQLHasCharset("utf8");
-            builder.Entity<Word>().Property(x => x.Language2Example).ForMySQLHasCharset("utf8");
-            builder.Entity<Word>().Property(x => x.Comment).ForMySQLHasCharset("utf8");
+            builder.Entity<Word>(e =>
+            {
+                e.HasKey(r => new { r.Id });
+                e.ForMySQLHasCharset("utf8");
+                e.ForMySQLHasCollation("utf8_bin");
+                e.Property(g => g.Id).ValueGeneratedOnAdd();
+                e.HasOne(x => x.Group).WithMany(x => x.Words).HasForeignKey(x => x.GroupId);
+                e.Property(x => x.Language1).ForMySQLHasCharset("utf8");
+                e.Property(x => x.Language1).ForMySQLHasCollation("utf8_bin");
+            });
         }
 
 

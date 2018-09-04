@@ -44,6 +44,7 @@ services:
    MYSQL_ROOT_PASSWORD: Akuku123
   env_file:
    - secrets.env
+  command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
 volumes:
  appbuild:
  dbvol:
