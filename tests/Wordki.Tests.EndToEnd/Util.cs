@@ -76,7 +76,8 @@ namespace Wordki.Tests.EndToEnd
                 Correct = 1,
                 Accepted = 1,
                 Wrong = 1,
-                Invisible = 1
+                Invisible = 1,
+                DateTime = new DateTime(1990, 9, 24),
             };
         }
 

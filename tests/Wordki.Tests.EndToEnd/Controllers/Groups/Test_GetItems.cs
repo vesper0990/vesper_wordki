@@ -64,6 +64,57 @@ namespace Wordki.Tests.EndToEnd.Controllers.Groups
             }
         }
 
-    }
+        [Test]
+        public async Task Try_invoke_check_last_lesson_date()
+        {
+            await ClearDatabase();
+            User user = Util.GetUser();
+            await dbContext.Users.AddAsync(user);
+            await dbContext.SaveChangesAsync();
 
+            IEnumerable<Group> groups = Util.GetGroups(5, userId: user.Id);
+            await dbContext.Groups.AddRangeAsync(groups);
+            await dbContext.SaveChangesAsync();
+            var respnse = await client.GetAsync($"{method}/{user.Id}");
+            Assert.AreEqual(HttpStatusCode.OK, respnse.StatusCode, "StatusCode != Ok");
+
+            var message = await respnse.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<IEnumerable<GroupDTO>>(message);
+
+            foreach (var item in obj)
+            {
+                Assert.AreEqual(item.LastLessonDate.Year, 1990);
+                Assert.AreEqual(item.LastLessonDate.Month, 9);
+                Assert.AreEqual(item.LastLessonDate.Day, 24);
+            }
+        }
+
+        [Test]
+        public async Task Try_invoke_check_if_last_lesson_date_is_correct()
+        {
+            await ClearDatabase();
+            User user = Util.GetUser();
+            await dbContext.Users.AddAsync(user);
+            await dbContext.SaveChangesAsync();
+
+            Group group = Util.GetGroups(1, 0, 0, user.Id).First();
+            Result result1 = Util.GetResult();
+            Result result2 = Util.GetResult();
+            result2.DateTime = new System.DateTime(2000, 1, 1);
+            group.Results.Add(result1);
+            group.Results.Add(result2);
+            await dbContext.Groups.AddAsync(group);
+            await dbContext.SaveChangesAsync();
+
+            var respnse = await client.GetAsync($"{method}/{user.Id}");
+            Assert.AreEqual(HttpStatusCode.OK, respnse.StatusCode, "StatusCode != Ok");
+
+            var message = await respnse.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<IEnumerable<GroupDTO>>(message);
+            Assert.AreEqual(obj.Count(), 1);
+            Assert.AreEqual(obj.First().LastLessonDate.Year, 2000);
+            Assert.AreEqual(obj.First().LastLessonDate.Month, 1);
+            Assert.AreEqual(obj.First().LastLessonDate.Day, 1);
+        }
+    }
 }
