@@ -6,9 +6,15 @@
     }
   },
   //"General": {
+<<<<<<< HEAD
     //"Database": "MySql",
     //"ConnectionString": "Server=localhost;Port=3307;database=unittest;uid=root;pwd=Akuku123;",
     //"SeedData": true
+=======
+  //  "Database": "MySql",
+  //  "ConnectionString": "Server=localhost;Port=3307;database=unittest;uid=root;pwd=Akuku123;",
+  //  "SeedData": true
+>>>>>>> 63a95508c292beedb2686c1e095b1c86e69fab61
   //}
   "General": {
     "Database": "InMemory",
