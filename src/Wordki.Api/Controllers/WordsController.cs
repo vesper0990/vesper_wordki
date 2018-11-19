@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
-using Wordki.Infrastructure;
 using Wordki.Infrastructure.DTO;
 using Wordki.Infrastructure.Services;
 
@@ -27,11 +26,11 @@ namespace Wordki.Api.Controllers
         {
             if (wordDto == null)
             {
-                throw new ApiException($"Parameter {nameof(wordDto)} cannot be null", ErrorCode.NullArgumentException);
+                return StatusCode((int)HttpStatusCode.BadRequest, new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(wordDto)} cannot be null"));
             }
             var userId = await authenticator.Authenticate(apiKey);
-            wordDto = await wordService.AddAsync(wordDto, userId);
-            return Json(wordDto);
+            var result = await wordService.AddAsync(wordDto, userId);
+            return StatusCode((int)HttpStatusCode.Created, result);
         }
 
         [HttpPost("addAll")]
@@ -39,21 +38,23 @@ namespace Wordki.Api.Controllers
         {
             if (wordsDto == null)
             {
-                throw new ApiException($"Parameter {nameof(wordsDto)} cannot be null", ErrorCode.NullArgumentException);
+                return StatusCode((int)HttpStatusCode.BadRequest, new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(wordsDto)} cannot be null"));
             }
-            if (wordsDto.Count() == 0){
-                throw new ApiException($"Parameter {nameof(wordsDto)} cannot be empty", ErrorCode.NullArgumentException);
+            if (wordsDto.Count() == 0)
+            {
+                return StatusCode((int)HttpStatusCode.BadRequest, new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(wordsDto)} cannot be empty"));
             }
             var userId = await authenticator.Authenticate(apiKey);
-            wordsDto = await wordService.AddAllAsync(wordsDto, userId);
-            return Json(wordsDto);
+            var result = await wordService.AddAllAsync(wordsDto, userId);
+            return StatusCode((int)HttpStatusCode.Created, result);
         }
 
         [HttpDelete("remove/{wordId}")]
         public async Task<IActionResult> Remove(long wordId, [FromHeader] string apiKey)
         {
-            if(wordId == 0){
-                throw new ApiException($"Parameter {nameof(wordId)} cannot be equal 0", ErrorCode.NullArgumentException);
+            if (wordId == 0)
+            {
+                return StatusCode((int)HttpStatusCode.BadRequest, new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(wordId)} cannot be equal 0"));
             }
             await authenticator.Authenticate(apiKey);
             await wordService.RemoveAsync(wordId);
@@ -65,7 +66,7 @@ namespace Wordki.Api.Controllers
         {
             if (wordDto == null)
             {
-                throw new ApiException($"Parameter {nameof(wordDto)} cannot be null", ErrorCode.NullArgumentException);
+                return StatusCode((int)HttpStatusCode.BadRequest, new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(wordDto)} cannot be null"));
             }
             await authenticator.Authenticate(apiKey);
             await wordService.UpdateAsync(wordDto);
@@ -77,10 +78,13 @@ namespace Wordki.Api.Controllers
         {
             if (wordsDto == null)
             {
-                throw new ApiException($"Parameter {nameof(wordsDto)} cannot be null", ErrorCode.NullArgumentException);
+                return StatusCode((int)HttpStatusCode.BadRequest, new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(wordsDto)} cannot be null"));
+
             }
-            if (wordsDto.Count() == 0){
-                throw new ApiException($"Parameter {nameof(wordsDto)} cannot be empty", ErrorCode.NullArgumentException);
+            if (wordsDto.Count() == 0)
+            {
+                return StatusCode((int)HttpStatusCode.BadRequest, new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(wordsDto)} cannot be empty"));
+
             }
             await authenticator.Authenticate(apiKey);
             await wordService.UpdateAllAsync(wordsDto);

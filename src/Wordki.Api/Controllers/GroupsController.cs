@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 using Wordki.Infrastructure;
@@ -46,15 +47,15 @@ namespace Wordki.Api.Controllers
         {
             if (group == null)
             {
-                throw new ApiException($"Parameter {nameof(group)} cannot be null", ErrorCode.NullArgumentException);
+                return StatusCode((int)HttpStatusCode.BadRequest, new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(group)} cannot be null."));
             }
             if (string.IsNullOrWhiteSpace(group.Name))
             {
-                throw new ApiException($"Parameter {nameof(group.Name)} cannot be null", ErrorCode.NullArgumentException);
+                return StatusCode((int)HttpStatusCode.BadRequest, new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(group.Name)} cannot be null."));
             }
             long userId = await authenticator.Authenticate(apiKey);
-            group = await groupService.AddAsync(group, userId);
-            return Json(group);
+            var result = await groupService.AddAsync(group, userId);
+            return StatusCode((int)HttpStatusCode.Created, result);
         }
 
         [HttpPut("update")]
@@ -62,11 +63,11 @@ namespace Wordki.Api.Controllers
         {
             if (group == null)
             {
-                throw new ApiException($"Parameter {nameof(group)} cannot be null", ErrorCode.NullArgumentException);
+                return StatusCode((int)HttpStatusCode.BadRequest, new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(group)} cannot be null."));
             }
             if (string.IsNullOrWhiteSpace(group.Name))
             {
-                throw new ApiException($"Parameter {nameof(group.Name)} cannot be null", ErrorCode.NullArgumentException);
+                return StatusCode((int)HttpStatusCode.BadRequest, new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(group.Name)} cannot be null."));
             }
             long userId = await authenticator.Authenticate(apiKey);
             await groupService.UpdateAsync(group, userId);
@@ -78,7 +79,7 @@ namespace Wordki.Api.Controllers
         {
             if (id == 0)
             {
-                throw new ApiException($"Parameter {nameof(id)} cannot be null", ErrorCode.NullArgumentException);
+                return StatusCode((int)HttpStatusCode.BadRequest, new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(id)} cannot be null."));
             }
             long userId = await authenticator.Authenticate(apiKey);
             await groupService.RemoveAsync(id);

@@ -11,12 +11,14 @@ namespace Wordki.Infrastructure.Services
     public class ResultService : IResultService 
     {
 
-        private readonly IResultRepository resultRepository;
+        private readonly IResultCommandRepository resultCommandRepository;
+        private readonly IResultQueryRepository resultQueryRepository;
         private readonly IMapper mapper;
 
-        public ResultService(IResultRepository resultRepository, IMapper mapper)
+        public ResultService(IResultCommandRepository resultCommandRepository, IResultQueryRepository resultQueryRepository, IMapper mapper)
         {
-            this.resultRepository = resultRepository;
+            this.resultCommandRepository = resultCommandRepository;
+            this.resultQueryRepository = resultQueryRepository;
             this.mapper = mapper;
         }
 
@@ -27,7 +29,7 @@ namespace Wordki.Infrastructure.Services
             {
                 result.UserId = userId;
             }
-            await resultRepository.AddAllAsync(results);
+            await resultCommandRepository.AddAllAsync(results);
             return mapper.Map<IEnumerable<Result>, IEnumerable<ResultDTO>>(results);
         }
 
@@ -35,13 +37,13 @@ namespace Wordki.Infrastructure.Services
         {
             var result = mapper.Map<ResultDTO, Result>(resultDto);
             result.UserId = userId;
-            await resultRepository.AddAsync(result);
+            await resultCommandRepository.AddAsync(result);
             return mapper.Map<Result, ResultDTO>(result);
         }
 
         public async Task<IEnumerable<ResultDTO>> GetAllAsync()
         {
-            return mapper.Map<IEnumerable<Result>, IEnumerable<ResultDTO>>(await resultRepository.GetAllAsync());
+            return mapper.Map<IEnumerable<Result>, IEnumerable<ResultDTO>>(await resultQueryRepository.GetAllAsync());
         }
     }
 }

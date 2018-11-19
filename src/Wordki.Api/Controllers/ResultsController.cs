@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Wordki.Infrastructure;
 using Wordki.Infrastructure.DTO;
 using Wordki.Infrastructure.Services;
 
@@ -32,11 +32,11 @@ namespace Wordki.Api.Controllers
         {
             if (resultDto == null)
             {
-                throw new ApiException($"Parameter {nameof(resultDto)} cannot be null", ErrorCode.NullArgumentException);
+                return StatusCode((int)HttpStatusCode.BadRequest, new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(resultDto)} cannot be null."));
             }
             var userId = await authorizer.AuthorizeAsync(Request);
-            resultDto = await resultService.AddAsync(resultDto, userId);
-            return Json(resultDto);
+            var result = await resultService.AddAsync(resultDto, userId);
+            return StatusCode((int)HttpStatusCode.Created, result);
         }
 
         [HttpPost("addAll")]
@@ -44,15 +44,15 @@ namespace Wordki.Api.Controllers
         {
             if (resultsDto == null)
             {
-                throw new ApiException($"Parameter {nameof(resultsDto)} cannot be null", ErrorCode.NullArgumentException);
+                return StatusCode((int)HttpStatusCode.BadRequest, new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(resultsDto)} cannot be null."));
             }
             if (resultsDto.Count() == 0)
             {
-                throw new ApiException($"Parameter {nameof(resultsDto)} cannot be empty", ErrorCode.NullArgumentException);
+                return StatusCode((int)HttpStatusCode.BadRequest, new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(resultsDto)} cannot be empty"));
             }
             var userId = await authorizer.AuthorizeAsync(Request);
-            resultsDto = await resultService.AddAllAsync(resultsDto, userId);
-            return Json(resultsDto);
+            var result = await resultService.AddAllAsync(resultsDto, userId);
+            return StatusCode((int)HttpStatusCode.Created, result);
         }
     }
 }

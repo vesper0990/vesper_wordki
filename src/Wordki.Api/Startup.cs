@@ -21,7 +21,6 @@ namespace Wordki
 {
     public class Startup : IStartup
     {
-
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public IContainer ApplicationContainer { get; private set; }
@@ -119,7 +118,6 @@ namespace Wordki
 
             var dataInitializer = app.ApplicationServices.GetService<IDataInitializer>();
             dataInitializer.Init();
-
 
             appLifeTime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
         }

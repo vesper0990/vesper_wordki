@@ -28,7 +28,7 @@ namespace Wordki.Api.Framework
                     statusCode = HttpStatusCode.InternalServerError;
                     break;                
             }
-            var response = new ExceptionMessage { Code = errorCode, Message = CollectExceptionsInformation(exception) };
+            var response = new ExceptionMessage(errorCode, CollectExceptionsInformation(exception) );
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)statusCode;
             return context.Response.WriteAsync(response.ToString());

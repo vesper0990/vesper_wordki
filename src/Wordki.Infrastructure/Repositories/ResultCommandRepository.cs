@@ -1,28 +1,20 @@
-﻿using System;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Wordki.Core;
 using Wordki.Core.Repositories;
-using Wordki.Infrastructure.EntityFramework;
 using Wordki.Infrastructure.DTO;
+using Wordki.Infrastructure.EntityFramework;
 
 namespace Wordki.Infrastructure.Repositories
 {
-    public class ResultRepository : IResultRepository
+    public class ResultCommandRepository : IResultCommandRepository
     {
         private readonly WordkiDbContext dbContext;
 
-        public ResultRepository(WordkiDbContext dbContext)
+        public ResultCommandRepository(WordkiDbContext dbContext)
         {
             this.dbContext = dbContext;
-        }
-
-        public Task<IEnumerable<Result>> GetAllAsync()
-        {
-            return Task.FromResult(dbContext.Results.AsEnumerable());
         }
 
         public async Task<Result> AddAsync(Result result)
@@ -47,7 +39,6 @@ namespace Wordki.Infrastructure.Repositories
         {
             try
             {
-
                 await dbContext.Results.AddRangeAsync(results);
                 await dbContext.SaveChangesAsync();
             }
@@ -57,7 +48,5 @@ namespace Wordki.Infrastructure.Repositories
             }
             return results;
         }
-
-
     }
 }

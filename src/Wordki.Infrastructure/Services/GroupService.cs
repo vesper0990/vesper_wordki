@@ -10,12 +10,14 @@ namespace Wordki.Infrastructure.Services
 {
     public class GroupService : IGroupService, IService
     {
-        private readonly IGroupRepository groupRepository;
+        private readonly IGroupQueryRepository groupQueryRepository;
+        private readonly IGroupCommandRepository groupCommandRepository;
         private readonly IMapper mapper;
 
-        public GroupService(IGroupRepository groupRepository, IMapper mapper)
+        public GroupService(IGroupQueryRepository groupQueryRepository, IGroupCommandRepository groupCommandRepository, IMapper mapper)
         {
-            this.groupRepository = groupRepository;
+            this.groupQueryRepository = groupQueryRepository;
+            this.groupCommandRepository = groupCommandRepository;
             this.mapper = mapper;
         }
 
@@ -23,20 +25,20 @@ namespace Wordki.Infrastructure.Services
         {
             var group = mapper.Map<Group>(groupDto);
             group.UserId = userId;
-            await groupRepository.AddAsync(group);
+            await groupCommandRepository.AddAsync(group);
             return mapper.Map<Group, GroupDetailsDTO>(group);
         }
 
         public async Task<GroupDetailsDTO> GetDetailsAsync(long groupId)
         {
-            return mapper.Map<Group, GroupDetailsDTO>(await groupRepository.GetAsync(groupId, true));
+            return mapper.Map<Group, GroupDetailsDTO>(await groupQueryRepository.GetAsync(groupId, true));
         }
 
         public async Task<IEnumerable<GroupDTO>> GetItemsAsync(long userId)
         {
             return await Task.Run(() =>
             {
-                return (from g in groupRepository.GetGroups()
+                return (from g in groupQueryRepository.GetGroups()
                         where g.UserId == userId && g.State >= 0
                         select new GroupDTO()
                         {
@@ -55,14 +57,14 @@ namespace Wordki.Infrastructure.Services
 
         public async Task RemoveAsync(long id)
         {
-            await groupRepository.RemoveAsync(id);
+            await groupCommandRepository.RemoveAsync(id);
         }
 
         public async Task UpdateAsync(GroupDTO groupDto, long userId)
         {
             var group = mapper.Map<Group>(groupDto);
             group.UserId = userId;
-            await groupRepository.UpdateAsync(group);
+            await groupCommandRepository.UpdateAsync(group);
         }
     }
 }

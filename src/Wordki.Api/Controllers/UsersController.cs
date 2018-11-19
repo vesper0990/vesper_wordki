@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using System.Threading.Tasks;
-using Wordki.Infrastructure;
 using Wordki.Infrastructure.DTO;
 using Wordki.Infrastructure.Services;
 
@@ -25,7 +25,8 @@ namespace Wordki.Api.Controllers
         {
             if (string.IsNullOrWhiteSpace(userName))
             {
-                throw new ApiException($"Parameter {nameof(userName)} cannot be null.", ErrorCode.NullArgumentException);
+                return StatusCode((int)HttpStatusCode.BadRequest,
+                    new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(userName)} cannot be null."));
             }
             var isExists = await userService.CheckUserExistingAsync(userName);
             return Json(isExists);
@@ -36,12 +37,14 @@ namespace Wordki.Api.Controllers
         {
             if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(password))
             {
-                throw new ApiException($"Parameter {nameof(userName)} or {nameof(password)} cannot be null.", ErrorCode.NullArgumentException);
+                return StatusCode((int)HttpStatusCode.BadRequest,
+                    new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(userName)} or {nameof(password)} cannot be null."));
             }
             var user = await userService.LoginAsync(userName, password);
-            if(user == null)
+            if (user == null)
             {
-                throw new ApiException($"User not found", ErrorCode.AuthenticaitonException);
+                return StatusCode((int)HttpStatusCode.Unauthorized,
+                    new ExceptionMessage(ErrorCode.AuthenticaitonException, $"User not found"));
             }
             return Json(user);
         }
@@ -51,34 +54,35 @@ namespace Wordki.Api.Controllers
         {
             if (userDto == null)
             {
-                throw new ApiException($"Parameter {nameof(userDto)} cannot be null.", ErrorCode.NullArgumentException);
+                return StatusCode((int)HttpStatusCode.BadRequest, new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(userDto)} cannot be null."));
             }
             if (string.IsNullOrWhiteSpace(userDto.Name) || string.IsNullOrWhiteSpace(userDto.Password))
             {
-                throw new ApiException($"Parameter {nameof(userDto.Name)} cannot be null", ErrorCode.NullArgumentException);
+                return StatusCode((int)HttpStatusCode.BadRequest, new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(userDto.Name)} cannot be null"));
             }
             if (await userService.CheckUserExistingAsync(userDto.Name))
             {
-                throw new ApiException($"User with name {userDto.Name} already exists", ErrorCode.UserAlreadyExistsException);
+                return StatusCode((int)HttpStatusCode.BadRequest, new ExceptionMessage(ErrorCode.UserAlreadyExistsException, $"User with name {userDto.Name} already exists"));
             }
-            var user = await userService.RegisterAsync(userDto);
-            return Json(user);
+            await userService.RegisterAsync(userDto);
+            return Ok();
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> Update([FromBody] UserDTO userDto) {
+        public async Task<IActionResult> Update([FromBody] UserDTO userDto)
+        {
             if (userDto == null)
             {
-                throw new ApiException($"Parameter {nameof(userDto)} cannot be null.", ErrorCode.NullArgumentException);
+                return StatusCode((int)HttpStatusCode.BadRequest, new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(userDto)} cannot be null."));
             }
             if (string.IsNullOrWhiteSpace(userDto.Name) || string.IsNullOrWhiteSpace(userDto.Password))
             {
-                throw new ApiException($"Parameter {nameof(userDto.Name)} cannot be null", ErrorCode.NullArgumentException);
+                return StatusCode((int)HttpStatusCode.BadRequest, new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(userDto.Name)} cannot be null"));
             }
             long userId = await authorizer.AuthorizeAsync(Request);
             userDto.Id = userId;
-            userDto = await userService.UpdateAsync(userDto);
-            return Json(userDto);
+            await userService.UpdateAsync(userDto);
+            return Ok();
         }
     }
 }

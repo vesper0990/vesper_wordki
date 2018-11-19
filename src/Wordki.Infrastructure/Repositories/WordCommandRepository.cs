@@ -1,21 +1,17 @@
-﻿using System;
-using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Wordki.Core;
 using Wordki.Core.Repositories;
 using Wordki.Infrastructure.EntityFramework;
 
 namespace Wordki.Infrastructure.Repositories
 {
-    public class WordRepository : IWordRepository
+    public class WordCommandRepository : IWordCommandRepository
     {
-
         private readonly WordkiDbContext context;
 
-        public WordRepository(WordkiDbContext context)
+        public WordCommandRepository(WordkiDbContext context)
         {
             this.context = context;
         }
@@ -50,31 +46,11 @@ namespace Wordki.Infrastructure.Repositories
             }
         }
 
-        public async Task<IEnumerable<Word>> GetAllAsync()
-        {
-            return await context.Words.ToListAsync();
-        }
-
-        public async Task<IEnumerable<Word>> GetAllAsync(long userId)
-        {
-            return await context.Words.Where(x => x.UserId == userId).ToListAsync();
-        }
-
-        public async Task<Word> GetAsync(long id)
-        {
-            return await context.Words.SingleOrDefaultAsync(x => x.Id == id);
-        }
-
         public async Task RemoveAsync(long id)
         {
-            var word = await GetAsync(id);
-            if (word == null)
-            {
-                throw new ApiException($"Group with id '{id} not exits'", DTO.ErrorCode.RemovingFromDbException);
-            }
+            var word = new Word() { Id = id };
             context.Words.Remove(word);
             await context.SaveChangesAsync();
-
         }
 
         public async Task UpdateAsync(Word word)
