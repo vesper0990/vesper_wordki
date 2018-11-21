@@ -11,5 +11,6 @@ namespace Wordki.Infrastructure.Services
         Task<GroupDetailsDTO> AddAsync(GroupDetailsDTO group, long userId);
         Task UpdateAsync(GroupDTO groupDto, long userId);
         Task RemoveAsync(long id);
+        Task SplitGroup(GroupToSplitDTO groupToSplitDTO);
     }
 }

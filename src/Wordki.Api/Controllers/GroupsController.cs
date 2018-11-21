@@ -85,5 +85,17 @@ namespace Wordki.Api.Controllers
             await groupService.RemoveAsync(id);
             return Ok();
         }
+
+        [HttpPost("split")]
+        public async Task<IActionResult> Split([FromBody] GroupToSplitDTO groupToSplitDTO, [FromHeader] string apiKey)
+        {
+            if(groupToSplitDTO == null)
+            {
+                return StatusCode((int)HttpStatusCode.BadRequest, new ExceptionMessage(ErrorCode.NullArgumentException, $"Parameter {nameof(groupToSplitDTO)} cannot be null."));
+            }
+            long userId = await authenticator.Authenticate(apiKey);
+            await groupService.SplitGroup(groupToSplitDTO);
+            return Ok();
+        }
     }
 }

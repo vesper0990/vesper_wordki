@@ -5,6 +5,8 @@ using Wordki.Core.Repositories;
 using Wordki.Infrastructure.DTO;
 using AutoMapper;
 using Wordki.Core;
+using System;
+using Wordki.Core.Extensions;
 
 namespace Wordki.Infrastructure.Services
 {
@@ -12,6 +14,7 @@ namespace Wordki.Infrastructure.Services
     {
         private readonly IGroupQueryRepository groupQueryRepository;
         private readonly IGroupCommandRepository groupCommandRepository;
+        private readonly IWordCommandRepository wordCommandRepository;
         private readonly IMapper mapper;
 
         public GroupService(IGroupQueryRepository groupQueryRepository, IGroupCommandRepository groupCommandRepository, IMapper mapper)
@@ -58,6 +61,27 @@ namespace Wordki.Infrastructure.Services
         public async Task RemoveAsync(long id)
         {
             await groupCommandRepository.RemoveAsync(id);
+        }
+
+        public async Task SplitGroup(GroupToSplitDTO groupToSplitDTO)
+        {
+            var group = await groupQueryRepository.GetAsync(groupToSplitDTO.Id, true);
+            var dateTime = DateTime.Now;
+            var newGroup = new Group()
+            {
+                CreationDate = dateTime,
+                Language1 = group.Language1,
+                Language2 = group.Language2,
+                LastChange = dateTime,
+                Name = string.Format($"{group.Name}*"),
+                UserId = group.UserId,
+            };
+            await groupCommandRepository.AddAsync(newGroup);
+            for (var i = group.Words.Count - groupToSplitDTO.Factor; i < group.Words.Count; i++)
+            {
+                newGroup.AddWord(group.Words[i]);
+            }
+            await groupCommandRepository.UpdateAsync(newGroup);
         }
 
         public async Task UpdateAsync(GroupDTO groupDto, long userId)
