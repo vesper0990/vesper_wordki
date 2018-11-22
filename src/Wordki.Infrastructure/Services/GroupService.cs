@@ -52,7 +52,6 @@ namespace Wordki.Infrastructure.Services
                             CreationDate = g.CreationDate,
                             WordsCount = g.Words.Count(x => x.State >= 0),
                             ResultsCount = g.Results.Count(x => x.State >= 0),
-                            LastLessonDate = g.Results.Where(x => x.State >= 0).DefaultIfEmpty().Max(x => x != null ? x.DateTime : new System.DateTime()),
                         });
             });
 
