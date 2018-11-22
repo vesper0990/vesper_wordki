@@ -1,7 +1,0 @@
-docker rm -v wordki
-docker rm -v builder
-docker rm -v db
-docker rmi wordki
-docker rmi wordki.builder
-docker volume rm scripts_appbuild
-docker volume rm scripts_dbvol

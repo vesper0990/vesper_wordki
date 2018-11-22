@@ -1,0 +1,13 @@
+{
+  "Logging": {
+    "IncludeScopes": false,
+    "LogLevel": {
+      "Default": "Warning"
+    }
+  },
+  "General": {
+    "Database": "MySql",
+    "ConnectionString" : "Server=db;database=Wordki;uid=vesper0990;pwd=Arh517117;",
+    "SeedData": true
+  }
+}
