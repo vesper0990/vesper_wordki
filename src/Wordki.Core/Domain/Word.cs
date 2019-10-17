@@ -1,40 +1,57 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
 
 namespace Wordki.Core
 {
     public class Word
     {
-        public long Id { get; set; }
-        public long GroupId { get; set; }
-        [JsonIgnore]
-        public Group Group { get; set; }
-        public long UserId { get; set; }
-        public string Language1 { get; set; }
-        public string Language2 { get; set; }
-        public string Language1Example { get; set; }
-        public string Language2Example { get; set; }
-        [Range(0, 5)]
-        public byte Drawer { get; set; }
-        public bool IsVisible { get; set; }
-        public int State { get; set; }
-        public bool IsSelected { get; set; }
-        public ushort RepeatingCounter { get; set; }
-        public DateTime LastRepeating { get; set; }
-        public string Comment { get; set; }
-        public DateTime LastChange { get; set; }
-
-        public Word()
+        private Word(Guid id, Guid groupId, string language1, string language2, string exapmle1, string exapmle2, string comment, Drawer drawer, bool isVisible, DateTime creationDate)
         {
-            Id = 0;
-            Language1 = string.Empty;
-            Language2 = string.Empty;
-            Language1Example = string.Empty;
-            Language2Example = string.Empty;
-            IsVisible = true;
-            State = int.MaxValue;
-            Comment = string.Empty;
+            Id = id;
+            GroupId = groupId;
+            Language1 = language1;
+            Language2 = language2;
+            Exapmle1 = exapmle1;
+            Exapmle2 = exapmle2;
+            Comment = comment;
+            Drawer = drawer;
+            IsVisible = isVisible;
+            CreationDate = creationDate;
+        }
+
+        public Guid Id { get; }
+        public Guid GroupId { get; }
+        public string Language1 { get; private set; }
+        public string Language2 { get; private set; }
+        public string Exapmle1 { get; private set; }
+        public string Exapmle2 { get; private set; }
+        public string Comment { get; }
+        public Drawer Drawer { get; }
+        public bool IsVisible { get; }
+        public DateTime CreationDate { get; }
+
+        public static Word Create(Guid groupId, string language1, string language2, string exapmle1, string example2, string comment, DateTime creationDate)
+        {
+            var id = Guid.NewGuid();
+            var drawer = Drawer.Create();
+            var isVisible = true;
+            return new Word(id, groupId, language1, language2, exapmle1, example2, comment, drawer, isVisible, creationDate);
+        }
+
+        public static Word Restore(Guid id, Guid groupId, string language1, string language2, string exapmle1, string exapmle2,
+            string comment, Drawer drawer, bool isVisible, DateTime creationDate)
+        {
+            return new Word(id, groupId, language1, language2, exapmle1, exapmle2, comment, drawer, isVisible, creationDate);
+        }
+
+        internal void Swap()
+        {
+            var temp = Language1;
+            Language1 = Language2;
+            Language2 = Language1;
+
+            temp = Exapmle1;
+            Exapmle1 = Exapmle2;
+            Exapmle2 = temp;
         }
     }
 }

@@ -1,10 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace Wordki.Infrastructure.Services
 {
+
+    public interface IEncrypter
+    {
+
+        string GetSalt(string value);
+        string GetHash(string value, string salt);
+        string Md5Hash(string value);
+
+    }
+
     public class Encrypter : IEncrypter
     {
 
@@ -13,11 +22,11 @@ namespace Wordki.Infrastructure.Services
 
         public string GetHash(string value, string salt)
         {
-            if (value.IsEmpty())
+            if (string.IsNullOrWhiteSpace(value))
             {
                 throw new ArgumentException("Cannot generate salt from an empty value.", nameof(value));
             }
-            if (salt.IsEmpty())
+            if (string.IsNullOrWhiteSpace(salt))
             {
                 throw new ArgumentException("Cannot generate salt from an empty value.", nameof(salt));
             }
@@ -28,7 +37,7 @@ namespace Wordki.Infrastructure.Services
 
         public string GetSalt(string value)
         {
-            if (value.IsEmpty())
+            if (string.IsNullOrWhiteSpace(value))
             {
                 throw new ArgumentException("Cannot generate salt from an empty value.", nameof(value));
             }
@@ -61,10 +70,5 @@ namespace Wordki.Infrastructure.Services
             }
             return builder.ToString();
         }
-    }
-
-    public static class StringExtention
-    {
-        public static bool IsEmpty(this string value) => string.IsNullOrWhiteSpace(value);
     }
 }

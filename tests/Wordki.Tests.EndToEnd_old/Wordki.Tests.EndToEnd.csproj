@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="nlog.config" />
+    <None Remove="settings.debug.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="nlog.config">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="settings.debug.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.App" Version="3.0.0" />
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
+      <PackageReference Include="Moq" Version="4.9.0" />
+      <PackageReference Include="NUnit" Version="3.10.1" />
+      <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+      <PackageReference Include="xunit" Version="2.4.0" />
+      <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+      <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.2.0" />
+    </ItemGroup>
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Wordki.Api\Wordki.Api.csproj" />
+    <ProjectReference Include="..\..\src\Wordki.Core\Wordki.Core.csproj" />
+    <ProjectReference Include="..\..\src\Wordki.Infrastructure\Wordki.Infrastructure.csproj" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+</Project>

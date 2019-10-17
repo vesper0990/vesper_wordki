@@ -1,0 +1,35 @@
+version: '3'
+services:
+ wordki:
+  container_name: wordki
+  image: wordki
+  build:
+   context: ../../
+   dockerfile: ./src/Wordki.Api/Dockerfile
+   args:
+    URL_PORT: 5000
+  ports:
+   - "5000:5000"
+  links:
+   - mysql
+  environment:
+   MYSQL_SERVER_NAME: db
+  env_file:
+   - secrets.env
+ mysql:
+  container_name: db
+  image: mysql/mysql-server:5.7
+  restart: always
+  ports:
+   - "3306:3306"
+  volumes:
+   - dbvol:/var/lib/mysql
+  environment:
+   MYSQL_ROOT_PASSWORD: Akuku123
+  env_file:
+   - secrets.env
+  command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
+volumes:
+ dbvol:
+  external:
+   name: dbvol
