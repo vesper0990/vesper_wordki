@@ -1,33 +1,27 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule} from '@angular/router';
-import { WordkiComponent } from './wordki.component';
-import { MenuComponent as WordkiMenu } from './common/components';
+import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'wordki',
-    component: WordkiComponent,
-    loadChildren: './wordki.module#WordkiModule',
+    path: 'dashboard',
+    loadChildren: './dashboard/dashboard.module#DashboardModule'
   },
   {
-    path: '',
-    outlet: 'wordkiMenu',
-    component: WordkiMenu,
+    path: 'groups',
+    loadChildren: './groups/groups.module#GroupsModule'
   },
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
+    path: 'words',
+    loadChildren: './words/words.module#WordsModule'
+  },
+  {
+    path: 'lesson',
+    loadChildren: './lesson/lesson.module#LessonModule'
   }
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' })
-  ],
-  exports: [RouterModule],
-  providers: []
+  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' })],
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }
-
-
