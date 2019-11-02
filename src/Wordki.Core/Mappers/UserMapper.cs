@@ -6,17 +6,17 @@ namespace Wordki.Core.Mappers
 {
     public class UserMapper : IMapper<UserDto, User>
     {
-        private readonly IUserFactory userFactory;
+        private readonly IUserRestoration userRestoration;
 
-        public UserMapper(IUserFactory userFactory)
+        public UserMapper(IUserRestoration userRestoration)
         {
-            this.userFactory = userFactory;
+            this.userRestoration = userRestoration;
         }
 
         public User Map(UserDto dto)
         {
             var id = new Guid(dto.Guid);
-            return userFactory.Restore(id, dto.Name, dto.Password, dto.CreationDate, dto.LastLoginDate);
+            return userRestoration.Restore(id, dto.Name, dto.Password, dto.CreationDate, dto.LastLoginDate);
         }
     }
 }

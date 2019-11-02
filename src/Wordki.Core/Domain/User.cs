@@ -6,27 +6,42 @@ namespace Wordki.Core
 {
     public class User : IDomainObject
     {
-        private readonly ITimeProvider timeProvider;
-
         public Guid? Id { get; }
         public string Name { get; }
         public string Password { get; }
         public DateTime CreationDate { get; }
         public DateTime? LastLoginDate { get; private set; }
 
-        private User(Guid? id, string name, string password, DateTime creationDate, DateTime? lastLoginDate, ITimeProvider timeProvider)
+        private User(Guid? id, string name, string password, DateTime creationDate, DateTime? lastLoginDate)
         {
             Id = id;
             Name = name;
             Password = password;
             CreationDate = creationDate;
             LastLoginDate = lastLoginDate;
-            this.timeProvider = timeProvider;
         }
 
-        public void Login()
+        public class UserLogin : IUserLogin
         {
-            LastLoginDate = timeProvider.GetTime();
+            private readonly ITimeProvider timeProvider;
+
+            public UserLogin(ITimeProvider timeProvider)
+            {
+                this.timeProvider = timeProvider;
+            }
+
+            public void Login(User user)
+            {
+                user.LastLoginDate = timeProvider.GetTime();
+            }
+        }
+
+        public class UserRestoration : IUserRestoration
+        {
+            public User Restore(Guid id, string name, string password, DateTime creationDate, DateTime? lastLoginDate)
+            {
+                return new User(id, name, password, creationDate, lastLoginDate);
+            }
         }
 
         public class UserFactory : IUserFactory
@@ -37,24 +52,25 @@ namespace Wordki.Core
             {
                 this.timeProvider = timeProvider;
             }
-
-            public User Restore(Guid id, string name, string password, DateTime creationDate, DateTime? lastLoginDate)
-            {
-                return new User(id, name, password, creationDate, lastLoginDate, timeProvider);
-            }
-
             public User Create(string name, string password)
             {
                 var creationTime = timeProvider.GetTime();
-                return new User(null, name, password, creationTime, null, timeProvider);
+                return new User(null, name, password, creationTime, null);
             }
         }
     }
 
-    public interface IUserFactory
+    public interface IUserLogin
+    {
+        void Login(User user);
+    }
+    public interface IUserRestoration
     {
         User Restore(Guid id, string name, string password, DateTime creationDate, DateTime? lastLoginDate);
+    }
 
+    public interface IUserFactory
+    {
         User Create(string name, string password);
     }
 }

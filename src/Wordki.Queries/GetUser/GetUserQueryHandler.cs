@@ -8,12 +8,12 @@ namespace Wordki.Queries.GetUser
 {
     public class GetUserQueryHandler : IQueryHandler<GetUserQuery, GetUserDto>
     {
-        private readonly IUserFactory userFactory;
+        private readonly IUserRestoration userRestoration;
         private readonly IEncrypter encrypter;
 
-        public GetUserQueryHandler(IUserFactory userFactory, IEncrypter encrypter)
+        public GetUserQueryHandler(IUserRestoration userRestoration, IEncrypter encrypter)
         {
-            this.userFactory = userFactory;
+            this.userRestoration = userRestoration;
             this.encrypter = encrypter;
         }
 
@@ -22,7 +22,7 @@ namespace Wordki.Queries.GetUser
             var id = Guid.NewGuid();
             var hashPassword = encrypter.Md5Hash(query.Password);
             var creationDate = new DateTime(1990, 9, 24);
-            var user = userFactory.Restore(id, query.Name, hashPassword, creationDate, null);
+            var user = userRestoration.Restore(id, query.Name, hashPassword, creationDate, null);
             var result = new GetUserDto
             {
                 User = user
