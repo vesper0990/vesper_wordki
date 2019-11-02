@@ -1,0 +1,34 @@
+.language {
+    text-align: center;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    .word{
+        font-size: 2em;
+    }
+
+    .example{
+        font-size: 1.2em;
+        color: rgb(100, 100, 100);
+    }
+}
+
+.word-info {
+    margin: 15px 0;
+    background-color: rgba(125, 125, 125, 0.1);
+    border-radius: 4px;
+    .word-info-item {
+        margin: 5px 5px;
+        div:first-child {
+            font-size: 13px;
+        }
+        div:last-child {
+            font-weight: 500
+        }
+    }
+    .word-info-item:hover {
+        background-color: rgba(125, 125, 125, 0.1);
+        border-radius: 3px;
+        margin: 5px 5px;
+    }
+}

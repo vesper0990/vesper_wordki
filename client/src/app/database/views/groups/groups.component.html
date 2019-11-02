@@ -1,0 +1,11 @@
+<!-- <div class="stats">
+    <app-groups-stats></app-groups-stats>
+</div> -->
+<div class="main-list">
+    <div (click)="addClick()" class="organizer">Dodaj</div>
+    <ng-container *ngFor="let group of groups">
+        <app-group-row [group]="group"></app-group-row>
+        <hr>
+    </ng-container>
+</div>
+<app-modal-add-group [(visible)]="addGroupModalVisibility" [mode]="modalMode" (success)="isSuccess($event)"></app-modal-add-group>

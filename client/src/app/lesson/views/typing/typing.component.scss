@@ -1,0 +1,28 @@
+.container-main {
+    background-color: #ffffffee;
+    border-radius: 5px;
+}
+
+.language-label {
+    text-align: center;
+    height: 70px;
+    font-size: 60px;
+    font-weight: bold;
+}
+
+.example-label {
+    color: #888;
+    text-align: center;
+}
+
+.button-action {
+    width: 25%;
+    margin: 10px;
+}
+
+@media(max-width: 991px) {
+    .language-label {
+        font-size: 30px;
+        overflow: auto;
+    }
+}

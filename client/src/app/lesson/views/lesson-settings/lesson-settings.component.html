@@ -1,0 +1,38 @@
+<div class="main-container">
+  <h4 class="modal-title">Ustawienia lekcji</h4>
+  <div class="form-body">
+    <div class="row input-row">
+      <label class="col-lg-3">Język pytania</label>
+      <div class="col-lg-9">
+        <app-dropdown-base-b [items]="languages" [(selectedItem)]="selectedLanguage">
+          <ng-template #itemTemplate let-item>
+            <app-dropdown-item-language [language]="item"></app-dropdown-item-language>
+          </ng-template>
+        </app-dropdown-base-b>
+      </div>
+    </div>
+    <div class="row input-row">
+      <label class="col-lg-3">Typ lekcji</label>
+      <div class="col-lg-9">
+        <app-dropdown-base-b [items]="lessonTypes" [(selectedItem)]="selectedLessonType">
+          <ng-template #itemTemplate let-item>
+            {{item.name}}
+          </ng-template>
+        </app-dropdown-base-b>
+      </div>
+    </div>
+    <div class="row input-row">
+      <div class="col-lg-3">
+        <span></span>
+      </div>
+      <div class="col-lg-9 form-check">
+        <input [(ngModel)]="allWords" type="checkbox" class="form-check-input" id="allWords">
+        <label class="form-check-label" for="allWords">Wszystkie słowa</label>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="align-right">
+    <button class="button-submit" (click)="startLesson()">Rozpocznij</button>
+  </div>
+</div>

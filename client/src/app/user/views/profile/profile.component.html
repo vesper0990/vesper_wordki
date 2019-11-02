@@ -1,0 +1,17 @@
+<p>
+  <button (click)="click()">test</button>
+  <app-modal-base [header]="'Jakiś header'" [(visible)]="isVisible" [static]="false" [style]="{width: '1000px'}">
+    <app-dropdown-base-b [items]="items">
+      <ng-template #itemTemplate let-item>
+        --{{item}}
+      </ng-template>
+    </app-dropdown-base-b>
+    <ng-template #footer>
+      <span></span>
+      <div class="o-modal-footer-button">
+        <button (click)="closeDialog()">Yes</button>
+        <button (click)="closeDialog()">No</button>
+      </div>
+    </ng-template>
+  </app-modal-base>
+</p>

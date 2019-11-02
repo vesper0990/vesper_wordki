@@ -1,0 +1,46 @@
+<div class="container container-main">
+  <div class="row">
+    <div class="col col-lg-3">
+      Wyświetlone słowa: {{answerCounter}}
+    </div>
+    <div class="col col-lg-3">
+      Pozostałe: {{remainingWords}} / {{allWords}}
+    </div>
+    <div class="col col-lg-3">
+      Poprawne: {{correctCounter}}
+    </div>
+    <div class="col col-lg-3">
+      Błędne: {{wrongCounter}}
+    </div>
+  </div>
+  <div class="words-container">
+    <p class="language-label">
+      <span>&#160;</span>
+      {{question}}
+    </p>
+    <p class="example-label">
+      <span>&#160;</span>
+      {{questionExample}}
+    </p>
+    <hr>
+    <p class="example-label">
+      <span>&#160;</span>
+      {{answareExample}}
+    </p>
+    <div class="form-group">
+      <input class="form-control text-center language-label" (keyup.enter)="onEnterClick()" [ngStyle]="{'color':color}" [(ngModel)]="answare" autocomplete="off"/>
+    </div>
+  </div>
+  <div class="buttons-container">
+    <div class="text-center" *ngIf="needToStart">
+      <button class="btn btn-primary button-action" title="[Enter]" (click)="startLesson()">Rozpocznij</button>
+    </div>
+    <div class="text-center" *ngIf="needToAnsware">
+      <button class="btn btn-danger button-action" title="[Enter]" (click)="unknow()">Nie znam</button>
+      <button class="btn btn-success button-action" title="[Enter]" (click)="know()">Znam</button>
+    </div>
+    <div class="text-center" *ngIf="needToCheck">
+      <button class="btn btn-warning button-action" title="[Enter]" (click)="check()">Sprawdź</button>
+    </div>
+  </div>
+</div>

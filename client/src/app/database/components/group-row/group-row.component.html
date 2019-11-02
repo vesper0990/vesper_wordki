@@ -1,0 +1,42 @@
+<div *ngIf="group" class="row">
+  <div class="col-lg-4">
+    <div class="group-name">
+      <a [routerLink]="['../group/', group.id]">{{group.name}}</a>
+    </div>
+  </div>
+  <div class="col group-info">
+    <div class="row group-info-item">
+      <div class="col">
+        Słowa:
+      </div>
+      <div class="col">
+        {{group.wordsCount}}
+      </div>
+    </div>
+    <div class="row group-info-item">
+      <div class="col">
+        Wyniki:
+      </div>
+      <div class="col">
+        {{group.resultsCount}}
+      </div>
+    </div>
+    <div class="row group-info-item">
+      <div class="col no-wrap">
+        Ostatnia lekcja:
+      </div>
+      <div class="col">
+        <ng-container *ngIf="group.lastLessonDate else noLastLesson">
+          {{group.lastLessonDate | howLongAgo}}
+        </ng-container>
+        <ng-template #noLastLesson>
+          -
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    L1: {{group.language1.languageEnum}}
+    L2: {{group.language2.languageEnum}}
+  </div>
+</div>

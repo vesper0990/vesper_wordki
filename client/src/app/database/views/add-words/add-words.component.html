@@ -1,0 +1,27 @@
+<div class="container">
+  <textarea class="row" style="width: 100%" [(ngModel)]="content"></textarea>
+  <div class="row">
+    <button class="btn btn-warning" (click)="clear()">Wyczyść</button>
+    <button class="btn btn-primary" (click)="create()">Stworz</button>
+    <button class="btn btn-success" (click)="save()">Zapisz</button>
+  </div>
+  <div class="row">
+    <table class="table table-hover">
+      <thead>
+        <th style="text-align:center">Język 1</th>
+        <th style="text-align:center">Język 2</th>
+        <th></th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of words">
+          <td style="text-align:center">{{item.language1}}</td>
+          <td style="text-align:center">{{item.language2}}</td>
+          <td style="text-align:center">
+            <button class="btn btn-primary" (click)="updateWordClick(item)" data-toggle="modal" data-target="#newWordModal">Edytuj</button>
+            <button class="btn btn-danger" (click)="remove(item)">Usuń</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+.input-cell {
+    padding: 5px 10px;
+    width: 80%;
+}
+
+.form-control {
+    border: none;
+    border-radius: 5px;
+}
+
+.form-control:focus {
+    border: 0px solid transparent;
+}
+
+.center-align {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-body {
+    padding: 20px 0;
+}

@@ -1,0 +1,14 @@
+@import 'src/styles/constants.scss';
+
+.dropdown-menu{
+  background-color: #ffffff90; 
+}
+
+.dropdown-item.active, .dropdown-item:active {
+  background-color: transparent;
+}
+
+.dropdown-item {
+  background-color: transparent;
+  cursor: pointer;
+}

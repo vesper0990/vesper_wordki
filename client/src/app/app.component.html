@@ -1,0 +1,19 @@
+<nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+  <a class="navbar-brand" [routerLink]="['/']" routerLinkActive="router-link-active">Oaza chaosu</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="navbar-nav mr-auto">
+    </div>
+    <form class="form-inline my-2 my-lg-0">
+      <router-outlet name="homeMenu"></router-outlet>
+      <router-outlet name="wordkiMenu"></router-outlet>
+    </form>
+  </div>
+</nav>
+<div style="padding: 50px 0;" class="container">
+  <router-outlet></router-outlet>
+</div>
