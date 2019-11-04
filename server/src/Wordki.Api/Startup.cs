@@ -18,7 +18,7 @@ using Wordki.Queries;
 using Wordki.Infrastructure;
 using Wordki.Utils.Dapper;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Mvc.Authorization;
+using Wordki.Utils.Database;
 
 namespace Wordki
 {
@@ -68,6 +68,7 @@ namespace Wordki
             services.AddScoped<ExceptionHandlerMiddleware>();
             services.AddScoped<IDbConnectionProvdier, DbConnectionProvider>();
             services.AddScoped<ITimeProvider, TimeProvider>();
+            services.AddScoped<IMigrationProvider, MigrationProvider>();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -85,6 +86,8 @@ namespace Wordki
             app.UseMiddleware<ExceptionHandlerMiddleware>();
             app.UseAuthentication();
             app.UseMvc();
+            var migrationProvider = app.ApplicationServices.GetService<IMigrationProvider>();
+            migrationProvider.Migrate("192.168.99.100", 3306, "Wordki", "versper0990", "Arh517117");
 
             var appLifeTime = app.ApplicationServices.GetService<IHostApplicationLifetime>();
             appLifeTime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());

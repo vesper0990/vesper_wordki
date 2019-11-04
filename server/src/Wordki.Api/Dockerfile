@@ -1,10 +1,10 @@
-FROM microsoft/dotnet:3.0-aspnetcore-runtime AS base
+FROM mcr.microsoft.com/dotnet/core/runtime:3.0 AS base
 WORKDIR /app
 EXPOSE 5000
 
 ENV ASPNETCORE_URLS=http://+:5000
 
-FROM microsoft/dotnet:3.0-sdk AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
 WORKDIR /src
 COPY ["src/Wordki.Api/Wordki.Api.csproj", "src/Wordki.Api/"]
 COPY ["src/Wordki.Infrastructure/Wordki.Infrastructure.csproj", "src/Wordki.Infrastructure/"]
