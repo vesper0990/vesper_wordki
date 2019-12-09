@@ -15,22 +15,6 @@ namespace Wordki.Utils.Database
     public class MigrationProvider : IMigrationProvider
     {
         private static readonly string MigrationTableName = "Migrations";
-        private static readonly string CreateMigrationSql = $@"
-CREATE TABLE `{MigrationTableName}` (
-	`id`                INT UNIQUE AUTO_INCREMENT NOT NULL
-    `executingDate`    DATE NOT NULL,
-    `fileName`         TEXT NOT NULL
-);";
-        
-        private static readonly string SelectMiggrationSql = $@"
-SELECT * FROM `{MigrationTableName}`
-";
-        private static readonly string AddMigrationSql = $@"
-INSERT INTO `{MigrationTableName}` (`executingDate`, `fileName`) 
-VALUES (@ExecutingDate, @FileName)
-";
-
-        private readonly MigrationSettings settings;
 
         public async Task Migrate(string host, uint port, string database, string userId, string password)
         {
@@ -47,11 +31,15 @@ VALUES (@ExecutingDate, @FileName)
                 var dbConnection = new MySqlConnection(connectionStringBuilder.ConnectionString);
                 await dbConnection.OpenAsync();
 
-                if(!(await MigrationTableExists(dbConnection)))
+                if (!(await MigrationTableExists(dbConnection)))
                 {
                     await CreateMigrationTable(dbConnection);
                 }
-            }catch(Exception e)
+
+                var migrations = await GetMigrations(dbConnection);
+
+            }
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 throw;
@@ -62,11 +50,20 @@ VALUES (@ExecutingDate, @FileName)
         {
             using (var command = connection.CreateCommand())
             {
-                command.CommandText = $"SHOW TABLES LIKE '${MigrationTableName}'";
+                command.CommandText = $"SHOW TABLES LIKE '{MigrationTableName}'";
                 var reader = await command.ExecuteReaderAsync();
-                return reader.HasRows;
+                return reader.Read() && reader.HasRows;
             }
         }
+
+        private static readonly string CreateMigrationSql = $@"
+CREATE TABLE `{MigrationTableName}` (
+	`id`                    INT UNIQUE AUTO_INCREMENT NOT NULL,
+    `executionDate`         DATE NOT NULL,
+    `identificator`         TEXT NOT NULL,
+    `scriptContent`         TEXT NOT NULL,
+    `rollback`              TEXT NOT NULL
+);";
 
         private async Task CreateMigrationTable(DbConnection connection)
         {
@@ -77,49 +74,136 @@ VALUES (@ExecutingDate, @FileName)
             }
         }
 
+        private static readonly string SelectMigrationSql = $@"
+SELECT * FROM `{MigrationTableName}`
+";
+
         private async Task<IEnumerable<Migration>> GetMigrations(DbConnection connection)
         {
             using (var command = connection.CreateCommand())
             {
                 var migrations = new List<Migration>();
-                command.CommandText = CreateMigrationSql;
+                command.CommandText = SelectMigrationSql;
                 var reader = await command.ExecuteReaderAsync();
                 while (reader.Read())
                 {
                     migrations.Add(new Migration
                     {
                         Id = reader.GetInt32(1),
-                        ExecutingTime = reader.GetDateTime(2),
-                        FileName = reader.GetString(3)
+                        ExecutionTime = reader.GetDateTime(2),
+                        Identificator = reader.GetString(3),
+                        Script = reader.GetString(4),
+                        Rollback = reader.GetString(5)
                     });
                 };
                 return migrations;
             }
         }
 
-        private async Task AddMigration(DbConnection connection, string fileName)
+
+        private static readonly string AddMigrationSql = $@"
+INSERT INTO `{MigrationTableName}` (`executionDate`, `identificator`, `scriptContent`, `rollback`) 
+VALUES (@ExecutionDate, @Identificator, @ScriptContent, @Rollback)
+";
+
+        private async Task AddMigration(DbConnection connection,
+            string identificator,
+            string scriptContent,
+            string rollback)
         {
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = AddMigrationSql;
 
                 DbParameter parameter = command.CreateParameter();
-                parameter.ParameterName = "@ExecutingDate";
+                parameter.ParameterName = "@ExecutionDate";
                 parameter.DbType = DbType.DateTime;
                 parameter.Direction = ParameterDirection.Input;
                 parameter.Value = DateTime.Now;
                 command.Parameters.Add(parameter);
 
                 parameter = command.CreateParameter();
-                parameter.ParameterName = "@FileName";
+                parameter.ParameterName = "@Identificator";
                 parameter.DbType = DbType.String;
                 parameter.Direction = ParameterDirection.Input;
-                parameter.Value = fileName;
+                parameter.Value = identificator;
+                command.Parameters.Add(parameter);
+
+                parameter = command.CreateParameter();
+                parameter.ParameterName = "@Script";
+                parameter.DbType = DbType.String;
+                parameter.Direction = ParameterDirection.Input;
+                parameter.Value = scriptContent;
+                command.Parameters.Add(parameter);
+
+                parameter = command.CreateParameter();
+                parameter.ParameterName = "@Rollback";
+                parameter.DbType = DbType.String;
+                parameter.Direction = ParameterDirection.Input;
+                parameter.Value = rollback;
                 command.Parameters.Add(parameter);
 
                 await command.ExecuteNonQueryAsync();
             }
         }
+
+        private static readonly string RemoveMigrationSql = $@"
+DELETE FROM `{MigrationTableName}` 
+WHERE `Identificator` = @Identificator;";
+
+        private async Task RemoveMigration(DbConnection dbConnection, string identificator)
+        {
+            using (var command = dbConnection.CreateCommand())
+            {
+                command.CommandText = RemoveMigrationSql;
+
+                DbParameter parameter = command.CreateParameter();
+                parameter.ParameterName = "@Identificator";
+                parameter.DbType = DbType.DateTime;
+                parameter.Direction = ParameterDirection.Input;
+                parameter.Value = identificator;
+                command.Parameters.Add(parameter);
+
+                await command.ExecuteNonQueryAsync();
+            }
+        }
+
+        private async Task<bool> ExecuteMigration(DbConnection dbConnection, Migration migration)
+        {
+            try
+            {
+                using (var command = dbConnection.CreateCommand())
+                {
+                    command.CommandText = migration.Script;
+                    await command.ExecuteNonQueryAsync();
+                }
+                await AddMigration(dbConnection, migration.Identificator, migration.Script, migration.Rollback);
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private async Task<bool> RollbackMigration(DbConnection dbConnection, Migration migration)
+        {
+            try
+            {
+                using (var command = dbConnection.CreateCommand())
+                {
+                    command.CommandText = migration.Rollback;
+                    await command.ExecuteNonQueryAsync();
+                }
+                await AddMigration(dbConnection, migration.Identificator, migration.Script, migration.Rollback);
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return true;
+        }
+
     }
 
     public class MigrationSettings
@@ -134,7 +218,9 @@ VALUES (@ExecutingDate, @FileName)
     public class Migration
     {
         public int Id { get; set; }
-        public DateTime ExecutingTime { get; set; }
-        public string FileName { get; set; }
+        public DateTime ExecutionTime { get; set; }
+        public string Identificator { get; set; }
+        public string Script { get; set; }
+        public string Rollback { get; set; }
     }
 }

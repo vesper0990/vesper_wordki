@@ -20,8 +20,8 @@ namespace Wordki.Api.Authentication
             this.authenticationService = authenticationService;
         }
 
-        [HttpPost("authenticate")]
-        public async Task<ActionResult> Authenticate([FromBody] AuthenticateRequest request)
+        [HttpPost]
+        public async Task<IActionResult> Authenticate([FromBody] AuthenticateRequest request)
         {
             var query = GetUserQuery.Create(request.Name, request.Password);
             var user = await queryHandler.HandleAsync(query);

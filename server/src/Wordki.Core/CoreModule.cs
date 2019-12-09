@@ -10,9 +10,9 @@ namespace Wordki.Core
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<UserRepository>().AsImplementedInterfaces();
-
             builder.RegisterType<User.UserFactory>().AsImplementedInterfaces();
-
+            builder.RegisterType<User.UserLogin>().AsImplementedInterfaces();
+            builder.RegisterType<User.UserRestoration>().AsImplementedInterfaces();
             builder.RegisterType<UserMapper>().AsImplementedInterfaces();
         }
     }

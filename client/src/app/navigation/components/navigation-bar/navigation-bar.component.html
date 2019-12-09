@@ -1,0 +1,9 @@
+<nav>
+  <ng-container *ngIf="isLogin; else loggedOut">
+    <a [routerLink]="['/user/logout']">Wyloguj</a>
+  </ng-container>
+</nav>
+
+<ng-template #loggedOut>
+  <a [routerLink]="['/user/login']">Zaloguj</a>
+</ng-template>

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System.Net;
+using System.Text;
 using Wordki.Infrastructure.Framework.ExceptionMiddleware;
 
 namespace Wordki.Api.Test
@@ -8,16 +10,22 @@ namespace Wordki.Api.Test
     [Route("[controller]")]
     public class TestController : ControllerBase
     {
-        public TestController()
-        {
+        private readonly IConfiguration configuration;
 
+        public TestController(IConfiguration configuration)
+        {
+            this.configuration = configuration;
         }
 
         [HttpGet("{value}")]
-        [Authorize(Roles="User")]
         public IActionResult Get(string value)
         {
-            return new JsonResult(new { Value = value });
+            var builder = new StringBuilder();
+            foreach (var item in configuration.AsEnumerable())
+            {
+                builder.AppendLine($"{item.Key}:${item.Value}\n");
+            };
+            return new JsonResult(new { Value = builder.ToString() });
         }
 
         [HttpPost]

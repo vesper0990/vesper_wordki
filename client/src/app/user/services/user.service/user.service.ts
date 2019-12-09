@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { UserProvider } from '../user.provider/user.provider';
+import { UserProviderBase } from '../user.provider/user.provider';
 import { CookieService } from 'ngx-cookie-service';
 import { User } from '../../model/user.model';
+import { Observable, BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,54 +11,58 @@ export class UserService {
 
   private readonly cookieTag = 'wordki-usr-tag';
 
-  private user: User;
+  private token: string;
+  private subject: BehaviorSubject<boolean>;
 
-  constructor(private userProvider: UserProvider,
-    private cookiesService: CookieService) { }
+  constructor(private userProvider: UserProviderBase,
+    private cookiesService: CookieService) {
+    this.subject = new BehaviorSubject<boolean>(false);
+  }
+
+  subscribe(): Observable<boolean> {
+    return this.subject.asObservable();
+  }
 
   getToken(): string {
-    if (!this.user) {
-      return null;
-    }
-    return this.user.token;
+    return this.token;
   }
 
   isLogin(): boolean {
-    return this.user != null;
+    return this.token != null;
   }
 
-  loginFromCookie() {
+  loginFromCookie(): void {
     if (!this.cookiesService.check(this.cookieTag)) {
       return;
     }
     const cookieValue = this.cookiesService.get(this.cookieTag);
-    const cookieObj = JSON.parse(cookieValue);
-    const user = new User(cookieObj.name, cookieObj.token);
-    this.user = user;
-    this.refresh();
-  }
-
-  login(): void {
-
+    this.token = JSON.parse(cookieValue);
+    this.sendToSubscribers();
   }
 
   logout(): void {
-    this.user = null;
+    this.token = null;
     if (this.cookiesService.check(this.cookieTag)) {
       this.cookiesService.delete(this.cookieTag);
     }
+    this.sendToSubscribers();
   }
 
-  refresh(): void {
-    if (!this.user) {
+  refresh(newToken: string): void {
+    if (newToken.length === 0) {
       return;
     }
-    this.userProvider.refreshToken(this.user.token).subscribe((token: string) => this.user.token = token);
+    this.token = newToken;
     this.saveCookie();
+    this.sendToSubscribers();
+  }
+
+  private sendToSubscribers(): void {
+    this.subject.next(this.token !== null);
   }
 
   private saveCookie(): void {
-    this.cookiesService.set(this.cookieTag, JSON.stringify(this.user));
+    this.cookiesService.set(this.cookieTag, JSON.stringify(this.token));
   }
 
 }

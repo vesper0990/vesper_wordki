@@ -19,12 +19,12 @@ using Wordki.Infrastructure;
 using Wordki.Utils.Dapper;
 using Microsoft.Extensions.Hosting;
 using Wordki.Utils.Database;
+using System;
 
 namespace Wordki
 {
     public class Startup
     {
-
         public IContainer ApplicationContainer { get; private set; }
         public IWebHostEnvironment HostingEnvironment { get; }
         public IConfiguration Configuration { get; }
@@ -61,6 +61,9 @@ namespace Wordki
                     ValidateAudience = false
                 };
             });
+            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
+                                                                    .AllowAnyMethod()
+                                                                     .AllowAnyHeader()));
             services.AddMvc(options =>
             {
                 options.EnableEndpointRouting = false;
@@ -86,8 +89,8 @@ namespace Wordki
             app.UseMiddleware<ExceptionHandlerMiddleware>();
             app.UseAuthentication();
             app.UseMvc();
-            var migrationProvider = app.ApplicationServices.GetService<IMigrationProvider>();
-            migrationProvider.Migrate("192.168.99.100", 3306, "Wordki", "versper0990", "Arh517117");
+            //var migrationProvider = app.ApplicationServices.GetService<IMigrationProvider>();
+            //migrationProvider.Migrate("192.168.99.100", 3306, "Wordki", "vesper0990", "pass2");
 
             var appLifeTime = app.ApplicationServices.GetService<IHostApplicationLifetime>();
             appLifeTime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
