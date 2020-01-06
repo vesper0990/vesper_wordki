@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { NavigationBarComponentMock } from './test/compontens.mock';
 import { UserService } from './authorization/services/user.service/user.service';
-import { of, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 describe('AppComponent', () => {
 
@@ -20,7 +20,7 @@ describe('AppComponent', () => {
         AppComponent,
         NavigationBarComponentMock
       ],
-      providers:[
+      providers: [
         {
           provide: UserService,
           useValue: jasmine.createSpyObj('userService', ['subscribe', 'loginFromCookie'])
