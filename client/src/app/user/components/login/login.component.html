@@ -1,4 +1,4 @@
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm.value)">
+<form [formGroup]="loginForm">
   <div>
   <label for="userName">Login</label>
     <input id="userName" type="text" formControlName="userName">
@@ -9,5 +9,5 @@
     <input id="password" type="text" formControlName="password">
   </div>
 
-  <button class="button" type="submit">Zaloguj</button>
+  <button class="button" (click)="onSubmit(loginForm.value)">Zaloguj</button>
 </form>

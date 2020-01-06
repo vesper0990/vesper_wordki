@@ -46,11 +46,11 @@ export class UserProvider extends UserProviderBase {
 export class UserProviderMock extends UserProviderBase {
 
   login(name: string, password: string): Observable<any> {
-    return of<any>();
+    return of<any>({});
   }
 
   getUser(name: string, password: string): Observable<any> {
-    return of<any>();
+    return of<any>({});
   }
 
   authenticate(name: string, password: string): Observable<string> {

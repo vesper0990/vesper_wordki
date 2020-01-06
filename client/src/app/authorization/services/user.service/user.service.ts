@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { UserProviderBase } from '../user.provider/user.provider';
+import { UserProviderBase } from '../../../user/services/user.provider/user.provider';
 import { CookieService } from 'ngx-cookie-service';
-import { User } from '../../model/user.model';
 import { Observable, BehaviorSubject} from 'rxjs';
 
 @Injectable({
@@ -14,8 +13,7 @@ export class UserService {
   private token: string;
   private subject: BehaviorSubject<boolean>;
 
-  constructor(private userProvider: UserProviderBase,
-    private cookiesService: CookieService) {
+  constructor(private cookiesService: CookieService) {
     this.subject = new BehaviorSubject<boolean>(false);
   }
 

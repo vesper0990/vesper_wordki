@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UserService } from './user/services/user.service/user.service';
+import { UserService } from './authorization/services/user.service/user.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -16,7 +16,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.userService.subscribe().subscribe((userExists: boolean) => this.isLogin = userExists);
+    this.userServiceSub = this.userService.subscribe().subscribe((userExists: boolean) => this.isLogin = userExists);
     this.login();
   }
 

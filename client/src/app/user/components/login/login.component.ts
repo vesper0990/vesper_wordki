@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { UserService } from '../../services/user.service/user.service';
+import { UserService } from '../../../authorization/services/user.service/user.service';
 import { Router } from '@angular/router';
 import { UserProviderBase } from '../../services/user.provider/user.provider';
 import { forkJoin } from 'rxjs';
 
 @Component({
-  selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent implements OnInit {
 
@@ -31,11 +31,11 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(value: { userName: string, password: string }): void {
-    forkJoin([
-      this.userProvider.login(value.userName, value.password),
-      this.userProvider.authenticate(value.userName, value.password)
-    ]).subscribe(results => {
-      this.userService.refresh(results[1].token);
+    forkJoin({
+      login: this.userProvider.login(value.userName, value.password),
+      authenticate: this.userProvider.authenticate(value.userName, value.password),
+    }).subscribe((result: { login: any, authenticate: any }) => {
+      this.userService.refresh(result.authenticate);
       this.router.navigate(['/dashboard']);
     },
       error => {
