@@ -1,2 +1,5 @@
 <p>group-details works!</p>
-{{id}}
+{{ groupDetails.name }}
+<ng-container *ngFor="let item of groupDetails.words">
+    <app-word-row [word]="item"></app-word-row>
+</ng-container>
