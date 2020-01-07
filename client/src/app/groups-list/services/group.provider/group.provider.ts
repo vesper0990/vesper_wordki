@@ -21,8 +21,22 @@ export class GroupProvider extends GroupProviderBase {
 
 export class GroupProviderMock extends GroupProviderBase {
 
+    constructor() {
+        super();
+    }
+
     getGroups(): Observable<GroupDto[]> {
-        return of<GroupDto[]>([]);
+        const groups: GroupDto[] = [];
+        for (let i = 0; i < 100; i++) {
+            groups.push({
+                id: i,
+                name: `group ${i}`,
+                language1: 1,
+                language2: 2,
+                wordsCount: 30 % i
+            });
+        }
+        return of<GroupDto[]>(groups);
     }
 
 }

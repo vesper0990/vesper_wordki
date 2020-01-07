@@ -1,0 +1,3 @@
+<ng-container *ngFor="let item of groups | async">
+  <app-group-row (click)="openGroup(item.id)" [group]="item"></app-group-row>
+</ng-container>

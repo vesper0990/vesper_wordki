@@ -5,6 +5,7 @@ import { Group } from './models/group.model';
 import { GroupMapper } from './services/group.mapper/group.mapper';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-groups',
@@ -16,10 +17,11 @@ export class GroupsComponent implements OnInit {
   groups: Observable<Group[]>;
 
   constructor(private groupProvider: GroupProviderBase,
-    private groupMapper: GroupMapper) { }
+    private groupMapper: GroupMapper,
+    private router: Router) { }
 
   ngOnInit() {
-    this.groupProvider
+    this.groups = this.groupProvider
       .getGroups()
       .pipe(
         map((values: GroupDto[]) => this.handleGroupsDto(values)),
@@ -35,4 +37,7 @@ export class GroupsComponent implements OnInit {
     return groups;
   }
 
+  openGroup(groupId: number): void {
+    this.router.navigate(['details', groupId]);
+  }
 }

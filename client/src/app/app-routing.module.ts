@@ -8,11 +8,11 @@ const routes: Routes = [
   },
   {
     path: 'groups',
-    loadChildren: './groups/groups.module#GroupsModule'
+    loadChildren: './groups-list/groups.module#GroupsModule'
   },
   {
-    path: 'words',
-    loadChildren: './words/words.module#WordsModule'
+    path: 'details',
+    loadChildren: './group-details/group-details.module#GroupDetailsModule'
   },
   {
     path: 'lesson',
