@@ -38,6 +38,6 @@ export class GroupsComponent implements OnInit {
   }
 
   openGroup(groupId: number): void {
-    this.router.navigate(['details', groupId]);
+    this.router.navigate(['lesson/group', groupId]);
   }
 }

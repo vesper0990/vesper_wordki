@@ -17,8 +17,4 @@ export class WordRowComponent implements OnInit {
   ngOnInit() {
   }
 
-  click(): void {
-    this.router.navigate(['error']);
-  }
-
 }

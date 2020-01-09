@@ -1,11 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LessonComponent } from './lesson.component';
+import { RepeatComponent } from './components/repeat/repeat.component';
+import { GroupComponent } from './components/group/group.component';
 
 const routes: Routes = [
   {
-    path: '',
-    component: LessonComponent
+    path: 'repeat',
+    component: RepeatComponent
+  },
+  {
+    path: 'group/:id',
+    component: GroupComponent
   }
 ];
 
