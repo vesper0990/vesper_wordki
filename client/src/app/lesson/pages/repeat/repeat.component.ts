@@ -27,7 +27,7 @@ export class RepeatComponent implements OnInit, OnDestroy {
     this.testSub = this.lessonStore.select(getFirstWord)
       .subscribe((storeValue: WordRepeat) => { this.word = storeValue; });
 
-    // this.lessonStore.dispatch(new GetWordsAction({ count: 2 }));
+    this.lessonStore.dispatch(new GetWordsAction({ count: 2 }));
     // this.wordProvider.getNextWord(2).subscribe(
     //   (words: WordRepeat[]) => this.handleGetNextWords(words),
     //   (error: any) => this.handleError(error));

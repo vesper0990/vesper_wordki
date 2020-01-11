@@ -17,6 +17,7 @@ import { reducer } from './store/reducer';
 import { InsertComponent } from './components/insert/insert.component';
 import { EffectsModule } from '@ngrx/effects';
 import { LessonEffects } from './store/effects';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { LessonEffects } from './store/effects';
   imports: [
     CommonModule,
     LessonRoutingModule,
+    HttpClientModule,
     StoreModule.forFeature('lessonStore', reducer),
     EffectsModule.forFeature([LessonEffects])
   ],

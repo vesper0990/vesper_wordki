@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { LessonActionTypes, RemoveWordAction, GetWordsAction, SetWordsAction } from './actions';
 import { ofType, Actions, Effect } from '@ngrx/effects';
-import { concatMap, switchMap, map } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { switchMap, map, mergeMap } from 'rxjs/operators';
 import { WordProviderBase } from '../services/word.provider/word.provider';
-import { WordRepeat } from '../models/word-repeat';
+import { LessonState } from './reducer';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class LessonEffects {
@@ -12,23 +12,34 @@ export class LessonEffects {
     @Effect()
     answerActionEffect$ = this.actions$.pipe(
         ofType(LessonActionTypes.Answer),
-        concatMap(() => {
-            const actions = [];
-
-            return of(actions);
+        switchMap(() => {
+            return [
+                new RemoveWordAction(),
+                new GetWordsAction({ count: 1 })
+            ];
         })
     );
 
-    @Effect()
+    @Effect({ dispatch: false })
     getWordsEffect$ = this.actions$.pipe(
         ofType(LessonActionTypes.GetWords),
-        switchMap(async (action: GetWordsAction) => {
-            const setWordAction = this.wordProvider.getNextWord(action.payload.count).pipe(map(x => new SetWordsAction(x)));
-            return setWordAction;
+        mergeMap(async (action: GetWordsAction) => {
+            this.wordProvider.getNextWordAsync(action.payload.count)
+                .then((x) => {
+                    console.log(x);
+                    this.lessonStore.dispatch(new SetWordsAction(x))
+                }
+                );
+            // return this.wordProvider.getNextWord(action.payload.count)
+            //     .pipe(
+            //         map(x => new SetWordsAction(x)
+            //         )
+            //     );
         })
     );
 
     constructor(private actions$: Actions,
-        private wordProvider: WordProviderBase) {
+        private wordProvider: WordProviderBase,
+        private lessonStore: Store<LessonState>) {
     }
 }

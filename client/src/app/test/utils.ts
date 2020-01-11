@@ -18,26 +18,27 @@ export function selectNativeElementByClass<T>(fixture: ComponentFixture<T>, $cla
     return selectDebugElementByClass<T>(fixture, $class).nativeElement;
 }
 
-export function selectDebugElement<T>(fixture: ComponentFixture<T>, type: string): DebugElement{
+export function selectDebugElement<T>(fixture: ComponentFixture<T>, type: string): DebugElement {
     return fixture.debugElement.query(By.css(type));
 }
 
-export function selectNativeElement<T>(fixture: ComponentFixture<T>, type: string): any{
+export function selectNativeElement<T>(fixture: ComponentFixture<T>, type: string): any {
     return selectDebugElement<T>(fixture, type).nativeElement;
 }
 
-export function inputValueToInputElementById<T>(fixture: ComponentFixture<T>, id: string, value: string): void{
-    let element = selectNativeElementById(fixture, id);
+export function inputValueToInputElementById<T>(fixture: ComponentFixture<T>, id: string, value: string): void {
+    const element = selectNativeElementById(fixture, id);
     element.value = value;
     element.dispatchEvent(new Event('input'));
 }
 
-export function inputValueToInputElementByClass<T>(fixture: ComponentFixture<T>, $class: string, value: string): void{
-    let element = selectNativeElementByClass(fixture, $class);
+export function inputValueToInputElementByClass<T>(fixture: ComponentFixture<T>, $class: string, value: string): void {
+    const element = selectNativeElementByClass(fixture, $class);
     element.value = value;
     element.dispatchEvent(new Event('input'));
 }
 
-export function clickButton<T>(fixture: ComponentFixture<T>): void{
+export function clickButton<T>(fixture: ComponentFixture<T>): void {
     selectNativeElement<T>(fixture, 'button').click();
 }
+
