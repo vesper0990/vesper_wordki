@@ -7,6 +7,8 @@ import { UserModule } from './user/user.module';
 import { ShareModule } from './share/share.module';
 import { NavigationModule } from './navigation/navigation.module';
 import { environment } from 'src/environments/environment';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { environment } from 'src/environments/environment';
     AppRoutingModule,
     UserModule,
     ShareModule,
-    NavigationModule
+    NavigationModule,
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([])
   ],
   providers: [],
   bootstrap: [AppComponent]

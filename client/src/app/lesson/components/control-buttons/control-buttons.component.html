@@ -1,1 +1,4 @@
-<p>control-buttons works!</p>
+<button *ngIf="startVisibility" (click)="startLesson()">Start</button>
+<button *ngIf="checkVisibility" (click)="check()">Check</button>
+<button *ngIf="answerVisibility" (click)="correct()">Correct</button>
+<button *ngIf="answerVisibility" (click)="incorrect()">Incorrect</button>

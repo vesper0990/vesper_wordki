@@ -4,24 +4,33 @@ import { WordRepeat } from '../../models/word-repeat';
 
 @Injectable()
 export abstract class WordProviderBase {
-    abstract getNextWord(): Observable<WordRepeat>;
+    abstract getNextWord(count: number): Observable<WordRepeat[]>;
 }
 
 export class WordProvider extends WordProviderBase {
-    getNextWord(): Observable<any> {
-        throw new Error('Method not implemented.');
+    getNextWord(count: number): Observable<WordRepeat[]> {
+        return of<WordRepeat[]>([]);
     }
 }
 
 export class WordProviderMock extends WordProviderBase {
 
-    getNextWord(): Observable<WordRepeat> {
-        return of<WordRepeat>({
-            id: 1,
-            language1: 'word',
-            language2: 'word',
-            drawer: 1
-        });
+    static index = 0;
+
+    getNextWord(count: number): Observable<WordRepeat[]> {
+        const result = [];
+        while (result.length < count) {
+            const i = WordProviderMock.index;
+            result.push({
+                id: i,
+                language1: `word ${i}`,
+                language2: `słowo ${i}`,
+                drawer: 1
+            });
+            WordProviderMock.index++;
+            console.log(WordProviderMock.index);
+        }
+        return of<WordRepeat[]>(result);
     }
 
 }

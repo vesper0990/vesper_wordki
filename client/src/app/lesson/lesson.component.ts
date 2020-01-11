@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { LessonState } from './store/reducer';
 
 @Component({
   selector: 'app-lesson',

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { RepeatComponent } from './components/repeat/repeat.component';
-import { GroupComponent } from './components/group/group.component';
+import { RepeatComponent } from './pages/repeat/repeat.component';
+import { GroupComponent } from './pages/group/group.component';
 
 const routes: Routes = [
   {

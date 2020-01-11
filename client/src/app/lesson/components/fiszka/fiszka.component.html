@@ -1,3 +1,4 @@
 <div>
-    {{language1}} -- {{language2}}
+    <span *ngIf="questionVisibility || answerVisibility">{{word.language1}}</span>
+    -- <span *ngIf="answerVisibility">{{word.language2}}</span>
 </div>
