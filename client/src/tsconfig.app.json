@@ -8,5 +8,4 @@
     "test.ts",
     "**/*.spec.ts"
   ],
-  "emitDecoratorMetadata": true
 }
