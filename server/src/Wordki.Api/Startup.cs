@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using NLog.Extensions.Logging;
-using NLog.Web;
 using Wordki.Infrastructure.Framework.ExceptionMiddleware;
 using Wordki.Utils.TimeProvider;
 using Wordki.Core;
@@ -19,7 +17,6 @@ using Wordki.Infrastructure;
 using Wordki.Utils.Dapper;
 using Microsoft.Extensions.Hosting;
 using Wordki.Utils.Database;
-using System;
 
 namespace Wordki
 {
@@ -42,7 +39,8 @@ namespace Wordki
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<JwtSettings>(options => Configuration.GetSection("Jwt").Bind(options))
-                .Configure<DapperSettings>(options => Configuration.GetSection("Dapper").Bind(options));
+                .Configure<DapperSettings>(options => Configuration.GetSection("Dapper").Bind(options))
+                .Configure<MigrationSettings>(options => Configuration.GetSection("Migrations").Bind(options));
 
             var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
             services.AddAuthentication(x =>
@@ -93,8 +91,8 @@ namespace Wordki
             app.UseMiddleware<ExceptionHandlerMiddleware>();
             app.UseAuthentication();
             app.UseMvc();
-            //var migrationProvider = app.ApplicationServices.GetService<IMigrationProvider>();
-            //migrationProvider.Migrate("192.168.99.100", 3306, "Wordki", "vesper0990", "pass2");
+            var migrationProvider = app.ApplicationServices.GetService<IMigrationProvider>();
+            migrationProvider.Migrate();
 
             var appLifeTime = app.ApplicationServices.GetService<IHostApplicationLifetime>();
             appLifeTime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());

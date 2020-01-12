@@ -1,35 +1,62 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Microsoft.Extensions.Options;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
+using System.IO;
+using System.Linq;
 
 namespace Wordki.Utils.Database
 {
+    public class ConnectionSettings
+    {
+        public string Host { get; set; }
+        public uint Port { get; set; }
+        public string Database { get; set; }
+        public string UserId { get; set; }
+        public string Password { get; set; }
+    }
+
+    public class MigrationSettings
+    {
+        public ConnectionSettings Connection { get; set; }
+        public IEnumerable<string> Scripts { get; set; }
+    }
+
     public interface IMigrationProvider
     {
-        Task Migrate(string host, uint port, string database, string userId, string password);
+        Task Migrate();
     }
 
     public class MigrationProvider : IMigrationProvider
     {
         private static readonly string MigrationTableName = "Migrations";
+        private readonly MigrationSettings migrationSettings;
 
-        public async Task Migrate(string host, uint port, string database, string userId, string password)
+        public MigrationProvider(IOptions<MigrationSettings> migrationSettings)
         {
+            this.migrationSettings = migrationSettings.Value;
+        }
+
+        public async Task Migrate()
+        {
+            MySqlConnection dbConnection = null;
+            MySqlTransaction transaction = null;
             try
             {
                 var connectionStringBuilder = new MySqlConnectionStringBuilder
                 {
-                    Server = host,
-                    Port = port,
-                    Database = database,
-                    UserID = userId,
-                    Password = password
+                    Server = migrationSettings.Connection.Host,
+                    Port = migrationSettings.Connection.Port,
+                    Database = migrationSettings.Connection.Database,
+                    UserID = migrationSettings.Connection.UserId,
+                    Password = migrationSettings.Connection.Password
                 };
-                var dbConnection = new MySqlConnection(connectionStringBuilder.ConnectionString);
+                dbConnection = new MySqlConnection(connectionStringBuilder.ConnectionString);
                 await dbConnection.OpenAsync();
+                transaction = await dbConnection.BeginTransactionAsync();
 
                 if (!(await MigrationTableExists(dbConnection)))
                 {
@@ -38,10 +65,27 @@ namespace Wordki.Utils.Database
 
                 var migrations = await GetMigrations(dbConnection);
 
+                foreach (var scripts in migrationSettings.Scripts)
+                {
+                    StreamReader reader = new StreamReader(scripts);
+                    var scriptContent = await reader.ReadToEndAsync();
+                    var migration = new Migration
+                    {
+                        Identificator = scripts,
+                        Script = scriptContent,
+                        Rollback = string.Empty,
+                    };
+                    if (!migrations.Any(x => x.Identificator.Equals(migration.Identificator)))
+                    {
+                        await ExecuteMigration(dbConnection, migration);
+                    }
+                }
+
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                await transaction.RollbackAsync();
                 throw;
             }
         }
@@ -59,7 +103,7 @@ namespace Wordki.Utils.Database
         private static readonly string CreateMigrationSql = $@"
 CREATE TABLE `{MigrationTableName}` (
 	`id`                    INT UNIQUE AUTO_INCREMENT NOT NULL,
-    `executionDate`         DATE NOT NULL,
+    `executionDate`         DATETIME NOT NULL,
     `identificator`         TEXT NOT NULL,
     `scriptContent`         TEXT NOT NULL,
     `rollback`              TEXT NOT NULL
@@ -130,7 +174,7 @@ VALUES (@ExecutionDate, @Identificator, @ScriptContent, @Rollback)
                 command.Parameters.Add(parameter);
 
                 parameter = command.CreateParameter();
-                parameter.ParameterName = "@Script";
+                parameter.ParameterName = "@ScriptContent";
                 parameter.DbType = DbType.String;
                 parameter.Direction = ParameterDirection.Input;
                 parameter.Value = scriptContent;
@@ -170,49 +214,26 @@ WHERE `Identificator` = @Identificator;";
 
         private async Task<bool> ExecuteMigration(DbConnection dbConnection, Migration migration)
         {
-            try
+            using (var command = dbConnection.CreateCommand())
             {
-                using (var command = dbConnection.CreateCommand())
-                {
-                    command.CommandText = migration.Script;
-                    await command.ExecuteNonQueryAsync();
-                }
-                await AddMigration(dbConnection, migration.Identificator, migration.Script, migration.Rollback);
+                command.CommandText = migration.Script;
+                await command.ExecuteNonQueryAsync();
             }
-            catch (Exception e)
-            {
-                return false;
-            }
+            await AddMigration(dbConnection, migration.Identificator, migration.Script, migration.Rollback);
             return true;
         }
 
         private async Task<bool> RollbackMigration(DbConnection dbConnection, Migration migration)
         {
-            try
+            using (var command = dbConnection.CreateCommand())
             {
-                using (var command = dbConnection.CreateCommand())
-                {
-                    command.CommandText = migration.Rollback;
-                    await command.ExecuteNonQueryAsync();
-                }
-                await AddMigration(dbConnection, migration.Identificator, migration.Script, migration.Rollback);
+                command.CommandText = migration.Rollback;
+                await command.ExecuteNonQueryAsync();
             }
-            catch (Exception e)
-            {
-                return false;
-            }
+            await AddMigration(dbConnection, migration.Identificator, migration.Script, migration.Rollback);
             return true;
         }
 
-    }
-
-    public class MigrationSettings
-    {
-        public string Host { get; set; }
-        public uint Port { get; set; }
-        public string Database { get; set; }
-        public string UserId { get; set; }
-        public string Password { get; set; }
     }
 
     public class Migration

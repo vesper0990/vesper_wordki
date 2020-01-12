@@ -32,6 +32,6 @@ CREATE TABLE `repeats` (
     `id`                BIGINT UNIQUE AUTO_INCREMENT PRIMARY KEY,
     `word_id`           BIGINT NOT NULL,
     `result`            TINYINT(1) NOT NULL,
-    `date`              DATETIME
+    `date`              DATETIME,
     FOREIGN KEY (word_id) REFERENCES words(id)
 );

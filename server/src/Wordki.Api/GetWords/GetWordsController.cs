@@ -1,28 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using System.Threading.Tasks;
+using Wordki.Queries.GetWords;
+using Wordki.Utils.Queries;
 
 namespace Wordki.Api.GetWords
 {
     [Route("[controller]")]
     public class GetWordsController : ControllerBase
     {
-        static int Index = 0;
+        private readonly IQueryManyHandler<GetWordsQuery, GetWordsDto> queryHandler;
+
+        public GetWordsController(IQueryManyHandler<GetWordsQuery, GetWordsDto> queryHandler)
+        {
+            this.queryHandler = queryHandler;
+        }
 
         [HttpGet("{count}")]
-        public IActionResult Get(int count)
+        public async Task<IActionResult> Get(int count)
         {
-            var words = new List<GetWordsDto>();
-            while (words.Count < count)
-            {
-                words.Add(new GetWordsDto
-                {
-                    Id = Index,
-                    Language1 = $"Word {Index}",
-                    Language2 = $"Słowo {Index}",
-                    Drawer = 1
-                });
-                Index++;
-            }
+            var query = GetWordsQuery.Create(count);
+            var words = await queryHandler.HandleAsync(query);
             return new JsonResult(words);
         }
 
