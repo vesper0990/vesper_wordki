@@ -14,7 +14,6 @@ namespace Wordki
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseNLog()
                 .ConfigureServices(services => services.AddAutofac())
                 .UseStartup<Startup>();
     }

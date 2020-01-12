@@ -72,6 +72,10 @@ namespace Wordki
             services.AddScoped<IDbConnectionProvdier, DbConnectionProvider>();
             services.AddScoped<ITimeProvider, TimeProvider>();
             services.AddScoped<IMigrationProvider, MigrationProvider>();
+            services.AddLogging(loggingBuilder => loggingBuilder
+            .AddConsole()
+            .AddDebug()
+            .SetMinimumLevel(LogLevel.Information));
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

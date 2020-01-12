@@ -39,7 +39,7 @@ export class CheckAnswerAction implements Action {
 
 export class AnswerAction implements Action {
     readonly type = LessonActionTypes.Answer;
-    constructor() { }
+    constructor(public payload: { wordId: number, isCorrect: boolean }) { }
 }
 
 export class FinishLessonAction implements Action {

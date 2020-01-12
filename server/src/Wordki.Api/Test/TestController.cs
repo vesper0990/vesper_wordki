@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.Text;
+using System.Threading;
 using Wordki.Infrastructure.Framework.ExceptionMiddleware;
 
 namespace Wordki.Api.Test

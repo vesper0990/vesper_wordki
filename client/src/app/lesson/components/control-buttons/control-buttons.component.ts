@@ -2,9 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { LessonState } from '../../store/reducer';
 import { Subscription } from 'rxjs';
-import { getLessonStateEnum } from '../../store/selectors';
+import { getLessonStateEnum, getFirstWord } from '../../store/selectors';
 import { LessonStateEnum } from '../../models/lesson-state';
 import { StartLessonAction, CheckAnswerAction, AnswerAction } from '../../store/actions';
+import { WordRepeat } from '../../models/word-repeat';
 
 @Component({
   selector: 'app-control-buttons',
@@ -14,6 +15,9 @@ import { StartLessonAction, CheckAnswerAction, AnswerAction } from '../../store/
 export class ControlButtonsComponent implements OnInit, OnDestroy {
 
   private lessonStateSub: Subscription;
+  private wordNextSub: Subscription;
+
+  private currectWord: WordRepeat;
 
   lessonStateEnum: LessonStateEnum;
   startVisibility: boolean;
@@ -26,10 +30,15 @@ export class ControlButtonsComponent implements OnInit, OnDestroy {
     this.lessonStateSub = this.lessonState.select(getLessonStateEnum).subscribe(
       (storeValue: LessonStateEnum) => this.handleLessonStateEnum(storeValue)
     );
+
+    this.wordNextSub = this.lessonState.select(getFirstWord).subscribe(
+      (storeValue: WordRepeat) => this.currectWord = storeValue
+    );
   }
 
   ngOnDestroy(): void {
     this.lessonStateSub.unsubscribe();
+    this.wordNextSub.unsubscribe();
   }
 
   startLesson(): void {
@@ -41,11 +50,11 @@ export class ControlButtonsComponent implements OnInit, OnDestroy {
   }
 
   correct(): void {
-    this.lessonState.dispatch(new AnswerAction());
+    this.lessonState.dispatch(new AnswerAction({ wordId: this.currectWord.id, isCorrect: true }));
   }
 
   incorrect(): void {
-    this.lessonState.dispatch(new AnswerAction());
+    this.lessonState.dispatch(new AnswerAction({ wordId: this.currectWord.id, isCorrect: false }));
   }
 
   private handleLessonStateEnum(storeValue: LessonStateEnum): void {

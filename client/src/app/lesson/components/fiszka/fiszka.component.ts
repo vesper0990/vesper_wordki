@@ -67,13 +67,17 @@ export class FiszkaComponent implements OnInit, OnDestroy {
 
   private handleArrowRight(): void {
     this.lessonStore.dispatch(
-      this.lessonStateEnum === LessonStateEnum.WordDisplay ? new CheckAnswerAction() : new AnswerAction()
+      this.lessonStateEnum === LessonStateEnum.WordDisplay
+        ? new CheckAnswerAction()
+        : new AnswerAction({ wordId: this.word.id, isCorrect: true })
     );
   }
 
   private handleArrowLeft(): void {
     this.lessonStore.dispatch(
-      this.lessonStateEnum === LessonStateEnum.WordDisplay ? new CheckAnswerAction() : new AnswerAction()
+      this.lessonStateEnum === LessonStateEnum.WordDisplay
+        ? new CheckAnswerAction()
+        : new AnswerAction({ wordId: this.word.id, isCorrect: false })
     );
   }
 }
