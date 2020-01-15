@@ -7,7 +7,7 @@ namespace Wordki.Core
     {
         private readonly List<Word> words;
 
-        private Group(Guid id, Guid userId, string name, LanguageEnum language1, LanguageEnum language2, DateTime creationDate, List<Word> words)
+        private Group(long id, long userId, string name, LanguageEnum language1, LanguageEnum language2, DateTime creationDate, List<Word> words)
         {
             Id = id;
             UserId = userId;
@@ -18,21 +18,20 @@ namespace Wordki.Core
             this.words = words;
         }
 
-        public Guid Id { get; }
-        public Guid UserId { get; }
+        public long Id { get; }
+        public long UserId { get; }
         public string Name { get; private set; }
         public LanguageEnum Language1 { get; private set; }
         public LanguageEnum Language2 { get; private set; }
         public DateTime CreationDate { get; }
         public IEnumerable<Word> Words => words;
 
-        public Group Create(Guid userId, string name, LanguageEnum language1, LanguageEnum language2, DateTime creationDate)
+        public Group Create(long userId, string name, LanguageEnum language1, LanguageEnum language2, DateTime creationDate)
         {
-            var id = Guid.NewGuid();
-            return new Group(id, userId, name, language1, language2, creationDate, new List<Word>());
+            return new Group(0, userId, name, language1, language2, creationDate, new List<Word>());
         }
 
-        public Group Restore(Guid id, Guid userId, string name, LanguageEnum language1, LanguageEnum language2, DateTime creationDate, List<Word> words)
+        public Group Restore(long id, long userId, string name, LanguageEnum language1, LanguageEnum language2, DateTime creationDate, List<Word> words)
         {
             return new Group(id, userId, name, language1, language2, creationDate, words);
         }

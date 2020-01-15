@@ -5,7 +5,7 @@ namespace Wordki.Core.Dtos
 {
     public class UserDto : IDto
     {
-        public byte[] Guid { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
         public DateTime CreationDate { get; set; }

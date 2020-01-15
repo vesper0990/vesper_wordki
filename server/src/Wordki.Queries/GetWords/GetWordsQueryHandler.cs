@@ -1,33 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Wordki.Utils.Dapper;
 using Wordki.Utils.Queries;
 
 namespace Wordki.Queries.GetWords
 {
     public class GetWordsQueryHandler : IQueryManyHandler<GetWordsQuery, GetWordsDto>
     {
+        private readonly IDbConnectionProvider dbConnectionProvider;
 
-        private static int Index { get; set; } = 0;
-
-        public GetWordsQueryHandler()
+        public GetWordsQueryHandler(IDbConnectionProvider dbConnectionProvider)
         {
+            this.dbConnectionProvider = dbConnectionProvider;
         }
 
-        public Task<IEnumerable<GetWordsDto>> HandleAsync(GetWordsQuery query)
+        public async Task<IEnumerable<GetWordsDto>> HandleAsync(GetWordsQuery query)
         {
-            var result = new List<GetWordsDto>();
-            for (var i = 0; i < query.Count; i++, Index++)
+            var param = new
             {
-                result.Add(new GetWordsDto
-                {
-                    Id = Index,
-                    Language1 = $"Word {Index}",
-                    Language2 = $"Word {Index}",
-                    Drawer = 1,
-                });
+                Count = query.Count
+            };
+
+            using (var connection = await dbConnectionProvider.Connect())
+            {
+                return await connection.GetAsync<GetWordsDto>(Sql, param);
             }
-            return Task.FromResult<IEnumerable<GetWordsDto>>(result);
         }
+
+        private readonly string Sql = $@"
+SELECT
+    w.id,
+    w.language1,
+    w.language2,
+    w.drawer
+FROM words w
+JOIN groups g ON w.group_id = g.id
+ORDER BY w.next_repeat
+LIMIT @Count";
     }
 }

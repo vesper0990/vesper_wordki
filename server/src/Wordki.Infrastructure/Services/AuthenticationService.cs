@@ -12,7 +12,7 @@ namespace Wordki.Infrastructure.Services
 {
     public interface IAuthenticationService
     {
-        string Authenticate(Guid userId, IEnumerable<string> roles);
+        string Authenticate(long userId, IEnumerable<string> roles);
         string Refresh(string token);
     }
 
@@ -25,7 +25,7 @@ namespace Wordki.Infrastructure.Services
             this.jwtSettings = jwtSettings.Value;
         }
 
-        public string Authenticate(Guid userId, IEnumerable<string> roles)
+        public string Authenticate(long userId, IEnumerable<string> roles)
         {
             var claims = CreateClaim(userId, roles);
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -41,13 +41,13 @@ namespace Wordki.Infrastructure.Services
 
         public string Refresh(string token)
         {
-            return Authenticate(GetGuid(token), GetRoles(token));
+            return Authenticate(GetId(token), GetRoles(token));
         }
 
-        private Guid GetGuid(string token)
+        private long GetId(string token)
         {
             var claim = GetClaimsFromToken(token).Single(x => x.Type.Equals("Id")).Value;
-            return Guid.Parse(claim);
+            return long.Parse(claim);
         }
 
         private IEnumerable<string> GetRoles(string token)
@@ -55,7 +55,7 @@ namespace Wordki.Infrastructure.Services
             return GetClaimsFromToken(token).Where(x => x.Type.Equals("role")).Select(x => x.Value);
         }
 
-        private IEnumerable<Claim> CreateClaim(Guid userId, IEnumerable<string> roles)
+        private IEnumerable<Claim> CreateClaim(long userId, IEnumerable<string> roles)
         {
             yield return new Claim("Id", userId.ToString());
             foreach (var role in roles)

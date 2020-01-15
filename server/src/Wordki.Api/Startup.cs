@@ -17,6 +17,7 @@ using Wordki.Infrastructure;
 using Wordki.Utils.Dapper;
 using Microsoft.Extensions.Hosting;
 using Wordki.Utils.Database;
+using Microsoft.AspNetCore.Http;
 
 namespace Wordki
 {
@@ -67,9 +68,10 @@ namespace Wordki
                 options.EnableEndpointRouting = false;
             });
             services.AddScoped<ExceptionHandlerMiddleware>();
-            services.AddScoped<IDbConnectionProvdier, DbConnectionProvider>();
+            services.AddScoped<IDbConnectionProvider, DbConnectionProvider>();
             services.AddScoped<ITimeProvider, TimeProvider>();
             services.AddScoped<IMigrationProvider, MigrationProvider>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddLogging(loggingBuilder => loggingBuilder
             .AddConsole()
             .AddDebug()

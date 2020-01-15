@@ -19,7 +19,7 @@ namespace Wordki.Tests.UnitTests.AutorizationService
         [Fact]
         public void UnitTest()
         {
-            var guid = Guid.Parse("f43cebd3-de49-4cd0-8a2a-f265ba9bdf14");
+            var guid = 1;
             var roles = new string[] { "Role1", "Role2" };
             string token = authenticationService.Authenticate(guid, roles);
         }

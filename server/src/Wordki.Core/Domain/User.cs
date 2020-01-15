@@ -6,19 +6,24 @@ namespace Wordki.Core
 {
     public class User : IDomainObject
     {
-        public Guid? Id { get; }
+        public long? Id { get; }
         public string Name { get; }
         public string Password { get; }
         public DateTime CreationDate { get; }
         public DateTime? LastLoginDate { get; private set; }
 
-        private User(Guid? id, string name, string password, DateTime creationDate, DateTime? lastLoginDate)
+        private User(long? id, string name, string password, DateTime creationDate, DateTime? lastLoginDate)
         {
             Id = id;
             Name = name;
             Password = password;
             CreationDate = creationDate;
             LastLoginDate = lastLoginDate;
+        }
+
+        public static User Restore(long id, string name, string password, DateTime creationDate, DateTime? lastLoginDate)
+        {
+            return new User(id, name, password, creationDate, lastLoginDate);
         }
 
         public class UserLogin : IUserLogin
@@ -33,14 +38,6 @@ namespace Wordki.Core
             public void Login(User user)
             {
                 user.LastLoginDate = timeProvider.GetTime();
-            }
-        }
-
-        public class UserRestoration : IUserRestoration
-        {
-            public User Restore(Guid id, string name, string password, DateTime creationDate, DateTime? lastLoginDate)
-            {
-                return new User(id, name, password, creationDate, lastLoginDate);
             }
         }
 
@@ -64,11 +61,7 @@ namespace Wordki.Core
     {
         void Login(User user);
     }
-    public interface IUserRestoration
-    {
-        User Restore(Guid id, string name, string password, DateTime creationDate, DateTime? lastLoginDate);
-    }
-
+    
     public interface IUserFactory
     {
         User Create(string name, string password);

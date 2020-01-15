@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 
 namespace Wordki.Utils.Dapper
 {
-    public interface IDbConnectionProvdier
+    public interface IDbConnectionProvider
     {
         Task<IDbConnectionWrapper> Connect();
     }
 
-    public class DbConnectionProvider : IDbConnectionProvdier
+    public class DbConnectionProvider : IDbConnectionProvider
     {
         private readonly DapperSettings dapperSettings;
 

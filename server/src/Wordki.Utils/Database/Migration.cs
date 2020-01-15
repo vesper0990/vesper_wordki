@@ -7,6 +7,8 @@ using System.Data.Common;
 using System.Threading.Tasks;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using Microsoft.Extensions.Logging;
 
 namespace Wordki.Utils.Database
 {
@@ -19,10 +21,17 @@ namespace Wordki.Utils.Database
         public string Password { get; set; }
     }
 
+    public class MigrationItem
+    {
+        public string Identificator { get; set; }
+        public string Build { get; set; }
+        public string Rollback { get; set; }
+    }
+
     public class MigrationSettings
     {
         public ConnectionSettings Connection { get; set; }
-        public IEnumerable<string> Scripts { get; set; }
+        public IEnumerable<MigrationItem> Scripts { get; set; }
     }
 
     public interface IMigrationProvider
@@ -35,27 +44,47 @@ namespace Wordki.Utils.Database
         private static readonly string MigrationTableName = "Migrations";
         private readonly MigrationSettings migrationSettings;
 
-        public MigrationProvider(IOptions<MigrationSettings> migrationSettings)
+        private readonly ILogger logger;
+
+        public MigrationProvider(IOptions<MigrationSettings> migrationSettings, ILogger<MigrationProvider> logger)
         {
             this.migrationSettings = migrationSettings.Value;
+            this.logger = logger;
+
         }
 
         public async Task Migrate()
         {
+            
             MySqlConnection dbConnection = null;
             MySqlTransaction transaction = null;
+            var connectionStringBuilder = new MySqlConnectionStringBuilder
+            {
+                Server = migrationSettings.Connection.Host,
+                Port = migrationSettings.Connection.Port,
+                Database = migrationSettings.Connection.Database,
+                UserID = migrationSettings.Connection.UserId,
+                Password = migrationSettings.Connection.Password
+            };
+            dbConnection = new MySqlConnection(connectionStringBuilder.ConnectionString);
+            int index = 0;
+            while (index < 5)
+            {
+                try
+                {
+                    await dbConnection.OpenAsync();
+                    break;
+                }
+                catch (Exception e)
+                {
+                    index++;
+                    logger.LogError(e, $"{index} Cannot connect to database!!");
+                    Thread.Sleep(5000 * index);
+                }
+
+            }
             try
             {
-                var connectionStringBuilder = new MySqlConnectionStringBuilder
-                {
-                    Server = migrationSettings.Connection.Host,
-                    Port = migrationSettings.Connection.Port,
-                    Database = migrationSettings.Connection.Database,
-                    UserID = migrationSettings.Connection.UserId,
-                    Password = migrationSettings.Connection.Password
-                };
-                dbConnection = new MySqlConnection(connectionStringBuilder.ConnectionString);
-                await dbConnection.OpenAsync();
                 transaction = await dbConnection.BeginTransactionAsync();
 
                 if (!(await MigrationTableExists(dbConnection)))
@@ -67,13 +96,13 @@ namespace Wordki.Utils.Database
 
                 foreach (var scripts in migrationSettings.Scripts)
                 {
-                    StreamReader reader = new StreamReader(scripts);
-                    var scriptContent = await reader.ReadToEndAsync();
+                    var build = await new StreamReader(scripts.Build).ReadToEndAsync();
+                    var rollback = await new StreamReader(scripts.Rollback).ReadToEndAsync();
                     var migration = new Migration
                     {
-                        Identificator = scripts,
-                        Script = scriptContent,
-                        Rollback = string.Empty,
+                        Identificator = scripts.Identificator,
+                        Script = build,
+                        Rollback = rollback,
                     };
                     if (!migrations.Any(x => x.Identificator.Equals(migration.Identificator)))
                     {

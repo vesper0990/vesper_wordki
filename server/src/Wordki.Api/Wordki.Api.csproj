@@ -7,10 +7,14 @@
 
   <ItemGroup>
     <None Remove="Sqls\1.sql" />
+    <None Remove="Sqls\1_rollback.sql" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Sqls\1.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sqls\1_rollback.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

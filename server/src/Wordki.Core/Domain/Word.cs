@@ -1,10 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
+using Wordki.Core.Domain;
+using Wordki.Utils.TimeProvider;
+using static Wordki.Core.Domain.Repeat;
 
 namespace Wordki.Core
 {
     public class Word
     {
-        private Word(Guid id, Guid groupId, string language1, string language2, string exapmle1, string exapmle2, string comment, Drawer drawer, bool isVisible, DateTime creationDate)
+        private Word(long id,
+            long groupId,
+            string language1,
+            string language2,
+            string exapmle1,
+            string exapmle2,
+            string comment,
+            Drawer drawer,
+            bool isVisible,
+            DateTime creationDate)
         {
             Id = id;
             GroupId = groupId;
@@ -16,10 +29,11 @@ namespace Wordki.Core
             Drawer = drawer;
             IsVisible = isVisible;
             CreationDate = creationDate;
+            Repeats = new List<Repeat>();
         }
 
-        public Guid Id { get; }
-        public Guid GroupId { get; }
+        public long Id { get; }
+        public long GroupId { get; }
         public string Language1 { get; private set; }
         public string Language2 { get; private set; }
         public string Exapmle1 { get; private set; }
@@ -27,20 +41,17 @@ namespace Wordki.Core
         public string Comment { get; }
         public Drawer Drawer { get; }
         public bool IsVisible { get; }
+        public DateTime NextRepeat { get; set; }
         public DateTime CreationDate { get; }
+        public List<Repeat> Repeats { get; }
 
-        public static Word Create(Guid groupId, string language1, string language2, string exapmle1, string example2, string comment, DateTime creationDate)
+        public static Word Restore(long id, long groupId, string language1, string language2, string exapmle1, string exapmle2,
+            string comment, Drawer drawer, bool isVisible, DateTime creationDate, DateTime nextRepeat)
         {
-            var id = Guid.NewGuid();
-            var drawer = Drawer.Create();
-            var isVisible = true;
-            return new Word(id, groupId, language1, language2, exapmle1, example2, comment, drawer, isVisible, creationDate);
-        }
-
-        public static Word Restore(Guid id, Guid groupId, string language1, string language2, string exapmle1, string exapmle2,
-            string comment, Drawer drawer, bool isVisible, DateTime creationDate)
-        {
-            return new Word(id, groupId, language1, language2, exapmle1, exapmle2, comment, drawer, isVisible, creationDate);
+            return new Word(id, groupId, language1, language2, exapmle1, exapmle2, comment, drawer, isVisible, creationDate)
+            {
+                NextRepeat = nextRepeat
+            };
         }
 
         internal void Swap()
@@ -52,6 +63,74 @@ namespace Wordki.Core
             temp = Exapmle1;
             Exapmle1 = Exapmle2;
             Exapmle2 = temp;
+        }
+
+        public void AddRepeat(Repeat repeat)
+        {
+            Repeats.Add(repeat);
+
+        }
+
+        public class WordFactory : IWordFactory
+        {
+            private readonly ITimeProvider timeProvider;
+
+            public WordFactory(ITimeProvider timeProvider)
+            {
+                this.timeProvider = timeProvider;
+            }
+
+            public Word Create(long groupId, string language1, string language2, string exapmle1, string example2, string comment)
+            {
+                var drawer = Drawer.Create();
+                var isVisible = true;
+                var creationDate = timeProvider.GetTime();
+                var nextRepeat = new DateTime(2000, 1, 1);
+                return new Word(0, groupId, language1, language2, exapmle1, example2, comment, drawer, isVisible, creationDate)
+                {
+                    NextRepeat = nextRepeat,
+                };
+            }
+        }
+
+    }
+    public interface IWordFactory
+    {
+        Word Create(long groupId, string language1, string language2, string exapmle1, string example2, string comment);
+    }
+
+    public interface IRepeatOrganizer
+    {
+        Repeat NoticeRepeat(Word word, int result);
+    }
+
+    public class RepeatOrganizer : IRepeatOrganizer
+    {
+        private readonly IRepeatFactory repeatFactory;
+
+        public RepeatOrganizer(IRepeatFactory repeatFactory)
+        {
+            this.repeatFactory = repeatFactory;
+        }
+
+        public Repeat NoticeRepeat(Word word, int result)
+        {
+            var newRepeat = repeatFactory.Create(word.Id, result);
+            if (result > 0)
+            {
+                word.Drawer.Increase();
+            }
+            else if (result < 0)
+            {
+                word.Drawer.Reset();
+            }
+            word.AddRepeat(newRepeat);
+            return newRepeat;
+        }
+
+        private DateTime CalculateNextRepeat(Drawer drawer)
+        {
+            return new DateTime();
         }
     }
 }

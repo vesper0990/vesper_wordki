@@ -25,6 +25,7 @@ CREATE TABLE `words` (
     `comment`           VARCHAR(100),
     `drawer`            INT NOT NULL,
     `is_visible`        TINYINT(1) NOT NULL,
+    `next_repeat`       DATETIME NOT NULL,
     FOREIGN KEY (group_id) REFERENCES groups(id)
 );
 
