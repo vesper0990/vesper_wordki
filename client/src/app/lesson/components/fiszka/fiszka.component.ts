@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { LessonState } from '../../store/reducer';
 import { Subscription } from 'rxjs';
 import { getLessonStateEnum, getFirstWord } from '../../store/selectors';
-import { LessonStateEnum } from '../../models/lesson-state';
+import { LessonStateEnum, LessonStep } from '../../models/lesson-state';
 import { WordRepeat } from '../../models/word-repeat';
 import { AnswerAction, CheckAnswerAction } from '../../store/actions';
 
@@ -20,7 +20,7 @@ export class FiszkaComponent implements OnInit, OnDestroy {
   private lessonStateSub: Subscription;
   private wordSub: Subscription;
 
-  lessonStateEnum: LessonStateEnum;
+  lessonStep: LessonStep;
   word: WordRepeat;
   questionVisibility: boolean;
   answerVisibility: boolean;
@@ -29,7 +29,7 @@ export class FiszkaComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.lessonStateSub = this.lessonStore.select(getLessonStateEnum)
-      .subscribe((storeValue: LessonStateEnum) => this.handleLessonStateEnum(storeValue));
+      .subscribe((storeValue: LessonStep) => this.handleLessonStateEnum(storeValue));
 
     this.wordSub = this.lessonStore.select(getFirstWord)
       .subscribe((storeValue: WordRepeat) => this.handleFirstWord(storeValue));
@@ -42,7 +42,7 @@ export class FiszkaComponent implements OnInit, OnDestroy {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent): void {
-    if (this.lessonStateEnum === 0) {
+    if (this.lessonStep.step === 0) {
       return;
     }
     switch (event.key) {
@@ -55,10 +55,10 @@ export class FiszkaComponent implements OnInit, OnDestroy {
     }
   }
 
-  private handleLessonStateEnum(storeValue: LessonStateEnum): void {
-    this.lessonStateEnum = storeValue;
-    this.questionVisibility = this.lessonStateEnum === LessonStateEnum.WordDisplay;
-    this.answerVisibility = this.lessonStateEnum === LessonStateEnum.AnswerDisplay;
+  private handleLessonStateEnum(storeValue: LessonStep): void {
+    this.lessonStep = storeValue;
+    this.questionVisibility = this.lessonStep.questionVisibility;
+    this.answerVisibility = this.lessonStep.questionVisibility;
   }
 
   private handleFirstWord(storeValue: WordRepeat): void {
@@ -67,7 +67,7 @@ export class FiszkaComponent implements OnInit, OnDestroy {
 
   private handleArrowRight(): void {
     this.lessonStore.dispatch(
-      this.lessonStateEnum === LessonStateEnum.WordDisplay
+      this.lessonStep.step === LessonStateEnum.WordDisplay
         ? new CheckAnswerAction()
         : new AnswerAction({ wordId: this.word.id, isCorrect: true })
     );
@@ -75,7 +75,7 @@ export class FiszkaComponent implements OnInit, OnDestroy {
 
   private handleArrowLeft(): void {
     this.lessonStore.dispatch(
-      this.lessonStateEnum === LessonStateEnum.WordDisplay
+      this.lessonStep.step === LessonStateEnum.WordDisplay
         ? new CheckAnswerAction()
         : new AnswerAction({ wordId: this.word.id, isCorrect: false })
     );

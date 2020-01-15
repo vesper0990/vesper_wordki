@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { LessonState } from '../../store/reducer';
 import { Subscription } from 'rxjs';
 import { getLessonStateEnum, getFirstWord } from '../../store/selectors';
-import { LessonStateEnum } from '../../models/lesson-state';
+import { LessonStateEnum, LessonStep } from '../../models/lesson-state';
 import { StartLessonAction, CheckAnswerAction, AnswerAction } from '../../store/actions';
 import { WordRepeat } from '../../models/word-repeat';
 
@@ -19,7 +19,7 @@ export class ControlButtonsComponent implements OnInit, OnDestroy {
 
   private currectWord: WordRepeat;
 
-  lessonStateEnum: LessonStateEnum;
+  lessonStep: LessonStep;
   startVisibility: boolean;
   checkVisibility: boolean;
   answerVisibility: boolean;
@@ -28,7 +28,7 @@ export class ControlButtonsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.lessonStateSub = this.lessonState.select(getLessonStateEnum).subscribe(
-      (storeValue: LessonStateEnum) => this.handleLessonStateEnum(storeValue)
+      (storeValue: LessonStep) => this.handleLessonStateEnum(storeValue)
     );
 
     this.wordNextSub = this.lessonState.select(getFirstWord).subscribe(
@@ -57,10 +57,10 @@ export class ControlButtonsComponent implements OnInit, OnDestroy {
     this.lessonState.dispatch(new AnswerAction({ wordId: this.currectWord.id, isCorrect: false }));
   }
 
-  private handleLessonStateEnum(storeValue: LessonStateEnum): void {
-    this.lessonStateEnum = storeValue;
-    this.startVisibility = this.lessonStateEnum === LessonStateEnum.BeforeStart;
-    this.checkVisibility = this.lessonStateEnum === LessonStateEnum.WordDisplay;
-    this.answerVisibility = this.lessonStateEnum === LessonStateEnum.AnswerDisplay;
+  private handleLessonStateEnum(storeValue: LessonStep): void {
+    this.lessonStep = storeValue;
+    this.startVisibility = this.lessonStep.startVisibility;
+    this.checkVisibility = this.lessonStep.checkVisibility;
+    this.answerVisibility = this.lessonStep.answerVisibility;
   }
 }

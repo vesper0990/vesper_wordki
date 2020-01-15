@@ -4,10 +4,10 @@ import { LessonState } from '../../store/reducer';
 import { GetWordsAction } from '../../store/actions';
 
 @Component({
-  templateUrl: './repeat.component.html',
-  styleUrls: ['./repeat.component.scss']
+  templateUrl: './fiszki.component.html',
+  styleUrls: ['./fiszki.component.scss']
 })
-export class RepeatComponent implements OnInit, OnDestroy {
+export class FiszkiComponent implements OnInit, OnDestroy {
 
   constructor(private lessonStore: Store<LessonState>) {
   }
