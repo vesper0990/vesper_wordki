@@ -1,17 +1,22 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { RepeatComponent } from './pages/repeat/repeat.component';
-import { GroupComponent } from './pages/group/group.component';
+import { FiszkiComponent } from './pages/fiszki/fiszki.component';
+import { InsertingComponent } from './pages/inserting/inserting.component';
 
 const routes: Routes = [
   {
-    path: 'repeat',
-    component: RepeatComponent
+    path: 'fiszki/:id',
+    component: FiszkiComponent
+  }, {
+    path: 'fiszki',
+    component: FiszkiComponent
+  }, {
+    path: 'inserting/:id',
+    component: InsertingComponent
+  }, {
+    path: 'inserting',
+    component: InsertingComponent
   },
-  {
-    path: 'group/:id',
-    component: GroupComponent
-  }
 ];
 
 @NgModule({

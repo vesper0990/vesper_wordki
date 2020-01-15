@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LessonComponent } from './lesson.component';
 import { LessonRoutingModule } from './lesson-routing.module';
-import { RepeatComponent } from './pages/repeat/repeat.component';
-import { GroupComponent } from './pages/group/group.component';
+import { FiszkiComponent } from './pages/fiszki/fiszki.component';
 import { FiszkaComponent } from './components/fiszka/fiszka.component';
 import { ControlButtonsComponent } from './components/control-buttons/control-buttons.component';
 import {
@@ -18,17 +17,20 @@ import { InsertComponent } from './components/insert/insert.component';
 import { EffectsModule } from '@ngrx/effects';
 import { LessonEffects } from './store/effects';
 import { HttpClientModule } from '@angular/common/http';
+import { InsertingComponent } from './pages/inserting/inserting.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     LessonComponent,
-    RepeatComponent,
-    GroupComponent,
+    FiszkiComponent,
     FiszkaComponent,
     ControlButtonsComponent,
-    InsertComponent
+    InsertComponent,
+    InsertingComponent
   ],
   imports: [
+    FormsModule,
     CommonModule,
     LessonRoutingModule,
     HttpClientModule,

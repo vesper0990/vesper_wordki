@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { of, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,8 +13,11 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  lesson(): void {
-    this.router.navigate(['/lesson/repeat']);
+  lessonFiszki(): void {
+    this.router.navigate(['/lesson/fiszki']);
   }
 
+  lessonInsert(): void {
+    this.router.navigate(['/lesson/inserting']);
+  }
 }
