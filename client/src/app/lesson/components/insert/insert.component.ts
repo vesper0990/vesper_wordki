@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { LessonStateEnum, LessonStep } from '../../models/lesson-state';
 import { WordRepeat } from '../../models/word-repeat';
 import { Store } from '@ngrx/store';
@@ -16,9 +16,12 @@ export class InsertComponent implements OnInit, OnDestroy {
 
   private readonly arrowLeft = 'ArrowLeft';
   private readonly arrowRight = 'ArrowRight';
+  private readonly enter = 'Enter';
 
   private lessonStateSub: Subscription;
   private wordSub: Subscription;
+
+  @ViewChild('answerElement', { static: false }) inputElement: ElementRef;
 
   lessonStep: LessonStep;
   word: WordRepeat;
@@ -28,6 +31,7 @@ export class InsertComponent implements OnInit, OnDestroy {
   answerIsEnable: boolean;
 
   result: string;
+  isCorrect: boolean;
 
   constructor(private lessonStore: Store<LessonState>) { }
 
@@ -60,6 +64,9 @@ export class InsertComponent implements OnInit, OnDestroy {
       case this.arrowLeft:
         this.handleArrowLeft();
         break;
+      case this.enter:
+        this.handleEnter();
+        break;
     }
   }
 
@@ -67,7 +74,7 @@ export class InsertComponent implements OnInit, OnDestroy {
     this.lessonStore.dispatch(
       this.lessonStep.step === LessonStateEnum.WordDisplay
         ? new CheckAnswerAction()
-        : new AnswerAction({ wordId: this.word.id, isCorrect: true })
+        : new AnswerAction({ wordId: this.word.id, result: 1 })
     );
   }
 
@@ -75,8 +82,16 @@ export class InsertComponent implements OnInit, OnDestroy {
     this.lessonStore.dispatch(
       this.lessonStep.step === LessonStateEnum.WordDisplay
         ? new CheckAnswerAction()
-        : new AnswerAction({ wordId: this.word.id, isCorrect: false })
+        : new AnswerAction({ wordId: this.word.id, result: -1 })
     );
+  }
+
+  private handleEnter(): void {
+    if (this.lessonStep.step === LessonStateEnum.WordDisplay) {
+      this.lessonStore.dispatch(new CheckAnswerAction());
+    } else if (this.lessonStep.step === LessonStateEnum.AnswerDisplay) {
+      this.lessonStore.dispatch(new AnswerAction({ wordId: this.word.id, result: this.isCorrect ? 1 : -1 }));
+    }
   }
 
   private handleLessonStep(lessonStep: LessonStep): void {
@@ -87,10 +102,12 @@ export class InsertComponent implements OnInit, OnDestroy {
       case LessonStateEnum.WordDisplay: {
         this.answer = '';
         this.result = '';
+        setTimeout(() => this.inputElement.nativeElement.focus(), 0);
         break;
       }
       case LessonStateEnum.AnswerDisplay: {
-        this.result = this.word.language2 === this.answer ? 'dobrze' : 'zle';
+        this.isCorrect = this.word.language2 === this.answer;
+        this.result = this.isCorrect ? 'dobrze' : 'zle';
         break;
       }
     }

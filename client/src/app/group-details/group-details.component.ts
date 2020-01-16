@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription, of, Observable } from 'rxjs';
 import { GroupDetailsProviderBase } from './services/group-details.provider/group-details.provider';
 import { map, catchError } from 'rxjs/operators';
@@ -19,6 +19,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   groupDetails: GroupDetails;
 
   constructor(private route: ActivatedRoute,
+    private router: Router,
     private groupDetailsProvider: GroupDetailsProviderBase,
     private groupDetailsMapper: GroupDetailsMapper) { }
 
@@ -30,10 +31,15 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.routeParamSub.unsubscribe();
   }
 
+  startLesson(): void {
+    this.router.navigate(['lesson/fiszki', this.groupDetails.id]);
+  }
+
   private handleRouteParam(value: Params): void {
     const id = +value['id'];
     this.groupDetailsProvider.getGroupDetails(id).subscribe(dto => {
       this.groupDetails = this.groupDetailsMapper.map(dto);
     });
   }
+
 }

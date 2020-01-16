@@ -1,15 +1,20 @@
 import { Action } from '@ngrx/store';
 import { WordRepeat } from '../models/word-repeat';
+import { LessonModeType } from '../models/lesson-mode';
 
 export enum LessonActionTypes {
     GetWords = '[LESSON_STATE] GET_WORDS',
+    GetWordsFromGroup = '[LESSON_STATE] GET_WORDS_FROM_GROUP',
     SetWords = '[LESSON_STATE] SET_WORDS',
     RemoveWord = '[LESSON_STATE] REMOVE_WORD',
+    SetLessonMode = '[LESSON_STATE] SET_LESSON_MODE',
 
     StartLesson = '[LESSON_STATE] START_LESSON',
     CheckAnswer = '[LESSON_STATE] CHECK_ANSWER',
     Answer = '[LESSON_STATE] ANSWER',
-    FinishLesson = '[LESSON_STATE] FINISH_LESSON'
+    FinishLesson = '[LESSON_STATE] FINISH_LESSON',
+
+    ResetStoreAction = '[LESSON_STATE] RESET_STORE'
 }
 
 export class GetWordsAction implements Action {
@@ -17,9 +22,19 @@ export class GetWordsAction implements Action {
     constructor(public payload: { count: number }) { }
 }
 
+export class GetWordsFromGroupAction implements Action {
+    readonly type = LessonActionTypes.GetWordsFromGroup;
+    constructor(public payload: { groupId: number }) { }
+}
+
 export class SetWordsAction implements Action {
     readonly type = LessonActionTypes.SetWords;
     constructor(public words: WordRepeat[]) { }
+}
+
+export class SetLessonMode implements Action {
+    readonly type = LessonActionTypes.SetLessonMode;
+    constructor(public payload: { mode: LessonModeType }) { }
 }
 
 export class RemoveWordAction implements Action {
@@ -39,7 +54,7 @@ export class CheckAnswerAction implements Action {
 
 export class AnswerAction implements Action {
     readonly type = LessonActionTypes.Answer;
-    constructor(public payload: { wordId: number, isCorrect: boolean }) { }
+    constructor(public payload: { wordId: number, result: number }) { }
 }
 
 export class FinishLessonAction implements Action {
@@ -47,10 +62,18 @@ export class FinishLessonAction implements Action {
     constructor() { }
 }
 
+export class ResetStoreAction implements Action {
+    readonly type = LessonActionTypes.ResetStoreAction;
+    constructor() { }
+}
+
 export type LessonActions = GetWordsAction
+    | GetWordsFromGroupAction
     | SetWordsAction
     | RemoveWordAction
+    | SetLessonMode
     | StartLessonAction
     | CheckAnswerAction
     | AnswerAction
-    | FinishLessonAction;
+    | FinishLessonAction
+    | ResetStoreAction;

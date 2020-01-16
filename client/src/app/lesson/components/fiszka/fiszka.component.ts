@@ -69,7 +69,7 @@ export class FiszkaComponent implements OnInit, OnDestroy {
     this.lessonStore.dispatch(
       this.lessonStep.step === LessonStateEnum.WordDisplay
         ? new CheckAnswerAction()
-        : new AnswerAction({ wordId: this.word.id, isCorrect: true })
+        : new AnswerAction({ wordId: this.word.id, result: 1 })
     );
   }
 
@@ -77,7 +77,7 @@ export class FiszkaComponent implements OnInit, OnDestroy {
     this.lessonStore.dispatch(
       this.lessonStep.step === LessonStateEnum.WordDisplay
         ? new CheckAnswerAction()
-        : new AnswerAction({ wordId: this.word.id, isCorrect: false })
+        : new AnswerAction({ wordId: this.word.id, result: -1 })
     );
   }
 }

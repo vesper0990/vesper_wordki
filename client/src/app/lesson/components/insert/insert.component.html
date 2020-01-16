@@ -1,5 +1,5 @@
 <div *ngIf="word">
     <span *ngIf="questionVisibility">{{word.language1}}</span>
-    -- <input [(ngModel)]="answer" [attr.disabled]="answerIsEnable ? null : ''">
+    -- <input #answerElement [(ngModel)]="answer" [attr.disabled]="answerIsEnable ? null : ''">
     <p>{{result}}</p>
 </div>

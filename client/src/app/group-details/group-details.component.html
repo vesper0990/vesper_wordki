@@ -1,5 +1,5 @@
 <p>group-details works!</p>
-{{ groupDetails.name }}
+{{ groupDetails.name }} <button (click)="startLesson()">Lekcja</button>
 <ng-container *ngFor="let item of groupDetails.words">
     <app-word-row [word]="item"></app-word-row>
 </ng-container>

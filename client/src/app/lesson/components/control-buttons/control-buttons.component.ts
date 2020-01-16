@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { LessonState } from '../../store/reducer';
 import { Subscription } from 'rxjs';
 import { getLessonStateEnum, getFirstWord } from '../../store/selectors';
-import { LessonStateEnum, LessonStep } from '../../models/lesson-state';
+import { LessonStep } from '../../models/lesson-state';
 import { StartLessonAction, CheckAnswerAction, AnswerAction } from '../../store/actions';
 import { WordRepeat } from '../../models/word-repeat';
 
@@ -50,11 +50,11 @@ export class ControlButtonsComponent implements OnInit, OnDestroy {
   }
 
   correct(): void {
-    this.lessonState.dispatch(new AnswerAction({ wordId: this.currectWord.id, isCorrect: true }));
+    this.lessonState.dispatch(new AnswerAction({ wordId: this.currectWord.id, result: 1 }));
   }
 
   incorrect(): void {
-    this.lessonState.dispatch(new AnswerAction({ wordId: this.currectWord.id, isCorrect: false }));
+    this.lessonState.dispatch(new AnswerAction({ wordId: this.currectWord.id, result: -1 }));
   }
 
   private handleLessonStateEnum(storeValue: LessonStep): void {

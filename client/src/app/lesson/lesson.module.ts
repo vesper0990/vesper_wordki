@@ -35,7 +35,7 @@ import { FormsModule } from '@angular/forms';
     LessonRoutingModule,
     HttpClientModule,
     StoreModule.forFeature('lessonStore', reducer),
-    EffectsModule.forFeature([LessonEffects])
+    EffectsModule.forFeature([LessonEffects]),
   ],
   providers: [
     Store,
