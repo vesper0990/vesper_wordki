@@ -19,6 +19,7 @@ import { LessonEffects } from './store/effects';
 import { HttpClientModule } from '@angular/common/http';
 import { InsertingComponent } from './pages/inserting/inserting.component';
 import { FormsModule } from '@angular/forms';
+import { RouteParamsHandler } from './services/route-params.handler/route-params.handler';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { FormsModule } from '@angular/forms';
   ],
   providers: [
     Store,
-    { provide: WordProviderBase, useClass: environment.production ? WordProvider : WordProviderMock }
+    { provide: WordProviderBase, useClass: environment.production ? WordProvider : WordProviderMock },
+    RouteParamsHandler
   ]
 })
 export class LessonModule { }

@@ -27,7 +27,7 @@ export class GroupProviderMock extends GroupProviderBase {
 
     getGroups(): Observable<GroupDto[]> {
         const groups: GroupDto[] = [];
-        for (let i = 0; i < 100; i++) {
+        for (let i = 1; i < 100; i++) {
             groups.push({
                 id: i,
                 name: `group ${i}`,

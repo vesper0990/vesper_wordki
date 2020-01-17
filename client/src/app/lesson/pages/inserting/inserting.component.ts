@@ -1,18 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { LessonState } from '../../store/reducer';
-import { GetWordsAction } from '../../store/actions';
+import { RouteParamsHandler } from '../../services/route-params.handler/route-params.handler';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BaseComponent } from '../base/base.component';
 
 @Component({
   templateUrl: './inserting.component.html',
   styleUrls: ['./inserting.component.scss']
 })
-export class InsertingComponent implements OnInit {
+export class InsertingComponent extends BaseComponent {
 
-  constructor(private lessonStore: Store<LessonState>) { }
-
-  ngOnInit() {
-    this.lessonStore.dispatch(new GetWordsAction({ count: 2 }));
+  constructor(protected lessonStore: Store<LessonState>,
+    protected routeParamsHandler: RouteParamsHandler,
+    protected route: ActivatedRoute,
+    protected router: Router) {
+    super(lessonStore, routeParamsHandler,
+      route, router);
   }
-
 }
