@@ -58,7 +58,7 @@ export class FiszkaComponent implements OnInit, OnDestroy {
   private handleLessonStateEnum(storeValue: LessonStep): void {
     this.lessonStep = storeValue;
     this.questionVisibility = this.lessonStep.questionVisibility;
-    this.answerVisibility = this.lessonStep.questionVisibility;
+    this.answerVisibility = this.lessonStep.answerVisibility;
   }
 
   private handleFirstWord(storeValue: WordRepeat): void {

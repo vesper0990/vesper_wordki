@@ -1,6 +1,7 @@
-import { ComponentFixture } from "@angular/core/testing";
-import { By } from "@angular/platform-browser";
-import { DebugElement } from "@angular/core";
+import { ComponentFixture } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { DebugElement } from '@angular/core';
+import { Subject, Observable } from 'rxjs';
 
 export function selectDebugElementById<T>(fixture: ComponentFixture<T>, id: string): DebugElement {
     return fixture.debugElement.query(By.css(`#${id}`));
@@ -42,3 +43,18 @@ export function clickButton<T>(fixture: ComponentFixture<T>): void {
     selectNativeElement<T>(fixture, 'button').click();
 }
 
+export class ObservableMock<T> {
+    private subject: Subject<T>;
+
+    constructor() {
+        this.subject = new Subject<T>();
+    }
+
+    getSource(): Observable<T> {
+        return this.subject.asObservable();
+    }
+
+    next(nextValue: T): void {
+        this.subject.next(nextValue);
+    }
+}
