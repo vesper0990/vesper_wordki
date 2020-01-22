@@ -6,12 +6,14 @@ import { GroupRowComponent } from './components/group-row/group-row.component';
 import { GroupProviderBase, GroupProvider, GroupProviderMock } from './services/group.provider/group.provider';
 import { environment } from 'src/environments/environment';
 import { GroupMapper } from './services/group.mapper/group.mapper';
+import { ShareModule } from '../share/share.module';
 
 @NgModule({
   declarations: [GroupsComponent, GroupRowComponent],
   imports: [
     CommonModule,
-    GroupsRoutingModule
+    GroupsRoutingModule,
+    ShareModule
   ],
   providers: [
     { provide: GroupProviderBase, useClass: environment.production ? GroupProvider : GroupProviderMock },

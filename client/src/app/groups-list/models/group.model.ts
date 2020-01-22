@@ -1,8 +1,10 @@
+import { LanguageType } from 'src/app/share/models/language-type.mode';
+
 export class Group {
     constructor(public id: number,
         public name: string,
-        public language1: number,
-        public language2: number,
+        public language1: LanguageType,
+        public language2: LanguageType,
         public wordsCount: number, ) {
     }
 }

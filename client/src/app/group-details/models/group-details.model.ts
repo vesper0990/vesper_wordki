@@ -1,21 +1,13 @@
 import { Word } from './word.model';
+import { LanguageType } from 'src/app/share/models/language-type.mode';
 
 export class GroupDetails {
-    id: number;
-    name: string;
-    language1: number;
-    language2: number;
-    words: Word[];
-
-    constructor(id: number,
-        name: string,
-        language1: number,
-        language2: number) {
-        this.id = id;
-        this.name = name;
-        this.language1 = language1;
-        this.language2 = language2;
-        this.words = [];
+    constructor(
+        public id: number,
+        public name: string,
+        public language1: LanguageType,
+        public language2: LanguageType,
+        public words: Word[] = []) {
     }
 
     addWord(word: Word): void {
