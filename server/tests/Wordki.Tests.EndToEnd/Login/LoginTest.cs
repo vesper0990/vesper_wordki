@@ -26,7 +26,7 @@ namespace Wordki.Tests.EndToEnd.Login
         public async Task Return_ok_when_user_exists()
         {
             server.UserRepositoryMock.Setup(x => x.GetUserAsync("kamil", "aaaa")).Returns(Task.FromResult(server.CreateUser()));
-            server.UserRepositoryMock.Setup(x => x.SaveAsync(It.IsAny<User>())).Returns(Task.CompletedTask);
+            server.UserRepositoryMock.Setup(x => x.SaveAsync(It.IsAny<User>())).Returns(Task.FromResult<long>(1));
 
             var message = "{\"UserName\":\"kamil\",\"Password\":\"password\"}";
             request.Content = new StringContent(message, Encoding.UTF8, "application/json");

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Wordki.Core.Domain;
+using Wordki.Utils.Domain;
 using Wordki.Utils.TimeProvider;
-using static Wordki.Core.Domain.Repeat;
 
 namespace Wordki.Core
 {
-    public class Word
+    public class Word : IDomainObject
     {
         private Word(long id,
             long groupId,
@@ -33,7 +33,7 @@ namespace Wordki.Core
         }
 
         public long Id { get; }
-        public long GroupId { get; }
+        public long GroupId { get; set; }
         public string Language1 { get; private set; }
         public string Language2 { get; private set; }
         public string Exapmle1 { get; private set; }
@@ -44,6 +44,7 @@ namespace Wordki.Core
         public DateTime NextRepeat { get; set; }
         public DateTime CreationDate { get; }
         public List<Repeat> Repeats { get; }
+        public bool NeedUpdate { get; private set; }
 
         public static Word Restore(long id, long groupId, string language1, string language2, string exapmle1, string exapmle2,
             string comment, Drawer drawer, bool isVisible, DateTime creationDate, DateTime nextRepeat)
@@ -58,7 +59,7 @@ namespace Wordki.Core
         {
             var temp = Language1;
             Language1 = Language2;
-            Language2 = Language1;
+            Language2 = temp;
 
             temp = Exapmle1;
             Exapmle1 = Exapmle2;
@@ -89,6 +90,7 @@ namespace Wordki.Core
                 return new Word(0, groupId, language1, language2, exapmle1, example2, comment, drawer, isVisible, creationDate)
                 {
                     NextRepeat = nextRepeat,
+                    NeedUpdate = true
                 };
             }
         }
@@ -97,40 +99,5 @@ namespace Wordki.Core
     public interface IWordFactory
     {
         Word Create(long groupId, string language1, string language2, string exapmle1, string example2, string comment);
-    }
-
-    public interface IRepeatOrganizer
-    {
-        Repeat NoticeRepeat(Word word, int result);
-    }
-
-    public class RepeatOrganizer : IRepeatOrganizer
-    {
-        private readonly IRepeatFactory repeatFactory;
-
-        public RepeatOrganizer(IRepeatFactory repeatFactory)
-        {
-            this.repeatFactory = repeatFactory;
-        }
-
-        public Repeat NoticeRepeat(Word word, int result)
-        {
-            var newRepeat = repeatFactory.Create(word.Id, result);
-            if (result > 0)
-            {
-                word.Drawer.Increase();
-            }
-            else if (result < 0)
-            {
-                word.Drawer.Reset();
-            }
-            word.AddRepeat(newRepeat);
-            return newRepeat;
-        }
-
-        private DateTime CalculateNextRepeat(Drawer drawer)
-        {
-            return new DateTime();
-        }
     }
 }

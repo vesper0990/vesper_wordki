@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using System;
 using System.Data;
 using System.Threading.Tasks;
 using Wordki.Core.Dtos;
@@ -15,7 +16,7 @@ namespace Wordki.Core.Data
         Task<User> GetUserAsync(string name);
         Task<User> GetUserAsync(string name, string password);
 
-        Task SaveAsync(User user);
+        Task<long> SaveAsync(User user);
     }
 
     public class UserRepository : IUserRepository
@@ -49,9 +50,9 @@ SELECT
 id AS {nameof(UserDto.Id)},
 name AS {nameof(UserDto.Name)},
 password AS {nameof(UserDto.Password)},
-creation_date AS {nameof(UserDto.CreationDate)},
-last_login_date AS {nameof(UserDto.LastLoginDate)}
-FROM Users";
+creationDate AS {nameof(UserDto.CreationDate)},
+lastLoginDate AS {nameof(UserDto.LastLoginDate)}
+FROM users";
 
         public async Task<User> GetUserAsync(long id)
         {
@@ -95,48 +96,53 @@ FROM Users";
             return userMapper.Map(dto);
         }
 
-        public async Task SaveAsync(User user)
+        public async Task<long> SaveAsync(User user)
         {
-            if (user.Id == null)
+            long id = user.Id;
+            if (id == 0)
             {
-                await InsertAsync(user);
+                id = await InsertAsync(user);
             }
             else
             {
                 await UpdateAsync(user);
             }
+            return id;
         }
 
         private readonly string insertSql = $@"
-INSERT INTO Users (name, password, creation_date) VALUES (@name, @password, @creationDate)";
+INSERT INTO users (name, password, creationDate) VALUES (@name, @password, @creationDate);
+SELECT LAST_INSERT_ID();";
 
-        private async Task InsertAsync(User user)
+        private async Task<long> InsertAsync(User user)
         {
             var param = new DynamicParameters();
             param.Add("name", user.Name, DbType.String);
             param.Add("password", user.Password, DbType.String);
             param.Add("creationDate", user.CreationDate, DbType.Date);
-            using var connection = await dbConnection.Connect();
-                await connection.Execute(insertSql, param);
+            using (var connection = await dbConnection.Connect())
+            {
+                return await connection.ExecuteScalar(insertSql, param);
+            }
         }
 
         private readonly string updateSql = $@"
-UPDATE Users SET
+UPDATE users SET
 password = @password,
-last_login_date = @lastLoginDate
+lastLoginDate = @lastLoginDate
 WHERE
 id = @id";
 
         private async Task UpdateAsync(User user)
         {
             var param = new DynamicParameters();
-            param.Add("id", user.Id.Value, DbType.Int64);
+            param.Add("id", user.Id, DbType.Int64);
             param.Add("password", user.Password, DbType.String);
             param.Add("lastLoginDate", user.LastLoginDate, DbType.DateTime);
             using var connection = await dbConnection.Connect();
-                await connection.Execute(updateSql, param);
+            await connection.Execute(updateSql, param);
         }
 
-        
+
     }
 }

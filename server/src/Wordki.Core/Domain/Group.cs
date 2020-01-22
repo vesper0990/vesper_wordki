@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Wordki.Utils.Domain;
 
 namespace Wordki.Core
 {
-    public class Group
+    public class Group : IDomainObject
     {
         private readonly List<Word> words;
 
@@ -26,12 +27,12 @@ namespace Wordki.Core
         public DateTime CreationDate { get; }
         public IEnumerable<Word> Words => words;
 
-        public Group Create(long userId, string name, LanguageEnum language1, LanguageEnum language2, DateTime creationDate)
+        public static Group Create(long userId, string name, LanguageEnum language1, LanguageEnum language2, DateTime creationDate)
         {
             return new Group(0, userId, name, language1, language2, creationDate, new List<Word>());
         }
 
-        public Group Restore(long id, long userId, string name, LanguageEnum language1, LanguageEnum language2, DateTime creationDate, List<Word> words)
+        public static Group Restore(long id, long userId, string name, LanguageEnum language1, LanguageEnum language2, DateTime creationDate, List<Word> words)
         {
             return new Group(id, userId, name, language1, language2, creationDate, words);
         }

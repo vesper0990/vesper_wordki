@@ -16,9 +16,9 @@ namespace Wordki.Api.AddRepeat
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] AddRepeatRequest request)
+        public Task<IActionResult> Post([FromBody] AddRepeatRequest request)
         {
-
+            return null;
         }
 
     }

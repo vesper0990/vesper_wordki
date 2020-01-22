@@ -14,7 +14,7 @@ namespace Wordki.Commands.AddRepeat
 
         public Task HandleAsync(AddRepeatCommand command)
         {
-
+            return null;
             // get word with repeats
             // update domain object
             // save in repo

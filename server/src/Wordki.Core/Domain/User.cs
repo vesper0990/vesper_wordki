@@ -6,13 +6,13 @@ namespace Wordki.Core
 {
     public class User : IDomainObject
     {
-        public long? Id { get; }
+        public long Id { get; }
         public string Name { get; }
         public string Password { get; }
         public DateTime CreationDate { get; }
         public DateTime? LastLoginDate { get; private set; }
 
-        private User(long? id, string name, string password, DateTime creationDate, DateTime? lastLoginDate)
+        private User(long id, string name, string password, DateTime creationDate, DateTime? lastLoginDate)
         {
             Id = id;
             Name = name;
@@ -52,7 +52,7 @@ namespace Wordki.Core
             public User Create(string name, string password)
             {
                 var creationTime = timeProvider.GetTime();
-                return new User(null, name, password, creationTime, null);
+                return new User(0, name, password, creationTime, null);
             }
         }
     }

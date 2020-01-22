@@ -6,11 +6,15 @@
   </PropertyGroup>
   
   <ItemGroup>
-	<PackageReference Include="Autofac" Version="4.8.1" />
-	<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
+	<PackageReference Include="Autofac" Version="4.9.4" />
+	<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
 	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.1.1" />
 	<PackageReference Include="Microsoft.Extensions.Configuration" Version="3.0.0" />
 	<PackageReference Include="NLog" Version="4.6.7" />	
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Wordki.Core\Wordki.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -45,11 +45,10 @@ namespace Wordki.Core.Domain
                 };
             }
         }
-
-        public interface IRepeatFactory
-        {
-            Repeat Create(long wordId, int result);
-        }
-
+    }
+    
+    public interface IRepeatFactory
+    {
+        Repeat Create(long wordId, int result);
     }
 }

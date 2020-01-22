@@ -13,6 +13,7 @@ namespace Wordki.Infrastructure
             builder.RegisterType<UserProvider>().AsImplementedInterfaces();
             builder.RegisterType<AuthenticationService>().AsImplementedInterfaces();
             builder.RegisterType<Encrypter>().AsImplementedInterfaces();
+            builder.RegisterType<DataInitializer>().AsImplementedInterfaces();
         }
     }
 }

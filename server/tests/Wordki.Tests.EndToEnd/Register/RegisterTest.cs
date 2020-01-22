@@ -58,7 +58,7 @@ namespace Wordki.Tests.EndToEnd.Register
         public override void Setup(Mock<IUserRepository> userRepositoryMock)
         {
             userRepositoryMock.Setup(x => x.IsExists("kamil")).Returns(Task.FromResult(false));
-            userRepositoryMock.Setup(x => x.SaveAsync(It.IsAny<User>())).Returns(Task.CompletedTask);
+            userRepositoryMock.Setup(x => x.SaveAsync(It.IsAny<User>())).Returns(Task.FromResult<long>(1));
         }
 
         public override void Verification(Mock<IUserRepository> userRepositoryMock)
@@ -76,7 +76,7 @@ namespace Wordki.Tests.EndToEnd.Register
         public override void Setup(Mock<IUserRepository> userRepositoryMock)
         {
             userRepositoryMock.Setup(x => x.IsExists("kamil")).Returns(Task.FromResult(true));
-            userRepositoryMock.Setup(x => x.SaveAsync(It.IsAny<User>())).Returns(Task.CompletedTask);
+            userRepositoryMock.Setup(x => x.SaveAsync(It.IsAny<User>())).Returns(Task.FromResult<long>(1));
         }
 
         public override void Verification(Mock<IUserRepository> userRepositoryMock)
@@ -94,7 +94,7 @@ namespace Wordki.Tests.EndToEnd.Register
         public override void Setup(Mock<IUserRepository> userRepositoryMock)
         {
             userRepositoryMock.Setup(x => x.IsExists("kamil")).Returns(Task.FromResult(true));
-            userRepositoryMock.Setup(x => x.SaveAsync(It.IsAny<User>())).Returns(Task.CompletedTask);
+            userRepositoryMock.Setup(x => x.SaveAsync(It.IsAny<User>())).Returns(Task.FromResult<long>(1));
         }
 
         public override void Verification(Mock<IUserRepository> userRepositoryMock)
