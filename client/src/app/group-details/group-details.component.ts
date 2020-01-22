@@ -1,10 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Subscription, of, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { GroupDetailsProviderBase } from './services/group-details.provider/group-details.provider';
-import { map, catchError } from 'rxjs/operators';
-import { GroupDetailsDto } from './models/group-details.dto';
-import { GroupDetailsMapper } from './services/group-details.mapper/group-details.mapper';
 import { GroupDetails } from './models/group-details.model';
 
 @Component({
@@ -20,8 +17,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private groupDetailsProvider: GroupDetailsProviderBase,
-    private groupDetailsMapper: GroupDetailsMapper) { }
+    private groupDetailsProvider: GroupDetailsProviderBase) { }
 
   ngOnInit(): void {
     this.routeParamSub = this.route.params.subscribe((params: Params) => this.handleRouteParam(params));
@@ -37,8 +33,8 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
 
   private handleRouteParam(value: Params): void {
     const id = +value['id'];
-    this.groupDetailsProvider.getGroupDetails(id).subscribe(dto => {
-      this.groupDetails = this.groupDetailsMapper.map(dto);
+    this.groupDetailsProvider.getGroupDetails(id).subscribe((groupDetails: GroupDetails) => {
+      this.groupDetails = groupDetails;
     });
   }
 

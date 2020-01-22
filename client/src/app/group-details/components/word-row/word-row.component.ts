@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Word } from '../../models/word.model';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-word-row',
@@ -12,7 +11,7 @@ export class WordRowComponent implements OnInit {
 
   @Input() word: Word;
 
-  constructor(private router: Router) { }
+  constructor() { }
 
   ngOnInit() {
   }

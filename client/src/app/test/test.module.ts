@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavigationBarComponentMock } from './compontens.mock';
+import { NavigationBarMockComponent } from './compontens.mock';
 
 @NgModule({
   declarations: [
-    NavigationBarComponentMock
+    NavigationBarMockComponent
   ],
   exports:[
-    NavigationBarComponentMock
+    NavigationBarMockComponent
   ],
   imports: [
     CommonModule

@@ -16,7 +16,6 @@ export class LessonComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('test');
     this.lessonStore.dispatch(new FinishLessonAction());
   }
 

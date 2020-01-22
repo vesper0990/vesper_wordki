@@ -2,9 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { GroupDto } from '../../models/group-dto.model';
+import { Group } from '../../models/group.model';
+import { GroupMapper } from '../group.mapper/group.mapper';
+import { map } from 'rxjs/operators';
 
 export abstract class GroupProviderBase {
-    abstract getGroups(): Observable<GroupDto[]>;
+    abstract getGroups(): Observable<Group[]>;
 }
 
 @Injectable()
@@ -14,18 +17,18 @@ export class GroupProvider extends GroupProviderBase {
         super();
     }
 
-    getGroups(): Observable<GroupDto[]> {
+    getGroups(): Observable<Group[]> {
         throw new Error('Method not implemented.');
     }
 }
 
 export class GroupProviderMock extends GroupProviderBase {
 
-    constructor() {
+    constructor(private mapper: GroupMapper) {
         super();
     }
 
-    getGroups(): Observable<GroupDto[]> {
+    getGroups(): Observable<Group[]> {
         const groups: GroupDto[] = [];
         for (let i = 1; i < 100; i++) {
             groups.push({
@@ -36,7 +39,14 @@ export class GroupProviderMock extends GroupProviderBase {
                 wordsCount: 30 % i
             });
         }
-        return of<GroupDto[]>(groups);
+        return of<GroupDto[]>(groups)
+            .pipe(map((dtos: GroupDto[]) => {
+                const result = [];
+                dtos.forEach((dto: GroupDto) => {
+                    result.push(this.mapper.map(dto));
+                });
+                return result;
+            }));
     }
 
 }

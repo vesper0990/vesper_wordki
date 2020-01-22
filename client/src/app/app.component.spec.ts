@@ -1,7 +1,7 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
-import { NavigationBarComponentMock } from './test/compontens.mock';
+import { NavigationBarMockComponent } from './test/compontens.mock';
 import { UserService } from './authorization/services/user.service/user.service';
 import { Subject } from 'rxjs';
 
@@ -18,7 +18,7 @@ describe('AppComponent', () => {
       ],
       declarations: [
         AppComponent,
-        NavigationBarComponentMock
+        NavigationBarMockComponent
       ],
       providers: [
         {
@@ -37,10 +37,4 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     expect(app).toBeTruthy();
   });
-
-  // fit(`should have as title 'wordki'`, () => {
-  //   const fixture = TestBed.createComponent(AppComponent);
-  //   const app = fixture.debugElement.componentInstance;
-  //   expect(app.title).toEqual('wordki');
-  // });
 });

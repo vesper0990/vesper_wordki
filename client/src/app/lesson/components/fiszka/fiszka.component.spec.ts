@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { FiszkaComponent } from './fiszka.component';
 import { Store } from '@ngrx/store';
 import { LessonState } from '../../store/reducer';
