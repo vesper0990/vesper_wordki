@@ -162,11 +162,11 @@ SELECT * FROM `{MigrationTableName}`
                 {
                     migrations.Add(new Migration
                     {
-                        Id = reader.GetInt32(1),
-                        ExecutionTime = reader.GetDateTime(2),
-                        Identificator = reader.GetString(3),
-                        Script = reader.GetString(4),
-                        Rollback = reader.GetString(5)
+                        Id = reader.GetInt32(0),
+                        ExecutionTime = reader.GetDateTime(1),
+                        Identificator = reader.GetString(2),
+                        Script = reader.GetString(3),
+                        Rollback = reader.GetString(4)
                     });
                 };
                 return migrations;

@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Wordki.Utils.Dapper;
-using Wordki.Utils.HttpContext;
 using Wordki.Utils.Queries;
 
 namespace Wordki.Queries.GetGroups
@@ -21,7 +18,7 @@ namespace Wordki.Queries.GetGroups
         {
             var param = new
             {
-                UserId = query.UserId
+                userId = query.UserId
             };
 
             using(var connection = await dbConnection.Connect())
@@ -31,12 +28,15 @@ namespace Wordki.Queries.GetGroups
         }
 
         private readonly string Sql = $@"
-SELECT 
-    id,
-    name,
-    language1,
-    language2
-FROM groups
-WHERE userId = @UserId";
+SELECT
+    g.id                as Id,
+    g.name              as Name,
+    g.language1         as Language1,
+    g.language2         as Language2,
+    count(w.id)         as WordsCount
+FROM groups g
+JOIN words w ON w.groupId =  g.id
+WHERE g.userid = @userId
+GROUP BY g.id";
     }
 }

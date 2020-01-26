@@ -7,13 +7,14 @@ namespace Wordki.Core.Domain
     public class Repeat
     {
         public long Id { get; private set; }
-        public long WordId { get; private set; }
+        public long WordId { get; set; }
         public DateTime DateTime { get; private set; }
         public int Result { get; private set; }
+        public bool NeedUpdate { get; private set; }
 
         private Repeat() { }
 
-        public Repeat Restore(long id, long wordId, DateTime dateTime, int result)
+        public static Repeat Restore(long id, long wordId, DateTime dateTime, int result)
         {
             return new Repeat()
             {
@@ -22,6 +23,12 @@ namespace Wordki.Core.Domain
                 DateTime = dateTime,
                 Result = result
             };
+        }
+
+        public void AddToWord(Word word)
+        {
+            WordId = word.Id;
+            NeedUpdate = true;
         }
 
         public class RepeatFactory : IRepeatFactory

@@ -19,6 +19,7 @@ using Microsoft.Extensions.Hosting;
 using Wordki.Utils.Database;
 using Microsoft.AspNetCore.Http;
 using Wordki.Infrastructure.Services;
+using Wordki.Utils.HttpContext;
 
 namespace Wordki
 {
@@ -72,6 +73,7 @@ namespace Wordki
             services.AddScoped<IDbConnectionProvider, DbConnectionProvider>();
             services.AddScoped<ITimeProvider, TimeProvider>();
             services.AddScoped<IMigrationProvider, MigrationProvider>();
+            services.AddScoped<IHttpContextProvider, HttpContextProvider>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddLogging(loggingBuilder => loggingBuilder
             .AddConsole()

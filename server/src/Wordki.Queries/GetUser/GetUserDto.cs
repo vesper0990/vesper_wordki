@@ -5,6 +5,7 @@ namespace Wordki.Queries.GetUser
 {
     public class GetUserDto : IDto
     {
-        public User User { get; set; }
+        public long Id { get; set; }
+        public string Name { get; set; }
     }
 }

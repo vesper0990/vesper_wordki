@@ -69,7 +69,26 @@ namespace Wordki.Core
         public void AddRepeat(Repeat repeat)
         {
             Repeats.Add(repeat);
+            repeat.AddToWord(this);
+            NeedUpdate = true;
+        }
 
+        public void AddToGroup(Group group)
+        {
+            GroupId = group.Id;
+            NeedUpdate = true;
+        }
+
+        public void UpdateLanguage1(string language1)
+        {
+            Language1 = language1;
+            NeedUpdate = true;
+        }
+
+        public void UpdateLanguage2(string language2)
+        {
+            Language2 = language2;
+            NeedUpdate = true;
         }
 
         public class WordFactory : IWordFactory

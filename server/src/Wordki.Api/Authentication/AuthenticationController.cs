@@ -29,7 +29,7 @@ namespace Wordki.Api.Authentication
             {
                 throw new ArgumentException("User not found");
             }
-            var token = authenticationService.Authenticate(user.User.Id, new string[] { "User", "Admin" });
+            var token = authenticationService.Authenticate(user.Id, new string[] { "User", "Admin" });
             var dto = new AuthenticateDto
             {
                 Token = token

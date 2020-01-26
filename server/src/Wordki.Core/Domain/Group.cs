@@ -39,6 +39,7 @@ namespace Wordki.Core
 
         public void AddWord(Word word)
         {
+            word.AddToGroup(this);
             words.Add(word);
         }
 
@@ -54,7 +55,7 @@ namespace Wordki.Core
 
         public void ChangeLanguage1Type(LanguageEnum newType)
         {
-            if(newType != LanguageEnum.Unknown && newType == Language2)
+            if(newType != LanguageEnum.Undefined && newType == Language2)
             {
                 throw new Exception("");
             }
@@ -63,7 +64,7 @@ namespace Wordki.Core
 
         public void ChangeLanguage2Type(LanguageEnum newType)
         {
-            if (newType != LanguageEnum.Unknown && newType == Language1)
+            if (newType != LanguageEnum.Undefined && newType == Language1)
             {
                 throw new Exception("");
             }

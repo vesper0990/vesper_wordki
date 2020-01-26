@@ -12,6 +12,7 @@ CREATE TABLE `groups` (
     `name`              VARCHAR(50) NOT NULL,
     `language1`         INT NOT NULL,
     `language2`         INT NOT NULL,
+    `creationDate`      DATETIME NOT NULL,
     FOREIGN KEY (userId) REFERENCES users(id)
 );
 

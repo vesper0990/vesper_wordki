@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Wordki.Core.Domain;
 using Wordki.Core.Dtos;
 using Wordki.Utils.Dapper;
 using Wordki.Utils.Domain;
@@ -40,8 +41,8 @@ namespace Wordki.Core.Data
         }
 
         private readonly string insertSql = $@"
-INSERT INTO groups (userId, name, language1, language2) 
-VALUES (@userId, @name, @language1, @language2);
+INSERT INTO groups (userId, name, language1, language2, creationDate) 
+VALUES (@userId, @name, @language1, @language2, @creationDate);
 SELECT LAST_INSERT_ID();";
         private async Task<long> InsertAsync(Group group)
         {
@@ -51,7 +52,8 @@ SELECT LAST_INSERT_ID();";
                 userId = group.UserId,
                 name = group.Name,
                 language1 = group.Language1,
-                language2 = group.Language2
+                language2 = group.Language2,
+                creationDate = group.CreationDate
             };
             using (var connection = await dbConnection.Connect())
             {
@@ -94,7 +96,8 @@ id = @id";
 
         private async Task SaveWordAsync(IDbConnectionWrapper connection, Word word)
         {
-            if (word.Id == 0)
+            var wordId = word.Id;
+            if (wordId == 0)
             {
                 await InsertWordAsync(connection, word);
             }
@@ -106,7 +109,8 @@ id = @id";
 
         private readonly string insertWordSql = $@"
 INSERT INTO words (groupId, language1, language2, example1, example2, comment, drawer, isVisible, nextRepeat, creationDate)
-VALUES (@groupId, @language1, @language2, @example1, @example2, @comment, @drawer, @isVisible, @nextRepeat, @creationDate)";
+VALUES (@groupId, @language1, @language2, @example1, @example2, @comment, @drawer, @isVisible, @nextRepeat, @creationDate);
+SELECT LAST_INSERT_ID();";
 
 
         private async Task InsertWordAsync(IDbConnectionWrapper connection, Word word)
@@ -124,8 +128,30 @@ VALUES (@groupId, @language1, @language2, @example1, @example2, @comment, @drawe
                 nextRepeat = word.NextRepeat,
                 creationDate = word.CreationDate
             };
-            await connection.Execute(insertWordSql, param);
+            var wordId = await connection.ExecuteScalar(insertWordSql, param);
+            foreach(var repeat in word.Repeats.Where(x => x.NeedUpdate))
+            {
+                repeat.WordId = wordId;
+                await InsertRepeatAsync(connection, repeat);
+            }
         }
+
+        private readonly string insertRepeatSql = $@"
+INSERT INTO repeats (wordId, result, date)
+VALUES (@wordId, @result, @date)";
+
+        private async Task InsertRepeatAsync(IDbConnectionWrapper connection, Repeat repeat)
+        {
+            var param = new
+            {
+                wordId = repeat.WordId,
+                result = repeat.Result,
+                date = repeat.DateTime
+            };
+            await connection.Execute(insertRepeatSql, param);
+        }
+
+
 
         private readonly string updateWordSql = $@"
 UPDATE words SET

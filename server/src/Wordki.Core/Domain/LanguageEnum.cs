@@ -2,7 +2,7 @@
 {
     public enum LanguageEnum
     {
-        Unknown,
+        Undefined,
         Polish,
         English
     }

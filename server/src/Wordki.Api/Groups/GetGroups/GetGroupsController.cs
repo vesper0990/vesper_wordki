@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Wordki.Queries.GetGroups;
 using Wordki.Utils.HttpContext;
@@ -20,6 +21,7 @@ namespace Wordki.Api.GetGroups
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Get()
         {
             var userId = contextProvider.GetUserId();
