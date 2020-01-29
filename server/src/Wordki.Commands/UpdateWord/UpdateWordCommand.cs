@@ -9,6 +9,10 @@ namespace Wordki.Commands.UpdateWord
         public long WordId { get; set; }
         public string Language1 { get; set; }
         public string Language2 { get; set; }
+        public string Example1 { get; set; }
+        public string Example2 { get; set; }
+        public string Comment { get; set; }
+        public bool IsVisible { get; set; }
 
         public static UpdateWordCommand Create(long groupId, long wordId, string language1, string language2)
         {

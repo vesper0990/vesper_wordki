@@ -38,10 +38,10 @@ namespace Wordki.Core
         public string Language2 { get; private set; }
         public string Exapmle1 { get; private set; }
         public string Exapmle2 { get; private set; }
-        public string Comment { get; }
-        public Drawer Drawer { get; }
-        public bool IsVisible { get; }
-        public DateTime NextRepeat { get; set; }
+        public string Comment { get; private set; }
+        public Drawer Drawer { get; private set; }
+        public bool IsVisible { get; private set; }
+        public DateTime NextRepeat { get; private set; }
         public DateTime CreationDate { get; }
         public List<Repeat> Repeats { get; }
         public bool NeedUpdate { get; private set; }
@@ -79,16 +79,15 @@ namespace Wordki.Core
             NeedUpdate = true;
         }
 
-        public void UpdateLanguage1(string language1)
+        public void Update(string langauge1, string language2, string example1, string example2, string comment, bool isVisible)
         {
-            Language1 = language1;
             NeedUpdate = true;
-        }
-
-        public void UpdateLanguage2(string language2)
-        {
+            Language1 = langauge1;
             Language2 = language2;
-            NeedUpdate = true;
+            Exapmle1 = example1;
+            Exapmle2 = example2;
+            Comment = comment;
+            IsVisible = isVisible;
         }
 
         public class WordFactory : IWordFactory

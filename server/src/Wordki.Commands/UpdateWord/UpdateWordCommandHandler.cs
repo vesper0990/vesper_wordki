@@ -18,10 +18,9 @@ namespace Wordki.Commands.UpdateWord
         {
             var group = await groupRepository.GetGroup(command.GroupId);
             var word = group.Words.Single(x => x.Id == command.WordId);
-            word.UpdateLanguage1(command.Language1);
-            word.UpdateLanguage2(command.Language2);
-            
-
+            word.Update(command.Language1, command.Language2, command.Example1, command.Example2, command.Comment, command.IsVisible);
+            group.UpdateWord(word);
+            await groupRepository.SaveAsync(group);
         }
     }
 }
