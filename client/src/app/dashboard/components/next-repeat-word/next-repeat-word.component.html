@@ -1,1 +1,3 @@
-<p>next-repeat-word works!</p>
+<ng-container *ngIf="word$ | async as word">
+    <p>Next word to repeat: {{word?.language1}} - {{word?.language2}}</p>
+</ng-container>

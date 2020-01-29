@@ -4,6 +4,9 @@ import { LastWord } from '../../models/last-word.model';
 
 @Injectable()
 export class LastWordMapper {
+
+    constructor() { }
+
     map(dto: LastWordDto): LastWord {
         return new LastWord(dto.language1, dto.language2, dto.creationDate);
     }

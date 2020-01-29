@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { RepeatWord } from '../../models/repeat-word.model';
+import { DataProviderBase } from '../../services/data.provider/data.provider';
 
 @Component({
   selector: 'app-last-failed-repeat',
@@ -7,9 +10,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LastFailedRepeatComponent implements OnInit {
 
-  constructor() { }
+  word$: Observable<RepeatWord>;
+
+  constructor(private dataProvider: DataProviderBase) { }
 
   ngOnInit() {
+    this.word$ = this.dataProvider.getLastFailed();
   }
 
 }

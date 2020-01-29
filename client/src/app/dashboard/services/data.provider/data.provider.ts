@@ -13,6 +13,7 @@ export abstract class DataProviderBase {
     abstract getLastFailed(): Observable<RepeatWord>;
 }
 
+@Injectable()
 export class DataProvider extends DataProviderBase {
     getLastFailed(): Observable<RepeatWord> {
         throw new Error('Method not implemented.');
@@ -25,6 +26,7 @@ export class DataProvider extends DataProviderBase {
     }
 }
 
+@Injectable()
 export class DataProviderMock extends DataProviderBase {
 
     constructor(private mapper: LastWordMapper) {

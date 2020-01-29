@@ -1,1 +1,5 @@
-<p>last-failed-repeat works!</p>
+<p>Ostatnie niepoprawne słowo</p>
+<ng-container *ngIf="word$ | async as word">
+    {{word.language1}} - {{word.language2}}
+</ng-container>
+

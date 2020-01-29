@@ -11,10 +11,11 @@ import {
 } from './services/group-details.provider/group-details.provider';
 import { environment } from 'src/environments/environment';
 
-
-
 @NgModule({
-  declarations: [GroupDetailsComponent, WordRowComponent],
+  declarations: [
+    GroupDetailsComponent,
+    WordRowComponent
+  ],
   imports: [
     CommonModule,
     GroupsDetailsRoutingModule
