@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Wordki.Utils.Domain;
 
 namespace Wordki.Core
@@ -21,9 +22,16 @@ namespace Wordki.Core
 
         public long Id { get; }
         public long UserId { get; }
+
+        
+
         public string Name { get; private set; }
         public LanguageEnum Language1 { get; private set; }
         public LanguageEnum Language2 { get; private set; }
+        public bool NeedUpdate { get; private set; }
+
+        
+
         public DateTime CreationDate { get; }
         public IEnumerable<Word> Words => words;
 
@@ -84,6 +92,21 @@ namespace Wordki.Core
                     word.Swap();
                 }
             }
+        }
+
+        public void UpdateWord(Word word)
+        {
+            NeedUpdate = true;
+            var wordToUpdate = words.First(x => x.Id == word.Id);
+            words.Remove(wordToUpdate);
+            words.Add(word);
+        }
+        public void Update(string name, LanguageEnum language1, LanguageEnum language2)
+        {
+            NeedUpdate = true;
+            Name = name;
+            Language1 = language1;
+            Language2 = language2;
         }
     }
 }
