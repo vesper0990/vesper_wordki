@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { FiszkiComponent } from './pages/fiszki/fiszki.component';
 import { InsertingComponent } from './pages/inserting/inserting.component';
+import { SummaryComponent } from './pages/summary/summary.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,10 @@ const routes: Routes = [
   }, {
     path: 'inserting',
     component: InsertingComponent
-  },
+  }, {
+    path: 'summary',
+    component: SummaryComponent
+  }
 ];
 
 @NgModule({

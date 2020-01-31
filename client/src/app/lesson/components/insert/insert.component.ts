@@ -5,7 +5,8 @@ import { Store } from '@ngrx/store';
 import { LessonState } from '../../store/reducer';
 import { getLessonStateEnum, getFirstWord } from '../../store/selectors';
 import { Subscription } from 'rxjs';
-import { CheckAnswerAction, AnswerAction } from '../../store/actions';
+import { CheckAnswerAction, AnswerAction, SetLastAnswerAction } from '../../store/actions';
+import { WordComparerService } from '../../services/word-comparer/word-comparer.service';
 
 @Component({
   selector: 'app-insert',
@@ -33,7 +34,8 @@ export class InsertComponent implements OnInit, OnDestroy {
   result: string;
   isCorrect: boolean;
 
-  constructor(private lessonStore: Store<LessonState>) { }
+  constructor(private lessonStore: Store<LessonState>,
+    private wordComparer: WordComparerService) { }
 
   ngOnInit(): void {
     this.answerIsEnable = false;
@@ -74,7 +76,7 @@ export class InsertComponent implements OnInit, OnDestroy {
     this.lessonStore.dispatch(
       this.lessonStep.step === LessonStateEnum.WordDisplay
         ? new CheckAnswerAction()
-        : new AnswerAction({ wordId: this.word.id, result: 1 })
+        : new AnswerAction({ wordId: this.word.id, result: this.isCorrect ? 1 : 0 })
     );
   }
 
@@ -106,7 +108,8 @@ export class InsertComponent implements OnInit, OnDestroy {
         break;
       }
       case LessonStateEnum.AnswerDisplay: {
-        this.isCorrect = this.word.language2 === this.answer;
+        this.isCorrect = this.wordComparer.isCorrect(this.word.language2, this.answer);
+        this.lessonStore.dispatch(new SetLastAnswerAction({ isCorrect: this.isCorrect }));
         this.result = this.isCorrect ? 'dobrze' : 'zle';
         break;
       }

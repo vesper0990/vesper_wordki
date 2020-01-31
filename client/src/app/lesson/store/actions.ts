@@ -8,6 +8,7 @@ export enum LessonActionTypes {
     SetWords = '[LESSON_STATE] SET_WORDS',
     RemoveWord = '[LESSON_STATE] REMOVE_WORD',
     SetLessonMode = '[LESSON_STATE] SET_LESSON_MODE',
+    SetLastAction = '[LESSON_STATE] SET_LAST_ACTION',
 
     StartLesson = '[LESSON_STATE] START_LESSON',
     CheckAnswer = '[LESSON_STATE] CHECK_ANSWER',
@@ -67,11 +68,17 @@ export class ResetStoreAction implements Action {
     constructor() { }
 }
 
+export class SetLastAnswerAction implements Action {
+    readonly type = LessonActionTypes.SetLastAction;
+    constructor(public payload: { isCorrect: boolean }) { }
+}
+
 export type LessonActions = GetWordsAction
     | GetWordsFromGroupAction
     | SetWordsAction
     | RemoveWordAction
     | SetLessonMode
+    | SetLastAnswerAction
     | StartLessonAction
     | CheckAnswerAction
     | AnswerAction
