@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { Group } from '../../models/group.model';
 import { Router } from '@angular/router';
 
@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 export class GroupRowComponent implements OnInit {
 
   @Input() group: Group;
+  @Output() lessonStart: EventEmitter<Group> = new EventEmitter();
+  @Output() groupEdit: EventEmitter<Group> = new EventEmitter();
 
   constructor(
     private router: Router) { }
@@ -18,11 +20,16 @@ export class GroupRowComponent implements OnInit {
   ngOnInit() {
   }
 
-  startLesson(groupId: number): void {
-    this.router.navigate(['lesson/group', groupId]);
+  startLesson(group: Group): void {
+    this.lessonStart.emit(group);
+    this.router.navigate(['lesson/group', group.id]);
   }
 
-  openGroup(groupId: number): void {
-    this.router.navigate(['details', groupId]);
+  editGroup(group: Group): void {
+    this.groupEdit.emit(group);
+  }
+
+  openGroup(group: Group): void {
+    this.router.navigate(['details', group.id]);
   }
 }

@@ -1,0 +1,15 @@
+<form [formGroup]="groupForm" (ngSubmit)="onSubmit()">
+    <label>
+        Nazwa grupy
+        <input type="text" formControlName="name">
+    </label>
+    <label>
+        Język 1
+        <input type="text" formControlName="language1">
+    </label>
+    <label>
+        Język 2
+        <input type="text" formControlName="language2">
+    </label>
+    <button type="submit">Zapisz</button>
+</form>

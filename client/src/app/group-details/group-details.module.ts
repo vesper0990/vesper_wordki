@@ -10,14 +10,18 @@ import {
   GroupDetailsProviderMock
 } from './services/group-details.provider/group-details.provider';
 import { environment } from 'src/environments/environment';
+import { EditWordFormComponent } from './components/edit-word-form/edit-word-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     GroupDetailsComponent,
-    WordRowComponent
+    WordRowComponent,
+    EditWordFormComponent
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     GroupsDetailsRoutingModule
   ],
   providers: [

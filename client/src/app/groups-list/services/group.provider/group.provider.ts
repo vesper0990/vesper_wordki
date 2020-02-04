@@ -6,12 +6,17 @@ import { Group } from '../../models/group.model';
 import { GroupMapper } from '../group.mapper/group.mapper';
 import { map } from 'rxjs/operators';
 
+@Injectable()
 export abstract class GroupProviderBase {
     abstract getGroups(): Observable<Group[]>;
+    abstract updateGroup(group: Group): Observable<any>;
 }
 
 @Injectable()
 export class GroupProvider extends GroupProviderBase {
+    updateGroup(group: Group): Observable<any> {
+        throw new Error('Method not implemented.');
+    }
 
     constructor(private client: HttpClient) {
         super();
@@ -22,7 +27,9 @@ export class GroupProvider extends GroupProviderBase {
     }
 }
 
+@Injectable()
 export class GroupProviderMock extends GroupProviderBase {
+
 
     constructor(private mapper: GroupMapper) {
         super();
@@ -47,6 +54,11 @@ export class GroupProviderMock extends GroupProviderBase {
                 });
                 return result;
             }));
+    }
+
+    updateGroup(group: Group): Observable<any> {
+        console.log('group updated');
+        return of<any>({});
     }
 
 }

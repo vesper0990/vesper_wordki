@@ -7,6 +7,7 @@ export class Word {
     language2: string;
     drawer: number;
     group: GroupDetails;
+    isVisible: boolean;
 
     constructor(id: number,
         language1: string,

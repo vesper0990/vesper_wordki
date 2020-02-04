@@ -14,7 +14,7 @@ namespace Wordki.Commands.UpdateWord
         public string Comment { get; set; }
         public bool IsVisible { get; set; }
 
-        public static UpdateWordCommand Create(long groupId, long wordId, string language1, string language2)
+        public static UpdateWordCommand Create(long groupId, long wordId, string language1, string language2, bool isVisible)
         {
             Condition.True(groupId > 0, "groupId must be defined");
             Condition.True(wordId > 0, "wordId must be defined");
@@ -26,7 +26,8 @@ namespace Wordki.Commands.UpdateWord
                 GroupId = groupId,
                 WordId = wordId,
                 Language1 = language1,
-                Language2 = language2
+                Language2 = language2,
+                IsVisible = isVisible
             };
         }
     }

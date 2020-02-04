@@ -3,6 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { GroupDetailsProviderBase } from './services/group-details.provider/group-details.provider';
 import { GroupDetails } from './models/group-details.model';
+import { Word } from './models/word.model';
 
 @Component({
   templateUrl: './group-details.component.html',
@@ -14,6 +15,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   private routeParamSub: Subscription;
 
   groupDetails: GroupDetails;
+  editingWord: Word = null;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -36,6 +38,10 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.groupDetailsProvider.getGroupDetails(id).subscribe((groupDetails: GroupDetails) => {
       this.groupDetails = groupDetails;
     });
+  }
+
+  onEditWord(word: Word): void {
+    this.editingWord = word;
   }
 
 }

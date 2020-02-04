@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { Word } from '../../models/word.model';
 
 @Component({
@@ -11,9 +11,15 @@ export class WordRowComponent implements OnInit {
 
   @Input() word: Word;
 
+  @Output() editWord: EventEmitter<Word> = new EventEmitter();
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  edit(word: Word): void {
+    this.editWord.emit(word);
   }
 
 }

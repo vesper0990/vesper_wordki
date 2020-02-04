@@ -1,3 +1,6 @@
+
+<app-edit-group-form *ngIf="editingGroup" [group]="editingGroup" (submit)="onEditSubmit($event)"></app-edit-group-form>
+
 <ng-container *ngFor="let item of groups | async">
-  <app-group-row [group]="item"></app-group-row>
+  <app-group-row [group]="item" (groupEdit)="groupEdit($event)"></app-group-row>
 </ng-container>

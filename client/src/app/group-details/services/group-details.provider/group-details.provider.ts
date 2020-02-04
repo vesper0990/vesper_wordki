@@ -12,6 +12,7 @@ export abstract class GroupDetailsProviderBase {
     abstract getGroupDetails(groupId: number): Observable<GroupDetails>;
 }
 
+@Injectable()
 export class GroupDetailsProvider extends GroupDetailsProviderBase {
 
     constructor(private http: HttpClient, private mapper: GroupDetailsMapper) {
@@ -24,6 +25,7 @@ export class GroupDetailsProvider extends GroupDetailsProviderBase {
     }
 }
 
+@Injectable()
 export class GroupDetailsProviderMock extends GroupDetailsProviderBase {
 
     constructor(private mapper: GroupDetailsMapper) {

@@ -1,1 +1,6 @@
-<div (click)="openGroup(group.id)">{{ group?.name }}</div> --- <div (click)="startLesson(group.id)">Lekcja</div>
+<div style="margin: 20px;">
+    <div (click)="openGroup(group)">{{ group?.name }}</div>
+    <div>{{group?.language1.label}} - {{group?.language2.label}}</div>
+    <button (click)="startLesson(group)">Lekcja</button>
+    <button (click)="editGroup(group)">Edytuj</button>
+</div>

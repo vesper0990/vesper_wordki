@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 export class GroupsComponent implements OnInit {
 
   groups: Observable<Group[]>;
+  editingGroup: Group = null;
 
   constructor(private groupProvider: GroupProviderBase,
     private router: Router) { }
@@ -21,5 +22,14 @@ export class GroupsComponent implements OnInit {
 
   openGroup(groupId: number): void {
     this.router.navigate(['lesson/group', groupId]);
+  }
+
+  groupEdit(group: Group): void {
+    this.editingGroup = group;
+  }
+
+  onEditSubmit(group: Group): void {
+    this.editingGroup = null;
+    this.groups = this.groupProvider.getGroups();
   }
 }

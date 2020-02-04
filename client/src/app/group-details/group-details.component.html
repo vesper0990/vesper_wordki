@@ -1,5 +1,5 @@
-<p>group-details works!</p>
 {{ groupDetails?.name }} <button (click)="startLesson()">Lekcja</button>
+<app-edit-word-form *ngIf="editingWord" [word]="editingWord"></app-edit-word-form>
 <ng-container *ngFor="let item of groupDetails?.words">
-    <app-word-row [word]="item"></app-word-row>
+    <app-word-row [word]="item" (editWord)="onEditWord($event)"></app-word-row>
 </ng-container>
