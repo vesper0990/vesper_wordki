@@ -10,3 +10,7 @@ export const isAnyWord = createSelector(getLessonState, (state: LessonState) => 
 export const getLessonStateEnum = createSelector(getLessonState, (state: LessonState) => state.lessonState);
 
 export const getLessonMode = createSelector(getLessonState, (state: LessonState) => state.lessonMode);
+
+export const getLessonResult = createSelector(getLessonState, (state: LessonState) => state.result);
+
+export const getLastAnswer = createSelector(getLessonState, (state: LessonState) => state.lastAnswer);

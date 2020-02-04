@@ -20,6 +20,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { InsertingComponent } from './pages/inserting/inserting.component';
 import { FormsModule } from '@angular/forms';
 import { RouteParamsHandler } from './services/route-params.handler/route-params.handler';
+import { SummaryComponent } from './pages/summary/summary.component';
+import { ShareModule } from '../share/share.module';
 
 @NgModule({
   declarations: [
@@ -28,13 +30,15 @@ import { RouteParamsHandler } from './services/route-params.handler/route-params
     FiszkaComponent,
     ControlButtonsComponent,
     InsertComponent,
-    InsertingComponent
+    InsertingComponent,
+    SummaryComponent
   ],
   imports: [
     FormsModule,
     CommonModule,
     LessonRoutingModule,
     HttpClientModule,
+    ShareModule,
     StoreModule.forFeature('lessonStore', reducer),
     EffectsModule.forFeature([LessonEffects]),
   ],
