@@ -22,6 +22,8 @@ import { FormsModule } from '@angular/forms';
 import { RouteParamsHandler } from './services/route-params.handler/route-params.handler';
 import { SummaryComponent } from './pages/summary/summary.component';
 import { ShareModule } from '../share/share.module';
+import { StoperComponent } from './components/stoper/stoper.component';
+import { StoperService } from './services/stoper/stoper.service';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { ShareModule } from '../share/share.module';
     ControlButtonsComponent,
     InsertComponent,
     InsertingComponent,
-    SummaryComponent
+    SummaryComponent,
+    StoperComponent
   ],
   imports: [
     FormsModule,
@@ -45,7 +48,8 @@ import { ShareModule } from '../share/share.module';
   providers: [
     Store,
     { provide: WordProviderBase, useClass: environment.production ? WordProvider : WordProviderMock },
-    RouteParamsHandler
+    RouteParamsHandler,
+    StoperService
   ]
 })
 export class LessonModule { }
