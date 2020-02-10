@@ -1,7 +1,7 @@
 <form [formGroup]="groupForm" (ngSubmit)="onSubmit()">
     <label for="name">
         Nazwa grupy
-        <input required minlength="1" type="text" formControlName="name">
+        <input type="text" formControlName="name">
         <div *ngIf="name.invalid && (name.dirty || name.touched)">
             <div *ngIf="name.errors.required">
                 Name is required.
@@ -23,6 +23,7 @@
             <option *ngFor="let item of langauges" value="{{item.type}}">{{item.label}}</option>
         </select>
     </label>
+    <app-combo-box formControlName="test"></app-combo-box>
 
     <button type="submit" [disabled]="!groupForm.valid">Zapisz</button>
 </form>

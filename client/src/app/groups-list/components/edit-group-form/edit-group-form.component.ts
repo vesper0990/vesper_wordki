@@ -22,6 +22,7 @@ export class EditGroupFormComponent implements OnInit {
     name: this.name,
     language1: [''],
     language2: [''],
+    test: ['']
   });
 
   constructor(private formBuilder: FormBuilder,
@@ -32,6 +33,7 @@ export class EditGroupFormComponent implements OnInit {
       name: this.group.name,
       language1: this.group.language1.type,
       language2: this.group.language2.type,
+      test: 'asdfasdf'
     });
     this.langauges = LanguageType.getAll();
   }

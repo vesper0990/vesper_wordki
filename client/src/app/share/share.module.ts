@@ -2,17 +2,23 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ErrorComponent } from './components/error/error.component';
 import { NubmerToTimePipe } from './pipes/number-to-time.pipe';
+import { ComboBoxComponent } from './components/combo-box/combo-box.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     ErrorComponent,
-    NubmerToTimePipe
+    NubmerToTimePipe,
+    ComboBoxComponent
   ],
   exports: [
-    NubmerToTimePipe
+    NubmerToTimePipe,
+    ComboBoxComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class ShareModule { }
