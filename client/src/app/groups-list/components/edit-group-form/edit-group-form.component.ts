@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Group } from '../../models/group.model';
 import { LanguageType } from 'src/app/share/models/language-type.mode';
 import { GroupProviderBase } from '../../services/group.provider/group.provider';
@@ -14,10 +14,14 @@ export class EditGroupFormComponent implements OnInit {
   @Input() group: Group;
   @Output() submit: EventEmitter<Group> = new EventEmitter();
 
+  langauges: LanguageType[];
+
+  name = this.formBuilder.control('', [Validators.required, Validators.minLength(4)]);
+
   groupForm = this.formBuilder.group({
-    name: [''],
+    name: this.name,
     language1: [''],
-    language2: ['']
+    language2: [''],
   });
 
   constructor(private formBuilder: FormBuilder,
@@ -29,9 +33,11 @@ export class EditGroupFormComponent implements OnInit {
       language1: this.group.language1.type,
       language2: this.group.language2.type,
     });
+    this.langauges = LanguageType.getAll();
   }
 
   onSubmit(): void {
+    console.log(this.groupForm.value);
     const newGroup = new Group(
       this.group.id,
       this.groupForm.get('name').value,

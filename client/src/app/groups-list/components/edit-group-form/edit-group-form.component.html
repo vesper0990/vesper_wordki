@@ -1,15 +1,28 @@
 <form [formGroup]="groupForm" (ngSubmit)="onSubmit()">
-    <label>
+    <label for="name">
         Nazwa grupy
-        <input type="text" formControlName="name">
+        <input required minlength="1" type="text" formControlName="name">
+        <div *ngIf="name.invalid && (name.dirty || name.touched)">
+            <div *ngIf="name.errors.required">
+                Name is required.
+            </div>
+            <div *ngIf="name.errors.minlength">
+                Name must be at least 4 characters long.
+            </div>
+        </div>
     </label>
-    <label>
-        Język 1
-        <input type="text" formControlName="language1">
+    <label for="language1">
+        Jęzuk 1
+        <select formControlName="language1">
+            <option *ngFor="let item of langauges" value="{{item.type}}">{{item.label}}</option>
+        </select>
     </label>
-    <label>
-        Język 2
-        <input type="text" formControlName="language2">
+    <label for="language2">
+        Jęzuk 2
+        <select formControlName="language2">
+            <option *ngFor="let item of langauges" value="{{item.type}}">{{item.label}}</option>
+        </select>
     </label>
-    <button type="submit">Zapisz</button>
+
+    <button type="submit" [disabled]="!groupForm.valid">Zapisz</button>
 </form>

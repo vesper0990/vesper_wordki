@@ -1,5 +1,5 @@
 export enum LanguageTypeEnum {
-    Undefine,
+    Undefine = 0,
     Polish,
     English
 }
