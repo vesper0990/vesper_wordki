@@ -9,6 +9,8 @@ import { ShareModule } from '../share/share.module';
 import { DataProviderBase, DataProvider, DataProviderMock } from './services/data.provider/data.provider';
 import { environment } from 'src/environments/environment';
 import { LastWordMapper } from './services/last-word.mapper/last-word.mapper';
+import { CardModule } from 'primeng/card';
+import { CarouselModule } from 'primeng/carousel';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { LastWordMapper } from './services/last-word.mapper/last-word.mapper';
   imports: [
     CommonModule,
     DashboardRoutingModule,
-    ShareModule
+    ShareModule,
+    CardModule,
+    CarouselModule
   ],
   providers: [
     LastWordMapper,

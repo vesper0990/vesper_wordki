@@ -14,6 +14,7 @@ export enum LessonActionTypes {
     CheckAnswer = '[LESSON_STATE] CHECK_ANSWER',
     Answer = '[LESSON_STATE] ANSWER',
     FinishLesson = '[LESSON_STATE] FINISH_LESSON',
+    PauseLesson = '[LESSON_STATE] PAUSE_LESSON',
 
     ResetStoreAction = '[LESSON_STATE] RESET_STORE'
 }
@@ -58,6 +59,11 @@ export class AnswerAction implements Action {
     constructor(public payload: { wordId: number, result: number }) { }
 }
 
+export class PauseLessonAction implements Action {
+    readonly type = LessonActionTypes.PauseLesson;
+    constructor() { }
+}
+
 export class FinishLessonAction implements Action {
     readonly type = LessonActionTypes.FinishLesson;
     constructor() { }
@@ -80,6 +86,7 @@ export type LessonActions = GetWordsAction
     | SetLessonMode
     | SetLastAnswerAction
     | StartLessonAction
+    | PauseLessonAction
     | CheckAnswerAction
     | AnswerAction
     | FinishLessonAction

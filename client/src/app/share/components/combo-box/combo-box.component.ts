@@ -22,7 +22,9 @@ export class ComboBoxComponent implements OnInit, ControlValueAccessor {
   @Input()
   set value(v: string) {
     this._value = v;
-    this.onChange(v);
+    if (this.onChange) {
+      this.onChange(v);
+    }
   }
 
   get value() {

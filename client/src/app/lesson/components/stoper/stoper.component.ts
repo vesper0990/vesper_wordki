@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { StoperService } from '../../services/stoper/stoper.service';
 import { Subscription } from 'rxjs';
+import { LessonState } from '../../store/reducer';
+import { Store } from '@ngrx/store';
+import { StartLessonAction } from '../../store/actions';
 
 @Component({
   selector: 'app-stoper',
@@ -13,7 +16,8 @@ export class StoperComponent implements OnInit, OnDestroy {
 
   isRunning: boolean;
 
-  constructor(private stoperService: StoperService) { }
+  constructor(private stoperService: StoperService,
+    private lessonStore: Store<LessonState>) { }
 
   ngOnInit(): void {
     this.stoperSubscription = this.stoperService.getObservable().subscribe((value: boolean) => this.handleIsRunning(value));
@@ -28,11 +32,13 @@ export class StoperComponent implements OnInit, OnDestroy {
       this.stoperService.resume();
     } else {
       this.stoperService.restart();
+      this.lessonStore.dispatch(new StartLessonAction());
     }
   }
 
   stop(): void {
     this.stoperService.stop();
+    this.lessonStore.dispatch(new StartLessonAction());
   }
 
   private handleIsRunning(value: boolean): void {

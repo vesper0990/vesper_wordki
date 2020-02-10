@@ -4,21 +4,26 @@ import { ErrorComponent } from './components/error/error.component';
 import { NubmerToTimePipe } from './pipes/number-to-time.pipe';
 import { ComboBoxComponent } from './components/combo-box/combo-box.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { LanguagesDropDownComponent } from './components/languages-drop-down/languages-drop-down.component';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
     ErrorComponent,
     NubmerToTimePipe,
-    ComboBoxComponent
+    ComboBoxComponent,
+    LanguagesDropDownComponent
   ],
   exports: [
     NubmerToTimePipe,
-    ComboBoxComponent
+    ComboBoxComponent,
+    LanguagesDropDownComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    DropdownModule
   ]
 })
 export class ShareModule { }

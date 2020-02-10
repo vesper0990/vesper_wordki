@@ -4,7 +4,7 @@ import { LessonState } from '../../store/reducer';
 import { Subscription } from 'rxjs';
 import { getLessonStateEnum, getFirstWord, getLastAnswer } from '../../store/selectors';
 import { LessonStep } from '../../models/lesson-state';
-import { StartLessonAction, CheckAnswerAction, AnswerAction } from '../../store/actions';
+import { CheckAnswerAction, AnswerAction } from '../../store/actions';
 import { WordRepeat } from '../../models/word-repeat';
 
 @Component({
@@ -22,7 +22,6 @@ export class ControlButtonsComponent implements OnInit, OnDestroy {
   private lastAnswer: boolean;
 
   lessonStep: LessonStep;
-  startVisibility: boolean;
   checkVisibility: boolean;
   answerVisibility: boolean;
 
@@ -49,10 +48,6 @@ export class ControlButtonsComponent implements OnInit, OnDestroy {
     this.lastAnswerSub.unsubscribe();
   }
 
-  startLesson(): void {
-    this.lessonState.dispatch(new StartLessonAction());
-  }
-
   check(): void {
     this.lessonState.dispatch(new CheckAnswerAction());
   }
@@ -67,7 +62,6 @@ export class ControlButtonsComponent implements OnInit, OnDestroy {
 
   private handleLessonStateEnum(storeValue: LessonStep): void {
     this.lessonStep = storeValue;
-    this.startVisibility = this.lessonStep.startVisibility;
     this.checkVisibility = this.lessonStep.checkVisibility;
     this.answerVisibility = this.lessonStep.answerVisibility;
   }

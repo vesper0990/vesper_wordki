@@ -1,7 +1,7 @@
 <form [formGroup]="groupForm" (ngSubmit)="onSubmit()">
     <label for="name">
         Nazwa grupy
-        <input type="text" formControlName="name">
+        <input pInputText type="text" formControlName="name">
         <div *ngIf="name.invalid && (name.dirty || name.touched)">
             <div *ngIf="name.errors.required">
                 Name is required.
@@ -12,18 +12,13 @@
         </div>
     </label>
     <label for="language1">
-        Jęzuk 1
-        <select formControlName="language1">
-            <option *ngFor="let item of langauges" value="{{item.type}}">{{item.label}}</option>
-        </select>
+        Język 1
+        <app-languages-drop-down formControlName="language1"></app-languages-drop-down>
     </label>
     <label for="language2">
-        Jęzuk 2
-        <select formControlName="language2">
-            <option *ngFor="let item of langauges" value="{{item.type}}">{{item.label}}</option>
-        </select>
+        Język 2
+        <app-languages-drop-down formControlName="language2"></app-languages-drop-down>
     </label>
-    <app-combo-box formControlName="test"></app-combo-box>
 
     <button type="submit" [disabled]="!groupForm.valid">Zapisz</button>
 </form>

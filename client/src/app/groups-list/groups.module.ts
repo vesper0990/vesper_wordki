@@ -9,6 +9,7 @@ import { GroupMapper } from './services/group.mapper/group.mapper';
 import { ShareModule } from '../share/share.module';
 import { EditGroupFormComponent } from './components/edit-group-form/edit-group-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     ReactiveFormsModule,
     GroupsRoutingModule,
-    ShareModule
+    ShareModule,
+    InputTextModule
   ],
   providers: [
     { provide: GroupProviderBase, useClass: environment.production ? GroupProvider : GroupProviderMock },

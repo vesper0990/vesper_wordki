@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Group } from '../../models/group.model';
-import { LanguageType } from 'src/app/share/models/language-type.mode';
+import { LanguageType, LanguageTypeEnum } from 'src/app/share/models/language-type.mode';
 import { GroupProviderBase } from '../../services/group.provider/group.provider';
+import { SelectItemGroup, SelectItem } from 'primeng/api/public_api';
 
 @Component({
   selector: 'app-edit-group-form',
@@ -14,7 +15,7 @@ export class EditGroupFormComponent implements OnInit {
   @Input() group: Group;
   @Output() submit: EventEmitter<Group> = new EventEmitter();
 
-  langauges: LanguageType[];
+  languages: LanguageType[];
 
   name = this.formBuilder.control('', [Validators.required, Validators.minLength(4)]);
 
@@ -22,7 +23,6 @@ export class EditGroupFormComponent implements OnInit {
     name: this.name,
     language1: [''],
     language2: [''],
-    test: ['']
   });
 
   constructor(private formBuilder: FormBuilder,
@@ -31,20 +31,20 @@ export class EditGroupFormComponent implements OnInit {
   ngOnInit(): void {
     this.groupForm.patchValue({
       name: this.group.name,
-      language1: this.group.language1.type,
-      language2: this.group.language2.type,
-      test: 'asdfasdf'
+      language1: this.group.language1,
+      language2: this.group.language2,
     });
-    this.langauges = LanguageType.getAll();
+
+    this.groupForm.valueChanges.subscribe(x => console.log(x));
+    this.languages = LanguageType.getAll();
   }
 
   onSubmit(): void {
-    console.log(this.groupForm.value);
     const newGroup = new Group(
       this.group.id,
       this.groupForm.get('name').value,
-      LanguageType.getLanguageType(this.groupForm.get('language1').value),
-      LanguageType.getLanguageType(this.groupForm.get('language2').value),
+      LanguageType.getLanguageType(this.groupForm.get('language1').value.type),
+      LanguageType.getLanguageType(this.groupForm.get('language2').value.type),
       this.group.wordsCount
     );
     this.groupProvider.updateGroup(newGroup);

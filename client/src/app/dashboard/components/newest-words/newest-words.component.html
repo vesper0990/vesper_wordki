@@ -1,7 +1,9 @@
-<p>Najnowsze słowa:</p>
-<ng-container *ngIf="words$ | async as words">
-    <div *ngFor="let word of words; let i=index">
-        {{i + 1}} - {{word.language1}} - {{word.language2}}
-    </div>
-</ng-container>
-
+<p-card class="card" header="Najnowsze słowa">
+    <ng-container *ngIf="words$ | async as words">
+        <p-carousel [value]="words">
+            <ng-template let-word pTemplate="item">
+                {{word.language1}} - {{word.language2}}
+            </ng-template>
+        </p-carousel>
+    </ng-container>
+</p-card>
