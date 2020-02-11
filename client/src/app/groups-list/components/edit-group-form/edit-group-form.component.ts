@@ -45,7 +45,9 @@ export class EditGroupFormComponent implements OnInit {
       this.groupForm.get('name').value,
       LanguageType.getLanguageType(this.groupForm.get('language1').value.type),
       LanguageType.getLanguageType(this.groupForm.get('language2').value.type),
-      this.group.wordsCount
+      this.group.wordsCount,
+      0,
+      0
     );
     this.groupProvider.updateGroup(newGroup);
     this.submit.emit(newGroup);

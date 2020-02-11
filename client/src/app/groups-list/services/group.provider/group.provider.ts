@@ -43,7 +43,9 @@ export class GroupProviderMock extends GroupProviderBase {
                 name: `group ${i}`,
                 language1: 1,
                 language2: 2,
-                wordsCount: 30 % i
+                wordsCount: 30 % i,
+                repeatsCount: 30 % i,
+                averageDrawer: 5 % i,
             });
         }
         return of<GroupDto[]>(groups)

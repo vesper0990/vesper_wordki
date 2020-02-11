@@ -4,4 +4,6 @@ export class GroupDto {
     language1: number;
     language2: number;
     wordsCount: number;
+    repeatsCount: number;
+    averageDrawer: number;
 }
