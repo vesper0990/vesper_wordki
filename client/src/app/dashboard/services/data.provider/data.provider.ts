@@ -5,6 +5,7 @@ import { LastWordDto } from '../../models/last-word.dto';
 import { LastWordMapper } from '../last-word.mapper/last-word.mapper';
 import { RepeatWord } from '../../models/repeat-word.model';
 import { RepeatWordDto } from '../../models/reapeat-word.dto';
+import { delay } from 'rxjs/operators';
 
 @Injectable()
 export abstract class DataProviderBase {
@@ -42,7 +43,7 @@ export class DataProviderMock extends DataProviderBase {
                 creationDate: '12/09/2019',
             });
         }
-        return of(arr.map((dto: LastWordDto) => this.mapper.map(dto)));
+        return of(arr.map((dto: LastWordDto) => this.mapper.map(dto))).pipe(delay(4000));
     }
 
     getNextRepeatWord(): Observable<RepeatWord> {

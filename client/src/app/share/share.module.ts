@@ -6,24 +6,34 @@ import { ComboBoxComponent } from './components/combo-box/combo-box.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LanguagesDropDownComponent } from './components/languages-drop-down/languages-drop-down.component';
 import { DropdownModule } from 'primeng/dropdown';
+import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { ProgressHorizontalComponent } from './components/progress-horizontal/progress-horizontal.component';
 
 @NgModule({
   declarations: [
     ErrorComponent,
     NubmerToTimePipe,
     ComboBoxComponent,
-    LanguagesDropDownComponent
+    LanguagesDropDownComponent,
+    ProgressSpinnerComponent,
+    ProgressHorizontalComponent
   ],
   exports: [
     NubmerToTimePipe,
     ComboBoxComponent,
-    LanguagesDropDownComponent
+    LanguagesDropDownComponent,
+    ProgressSpinnerComponent,
+    ProgressHorizontalComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    DropdownModule
+    DropdownModule,
+    ProgressSpinnerModule,
+    ProgressBarModule
   ]
 })
 export class ShareModule { }

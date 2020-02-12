@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { GroupDto } from '../../models/group-dto.model';
 import { Group } from '../../models/group.model';
 import { GroupMapper } from '../group.mapper/group.mapper';
-import { map } from 'rxjs/operators';
+import { map, timeout, delay } from 'rxjs/operators';
 
 @Injectable()
 export abstract class GroupProviderBase {
@@ -55,7 +55,7 @@ export class GroupProviderMock extends GroupProviderBase {
                     result.push(this.mapper.map(dto));
                 });
                 return result;
-            }));
+            })).pipe(delay(5000));
     }
 
     updateGroup(group: Group): Observable<any> {

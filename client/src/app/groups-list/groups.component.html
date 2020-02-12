@@ -1,4 +1,7 @@
 <app-edit-group-form *ngIf="editingGroup" [group]="editingGroup" (submit)="onEditSubmit($event)"></app-edit-group-form>
-<ng-container *ngFor="let item of groups | async">
-  <app-group-row [group]="item" (groupEdit)="groupEdit($event)"></app-group-row>
+<ng-container *ngIf="groups$ | async as groups; else elseTemplate">
+  <app-group-row *ngFor="let item of groups" [group]="item" (groupEdit)="groupEdit($event)"></app-group-row>
 </ng-container>
+<ng-template #elseTemplate>
+  <app-progress-horizontal></app-progress-horizontal>
+</ng-template>

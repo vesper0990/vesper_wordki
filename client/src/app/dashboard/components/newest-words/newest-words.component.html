@@ -1,5 +1,5 @@
 <p-card class="card" header="Najnowsze słowa">
-    <ng-container *ngIf="words$ | async as words">
+    <ng-container *ngIf="words$ | async as words; else loading">
         <p-carousel [value]="words">
             <ng-template let-word pTemplate="item">
                 {{word.language1}} - {{word.language2}}
@@ -7,3 +7,7 @@
         </p-carousel>
     </ng-container>
 </p-card>
+
+<ng-template #loading>
+    <app-progress-spinner></app-progress-spinner>
+</ng-template>

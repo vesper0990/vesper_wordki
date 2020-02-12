@@ -11,6 +11,7 @@ import { EditGroupFormComponent } from './components/edit-group-form/edit-group-
 import { ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { CardModule } from 'primeng/card';
     GroupsRoutingModule,
     ShareModule,
     InputTextModule,
-    CardModule
+    CardModule,
+    ProgressSpinnerModule
   ],
   providers: [
     { provide: GroupProviderBase, useClass: environment.production ? GroupProvider : GroupProviderMock },
