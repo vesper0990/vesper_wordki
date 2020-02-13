@@ -1,7 +1,11 @@
 <p-card styleClass="card" header="Ostatnia pomyłka">
-    <ng-container *ngIf="word$ | async as word">
+    <ng-container *ngIf="word$ | async as word; else loading">
         <p>
             {{word.language1}} - {{word.language2}}
         </p>
     </ng-container>
 </p-card>
+
+<ng-template #loading>
+    <app-progress-spinner></app-progress-spinner>
+</ng-template>
