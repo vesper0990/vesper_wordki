@@ -93,10 +93,11 @@ describe('ControlButtonsComponent', () => {
     beforeEach(() => {
       lessonStepObservable.next(LessonStep.getLessonStep(LessonStateEnum.AnswerDisplay));
       wordRepeatObservable.next(wordRepeat);
+      lastAnswerObservable.next(true);
       fixture.detectChanges();
       const buttons = fixture.debugElement.queryAll(By.css('button'));
-      correctButton = buttons[0];
-      incorrectButton = buttons[1];
+      incorrectButton = buttons[0];
+      correctButton = buttons[1];
     });
 
     it('should display Correct button', () => {

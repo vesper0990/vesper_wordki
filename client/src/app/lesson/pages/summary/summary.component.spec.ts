@@ -17,7 +17,7 @@ describe('SummaryComponent', () => {
       declarations: [SummaryComponent,
         NubmerToTimeMockPipe],
       providers: [
-        { provide: Store, useValue: jasmine.createSpyObj('store', ['select', 'unsubscribe']) }
+        { provide: Store, useValue: jasmine.createSpyObj('store', ['select', 'dispatch']) }
       ]
     })
       .compileComponents();

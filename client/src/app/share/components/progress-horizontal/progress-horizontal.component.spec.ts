@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ProgressHorizontalComponent } from './progress-horizontal.component';
+import { MockComponent } from 'ng-mocks';
+import { ProgressBar } from 'primeng/progressbar';
 
 describe('ProgressHorizontalComponent', () => {
   let component: ProgressHorizontalComponent;
@@ -8,7 +9,8 @@ describe('ProgressHorizontalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProgressHorizontalComponent ]
+      declarations: [ ProgressHorizontalComponent ,
+      MockComponent(ProgressBar)]
     })
     .compileComponents();
   }));
