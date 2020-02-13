@@ -3,7 +3,6 @@ export enum LessonStateEnum {
     WordDisplay,
     AnswerDisplay,
     AfterFinish,
-    Pause
 }
 
 export class LessonStep {
@@ -16,9 +15,7 @@ export class LessonStep {
         .set(LessonStateEnum.AnswerDisplay,
             new LessonStep(LessonStateEnum.AnswerDisplay, true, false, false, false, true))
         .set(LessonStateEnum.AfterFinish,
-            new LessonStep(LessonStateEnum.AfterFinish, false, false, false, false, false))
-        .set(LessonStateEnum.Pause,
-            new LessonStep(LessonStateEnum.Pause, false, false, true, false, false));
+            new LessonStep(LessonStateEnum.AfterFinish, false, false, false, false, false));
 
     readonly step: LessonStateEnum;
     readonly questionVisibility: boolean;

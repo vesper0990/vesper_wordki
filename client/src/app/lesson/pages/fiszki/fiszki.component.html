@@ -1,3 +1,10 @@
-<app-stoper></app-stoper>
+<div *ngIf="!isRunning; else finish">
+    <button (click)="startLesson()">Start</button>
+</div>
+
 <app-fiszka></app-fiszka>
 <app-control-buttons></app-control-buttons>
+
+<ng-template #finish>
+    <button (click)="finishLesson()">Zakończ</button>
+</ng-template>

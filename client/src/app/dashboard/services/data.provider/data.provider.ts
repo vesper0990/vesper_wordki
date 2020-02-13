@@ -52,7 +52,7 @@ export class DataProviderMock extends DataProviderBase {
             language2: 'word1',
             drawer: 1,
         };
-        return of(new RepeatWord(dto.language1, dto.language2, dto.drawer));
+        return of(new RepeatWord(dto.language1, dto.language2, dto.drawer)).pipe(delay(2000));
     }
 
     getLastFailed(): Observable<RepeatWord> {
@@ -61,6 +61,6 @@ export class DataProviderMock extends DataProviderBase {
             language2: 'word1',
             drawer: 1,
         };
-        return of(new RepeatWord(dto.language1, dto.language2, dto.drawer));
+        return of(new RepeatWord(dto.language1, dto.language2, dto.drawer)).pipe(delay(1500));
     }
 }

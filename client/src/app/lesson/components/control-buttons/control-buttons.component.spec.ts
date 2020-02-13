@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { ControlButtonsComponent } from './control-buttons.component';
 import { LessonState } from '../../store/reducer';
-import { getLessonStateEnum, getFirstWord } from '../../store/selectors';
+import { getLessonStateEnum, getFirstWord, getLastAnswer } from '../../store/selectors';
 import { LessonStep, LessonStateEnum } from '../../models/lesson-state';
 import { ObservableMock } from 'src/app/test/utils';
 import { By } from '@angular/platform-browser';
@@ -13,6 +13,7 @@ import { StartLessonAction, CheckAnswerAction, AnswerAction } from '../../store/
 describe('ControlButtonsComponent', () => {
   const lessonStepObservable = new ObservableMock<LessonStep>();
   const wordRepeatObservable = new ObservableMock<WordRepeat>();
+  const lastAnswerObservable = new ObservableMock<boolean>();
   let component: ControlButtonsComponent;
   let fixture: ComponentFixture<ControlButtonsComponent>;
   let storeMock: jasmine.SpyObj<Store<LessonState>>;
@@ -21,10 +22,7 @@ describe('ControlButtonsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ControlButtonsComponent],
       providers: [
-        {
-          provide: Store,
-          useValue: jasmine.createSpyObj('store', ['select', 'dispatch'])
-        }
+        { provide: Store, useValue: jasmine.createSpyObj('store', ['select', 'dispatch', 'unsubscribe']) }
       ]
     })
       .compileComponents();
@@ -36,6 +34,8 @@ describe('ControlButtonsComponent', () => {
       .returnValue(lessonStepObservable.getSource());
     storeMock.select.withArgs(getFirstWord).and
       .returnValue(wordRepeatObservable.getSource());
+    storeMock.select.withArgs(getLastAnswer).and
+      .returnValue(lastAnswerObservable.getSource());
     fixture = TestBed.createComponent(ControlButtonsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -53,18 +53,6 @@ describe('ControlButtonsComponent', () => {
       fixture.detectChanges();
       const buttons = fixture.debugElement.queryAll(By.css('button'));
       startButton = buttons[0];
-    });
-
-    it('should display Start button', () => {
-      expect(startButton).toBeTruthy();
-      expect(startButton.nativeElement.innerHTML).toBe('Start');
-    });
-
-    it('should be possible to start lesosn', () => {
-      startButton.nativeElement.click();
-      fixture.detectChanges();
-      expect(storeMock.dispatch).toHaveBeenCalledTimes(1);
-      expect(storeMock.dispatch).toHaveBeenCalledWith(new StartLessonAction());
     });
 
   });

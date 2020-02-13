@@ -24,6 +24,7 @@ import { SummaryComponent } from './pages/summary/summary.component';
 import { ShareModule } from '../share/share.module';
 import { StoperComponent } from './components/stoper/stoper.component';
 import { StoperService } from './services/stoper/stoper.service';
+import { WordComparerService } from './services/word-comparer/word-comparer.service';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { StoperService } from './services/stoper/stoper.service';
     Store,
     { provide: WordProviderBase, useClass: environment.production ? WordProvider : WordProviderMock },
     RouteParamsHandler,
+    WordComparerService,
     StoperService
   ]
 })

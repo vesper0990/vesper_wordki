@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NewestWordsComponent } from './newest-words.component';
+import { ProgressSpinnerMockComponent } from 'src/app/test/compontens.mock';
 
 describe('LastWordsComponent', () => {
   let component: NewestWordsComponent;
@@ -8,7 +9,8 @@ describe('LastWordsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NewestWordsComponent ]
+      declarations: [ NewestWordsComponent,
+        ProgressSpinnerMockComponent ]
     })
     .compileComponents();
   }));

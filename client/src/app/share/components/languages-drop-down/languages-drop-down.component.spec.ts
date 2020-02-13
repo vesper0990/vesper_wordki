@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LanguagesDropDownComponent } from './languages-drop-down.component';
+import { DropDownMockComponent } from 'src/app/test/component-ngprime.mock';
+import { FormsModule } from '@angular/forms';
 
 describe('LanguagesDropDownComponent', () => {
   let component: LanguagesDropDownComponent;
@@ -8,9 +10,13 @@ describe('LanguagesDropDownComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LanguagesDropDownComponent ]
+      declarations: [LanguagesDropDownComponent,
+        DropDownMockComponent],
+      imports: [
+        FormsModule
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +25,7 @@ describe('LanguagesDropDownComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  fit('should create', () => {
     expect(component).toBeTruthy();
   });
 });

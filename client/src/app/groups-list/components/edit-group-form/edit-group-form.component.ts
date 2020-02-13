@@ -3,7 +3,6 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Group } from '../../models/group.model';
 import { LanguageType, LanguageTypeEnum } from 'src/app/share/models/language-type.mode';
 import { GroupProviderBase } from '../../services/group.provider/group.provider';
-import { SelectItemGroup, SelectItem } from 'primeng/api/public_api';
 
 @Component({
   selector: 'app-edit-group-form',

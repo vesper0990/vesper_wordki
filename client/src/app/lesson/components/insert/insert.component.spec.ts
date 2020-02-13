@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { LessonState } from '../../store/reducer';
 import { getLessonStateEnum, getFirstWord } from '../../store/selectors';
 import { FormsModule } from '@angular/forms';
+import { WordComparerService } from '../../services/word-comparer/word-comparer.service';
 
 class BeforeLessonContext {
   givenState = LessonStep.getLessonStep(LessonStateEnum.BeforeStart);
@@ -49,10 +50,8 @@ describe('InsertComponent', () => {
       declarations: [InsertComponent,
       ],
       providers: [
-        {
-          provide: Store,
-          useValue: jasmine.createSpyObj('store', ['select', 'dispatch'])
-        }
+        { provide: Store, useValue: jasmine.createSpyObj('store', ['select', 'dispatch']) },
+        { provide: WordComparerService, useValue: jasmine.createSpyObj('wordComparer', ['isCorrect']) }
       ]
     })
       .compileComponents();

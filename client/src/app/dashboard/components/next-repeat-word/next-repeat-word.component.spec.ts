@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NextRepeatWordComponent } from './next-repeat-word.component';
+import { ProgressSpinnerMockComponent } from 'src/app/test/compontens.mock';
 
 describe('NextRepeatWordComponent', () => {
   let component: NextRepeatWordComponent;
@@ -8,7 +9,8 @@ describe('NextRepeatWordComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NextRepeatWordComponent ]
+      declarations: [ NextRepeatWordComponent,
+        ProgressSpinnerMockComponent ]
     })
     .compileComponents();
   }));

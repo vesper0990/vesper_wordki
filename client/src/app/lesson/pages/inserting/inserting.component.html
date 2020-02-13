@@ -1,4 +1,10 @@
-<button (click)="finishLesson()">Zakończ</button>
-<app-stoper></app-stoper>
+<div *ngIf="!isRunning; else finish">
+    <button (click)="startLesson()">Start</button>
+</div>
+
 <app-insert></app-insert>
 <app-control-buttons></app-control-buttons>
+
+<ng-template #finish>
+    <button (click)="finishLesson()">Zakończ</button>
+</ng-template>

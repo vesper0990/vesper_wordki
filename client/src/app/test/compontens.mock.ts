@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
     selector: 'app-navigation-bar',
@@ -43,4 +44,63 @@ export class FiszkaMockComponent {
     template: ''
 })
 export class ControlButtonsMockComponent {
+}
+
+
+@Component({
+    selector: 'app-next-repeat-word',
+    template: ''
+})
+export class NextRepeatWordMockComponent {
+}
+
+@Component({
+    selector: 'app-progress-spinner',
+    template: ''
+})
+export class ProgressSpinnerMockComponent {
+}
+
+@Component({
+    selector: 'app-newest-words',
+    template: ''
+})
+export class NewestWordsMockComponent {
+}
+
+@Component({
+    selector: 'app-edit-group-form',
+    template: ''
+})
+export class EditGroupFromMockComponent {
+    @Input() group: any;
+}
+
+@Component({
+    selector: 'app-progress-horizontal',
+    template: ''
+})
+export class ProgressHorizontalMockComponent {
+}
+
+@Component({
+    selector: 'app-languages-drop-down',
+    template: '',
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => LanguagesDropDownMockComponent),
+            multi: true
+        }
+    ]
+})
+export class LanguagesDropDownMockComponent implements ControlValueAccessor {
+    writeValue(obj: any): void {
+    }
+    registerOnChange(fn: any): void {
+    }
+    registerOnTouched(fn: any): void {
+    }
+    setDisabledState?(isDisabled: boolean): void {
+    }
 }

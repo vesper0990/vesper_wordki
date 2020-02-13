@@ -5,11 +5,13 @@ import { LessonState } from '../../store/reducer';
 import { RouteParamsHandler } from '../../services/route-params.handler/route-params.handler';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { isAnyWord } from '../../store/selectors';
-import { FinishLessonAction } from '../../store/actions';
+import { FinishLessonAction, StartLessonAction } from '../../store/actions';
 
 export class BaseComponent implements OnInit, OnDestroy {
     protected routeParamSub: Subscription;
     protected nextWordSub: Subscription;
+
+    isRunning: boolean;
 
     constructor(protected lessonStore: Store<LessonState>,
         protected routeParamsHandler: RouteParamsHandler,
@@ -30,6 +32,11 @@ export class BaseComponent implements OnInit, OnDestroy {
     finishLesson(): void {
         this.lessonStore.dispatch(new FinishLessonAction());
         this.router.navigate(['lesson/summary']);
+    }
+
+    startLesson(): void {
+        this.lessonStore.dispatch(new StartLessonAction());
+        this.isRunning = true;
     }
 
     protected handleIsAnyWord(isAny: boolean): void {

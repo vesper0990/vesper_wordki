@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EditWordFormComponent } from './edit-word-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Word } from '../../models/word.model';
 
 describe('EditWordFormComponent', () => {
   let component: EditWordFormComponent;
@@ -8,14 +10,18 @@ describe('EditWordFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditWordFormComponent ]
+      declarations: [EditWordFormComponent],
+      imports: [
+        ReactiveFormsModule
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EditWordFormComponent);
     component = fixture.componentInstance;
+    component.word = new Word(1, '', '', 2);
     fixture.detectChanges();
   });
 

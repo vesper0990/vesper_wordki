@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LastFailedRepeatComponent } from './last-failed-repeat.component';
+import { ProgressSpinnerMockComponent } from 'src/app/test/compontens.mock';
 
 describe('LastFailedRepeatComponent', () => {
   let component: LastFailedRepeatComponent;
@@ -8,7 +9,8 @@ describe('LastFailedRepeatComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LastFailedRepeatComponent ]
+      declarations: [ LastFailedRepeatComponent,
+        ProgressSpinnerMockComponent ]
     })
     .compileComponents();
   }));

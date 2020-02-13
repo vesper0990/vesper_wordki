@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { GroupsComponent } from './groups.component';
 import { GroupProviderBase } from './services/group.provider/group.provider';
 import { Router } from '@angular/router';
-import { GroupRowMockComponent } from '../test/compontens.mock';
+import { GroupRowMockComponent, ProgressHorizontalMockComponent, EditGroupFromMockComponent } from '../test/compontens.mock';
 
 describe('GroupsComponent', () => {
   let component: GroupsComponent;
@@ -12,16 +12,12 @@ describe('GroupsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [GroupsComponent,
-        GroupRowMockComponent],
+        GroupRowMockComponent,
+        ProgressHorizontalMockComponent,
+        EditGroupFromMockComponent],
       providers: [
-        {
-          provide: GroupProviderBase,
-          useValue: jasmine.createSpyObj('groupProvider', ['getGroups'])
-        },
-        {
-          provide: Router,
-          useValue: jasmine.createSpyObj('router', ['navigate'])
-        }
+        { provide: GroupProviderBase, useValue: jasmine.createSpyObj('groupProvider', ['getGroups']) },
+        { provide: Router, useValue: jasmine.createSpyObj('router', ['navigate']) }
       ]
     })
       .compileComponents();
