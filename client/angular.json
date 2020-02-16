@@ -145,5 +145,8 @@
       }
     }
   },
-  "defaultProject": "wordki"
+  "defaultProject": "wordki",
+  "cli": {
+    "analytics": false
+  }
 }
