@@ -5,23 +5,23 @@ import { ErrorComponent } from './share/components/error/error.component';
 const routes: Routes = [
   {
     path: 'dashboard',
-    loadChildren: './dashboard/dashboard.module#DashboardModule'
+    loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
   },
   {
     path: 'groups',
-    loadChildren: './groups-list/groups.module#GroupsModule'
+    loadChildren: () => import('./groups-list/groups.module').then(m => m.GroupsModule)
   },
   {
     path: 'details',
-    loadChildren: './group-details/group-details.module#GroupDetailsModule'
+    loadChildren: () => import('./group-details/group-details.module').then(m => m.GroupDetailsModule)
   },
   {
     path: 'lesson',
-    loadChildren: './lesson/lesson.module#LessonModule'
+    loadChildren: () => import('./lesson/lesson.module').then(m => m.LessonModule)
   },
   {
     path: 'user',
-    loadChildren: './user/user.module#UserModule'
+    loadChildren: () => import('./user/user.module').then(m => m.UserModule)
   },
   {
     path: 'error',
