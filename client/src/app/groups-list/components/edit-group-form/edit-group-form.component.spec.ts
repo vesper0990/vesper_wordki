@@ -1,12 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { EditGroupFormComponent } from './edit-group-form.component';
-import { LanguagesDropDownMockComponent } from 'src/app/test/compontens.mock';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GroupProviderBase } from '../../services/group.provider/group.provider';
 import { of } from 'rxjs';
 import { Group } from '../../models/group.model';
 import { LanguageType, LanguageTypeEnum } from 'src/app/share/models/language-type.mode';
+import { MockComponent } from 'ng-mocks';
+import { LanguagesDropDownComponent } from 'src/app/share/components/languages-drop-down/languages-drop-down.component';
 
 describe('EditGroupFormComponent', () => {
   let component: EditGroupFormComponent;
@@ -16,7 +16,7 @@ describe('EditGroupFormComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [EditGroupFormComponent,
-        LanguagesDropDownMockComponent],
+        MockComponent(LanguagesDropDownComponent)],
       imports: [
         ReactiveFormsModule
       ],

@@ -1,61 +1,59 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { FiszkiComponent } from './fiszki.component';
-import { FiszkaMockComponent, ControlButtonsMockComponent } from 'src/app/test/compontens.mock';
 import { Store } from '@ngrx/store';
 import { RouteParamsHandler } from '../../services/route-params.handler/route-params.handler';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 import { LessonState } from '../../store/reducer';
-import { ActivatedRouteMock } from 'src/app/test/services.mock';
-import { isAnyWord } from '../../store/selectors';
 import { of } from 'rxjs';
+import { MockComponent } from 'ng-mocks';
+import { ControlButtonsComponent } from '../../components/control-buttons/control-buttons.component';
+import { FiszkaComponent } from '../../components/fiszka/fiszka.component';
+import { Mock } from 'ts-mockery';
 
-describe('RepeatComponent', () => {
+describe('FiszkiComponent', () => {
   let component: FiszkiComponent;
   let fixture: ComponentFixture<FiszkiComponent>;
-  let storeMock: jasmine.SpyObj<Store<LessonState>>;
-  let routeParamsHandlerMock: jasmine.SpyObj<RouteParamsHandler>;
-  let routerMock: jasmine.SpyObj<Router>;
-  const routeMock = new ActivatedRouteMock();
+  const storeMock = Mock.extend(Mock.all<Store<LessonState>>()).with({ select: (isAnyWord) => of(false) });
+  const routeParamsHandlerMock = Mock.all<RouteParamsHandler>();
+  const routerMock = Mock.all<Router>();
+  const routeMock = Mock.extend(Mock.all<ActivatedRoute>()).with({ params: of(<Params>{ ['id']: 1 }) });
 
   beforeEach(async(() => {
+    Mock.configure('jasmine');
     TestBed.configureTestingModule({
       declarations: [FiszkiComponent,
-        FiszkaMockComponent,
-        ControlButtonsMockComponent],
+        MockComponent(FiszkaComponent),
+        MockComponent(ControlButtonsComponent)],
       providers: [
-        {
-          provide: Store,
-          useValue: jasmine.createSpyObj('store', ['select', 'dispatch'])
-        },
-        {
-          provide: RouteParamsHandler,
-          useValue: jasmine.createSpyObj('routeParamsHandler', [''])
-        },
-        {
-          provide: ActivatedRoute,
-          useValue: routeMock
-        },
-        {
-          provide: Router,
-          useValue: jasmine.createSpyObj('router', [''])
-        },
+        { provide: Store, useValue: storeMock },
+        { provide: RouteParamsHandler, useValue: routeParamsHandlerMock },
+        { provide: ActivatedRoute, useValue: routeMock },
+        { provide: Router, useValue: routerMock },
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
-  beforeEach(() => {
-    storeMock = TestBed.get(Store);
-    storeMock.select.withArgs(isAnyWord).and.returnValue(of({}));
-    routeParamsHandlerMock = TestBed.get(RouteParamsHandler);
-    routerMock = TestBed.get(Router);
-    fixture = TestBed.createComponent(FiszkiComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  // it('should create', () => {
+  //   fixture = TestBed.createComponent(FiszkiComponent);
+  //   component = fixture.componentInstance;
+  //   fixture.detectChanges();
+  //   expect(component).toBeTruthy();
+  // });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  // it('should redirect if no words', () => {
+  //   Mock.extend(storeMock).with({ select: () => of(false) });
+  //   fixture = TestBed.createComponent(FiszkiComponent);
+  //   component = fixture.componentInstance;
+  //   fixture.detectChanges();
+  //   expect(routerMock.navigate).toHaveBeenCalledWith(['dashboard']);
+  // });
+
+  // it('should routeParamsHandler call', () => {
+  //   fixture = TestBed.createComponent(FiszkiComponent);
+  //   component = fixture.componentInstance;
+  //   fixture.detectChanges();
+  //   expect(routeParamsHandlerMock.handle).toHaveBeenCalledWith(<Params>{ ['id']: 1 });
+  // });
+
 });

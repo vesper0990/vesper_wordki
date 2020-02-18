@@ -1,16 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { GroupDetailsComponent } from './group-details.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 import { ActivatedRouteMock } from '../test/services.mock';
 import { GroupDetailsProviderBase } from './services/group-details.provider/group-details.provider';
-import { WordRowMockComponent } from '../test/compontens.mock';
+import { MockComponent } from 'ng-mocks';
+import { WordRowComponent } from './components/word-row/word-row.component';
 
 describe('GroupDetailsComponent', () => {
   let component: GroupDetailsComponent;
   let fixture: ComponentFixture<GroupDetailsComponent>;
-  let routerMock: jasmine.SpyObj<Router>;
-  let groupDetailsProviderMock: jasmine.SpyObj<GroupDetailsProviderBase>;
+  let routerMock: Router;
+  let groupDetailsProviderMock: GroupDetailsProviderBase;
 
   const activetedRouteMock = new ActivatedRouteMock();
 
@@ -18,7 +18,7 @@ describe('GroupDetailsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         GroupDetailsComponent,
-        WordRowMockComponent
+        MockComponent(WordRowComponent)
       ],
       providers: [
         {
@@ -39,8 +39,8 @@ describe('GroupDetailsComponent', () => {
   }));
 
   beforeEach(() => {
-    routerMock = TestBed.get(Router);
-    groupDetailsProviderMock = TestBed.get(GroupDetailsProviderBase);
+    routerMock = TestBed.inject(Router);
+    groupDetailsProviderMock = TestBed.inject(GroupDetailsProviderBase);
     fixture = TestBed.createComponent(GroupDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -48,5 +48,10 @@ describe('GroupDetailsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should download group details after init', () => {
+    activetedRouteMock.paramsSubject.next(<Params>{['id'] : 1});
+    expect(groupDetailsProviderMock.getGroupDetails).toHaveBeenCalledWith(1);
   });
 });

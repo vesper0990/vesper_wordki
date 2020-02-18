@@ -1,9 +1,10 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
-import { NavigationBarMockComponent } from './test/compontens.mock';
 import { UserService } from './authorization/services/user.service/user.service';
 import { Subject } from 'rxjs';
+import { NavigationBarComponent } from './navigation/components/navigation-bar/navigation-bar.component';
+import { MockComponent } from 'ng-mocks';
 
 describe('AppComponent', () => {
 
@@ -18,7 +19,7 @@ describe('AppComponent', () => {
       ],
       declarations: [
         AppComponent,
-        NavigationBarMockComponent
+        MockComponent(NavigationBarComponent)
       ],
       providers: [
         {

@@ -1,14 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { InsertingComponent } from './inserting.component';
 import { Store } from '@ngrx/store';
 import { RouteParamsHandler } from '../../services/route-params.handler/route-params.handler';
 import { ActivatedRoute, Router } from '@angular/router';
-import { InsertMockComponent, ControlButtonsMockComponent } from 'src/app/test/compontens.mock';
 import { LessonState } from '../../store/reducer';
 import { ActivatedRouteMock } from 'src/app/test/services.mock';
 import { of } from 'rxjs';
 import { isAnyWord } from '../../store/selectors';
+import { MockComponent } from 'ng-mocks';
+import { InsertComponent } from '../../components/insert/insert.component';
+import { ControlButtonsComponent } from '../../components/control-buttons/control-buttons.component';
 
 describe('InsertingComponent', () => {
   let component: InsertingComponent;
@@ -21,8 +22,8 @@ describe('InsertingComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [InsertingComponent,
-        InsertMockComponent,
-        ControlButtonsMockComponent],
+        MockComponent(InsertComponent),
+        MockComponent(ControlButtonsComponent)],
       providers: [
         {
           provide: Store,

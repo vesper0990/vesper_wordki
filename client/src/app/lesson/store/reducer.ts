@@ -21,7 +21,6 @@ const initialState: LessonState = {
     lessonState: LessonStep.getLessonStep(LessonStateEnum.BeforeStart),
     lessonMode: LessonModeType.Unknown,
     result: null
-
 };
 
 export function reducer(state = initialState, action: LessonActions): LessonState {
