@@ -96,8 +96,6 @@ namespace Wordki
             app.UseMiddleware<ExceptionHandlerMiddleware>();
             app.UseAuthentication();
             app.UseMvc();
-            var migrationProvider = app.ApplicationServices.GetService<IMigrationProvider>();
-            migrationProvider.Migrate().Wait();
 
             var dataInitializer = app.ApplicationServices.GetService<IDataInitializer>();
             dataInitializer.Initialize().Wait();

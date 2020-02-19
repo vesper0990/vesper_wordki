@@ -1,0 +1,10 @@
+version: '3'
+services:
+ wordki:
+  container_name: wordki
+  image: wordki
+  build:
+   context: ../../
+   dockerfile: ./src/Wordki.Api/Dockerfile.Development
+  ports:
+   - "5000:5000"
