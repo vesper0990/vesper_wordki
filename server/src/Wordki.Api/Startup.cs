@@ -97,8 +97,8 @@ namespace Wordki
             app.UseAuthentication();
             app.UseMvc();
 
-            var dataInitializer = app.ApplicationServices.GetService<IDataInitializer>();
-            dataInitializer.Initialize().Wait();
+            //var dataInitializer = app.ApplicationServices.GetService<IDataInitializer>();
+            //dataInitializer.Initialize().Wait();
 
             var appLifeTime = app.ApplicationServices.GetService<IHostApplicationLifetime>();
             appLifeTime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
