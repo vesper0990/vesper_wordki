@@ -13,6 +13,7 @@ namespace Wordki.Commands.Register
 
         public static RegisterCommand Create(string userName, string password)
         {
+            Condition.False(string.IsNullOrEmpty(userName), "userName cannot be empty");
             Condition.MustBeDefined(userName, nameof(userName));
             Condition.MustBeDefined(password, nameof(password));
 
