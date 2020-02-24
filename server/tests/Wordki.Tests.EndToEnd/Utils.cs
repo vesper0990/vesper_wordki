@@ -6,6 +6,7 @@ using System.Text;
 using Wordki.Core;
 using Wordki.Core.Data;
 using Wordki.Infrastructure.Services;
+using Wordki.Utils.HttpContext;
 using Wordki.Utils.TimeProvider;
 
 namespace Wordki.Tests.EndToEnd
@@ -43,6 +44,16 @@ namespace Wordki.Tests.EndToEnd
                 var encrypterMock = new Mock<IEncrypter>();
                 encrypterMock.Setup(x => x.Md5Hash(It.IsAny<string>())).Returns("aaaa");
                 return encrypterMock;
+            }
+        }
+
+        public static Mock<IHttpContextProvider> HttpContextProvider
+        {
+            get
+            {
+                var httpContextProviderMock = new Mock<IHttpContextProvider>();
+                httpContextProviderMock.Setup(x => x.GetUserId()).Returns(1);
+                return httpContextProviderMock;
             }
         }
 

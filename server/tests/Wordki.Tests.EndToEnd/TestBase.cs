@@ -1,7 +1,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
-using Wordki;
 using Wordki.Tests.EndToEnd;
 using Wordki.Tests.EndToEnd.Configuration;
 using Wordki.Tests.Utils.ServerMock;
@@ -15,7 +15,7 @@ public class TestBase
 
     public TestBase()
     {
-
+        Host = new TestServerMock();
     }
 
     [SetUp]
@@ -24,16 +24,13 @@ public class TestBase
         using (var dbContext = new EntityFramework())
         {
             await dbContext.Database.EnsureCreatedAsync();
+            await dbContext.Database.ExecuteSqlRawAsync("Delete from users");
         }
     }
 
-    [TearDown]
-    protected async Task DropDabase(){
-        using (var dbContext = new EntityFramework())
-        {
-            await dbContext.Database.EnsureDeletedAsync();
-        }
-    }
+    //[TearDown]
+    //protected async Task DropDabase(){
+    //}
 
     protected async Task SendRequest(){
         Response = await Host.Client.SendAsync(Request);

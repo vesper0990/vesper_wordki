@@ -2,6 +2,7 @@
 using Moq;
 using Wordki.Infrastructure.Services;
 using Wordki.Tests.Utils.ServerMock;
+using Wordki.Utils.HttpContext;
 using Wordki.Utils.TimeProvider;
 
 namespace Wordki.Tests.EndToEnd
@@ -11,6 +12,7 @@ namespace Wordki.Tests.EndToEnd
 
         public Mock<ITimeProvider> TimeProviderMock { get; private set; }
         public Mock<IEncrypter> EncrypterMock { get; private set; }
+        public Mock<IHttpContextProvider> HttpContextProviderMock { get; private set; }
 
         protected override void ConfigureTestContainer(ContainerBuilder builder)
         {
@@ -22,6 +24,7 @@ namespace Wordki.Tests.EndToEnd
         {
             TimeProviderMock = Utils.TimeProvider;
             EncrypterMock = Utils.Encrypter;
+            HttpContextProviderMock = Utils.HttpContextProvider;
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Wordki.Tests.EndToEnd.Configuration
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySql("Server=localhost;Port=3306;Database=Wordki_Test;Uid=root;Pwd=pass1;");
+            optionsBuilder.UseMySql("Server=192.168.99.100;Port=3306;Database=Wordki_Test;Uid=root;Pwd=pass1;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
