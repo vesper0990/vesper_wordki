@@ -1,9 +1,5 @@
-﻿using Microsoft.AspNetCore.TestHost;
-using Moq;
+﻿using Moq;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Wordki.Core;
 using Wordki.Core.Data;
 using Wordki.Infrastructure.Services;
 using Wordki.Utils.HttpContext;
