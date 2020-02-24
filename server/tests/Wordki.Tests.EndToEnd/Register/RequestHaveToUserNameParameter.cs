@@ -37,7 +37,7 @@ namespace Wordki.Tests.EndToEnd.Register
         }
 
         async Task AndThenDatabaseIsEmpty(){
-            using(var dbContext = new EntityFramework()){
+            using(var dbContext = new EntityFramework(DapperSettings)){
                 var user = await dbContext.Users.SingleOrDefaultAsync();
                 Assert.IsNull(user);
             }

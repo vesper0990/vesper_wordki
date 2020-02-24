@@ -38,11 +38,11 @@ namespace Wordki.Tests.EndToEnd.Register
 
         async Task AndThenUserAdded()
         {
-            using (var dbContext = new EntityFramework())
+            using (var dbContext = new EntityFramework(DapperSettings))
             {
                 var user = await dbContext.Users.SingleAsync();
                 Assert.AreEqual("user", user.Name);
-                Assert.AreEqual(1, user.Id);
+                Assert.Greater(user.Id, 0);
                 Assert.AreEqual(Host.EncrypterMock.Object.Md5Hash("pass"), user.Password);
                 Assert.IsNull(user.LastLoginDate);
                 Assert.AreEqual(Host.TimeProviderMock.Object.GetTime(), user.CreationDate);

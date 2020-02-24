@@ -1,21 +1,22 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using TestStack.BDDfy;
 using Wordki.Core.Dtos;
 using Wordki.Tests.EndToEnd.Configuration;
 
-namespace Wordki.Tests.EndToEnd.GetLastFailedWord
+namespace Wordki.Tests.EndToEnd.GetNextWords
 {
     [TestFixture]
-    public class UserGetLastFailedWord : TestBase
+    public class UserGetNextWords : TestBase
     {
-
-        public UserGetLastFailedWord()
+        public UserGetNextWords()
         {
-            Request = new HttpRequestMessage(HttpMethod.Get, "/getLastFailedWord");
+            Request = new HttpRequestMessage(HttpMethod.Get, "getNextWords/2");
         }
 
         async Task GivenDatabaseContainData()
@@ -43,39 +44,21 @@ namespace Wordki.Tests.EndToEnd.GetLastFailedWord
                 };
                 dbContext.Groups.Add(group);
 
-                var word1 = new WordDto
+                for (int i = 1; i < 4; i++)
                 {
-                    WordId = 1,
-                    GroupId = 1
-                };
-                dbContext.Words.Add(word1);
+                    var word = new WordDto
+                    {
+                        WordId = i,
+                        GroupId = 1,
+                        WordLanguage1 = $"word{i}",
+                        WordLanguage2 = $"word{i}",
+                        Drawer = 2,
+                        WordCreationDate = new DateTime(2020, 01, 01).AddDays(-1 * i),
+                        NextRepeat = new DateTime(2020, 01, 01).AddDays(i),
+                    };
+                    dbContext.Words.Add(word);
+                }
 
-                var repeat1 = new RepeatDto
-                {
-                    Id = 1,
-                    WordId = 1,
-                    Result = -1,
-                    DateTime = new DateTime(2020, 01, 01)
-                };
-                dbContext.Repeats.Add(repeat1);
-
-                var word2 = new WordDto
-                {
-                    WordId = 2,
-                    GroupId = 1,
-                    WordLanguage1 = "word2",
-                    WordLanguage2 = "word2",
-                };
-                dbContext.Words.Add(word2);
-
-                var repeat2 = new RepeatDto
-                {
-                    Id = 2,
-                    WordId = 2,
-                    Result = -1,
-                    DateTime = new DateTime(2020, 01, 02)
-                };
-                dbContext.Repeats.Add(repeat2);
                 await dbContext.SaveChangesAsync();
             }
         }
@@ -87,10 +70,11 @@ namespace Wordki.Tests.EndToEnd.GetLastFailedWord
             Assert.AreEqual(HttpStatusCode.OK, Response.StatusCode);
         }
 
-        async Task AndThenResponseContainLastFailedWord()
+        async Task AndThenResponseContainProperMessage()
         {
             var message = await Response.Content.ReadAsStringAsync();
-            Assert.AreEqual("{\"language1\":\"word2\",\"language2\":\"word2\"}", message);
+            Assert.AreEqual("[{\"id\":1,\"language1\":\"word1\",\"language2\":\"word1\",\"drawer\":2},{\"id\":2,\"language1\":\"word2\",\"language2\":\"word2\",\"drawer\":2}]", message);
+
         }
 
         [Test]
@@ -98,6 +82,5 @@ namespace Wordki.Tests.EndToEnd.GetLastFailedWord
         {
             this.BDDfy();
         }
-
     }
 }

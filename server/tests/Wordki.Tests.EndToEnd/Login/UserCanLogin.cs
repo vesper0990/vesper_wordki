@@ -29,7 +29,7 @@ namespace Wordki.Tests.EndToEnd.Login
                 CreationDate = new DateTime(2000, 1, 1),
                 LastLoginDate = new DateTime(2000, 1, 2)
             };
-            using(var dbContext = new EntityFramework())
+            using(var dbContext = new EntityFramework(DapperSettings))
             {
                 dbContext.Users.Add(user);
                 await dbContext.SaveChangesAsync();
@@ -56,7 +56,7 @@ namespace Wordki.Tests.EndToEnd.Login
 
         async Task AndThenLoginTimeIsSetInDatabase()
         {
-            using(var dbContext = new EntityFramework())
+            using(var dbContext = new EntityFramework(DapperSettings))
             {
                 var user = await dbContext.Users.SingleAsync();
                 Assert.AreEqual(1, user.Id);

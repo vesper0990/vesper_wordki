@@ -204,7 +204,7 @@ w.isVisible as IsVisible,
 w.creationDate as WordCreationDate,
 w.nextRepeat as NextRepeat
 FROM groups g
-JOIN words w ON w.groupId = g.id
+LEFT JOIN words w ON w.groupId = g.id
 WHERE g.id = @groupId
 ";
 
@@ -223,7 +223,10 @@ WHERE g.id = @groupId
                     {
                         dto = group;
                     }
-                    group.Words.Add(word);
+                    if(word != null)
+                    {
+                        dto.Words.Add(word);
+                    }
                     return dto;
                 }, "WordId");
             }
@@ -252,7 +255,7 @@ w.isVisible as IsVisible,
 w.creationDate as WordCreationDate,
 w.nextRepeat as NextRepeat
 FROM groups g
-JOIN words w ON w.groupId = g.id
+LEFT JOIN words w ON w.groupId = g.id
 WHERE g.id = @groupId";
 
         public async IAsyncEnumerable<Group> GetGroups(long userId)

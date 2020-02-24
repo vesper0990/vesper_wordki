@@ -30,7 +30,7 @@ namespace Wordki.Queries.GetLastAddedWords
 
         private static readonly string sql = $@"
 SELECT 
-    w.langauge1 as Langauge1,
+    w.language1 as Language1,
     w.language2 as Language2,
     w.creationDate as CreationDate
 FROM words w

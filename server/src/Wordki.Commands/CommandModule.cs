@@ -1,6 +1,8 @@
 ﻿using Autofac;
+using Wordki.Commands.AddWord;
 using Wordki.Commands.Login;
 using Wordki.Commands.Register;
+using Wordki.Commands.UpdateWord;
 
 namespace Wordki.Commands
 {
@@ -10,6 +12,8 @@ namespace Wordki.Commands
         {
             builder.RegisterType<LoginCommandHandler>().AsImplementedInterfaces();
             builder.RegisterType<RegisterCommandHandler>().AsImplementedInterfaces();
+            builder.RegisterType<AddWordCommandHandler>().AsImplementedInterfaces();
+            builder.RegisterType<UpdateWordCommandHandler>().AsImplementedInterfaces();
         }
     }
 }

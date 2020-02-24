@@ -18,6 +18,7 @@ namespace Wordki.Tests.EndToEnd
         {
             builder.RegisterInstance(TimeProviderMock.Object);
             builder.RegisterInstance(EncrypterMock.Object);
+            builder.RegisterInstance(HttpContextProviderMock.Object);
         }
 
         protected override void CreateMocks()

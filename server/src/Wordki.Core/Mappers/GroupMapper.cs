@@ -15,21 +15,22 @@ namespace Wordki.Core.Mappers
 
         public Group Map(GroupDto dto)
         {
-            var words = new List<Word>(dto.Words.Count);
-            for (int i = 0; i < dto.Words.Count; i++)
-            {
-                words[i] = wordMapper.Map(dto.Words[i]);
-            }
             var language1 = (LanguageEnum)dto.GroupLanguage1;
             var language2 = (LanguageEnum)dto.GroupLanguage2;
-            return Group.Restore(
+
+            var group = Group.Restore(
                 dto.GroupId,
                 dto.UserId,
                 dto.Name,
                 language1,
                 language2,
                 dto.GroupCreationDate,
-                words);
+                new List<Word>());
+            foreach (var word in dto.Words)
+            {
+                group.AddWord(wordMapper.Map(word));
+            }
+            return group;
         }
     }
 }

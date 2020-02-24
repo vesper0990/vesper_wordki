@@ -23,8 +23,8 @@ namespace Wordki.Api.Words.UpdateWord
         {
             var command = UpdateWordCommand.Create(request.GroupId,
                 request.WordId,
-                request.Langauge1,
-                request.Langauge2,
+                request.Language1,
+                request.Language2,
                 request.IsVisible);
             await commandHandler.HandleAsync(command);
             return new StatusCodeResult((int)HttpStatusCode.OK);

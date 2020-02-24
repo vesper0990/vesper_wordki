@@ -21,7 +21,7 @@ namespace Wordki.Api.Words.AddWord
         [Authorize]
         public async Task<IActionResult> Post([FromBody] AddWordRequest request)
         {
-            var command = AddWordCommand.Create(request.GroupId, request.Lanugage1, request.Language2);
+            var command = AddWordCommand.Create(request.GroupId, request.Language1, request.Language2);
             await commandHandler.HandleAsync(command);
             return new StatusCodeResult((int)HttpStatusCode.OK);
         }

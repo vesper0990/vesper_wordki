@@ -27,11 +27,11 @@ namespace Wordki.Queries.GetLastFailedWord
 
         private static readonly string sql = $@"
 SELECT
-w.langauge1 as Language1,
+w.language1 as Language1,
 w.language2 as Language2
 FROM repeats r
 JOIN words w ON w.id = r.wordId
-JOIN group g ON g.id = w.groupId
+JOIN groups g ON g.id = w.groupId
 WHERE g.userId = @userId
 ORDER BY r.dateTime DESC
 LIMIT 1

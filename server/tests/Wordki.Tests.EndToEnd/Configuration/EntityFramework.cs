@@ -69,7 +69,7 @@ namespace Wordki.Tests.EndToEnd.Configuration
                 entity.ToTable("repeats");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).HasColumnName("id");
-                entity.Property(e => e.WordId).HasColumnName("WordId");
+                entity.Property(e => e.WordId).HasColumnName("wordId");
                 entity.Property(e => e.DateTime).HasColumnName("dateTime");
                 entity.Property(e => e.Result).HasColumnName("result");
                 
