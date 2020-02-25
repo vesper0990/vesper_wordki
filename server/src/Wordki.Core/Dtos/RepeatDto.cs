@@ -1,6 +1,7 @@
 using System;
+using Wordki.Utils.Domain;
 
-public class RepeatDto
+public class RepeatDto : IDto
 {
     public long Id { get; set; }
     public long WordId { get; set; }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Wordki.Utils.Domain;
 
 namespace Wordki.Core.Dtos
@@ -16,6 +17,12 @@ namespace Wordki.Core.Dtos
         public bool IsVisible { get; set; }
         public DateTime WordCreationDate { get; set; }
         public DateTime NextRepeat { get; set; }
+        public IList<RepeatDto> Repeats { get; }
+
+        public WordDto()
+        {
+            Repeats = new List<RepeatDto>();
+        }
 
     }
 }

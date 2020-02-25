@@ -1,10 +1,11 @@
 ﻿using System;
 using Wordki.Utils;
+using Wordki.Utils.Domain;
 using Wordki.Utils.TimeProvider;
 
 namespace Wordki.Core.Domain
 {
-    public class Repeat
+    public class Repeat : IDomainObject
     {
         public long Id { get; private set; }
         public long WordId { get; set; }

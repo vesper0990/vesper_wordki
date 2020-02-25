@@ -1,14 +1,21 @@
-﻿using Wordki.Core.Dtos;
+﻿using Wordki.Core.Domain;
+using Wordki.Core.Dtos;
 using Wordki.Utils.Domain;
 
 namespace Wordki.Core.Mappers
 {
     public class WordMapper : IMapper<WordDto, Word>
     {
+        private readonly IMapper<RepeatDto, Repeat> repeatMapper;
+
+        public WordMapper(IMapper<RepeatDto, Repeat> repeatMapper){
+            this.repeatMapper = repeatMapper;
+        }
+
         public Word Map(WordDto dto)
         {
             var drawer = Drawer.Restore(dto.Drawer);
-            return Word.Restore(
+            var word = Word.Restore(
                 dto.WordId,
                 dto.GroupId,
                 dto.WordLanguage1,
@@ -20,6 +27,12 @@ namespace Wordki.Core.Mappers
                 dto.IsVisible,
                 dto.WordCreationDate,
                 dto.NextRepeat);
+
+                foreach(var repeatDto in dto.Repeats){
+                    word.AddRepeat(repeatMapper.Map(repeatDto));
+                }
+
+            return word;
         }
     }
 }
