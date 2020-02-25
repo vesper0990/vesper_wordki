@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Net;
+using System.Text;
 using Wordki.Infrastructure.Framework.ExceptionMiddleware;
 
 namespace Wordki.Api.Test
@@ -18,16 +19,16 @@ namespace Wordki.Api.Test
             this.configuration = configuration;
         }
 
-        // [HttpGet("{value}")]
-        // public IActionResult Get(string value)
-        // {
-        //     var builder = new StringBuilder();
-        //     foreach (var item in configuration.AsEnumerable())
-        //     {
-        //         builder.AppendLine($"{item.Key}:${item.Value}\n");
-        //     };
-        //     return new JsonResult(new { Value = builder.ToString() });
-        // }
+        [HttpGet("value/{value}")]
+        public IActionResult Get(string value)
+        {
+            var builder = new StringBuilder();
+            foreach (var item in configuration.AsEnumerable())
+            {
+                builder.AppendLine($"{item.Key}:${item.Value}\n");
+            };
+            return new JsonResult(new { Value = builder.ToString() });
+        }
 
         [HttpGet("version")]
         [MapToApiVersion("1.0")]

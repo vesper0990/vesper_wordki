@@ -9,6 +9,7 @@ using Wordki.Commands;
 using Wordki.Queries;
 using Wordki.Infrastructure;
 using Microsoft.Extensions.Hosting;
+using Wordki.Infrastructure.Framework.HandleTimeMiddleware;
 
 namespace Wordki
 {
@@ -32,7 +33,7 @@ namespace Wordki
                 .OptionConfig(Configuration)
                 .JwtConfig(Configuration)
                 .CorsConfig()
-                .LoggingConfig()
+                .LoggingConfig(Configuration)
                 .ServicesConfig()
                 .MvcConfig();
         }
@@ -49,6 +50,7 @@ namespace Wordki
         {
             app.UseCors("AllowAll");
             app.UseMiddleware<ExceptionHandlerMiddleware>();
+            app.UseMiddleware<HandleTimeMiddleware>();
             app.UseAuthentication();
             app.UseMvc();
 
