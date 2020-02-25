@@ -3,82 +3,37 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Wordki.Infrastructure.Framework.ExceptionMiddleware;
-using Wordki.Utils.TimeProvider;
 using Wordki.Core;
-using Wordki.Infrastructure.Settings;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Wordki.Commands;
 using Wordki.Queries;
 using Wordki.Infrastructure;
-using Wordki.Utils.Dapper;
 using Microsoft.Extensions.Hosting;
-using Wordki.Utils.Database;
-using Microsoft.AspNetCore.Http;
-using Wordki.Infrastructure.Services;
-using Wordki.Utils.HttpContext;
 
 namespace Wordki
 {
     public class Startup
     {
         public IContainer ApplicationContainer { get; private set; }
-        public IWebHostEnvironment HostingEnvironment { get; }
         public IConfiguration Configuration { get; }
 
         public Startup(IWebHostEnvironment hostingEnvironment)
         {
-            HostingEnvironment = hostingEnvironment;
             var builder = new ConfigurationBuilder()
-                .SetBasePath(HostingEnvironment.ContentRootPath)
-                .AddJsonFile($"appsettings.{HostingEnvironment.EnvironmentName}.json", true, true)
+                .SetBasePath(hostingEnvironment.ContentRootPath)
+                .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", true, true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<JwtSettings>(options => Configuration.GetSection("Jwt").Bind(options))
-                .Configure<DapperSettings>(options => Configuration.GetSection("Dapper").Bind(options))
-                .Configure<MigrationSettings>(options => Configuration.GetSection("Migrations").Bind(options));
-
-            var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
-            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
-                                                                    .AllowAnyMethod()
-                                                                     .AllowAnyHeader()));
-            services.AddMvc(options =>
-            {
-                options.EnableEndpointRouting = false;
-            });
-            services.AddScoped<ExceptionHandlerMiddleware>();
-            services.AddScoped<IDbConnectionProvider, DbConnectionProvider>();
-            services.AddScoped<ITimeProvider, TimeProvider>();
-            services.AddScoped<IMigrationProvider, MigrationProvider>();
-            services.AddScoped<IHttpContextProvider, HttpContextProvider>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddLogging(loggingBuilder => loggingBuilder
-            .AddConsole()
-            .AddDebug()
-            .SetMinimumLevel(LogLevel.Information));
+            services
+                .OptionConfig(Configuration)
+                .JwtConfig(Configuration)
+                .CorsConfig()
+                .LoggingConfig()
+                .ServicesConfig();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -89,16 +44,12 @@ namespace Wordki
             builder.RegisterModule<QueryModule>();
         }
 
-
         public void Configure(IApplicationBuilder app)
         {
             app.UseCors("AllowAll");
             app.UseMiddleware<ExceptionHandlerMiddleware>();
             app.UseAuthentication();
             app.UseMvc();
-
-            //var dataInitializer = app.ApplicationServices.GetService<IDataInitializer>();
-            //dataInitializer.Initialize().Wait();
 
             var appLifeTime = app.ApplicationServices.GetService<IHostApplicationLifetime>();
             appLifeTime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
