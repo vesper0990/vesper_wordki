@@ -41,7 +41,7 @@ namespace Wordki.Core
         public string Comment { get; private set; }
         public Drawer Drawer { get; private set; }
         public bool IsVisible { get; private set; }
-        public DateTime NextRepeat { get; private set; }
+        public DateTime NextRepeat { get; set; }
         public DateTime CreationDate { get; }
         public List<Repeat> Repeats { get; }
         public bool NeedUpdate { get; private set; }

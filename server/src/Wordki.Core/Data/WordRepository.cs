@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Wordki.Core.Dtos;
 using Wordki.Utils.Dapper;
@@ -10,7 +8,8 @@ namespace Wordki.Core.Data
 {
     public interface IWordRepository
     {
-        Task<Word> GetWord(long wordId);
+        Task<Word> GetWordAsync(long wordId);
+        Task SaveAsync(Word word);
     }
 
     public class WordRepository : IWordRepository
@@ -24,7 +23,7 @@ namespace Wordki.Core.Data
             this.mapper = mapper;
         }
 
-        public async Task<Word> GetWord(long wordId)
+        public async Task<Word> GetWordAsync(long wordId)
         {
             WordDto dto = null;
             var param = new {
@@ -48,6 +47,7 @@ namespace Wordki.Core.Data
             return mapper.Map(dto);
         }
 
+
         private readonly string getWordSql = $@"
 SELECT 
 w.id as WordId,
@@ -68,5 +68,17 @@ r.result as Result
 FROM words w
 LEFT JOIN repeats r ON w.id = r.wordId
 WHERE w.id = @wordId";
-    }
+
+
+        public Task SaveAsync(Word word)
+        {
+            return null;
+        }
+
+        private readonly string updateWordSql = $@"
+
+        ";
+
+
+    }    
 }

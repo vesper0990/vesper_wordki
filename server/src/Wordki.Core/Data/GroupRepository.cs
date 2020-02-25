@@ -11,6 +11,7 @@ namespace Wordki.Core.Data
     public interface IGroupRepository
     {
         Task<Group> GetGroup(long groupId);
+        Task<IEnumerable<Group>> GetGroupsAsync(long userId);
         IAsyncEnumerable<Group> GetGroups(long userId);
         Task<long> SaveAsync(Group group);
     }
@@ -129,7 +130,7 @@ SELECT LAST_INSERT_ID();";
                 creationDate = word.CreationDate
             };
             var wordId = await connection.ExecuteScalar(insertWordSql, param);
-            foreach(var repeat in word.Repeats.Where(x => x.NeedUpdate))
+            foreach (var repeat in word.Repeats.Where(x => x.NeedUpdate))
             {
                 repeat.WordId = wordId;
                 await InsertRepeatAsync(connection, repeat);
@@ -223,7 +224,7 @@ WHERE g.id = @groupId
                     {
                         dto = group;
                     }
-                    if(word != null)
+                    if (word != null)
                     {
                         dto.Words.Add(word);
                     }
@@ -267,7 +268,7 @@ WHERE g.id = @groupId";
             };
             using (var conneciton = await dbConnection.Connect())
             {
-                await conneciton.GetAsync<GroupDto, WordDto, GroupDto>(getGroupSql, param, (group, word) =>
+                await conneciton.GetAsync<GroupDto, WordDto, GroupDto>(getGroupsSql, param, (group, word) =>
                 {
                     if (!dtos.Any(x => x.GroupId == group.GroupId))
                     {
@@ -286,6 +287,38 @@ WHERE g.id = @groupId";
             {
                 yield return mapper.Map(dto);
             }
+        }
+
+        public async Task<IEnumerable<Group>> GetGroupsAsync(long userId)
+        {
+            List<GroupDto> dtos = new List<GroupDto>();
+            var param = new
+            {
+                userId = userId,
+            };
+            using (var conneciton = await dbConnection.Connect())
+            {
+                await conneciton.GetAsync<GroupDto, WordDto, GroupDto>(getGroupsSql, param, (group, word) =>
+                {
+                    if (!dtos.Any(x => x.GroupId == group.GroupId))
+                    {
+                        dtos.Add(group);
+                    }
+                    else
+                    {
+                        group = dtos.Single(x => x.GroupId == group.GroupId);
+                    }
+                    group.Words.Add(word);
+                    return group;
+                }, "WordId");
+            }
+
+            var result = new List<Group>();
+            foreach (var dto in dtos)
+            {
+                result.Add(mapper.Map(dto));
+            }
+            return result;
         }
     }
 }

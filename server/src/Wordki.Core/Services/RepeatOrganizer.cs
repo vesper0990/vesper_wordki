@@ -28,13 +28,14 @@ namespace Wordki.Core.Services
             {
                 word.Drawer.Reset();
             }
+            word.NextRepeat = CalculateNextRepeat(word.Drawer);
             word.AddRepeat(newRepeat);
             return newRepeat;
         }
 
         private DateTime CalculateNextRepeat(Drawer drawer)
         {
-            return new DateTime();
+            return DateTime.Now.AddDays(drawer.Value);
         }
     }
 }
