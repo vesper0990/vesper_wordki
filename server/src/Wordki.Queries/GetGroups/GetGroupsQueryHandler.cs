@@ -35,7 +35,7 @@ SELECT
     g.language2         as Language2,
     count(w.id)         as WordsCount
 FROM groups g
-JOIN words w ON w.groupId =  g.id
+LEFT JOIN words w ON w.groupId =  g.id
 WHERE g.userid = @userId
 GROUP BY g.id";
     }

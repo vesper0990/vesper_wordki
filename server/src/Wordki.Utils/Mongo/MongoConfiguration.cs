@@ -8,7 +8,7 @@ namespace Wordki.Utils.Mongo
 {
     public interface IMongoConfiguration
     {
-        Task Test();
+        // Task Test();
     }
 
     public class MongoConfiguration : IMongoConfiguration
@@ -16,10 +16,10 @@ namespace Wordki.Utils.Mongo
 
         public IMongoDatabase Database { get; set; }
 
-        public async Task Test()
-        {
-            var client = new MongoClient("mongodb://root:example@192.168.99.100:27017");
-            Database = client.GetDatabase("TestXXX");
-        }
+        // public async Task Test()
+        // {
+        //     var client = new MongoClient("mongodb://root:example@192.168.99.100:27017");
+        //     Database = client.GetDatabase("TestXXX");
+        // }
     }
 }
