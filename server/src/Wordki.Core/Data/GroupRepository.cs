@@ -182,6 +182,11 @@ id = @id";
                 id = word.Id
             };
             await connection.Execute(updateWordSql, param);
+            foreach (var repeat in word.Repeats.Where(x => x.NeedUpdate))
+            {
+                repeat.WordId = word.Id;
+                await InsertRepeatAsync(connection, repeat);
+            }
         }
 
         private readonly string getGroupSql = $@"
@@ -257,7 +262,7 @@ w.creationDate as WordCreationDate,
 w.nextRepeat as NextRepeat
 FROM groups g
 LEFT JOIN words w ON w.groupId = g.id
-WHERE g.id = @groupId";
+WHERE g.userId = @userId";
 
         public async IAsyncEnumerable<Group> GetGroups(long userId)
         {

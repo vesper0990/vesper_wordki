@@ -1,5 +1,6 @@
 ﻿using System;
 using Wordki.Core.Domain;
+using Wordki.Utils.TimeProvider;
 
 namespace Wordki.Core.Services
 {
@@ -11,10 +12,12 @@ namespace Wordki.Core.Services
     public class RepeatOrganizer : IRepeatOrganizer
     {
         private readonly IRepeatFactory repeatFactory;
+        private readonly ITimeProvider timeProvider;
 
-        public RepeatOrganizer(IRepeatFactory repeatFactory)
+        public RepeatOrganizer(IRepeatFactory repeatFactory, ITimeProvider timeProvider)
         {
             this.repeatFactory = repeatFactory;
+            this.timeProvider = timeProvider;
         }
 
         public Repeat NoticeRepeat(Word word, int result)
@@ -35,7 +38,7 @@ namespace Wordki.Core.Services
 
         private DateTime CalculateNextRepeat(Drawer drawer)
         {
-            return DateTime.Now.AddDays(drawer.Value);
+            return timeProvider.GetTime().AddDays(drawer.Value);
         }
     }
 }

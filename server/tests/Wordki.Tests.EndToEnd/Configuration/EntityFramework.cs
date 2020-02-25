@@ -46,6 +46,7 @@ namespace Wordki.Tests.EndToEnd.Configuration
                 entity.Property(e => e.GroupLanguage1).HasColumnName("language1");
                 entity.Property(e => e.GroupLanguage2).HasColumnName("language2");
                 entity.Property(e => e.GroupCreationDate).HasColumnName("creationDate");
+                entity.Ignore(e => e.Words);
             });
 
             modelBuilder.Entity<WordDto>(entity =>
@@ -63,6 +64,7 @@ namespace Wordki.Tests.EndToEnd.Configuration
                 entity.Property(e => e.IsVisible).HasColumnName("isVisible");
                 entity.Property(e => e.WordCreationDate).HasColumnName("creationDate");
                 entity.Property(e => e.NextRepeat).HasColumnName("nextRepeat");
+                entity.Ignore(e => e.Repeats);
             });
 
             modelBuilder.Entity<RepeatDto>(entity => {
@@ -70,9 +72,9 @@ namespace Wordki.Tests.EndToEnd.Configuration
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).HasColumnName("id");
                 entity.Property(e => e.WordId).HasColumnName("wordId");
-                entity.Property(e => e.DateTime).HasColumnName("dateTime");
+                entity.Property(e => e.DateTime).HasColumnName("date");
                 entity.Property(e => e.Result).HasColumnName("result");
-                
+                entity.Ignore(e => e.NeedUpdate);
             });
         }
 

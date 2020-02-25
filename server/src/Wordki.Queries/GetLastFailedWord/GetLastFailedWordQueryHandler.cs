@@ -33,7 +33,7 @@ FROM repeats r
 JOIN words w ON w.id = r.wordId
 JOIN groups g ON g.id = w.groupId
 WHERE g.userId = @userId
-ORDER BY r.dateTime DESC
+ORDER BY r.date DESC
 LIMIT 1
 ";
     }

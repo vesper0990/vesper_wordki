@@ -43,7 +43,7 @@ namespace Wordki.Core.Domain
 
             public Repeat Create(long wordId, int result)
             {
-                Condition.True(wordId == 0, "wordId must be defined");
+                Condition.True(wordId != 0, "wordId must be defined");
                 return new Repeat()
                 {
                     Id = 0,

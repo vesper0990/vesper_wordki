@@ -6,57 +6,62 @@ using TestStack.BDDfy;
 using Wordki.Core.Dtos;
 using Wordki.Tests.EndToEnd.Configuration;
 
-[TestFixture]
-public class UserGetGroups : TestBase
+namespace Wordki.Tests.EndToEnd.GetGroups
 {
-
-    public UserGetGroups()
+    [TestFixture]
+    public class UserGetGroups : TestBase
     {
-        Request = new HttpRequestMessage(HttpMethod.Get, "/getGroups");
-    }
-
-    async Task GivenDataInDatabase(){
-        using (var dbContext = new EntityFramework(DapperSettings))
+        public UserGetGroups()
         {
-            var user = new UserDto
-            {
-                Id = 1,
-                Name = "user",
-                Password = Host.EncrypterMock.Object.GetSalt(string.Empty),
-                CreationDate = Host.TimeProviderMock.Object.GetTime(),
-                LastLoginDate = Host.TimeProviderMock.Object.GetTime()
-            };
-            dbContext.Users.Add(user);
-
-            var group = new GroupDto
-            {
-                UserId = 1,
-                GroupId = 1,
-                GroupLanguage1 = 1,
-                GroupLanguage2 = 2,
-                Name = "group",
-                GroupCreationDate = Host.TimeProviderMock.Object.GetTime()
-            };
-            dbContext.Groups.Add(group);
-            await dbContext.SaveChangesAsync();
+            Request = new HttpRequestMessage(HttpMethod.Get, "/getGroups");
         }
-    }
 
-    async Task WhenRequestReceived() => await SendRequest();
+        async Task GivenDataInDatabase()
+        {
+            using (var dbContext = new EntityFramework(DapperSettings))
+            {
+                var user = new UserDto
+                {
+                    Id = 1,
+                    Name = "user",
+                    Password = Host.EncrypterMock.Object.GetSalt(string.Empty),
+                    CreationDate = Host.TimeProviderMock.Object.GetTime(),
+                    LastLoginDate = Host.TimeProviderMock.Object.GetTime()
+                };
+                dbContext.Users.Add(user);
 
-    void ThenResponseIsOk()
-    {
-        Assert.AreEqual(HttpStatusCode.OK, Response.StatusCode);
-    }
+                var group = new GroupDto
+                {
+                    UserId = 1,
+                    GroupId = 1,
+                    GroupLanguage1 = 1,
+                    GroupLanguage2 = 2,
+                    Name = "group",
+                    GroupCreationDate = Host.TimeProviderMock.Object.GetTime()
+                };
+                dbContext.Groups.Add(group);
+                await dbContext.SaveChangesAsync();
+            }
+        }
 
-    async Task AndThenResponseContainMessage(){
-        var message = await Response.Content.ReadAsStringAsync();
-        Assert.AreEqual("[{\"id\":1,\"name\":\"group\",\"language1\":1,\"language2\":2,\"wordsCount\":0}]", message);
-    }
+        async Task WhenRequestReceived() => await SendRequest();
 
-    [Test]
-    public void Execute()
-    {
-        this.BDDfy();
+        void ThenResponseIsOk()
+        {
+            Assert.AreEqual(HttpStatusCode.OK, Response.StatusCode);
+        }
+
+        async Task AndThenResponseContainMessage()
+        {
+            var message = await Response.Content.ReadAsStringAsync();
+            Assert.AreEqual("[{\"id\":1,\"name\":\"group\",\"language1\":1,\"language2\":2,\"wordsCount\":0}]", message);
+        }
+
+        [Test]
+        public void Execute()
+        {
+            this.BDDfy();
+        }
+
     }
 }
