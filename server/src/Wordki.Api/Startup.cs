@@ -33,7 +33,8 @@ namespace Wordki
                 .JwtConfig(Configuration)
                 .CorsConfig()
                 .LoggingConfig()
-                .ServicesConfig();
+                .ServicesConfig()
+                .MvcConfig();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
