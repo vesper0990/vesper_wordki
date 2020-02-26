@@ -1,8 +1,18 @@
 version: '3'
 services:
+ wordki:
+  container_name: wordki_dev
+  image: wordki
+  build:
+   context: ../../
+   dockerfile: ./src/Wordki.Api/Dockerfile.Development
+  ports:
+   - "5000:5000"
+  links:
+   - mysql
  mysql:
-  container_name: db
-  image: mysql/mysql-server:5.7
+  container_name: db_dev
+  image: mysql/mysql-server:latest
   restart: always
   ports:
    - "3306:3306"
@@ -20,6 +30,13 @@ services:
    - secrets.env
   depends_on:
    - mysql
+ seq:
+  container_name: seq_dev
+  image: datalust/seq:latest
+  ports:
+   - "5341:80"
+  environment:
+   - ACCEPT_EULA=Y
 volumes:
  dbvol:
   external: false
