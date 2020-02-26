@@ -34,7 +34,7 @@ SELECT
     w.language2 as Language2,
     w.creationDate as CreationDate
 FROM words w
-JOIN groups g ON g.id = w.groupId
+JOIN groups2 g ON g.id = w.groupId
 WHERE g.userId = @userId
 ORDER BY w.creationDate DESC
 LIMIT @count

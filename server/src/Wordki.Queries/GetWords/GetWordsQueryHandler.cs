@@ -34,7 +34,7 @@ SELECT
     w.language2,
     w.drawer
 FROM words w
-JOIN groups g ON w.group_id = g.id
+JOIN groups2 g ON w.group_id = g.id
 ORDER BY w.next_repeat
 LIMIT @Count";
     }

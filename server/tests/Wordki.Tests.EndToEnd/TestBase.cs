@@ -28,7 +28,7 @@ public class TestBase
             await dbContext.Database.EnsureCreatedAsync();
             await dbContext.Database.ExecuteSqlRawAsync("Delete from repeats");
             await dbContext.Database.ExecuteSqlRawAsync("Delete from words");
-            await dbContext.Database.ExecuteSqlRawAsync("Delete from groups");
+            await dbContext.Database.ExecuteSqlRawAsync("Delete from groups2");
             await dbContext.Database.ExecuteSqlRawAsync("Delete from users");
         }
     }
@@ -37,7 +37,8 @@ public class TestBase
     //protected async Task DropDabase(){
     //}
 
-    protected async Task SendRequest(){
+    protected async Task SendRequest()
+    {
         Response = await Host.Client.SendAsync(Request);
     }
 

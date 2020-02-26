@@ -38,7 +38,7 @@ count(r.id)         as RepeatsCount,
 max(r.date)         as LastRepeat
 FROM words w
 LEFT JOIN repeats r ON r.wordId = w.id
-JOIN groups g on g.id = w.groupId
+JOIN groups2 g on g.id = w.groupId
 WHERE g.id = @groupId
 GROUP BY w.id";
     }

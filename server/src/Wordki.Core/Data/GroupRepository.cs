@@ -42,7 +42,7 @@ namespace Wordki.Core.Data
         }
 
         private readonly string insertSql = $@"
-INSERT INTO groups (userId, name, language1, language2, creationDate) 
+INSERT INTO groups2 (userId, name, language1, language2, creationDate) 
 VALUES (@userId, @name, @language1, @language2, @creationDate);
 SELECT LAST_INSERT_ID();";
         private async Task<long> InsertAsync(Group group)
@@ -69,7 +69,7 @@ SELECT LAST_INSERT_ID();";
         }
 
         private readonly string updateGroupSql = $@"
-UPDATE groups SET
+UPDATE groups2 SET
 name = @name,
 language1 = @language1,
 language2 = @language2
@@ -209,7 +209,7 @@ w.drawer as Drawer,
 w.isVisible as IsVisible,
 w.creationDate as WordCreationDate,
 w.nextRepeat as NextRepeat
-FROM groups g
+FROM groups2 g
 LEFT JOIN words w ON w.groupId = g.id
 WHERE g.id = @groupId
 ";
@@ -260,7 +260,7 @@ w.drawer as Drawer,
 w.isVisible as IsVisible,
 w.creationDate as WordCreationDate,
 w.nextRepeat as NextRepeat
-FROM groups g
+FROM groups2 g
 LEFT JOIN words w ON w.groupId = g.id
 WHERE g.userId = @userId";
 

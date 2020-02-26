@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Wordki.Tests.EndToEnd": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

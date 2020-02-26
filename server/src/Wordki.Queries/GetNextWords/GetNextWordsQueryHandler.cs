@@ -34,7 +34,7 @@ w.language1     as Language1,
 w.language2     as Language2,
 w.drawer        as Drawer
 FROM words w
-JOIN groups g ON w.groupId = g.id
+JOIN groups2 g ON w.groupId = g.id
 WHERE g.userId = @userId
 ORDER BY w.nextRepeat, w.id
 LIMIT @count";

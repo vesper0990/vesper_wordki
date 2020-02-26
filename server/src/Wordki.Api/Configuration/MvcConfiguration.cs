@@ -6,7 +6,7 @@ public static class MvcConfiguration
     {
         services.AddMvc(options =>
             {
-                options.EnableEndpointRouting = false;
+                options.EnableEndpointRouting = true;
             });
         return services;
     }

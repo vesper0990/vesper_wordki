@@ -38,7 +38,7 @@ namespace Wordki.Tests.EndToEnd.Configuration
 
             modelBuilder.Entity<GroupDto>(entity =>
             {
-                entity.ToTable("groups");
+                entity.ToTable("groups2");
                 entity.HasKey(e => e.GroupId);
                 entity.Property(e => e.GroupId).HasColumnName("id");
                 entity.Property(e => e.UserId).HasColumnName("userId");

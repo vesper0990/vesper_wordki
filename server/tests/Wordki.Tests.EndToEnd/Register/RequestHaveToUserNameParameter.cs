@@ -43,7 +43,7 @@ namespace Wordki.Tests.EndToEnd.Register
             }
         }
 
-        [Test]
+        
         public void Execute()
         {
             this.BDDfy();

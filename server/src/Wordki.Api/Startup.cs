@@ -35,7 +35,7 @@ namespace Wordki
                 .CorsConfig()
                 .LoggingConfig(Configuration)
                 .ServicesConfig()
-                .MvcConfig();
+                .AddMvc(o => o.EnableEndpointRouting = false);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

@@ -25,6 +25,7 @@ namespace Wordki.Infrastructure.Framework.ExceptionMiddleware
             catch(Exception ex)
             {
                 logger.LogError("Exception {exception}", ex, context.Request.PathBase);
+                throw;
             }
         }
     }

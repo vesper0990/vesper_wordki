@@ -31,7 +31,7 @@ SELECT
     g.name as Name,
     g.language1 as Language1, 
     g.language2 as Language2
-FROM groups g
+FROM groups2 g
 WHERE g.id = @groupId";
     }
 }

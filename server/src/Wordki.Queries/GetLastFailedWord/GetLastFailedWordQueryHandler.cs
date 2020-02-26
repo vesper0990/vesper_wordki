@@ -31,7 +31,7 @@ w.language1 as Language1,
 w.language2 as Language2
 FROM repeats r
 JOIN words w ON w.id = r.wordId
-JOIN groups g ON g.id = w.groupId
+JOIN groups2 g ON g.id = w.groupId
 WHERE g.userId = @userId
 ORDER BY r.date DESC
 LIMIT 1
