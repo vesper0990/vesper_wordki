@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /server
 COPY ["./tests/Wordki.Tests.EndToEnd/Wordki.Tests.EndToEnd.csproj", "tests/Wordki.Tests.EndToEnd/"]
 COPY ["./src/Wordki.Tests.Utils/Wordki.Tests.Utils.csproj", "src/Wordki.Tests.Utils/"]
@@ -16,4 +16,3 @@ RUN dotnet build "Wordki.Tests.EndToEnd.csproj"
 #RUN dotnet test "Wordki.Tests.EndToEnd.csproj" -r ./results
 
 ENTRYPOINT ["dotnet", "test", "Wordki.Tests.EndToEnd.csproj", "-r", "./results", "-l", "nunit;LogFileName=TestResults.xml"]
-#ENTRYPOINT ["tail", "-f", "/dev/null"]

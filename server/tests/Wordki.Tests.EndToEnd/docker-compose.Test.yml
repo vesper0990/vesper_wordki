@@ -1,6 +1,7 @@
 version: '3'
 services:
  wordki:
+  network_mode: host
   container_name: wordki_dev
   image: wordki
   build:
@@ -9,6 +10,7 @@ services:
   links:
    - mysql
  mysql:
+  network_mode: host
   container_name: db_dev
   image: mysql/mysql-server:latest
   restart: always
