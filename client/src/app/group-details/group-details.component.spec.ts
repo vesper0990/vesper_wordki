@@ -5,6 +5,8 @@ import { ActivatedRouteMock } from '../test/services.mock';
 import { GroupDetailsProviderBase } from './services/group-details.provider/group-details.provider';
 import { MockComponent } from 'ng-mocks';
 import { WordRowComponent } from './components/word-row/word-row.component';
+import { of } from 'rxjs';
+import { GroupDetails } from './models/group-details.model';
 
 describe('GroupDetailsComponent', () => {
   let component: GroupDetailsComponent;
@@ -41,6 +43,7 @@ describe('GroupDetailsComponent', () => {
   beforeEach(() => {
     routerMock = TestBed.inject(Router);
     groupDetailsProviderMock = TestBed.inject(GroupDetailsProviderBase);
+    spyOn(groupDetailsProviderMock, 'getGroupDetails').and.returnValue(of(<GroupDetails>{}));
     fixture = TestBed.createComponent(GroupDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -51,7 +54,7 @@ describe('GroupDetailsComponent', () => {
   });
 
   it('should download group details after init', () => {
-    activetedRouteMock.paramsSubject.next(<Params>{['id'] : 1});
+    activetedRouteMock.paramsSubject.next(<Params>{ ['id']: 1 });
     expect(groupDetailsProviderMock.getGroupDetails).toHaveBeenCalledWith(1);
   });
 });

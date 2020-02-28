@@ -1,4 +1,4 @@
-FROM node:12.14
+FROM node:latest
 # Setup dev environment for npm in order to install dev dependencies
 # It's a must, without this tests won't run
 ENV environment dev
