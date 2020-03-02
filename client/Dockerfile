@@ -40,4 +40,4 @@ RUN npm install
 
 COPY . /main
 
-ENTRYPOINT ["npm", "run", "test-headless"]
+CMD npm run test-headless && npm run build:prod

@@ -5,4 +5,4 @@ services:
   image: wordkiclient
   build:
    context: ../../
-   dockerfile: ./Dockerfile.Test
+   dockerfile: ./Dockerfile
