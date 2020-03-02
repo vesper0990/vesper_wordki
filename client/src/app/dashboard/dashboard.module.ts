@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 import { LastWordMapper } from './services/last-word.mapper/last-word.mapper';
 import { CardModule } from 'primeng/card';
 import { CarouselModule } from 'primeng/carousel';
+import { RepeatWordMapper } from './services/repeat-word.mapper/repeat-word.mapper';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { CarouselModule } from 'primeng/carousel';
   ],
   providers: [
     LastWordMapper,
+    RepeatWordMapper,
     { provide: DataProviderBase, useClass: environment.production ? DataProvider : DataProviderMock },
   ]
 })

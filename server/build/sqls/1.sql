@@ -1,5 +1,5 @@
 CREATE TABLE `users` (
-    `id`                BIGINT UNIQUE AUTO_INCREMENT PRIMARY KEY,
+    `id`                BIGINT AUTO_INCREMENT PRIMARY KEY,
     `name`              VARCHAR(50) UNIQUE NOT NULL,
     `password`          VARCHAR(32) NOT NULL,
     `creationDate`      DATE NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE `users` (
 );
 
 CREATE TABLE `groups` (
-    `id`                BIGINT UNIQUE AUTO_INCREMENT PRIMARY KEY,
+    `id`                BIGINT AUTO_INCREMENT PRIMARY KEY,
     `userId`            BIGINT NOT NULL,
     `name`              VARCHAR(50) NOT NULL,
     `language1`         INT NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE `groups` (
 );
 
 CREATE TABLE `words` (
-    `id`                BIGINT UNIQUE AUTO_INCREMENT PRIMARY KEY,
+    `id`                BIGINT AUTO_INCREMENT PRIMARY KEY,
     `groupId`           BIGINT NOT NULL,
     `language1`         VARCHAR(100),
     `language2`         VARCHAR(100),
@@ -28,11 +28,11 @@ CREATE TABLE `words` (
     `isVisible`         TINYINT(1) NOT NULL,
     `nextRepeat`        DATETIME NOT NULL,
     `creationDate`      DATETIME NOT NULL,
-    FOREIGN KEY (groupId) REFERENCES groups(id)
+    FOREIGN KEY (groupId) REFERENCES `groups`(id)
 );
 
 CREATE TABLE `repeats` (
-    `id`                BIGINT UNIQUE AUTO_INCREMENT PRIMARY KEY,
+    `id`                BIGINT AUTO_INCREMENT PRIMARY KEY,
     `wordId`            BIGINT NOT NULL,
     `result`            TINYINT(1) NOT NULL,
     `date`              DATETIME,

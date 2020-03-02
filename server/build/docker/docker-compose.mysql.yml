@@ -1,17 +1,8 @@
 version: '3'
 services:
- wordki:
-  container_name: wordki_dev
-  image: wordki
-  build:
-   context: ../../
-   dockerfile: ./tests/Wordki.Tests.EndToEnd/Dockerfile
-  links:
-   - mysql
  mysql:
-  container_name: db_dev
+  container_name: mysql
   image: mysql/mysql-server:latest
-  restart: always
   ports:
    - "3306:3306"
   volumes:
@@ -19,6 +10,17 @@ services:
   env_file:
    - secrets.env
   command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
+ phpmyadmin:
+  container_name: phpmyadmin
+  image: phpmyadmin/phpmyadmin
+  ports:
+   - "81:80"
+  env_file:
+   - secrets.env
+  depends_on:
+   - mysql
+  environment:
+   PMA_HOST: mysql
 volumes:
  dbvol:
   external: false

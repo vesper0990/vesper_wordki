@@ -5,7 +5,10 @@ import { LastWordDto } from '../../models/last-word.dto';
 import { LastWordMapper } from '../last-word.mapper/last-word.mapper';
 import { RepeatWord } from '../../models/repeat-word.model';
 import { RepeatWordDto } from '../../models/reapeat-word.dto';
-import { delay } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { RepeatWordMapper } from '../repeat-word.mapper/repeat-word.mapper';
 
 @Injectable()
 export abstract class DataProviderBase {
@@ -16,14 +19,30 @@ export abstract class DataProviderBase {
 
 @Injectable()
 export class DataProvider extends DataProviderBase {
+
+    constructor(private httpClient: HttpClient,
+        private lastWordMapper: LastWordMapper,
+        private repeatWordMapper: RepeatWordMapper) {
+        super();
+    }
+
     getLastFailed(): Observable<RepeatWord> {
-        throw new Error('Method not implemented.');
+        return this.httpClient.get<RepeatWordDto>(`${environment.apiUrl}/getLastFailed`).pipe(
+            map((dto: RepeatWordDto) => this.repeatWordMapper.map(dto)));
     }
+    
     getNextRepeatWord(): Observable<RepeatWord> {
-        throw new Error('Method not implemented.');
+        return this.httpClient.get<RepeatWordDto>(`${environment.apiUrl}/getNextRepeatWord`).pipe(
+            map((dto: RepeatWordDto) => this.repeatWordMapper.map(dto)));
     }
+
     getLastWords(count: number): Observable<LastWord[]> {
-        throw new Error('Method not implemented.');
+        return this.httpClient.get<LastWordDto[]>(`${environment.apiUrl}/getLastFailed/${count}`).pipe(
+            map((dto: LastWordDto[]) => {
+                const arr = [];
+                dto.forEach((item: LastWordDto) => arr.push(this.lastWordMapper.map(item)));
+                return arr;
+            }));
     }
 }
 
