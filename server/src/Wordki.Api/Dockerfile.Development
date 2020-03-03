@@ -24,4 +24,8 @@ RUN dotnet publish "Wordki.Api.csproj" -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "Wordki.Api.dll"]
+
+COPY ./build/common/wait /wait
+RUN chmod +x /wait
+
+ENTRYPOINT /wait && dotnet Wordki.Api.dll

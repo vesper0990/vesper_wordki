@@ -49,7 +49,7 @@ namespace Wordki.Infrastructure.Services
             {
                 await connection.Execute("DELETE FROM repeats");
                 await connection.Execute("DELETE FROM words");
-                await connection.Execute("DELETE FROM groups");
+                await connection.Execute("DELETE FROM groups2");
                 await connection.Execute("DELETE FROM users");
             }
 

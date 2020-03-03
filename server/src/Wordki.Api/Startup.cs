@@ -10,6 +10,7 @@ using Wordki.Queries;
 using Wordki.Infrastructure;
 using Microsoft.Extensions.Hosting;
 using Wordki.Infrastructure.Framework.HandleTimeMiddleware;
+using Wordki.Infrastructure.Services;
 
 namespace Wordki
 {
@@ -53,6 +54,11 @@ namespace Wordki
             app.UseMiddleware<HandleTimeMiddleware>();
             app.UseAuthentication();
             app.UseMvc();
+
+            if(Configuration.GetValue<bool>("General:Mocks")){
+                var initializer = app.ApplicationServices.GetService<IDataInitializer>();
+                initializer.Initialize().Wait();
+            }
 
             var appLifeTime = app.ApplicationServices.GetService<IHostApplicationLifetime>();
             appLifeTime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());

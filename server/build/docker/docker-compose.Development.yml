@@ -10,6 +10,9 @@ services:
    - "5000:5000"
   links:
    - mysql
+  environment:
+   - WAIT_HOSTS=mysql:5672
+   - WAIT_HOSTS_TIMEOUT=60
  mysql:
   container_name: db_dev
   image: mysql/mysql-server:latest
