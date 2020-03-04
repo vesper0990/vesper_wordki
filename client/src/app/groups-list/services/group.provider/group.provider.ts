@@ -4,7 +4,8 @@ import { Observable, of } from 'rxjs';
 import { GroupDto } from '../../models/group-dto.model';
 import { Group } from '../../models/group.model';
 import { GroupMapper } from '../group.mapper/group.mapper';
-import { map, timeout, delay } from 'rxjs/operators';
+import { map, delay } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export abstract class GroupProviderBase {
@@ -14,22 +15,35 @@ export abstract class GroupProviderBase {
 
 @Injectable()
 export class GroupProvider extends GroupProviderBase {
-    updateGroup(group: Group): Observable<any> {
-        throw new Error('Method not implemented.');
-    }
 
-    constructor(private client: HttpClient) {
+    constructor(private client: HttpClient,
+        private mapper: GroupMapper) {
         super();
     }
 
+    updateGroup(group: Group): Observable<any> {
+        const body = {
+            groupName: group.name,
+            langauge1: group.language1.value,
+            langauge2: group.language2.value
+        };
+        return this.client.put(`${environment.apiUrl}/updateGroup`, body);
+    }
+
     getGroups(): Observable<Group[]> {
-        throw new Error('Method not implemented.');
+        return this.client.get<GroupDto[]>(`${environment.apiUrl}/getGroups`).pipe(
+            map((dtos: GroupDto[]) => {
+                const result = [];
+                dtos.forEach((dto: GroupDto) => {
+                    result.push(this.mapper.map(dto));
+                });
+                return result;
+            }));
     }
 }
 
 @Injectable()
 export class GroupProviderMock extends GroupProviderBase {
-
 
     constructor(private mapper: GroupMapper) {
         super();

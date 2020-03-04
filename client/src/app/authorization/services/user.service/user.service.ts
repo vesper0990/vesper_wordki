@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { UserProviderBase } from '../../../user/services/user.provider/user.provider';
 import { CookieService } from 'ngx-cookie-service';
-import { Observable, BehaviorSubject} from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +9,7 @@ export class UserService {
 
   private readonly cookieTag = 'wordki-usr-tag';
 
-  private token: string;
+  private token: { token: string };
   private subject: BehaviorSubject<boolean>;
 
   constructor(private cookiesService: CookieService) {
@@ -21,7 +20,7 @@ export class UserService {
     return this.subject.asObservable();
   }
 
-  getToken(): string {
+  getToken(): { token: string } {
     return this.token;
   }
 
@@ -46,7 +45,7 @@ export class UserService {
     this.sendToSubscribers();
   }
 
-  refresh(newToken: string): void {
+  refresh(newToken: any): void {
     if (newToken.length === 0) {
       return;
     }

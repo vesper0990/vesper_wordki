@@ -14,11 +14,11 @@ export class TokenInterceptorService implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.userService.getToken();
-    if (!token || token.length === 0) {
+    if (!token) {
       return next.handle(req);
     }
     if (!req.headers.has(this.authorizationHeader)) {
-      req = req.clone({ headers: req.headers.set(this.authorizationHeader, `Bearer ${token}`) });
+      req = req.clone({ headers: req.headers.set(this.authorizationHeader, `Bearer ${token.token}`) });
     }
 
     return next.handle(req);

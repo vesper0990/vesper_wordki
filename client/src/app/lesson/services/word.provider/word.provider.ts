@@ -2,23 +2,44 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { WordRepeat } from '../../models/word-repeat';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { WordRepeatDto } from '../../models/word-repeat.dto';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export abstract class WordProviderBase {
-    abstract getNextWord(count: number): Observable<WordRepeat[]>;
+    abstract getNextWord(count: number, offset: number): Observable<WordRepeat[]>;
     abstract getWordsFromGroup(groupId: number): Observable<WordRepeat[]>;
     abstract sendWord(wordId: number, result: number): Observable<any>;
 }
 
+@Injectable()
 export class WordProvider extends WordProviderBase {
+
+    constructor(private http: HttpClient) {
+        super();
+    }
+
     getWordsFromGroup(groupId: number): Observable<WordRepeat[]> {
         throw new Error('Method not implemented.');
     }
-    sendWord(wordId: number, resut: number): Observable<any> {
-        throw new Error('Method not implemented.');
+
+    sendWord(wordId: number, result: number): Observable<any> {
+        const body = {
+            wordid: wordId,
+            result: result
+        };
+        return this.http.post(`${environment.apiUrl}/AddRepeat`, body);
     }
-    getNextWord(count: number): Observable<WordRepeat[]> {
-        return of<WordRepeat[]>([]);
+
+    getNextWord(count: number, offset: number): Observable<WordRepeat[]> {
+        return this.http.get<WordRepeatDto[]>(`${environment.apiUrl}/GetNextWords/${count}/${offset}`).pipe(
+            map((dtos: WordRepeatDto[]) => {
+                const arr = [];
+                dtos.forEach((dto: WordRepeatDto) => arr.push(dto)); // todo mapper
+                return arr;
+            })
+        );
     }
 }
 
@@ -31,7 +52,7 @@ export class WordProviderMock extends WordProviderBase {
         super();
     }
 
-    getNextWord(count: number): Observable<WordRepeat[]> {
+    getNextWord(count: number, offset: number): Observable<WordRepeat[]> {
         // return this.http.get<WordRepeat[]>(`http://localhost:5000/getwords/${count}`);
         const result = [];
         while (result.length < count) {

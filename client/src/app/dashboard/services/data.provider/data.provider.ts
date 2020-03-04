@@ -27,17 +27,17 @@ export class DataProvider extends DataProviderBase {
     }
 
     getLastFailed(): Observable<RepeatWord> {
-        return this.httpClient.get<RepeatWordDto>(`${environment.apiUrl}/getLastFailed`).pipe(
+        return this.httpClient.get<RepeatWordDto>(`${environment.apiUrl}/GetLastFailedWord`).pipe(
             map((dto: RepeatWordDto) => this.repeatWordMapper.map(dto)));
     }
-    
+
     getNextRepeatWord(): Observable<RepeatWord> {
-        return this.httpClient.get<RepeatWordDto>(`${environment.apiUrl}/getNextRepeatWord`).pipe(
+        return this.httpClient.get<RepeatWordDto>(`${environment.apiUrl}/GetNextWords/1/0`).pipe(
             map((dto: RepeatWordDto) => this.repeatWordMapper.map(dto)));
     }
 
     getLastWords(count: number): Observable<LastWord[]> {
-        return this.httpClient.get<LastWordDto[]>(`${environment.apiUrl}/getLastFailed/${count}`).pipe(
+        return this.httpClient.get<LastWordDto[]>(`${environment.apiUrl}/GetLastAddedWords/${count}`).pipe(
             map((dto: LastWordDto[]) => {
                 const arr = [];
                 dto.forEach((item: LastWordDto) => arr.push(this.lastWordMapper.map(item)));

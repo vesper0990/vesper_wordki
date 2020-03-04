@@ -25,6 +25,7 @@ import { ShareModule } from '../share/share.module';
 import { StoperComponent } from './components/stoper/stoper.component';
 import { StoperService } from './services/stoper/stoper.service';
 import { WordComparerService } from './services/word-comparer/word-comparer.service';
+import { UserModule } from '../user/user.module';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { WordComparerService } from './services/word-comparer/word-comparer.serv
     LessonRoutingModule,
     HttpClientModule,
     ShareModule,
+    UserModule,
     StoreModule.forFeature('lessonStore', reducer),
     EffectsModule.forFeature([LessonEffects]),
   ],

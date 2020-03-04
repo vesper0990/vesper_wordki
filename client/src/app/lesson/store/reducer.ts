@@ -24,6 +24,7 @@ const initialState: LessonState = {
 };
 
 export function reducer(state = initialState, action: LessonActions): LessonState {
+    console.log('StateChanged', action.type);
     switch (action.type) {
         case LessonActionTypes.SetWords: return { ...state, words: [...state.words, ...action.words] };
         case LessonActionTypes.RemoveWord: return handleRemoveWord(state);
