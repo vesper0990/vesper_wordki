@@ -6,7 +6,7 @@ CREATE TABLE `users` (
     `lastLoginDate`     DATETIME
 );
 
-CREATE TABLE `groups` (
+CREATE TABLE `groups2` (
     `id`                BIGINT AUTO_INCREMENT PRIMARY KEY,
     `userId`            BIGINT NOT NULL,
     `name`              VARCHAR(50) NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE `words` (
     `isVisible`         TINYINT(1) NOT NULL,
     `nextRepeat`        DATETIME NOT NULL,
     `creationDate`      DATETIME NOT NULL,
-    FOREIGN KEY (groupId) REFERENCES `groups`(id)
+    FOREIGN KEY (groupId) REFERENCES `groups2`(id)
 );
 
 CREATE TABLE `repeats` (

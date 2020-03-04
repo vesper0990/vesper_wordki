@@ -20,7 +20,7 @@ export enum LessonActionTypes {
 
 export class GetWordsAction implements Action {
     readonly type = LessonActionTypes.GetWords;
-    constructor(public payload: { count: number }) { }
+    constructor(public payload: { count: number, offset: number }) { }
 }
 
 export class GetWordsFromGroupAction implements Action {

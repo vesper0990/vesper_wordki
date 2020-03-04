@@ -32,8 +32,8 @@ export class DataProvider extends DataProviderBase {
     }
 
     getNextRepeatWord(): Observable<RepeatWord> {
-        return this.httpClient.get<RepeatWordDto>(`${environment.apiUrl}/GetNextWords/1/0`).pipe(
-            map((dto: RepeatWordDto) => this.repeatWordMapper.map(dto)));
+        return this.httpClient.get<RepeatWordDto[]>(`${environment.apiUrl}/GetNextWords/1/0`).pipe(
+            map((dto: RepeatWordDto[]) => this.repeatWordMapper.map(dto[0])));
     }
 
     getLastWords(count: number): Observable<LastWord[]> {

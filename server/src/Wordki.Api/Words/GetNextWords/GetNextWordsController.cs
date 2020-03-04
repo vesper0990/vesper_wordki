@@ -25,7 +25,7 @@ namespace Wordki.Api.Words.GetNextWords
         public async Task<IActionResult> Get([FromRoute] GetNextWordsRequest request)
         {
             var userId = httpContextProvider.GetUserId();
-            var query = GetNextWordsQuery.Create(request.Count, request.Miss, userId);
+            var query = GetNextWordsQuery.Create(request.Count, request.Offset, userId);
             var result = await queryHandler.HandleAsync(query);
             return new JsonResult(result);
         }

@@ -5,7 +5,7 @@ import { LessonState } from '../../store/reducer';
 import { RouteParamsHandler } from '../../services/route-params.handler/route-params.handler';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { isAnyWord } from '../../store/selectors';
-import { FinishLessonAction, StartLessonAction } from '../../store/actions';
+import { FinishLessonAction, StartLessonAction, ResetStoreAction } from '../../store/actions';
 
 export class BaseComponent implements OnInit, OnDestroy {
     protected routeParamSub: Subscription;
@@ -20,13 +20,13 @@ export class BaseComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.lessonStore.dispatch(new ResetStoreAction());
         this.routeParamSub = this.route.params.subscribe((params: Params) => this.routeParamsHandler.handle(params));
-        // this.nextWordSub = this.lessonStore.select(isAnyWord).subscribe((isAny: boolean) => this.handleIsAnyWord(isAny));
     }
 
     ngOnDestroy(): void {
         this.routeParamSub.unsubscribe();
-        // this.nextWordSub.unsubscribe();
+        this.nextWordSub?.unsubscribe();
     }
 
     finishLesson(): void {
@@ -36,6 +36,7 @@ export class BaseComponent implements OnInit, OnDestroy {
 
     startLesson(): void {
         this.lessonStore.dispatch(new StartLessonAction());
+        this.nextWordSub = this.lessonStore.select(isAnyWord).subscribe((isAny: boolean) => this.handleIsAnyWord(isAny));
         this.isRunning = true;
     }
 

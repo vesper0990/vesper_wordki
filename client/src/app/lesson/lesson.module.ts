@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LessonComponent } from './lesson.component';
 import { LessonRoutingModule } from './lesson-routing.module';
 import { FiszkiComponent } from './pages/fiszki/fiszki.component';
 import { FiszkaComponent } from './components/fiszka/fiszka.component';
@@ -26,10 +25,10 @@ import { StoperComponent } from './components/stoper/stoper.component';
 import { StoperService } from './services/stoper/stoper.service';
 import { WordComparerService } from './services/word-comparer/word-comparer.service';
 import { UserModule } from '../user/user.module';
+import { AuthorizationModule } from '../authorization/authorization.module';
 
 @NgModule({
   declarations: [
-    LessonComponent,
     FiszkiComponent,
     FiszkaComponent,
     ControlButtonsComponent,
@@ -45,6 +44,7 @@ import { UserModule } from '../user/user.module';
     HttpClientModule,
     ShareModule,
     UserModule,
+    AuthorizationModule,
     StoreModule.forFeature('lessonStore', reducer),
     EffectsModule.forFeature([LessonEffects]),
   ],

@@ -24,9 +24,8 @@ const initialState: LessonState = {
 };
 
 export function reducer(state = initialState, action: LessonActions): LessonState {
-    console.log('StateChanged', action.type);
     switch (action.type) {
-        case LessonActionTypes.SetWords: return { ...state, words: [...state.words, ...action.words] };
+        case LessonActionTypes.SetWords: return handleSetWords(state, action.words);
         case LessonActionTypes.RemoveWord: return handleRemoveWord(state);
         case LessonActionTypes.SetLessonMode: return { ...state, lessonMode: action.payload.mode };
         case LessonActionTypes.SetLastAction: return { ...state, lastAnswer: action.payload.isCorrect };
@@ -37,6 +36,12 @@ export function reducer(state = initialState, action: LessonActions): LessonStat
         case LessonActionTypes.ResetStoreAction: return initialState;
         default: return state;
     }
+}
+
+export function handleSetWords(state: LessonState, words: WordRepeat[]): LessonState {
+    const result = { ...state, words: [...state.words, ...words] };
+    console.log(result.words);
+    return result;
 }
 
 export function handleRemoveWord(state: LessonState): LessonState {
