@@ -19,7 +19,8 @@ namespace Wordki.Queries.GetNextWords
             var param = new
             {
                 count = query.Count,
-                userId = query.UserId
+                userId = query.UserId,
+                offset = query.Offset
             };
             using (var connection = await dbConnection.Connect())
             {
@@ -37,6 +38,6 @@ FROM words w
 JOIN groups2 g ON w.groupId = g.id
 WHERE g.userId = @userId
 ORDER BY w.nextRepeat, w.id
-LIMIT @count";
+LIMIT @offset, @count";
     }
 }

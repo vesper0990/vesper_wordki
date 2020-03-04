@@ -20,12 +20,12 @@ namespace Wordki.Api.Words.GetNextWords
             this.httpContextProvider = httpContextProvider;
         }
 
-        [HttpGet("{count}")]
+        [HttpGet("{count}/{offset}")]
         [Authorize]
         public async Task<IActionResult> Get([FromRoute] GetNextWordsRequest request)
         {
             var userId = httpContextProvider.GetUserId();
-            var query = GetNextWordsQuery.Create(request.Count, userId);
+            var query = GetNextWordsQuery.Create(request.Count, request.Miss, userId);
             var result = await queryHandler.HandleAsync(query);
             return new JsonResult(result);
         }

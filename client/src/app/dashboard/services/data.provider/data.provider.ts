@@ -32,7 +32,7 @@ export class DataProvider extends DataProviderBase {
     }
 
     getNextRepeatWord(): Observable<RepeatWord> {
-        return this.httpClient.get<RepeatWordDto>(`${environment.apiUrl}/GetNextWords/1`).pipe(
+        return this.httpClient.get<RepeatWordDto>(`${environment.apiUrl}/GetNextWords/1/0`).pipe(
             map((dto: RepeatWordDto) => this.repeatWordMapper.map(dto)));
     }
 

@@ -21,12 +21,13 @@ export class LessonEffects {
         ),
         map(([payload, lessonMode]) => {
             this.wordProvider.sendWord(payload.wordId, payload.result).subscribe(
-                () => { },
+                () => { console.log('send word finished');},
                 (error: any) => console.error(error)
             );
             return lessonMode;
         }),
         switchMap((lessonMode: LessonModeType) => {
+            console.log('getwords');
             if (lessonMode === LessonModeType.Repeat) {
                 return [
                     new RemoveWordAction(),
@@ -42,7 +43,7 @@ export class LessonEffects {
 
     @Effect() getWordsEffect$ = this.actions$.pipe(
         ofType(LessonActionTypes.GetWords),
-        switchMap((action: GetWordsAction) => this.wordProvider.getNextWord(action.payload.count).pipe(
+        switchMap((action: GetWordsAction) => this.wordProvider.getNextWord(action.payload.count, 1).pipe(
             map((words: WordRepeat[]) => {
                 console.log('test');
                 return new SetWordsAction(words);

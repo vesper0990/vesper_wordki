@@ -3,5 +3,6 @@
     public class GetNextWordsRequest
     {
         public int Count { get; set; }
+        public int Miss { get; set; }
     }
 }
