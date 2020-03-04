@@ -6,20 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Sqls\1.sql" />
-    <None Remove="Sqls\1_rollback.sql" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Sqls\1.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Sqls\1_rollback.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Autofac" Version="5.1.2" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
