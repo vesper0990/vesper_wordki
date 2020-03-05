@@ -23,9 +23,10 @@ export class GroupProvider extends GroupProviderBase {
 
     updateGroup(group: Group): Observable<any> {
         const body = {
+            groupId: group.id,
             groupName: group.name,
-            langauge1: group.language1.value,
-            langauge2: group.language2.value
+            language1: group.language1.type,
+            language2: group.language2.type
         };
         return this.client.put(`${environment.apiUrl}/updateGroup`, body);
     }

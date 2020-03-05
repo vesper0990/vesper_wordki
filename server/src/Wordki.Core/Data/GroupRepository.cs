@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Wordki.Core.Domain;
@@ -216,6 +217,7 @@ WHERE g.id = @groupId
 
         public async Task<Group> GetGroup(long groupId)
         {
+            Console.WriteLine(groupId);
             GroupDto dto = null;
             var param = new
             {
@@ -225,6 +227,7 @@ WHERE g.id = @groupId
             {
                 await conneciton.GetAsync<GroupDto, WordDto, GroupDto>(getGroupSql, param, (group, word) =>
                 {
+                    Console.WriteLine("tes");
                     if (dto == null)
                     {
                         dto = group;
@@ -233,7 +236,7 @@ WHERE g.id = @groupId
                     {
                         dto.Words.Add(word);
                     }
-                    return dto;
+                    return group;
                 }, "WordId");
             }
 

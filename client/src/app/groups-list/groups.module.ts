@@ -12,6 +12,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { StoreModule, Store } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { GroupListEffects } from './store/effects';
+import { reducer } from './store/reducer';
 
 @NgModule({
   declarations: [
@@ -26,9 +30,12 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     ShareModule,
     InputTextModule,
     CardModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    StoreModule.forFeature('groupListStore', reducer),
+    EffectsModule.forFeature([GroupListEffects]),
   ],
   providers: [
+    Store,
     { provide: GroupProviderBase, useClass: environment.production ? GroupProvider : GroupProviderMock },
     GroupMapper
   ]

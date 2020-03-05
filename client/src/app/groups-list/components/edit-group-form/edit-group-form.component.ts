@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Group } from '../../models/group.model';
-import { LanguageType, LanguageTypeEnum } from 'src/app/share/models/language-type.mode';
-import { GroupProviderBase } from '../../services/group.provider/group.provider';
+import { LanguageType } from 'src/app/share/models/language-type.mode';
 
 @Component({
   selector: 'app-edit-group-form',
@@ -24,8 +23,7 @@ export class EditGroupFormComponent implements OnInit {
     language2: [''],
   });
 
-  constructor(private formBuilder: FormBuilder,
-    private groupProvider: GroupProviderBase) { }
+  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.groupForm.patchValue({
@@ -34,7 +32,7 @@ export class EditGroupFormComponent implements OnInit {
       language2: this.group.language2,
     });
 
-    this.groupForm.valueChanges.subscribe(x => console.log(x));
+    // this.groupForm.valueChanges.subscribe(x => console.log(x));
     this.languages = LanguageType.getAll();
   }
 
@@ -48,7 +46,6 @@ export class EditGroupFormComponent implements OnInit {
       0,
       0
     );
-    this.groupProvider.updateGroup(newGroup);
     this.submit.emit(newGroup);
   }
 }

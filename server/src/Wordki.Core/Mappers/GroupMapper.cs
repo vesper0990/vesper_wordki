@@ -15,6 +15,7 @@ namespace Wordki.Core.Mappers
 
         public Group Map(GroupDto dto)
         {
+            if (dto == null) return null;
             var language1 = (LanguageEnum)dto.GroupLanguage1;
             var language2 = (LanguageEnum)dto.GroupLanguage2;
 

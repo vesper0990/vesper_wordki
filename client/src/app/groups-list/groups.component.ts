@@ -3,6 +3,10 @@ import { GroupProviderBase } from './services/group.provider/group.provider';
 import { Group } from './models/group.model';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { GroupListState } from './store/reducer';
+import { Store } from '@ngrx/store';
+import { getGroupsList } from './store/selectors';
+import { GetGroupListAction, UpdateGroupInList } from './store/actions';
 
 @Component({
   templateUrl: './groups.component.html',
@@ -14,10 +18,12 @@ export class GroupsComponent implements OnInit {
   editingGroup: Group = null;
 
   constructor(private groupProvider: GroupProviderBase,
-    private router: Router) { }
+    private router: Router,
+    private groupsListState: Store<GroupListState>) { }
 
   ngOnInit() {
-    this.groups$ = this.groupProvider.getGroups();
+    this.groups$ = this.groupsListState.select(getGroupsList);
+    this.groupsListState.dispatch(new GetGroupListAction());
   }
 
   openGroup(groupId: number): void {
@@ -29,7 +35,7 @@ export class GroupsComponent implements OnInit {
   }
 
   onEditSubmit(group: Group): void {
+    this.groupsListState.dispatch(new UpdateGroupInList({ group: group }));
     this.editingGroup = null;
-    this.groups$ = this.groupProvider.getGroups();
   }
 }
