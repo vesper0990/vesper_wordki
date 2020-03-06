@@ -31,8 +31,6 @@ export class EditGroupFormComponent implements OnInit {
       language1: this.group.language1,
       language2: this.group.language2,
     });
-
-    // this.groupForm.valueChanges.subscribe(x => console.log(x));
     this.languages = LanguageType.getAll();
   }
 
