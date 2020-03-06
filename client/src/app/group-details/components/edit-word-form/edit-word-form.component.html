@@ -1,26 +1,26 @@
-<form [formGroup]="wordForm">
+<form [formGroup]="wordForm" (ngSubmit)="onSubmit()">
     <label>
         Język 1
-        <input type="text" formControlName="language1">
+        <input pInputText type="text" formControlName="language1">
     </label>
     <label>
         Język 2
-        <input type="text" formControlName="language2">
+        <input pInputText type="text" formControlName="language2">
     </label>
 
     <label>
         Przykład 1
-        <input type="text" formControlName="example1">
+        <input pInputText type="text" formControlName="example1">
     </label>
     <label>
         przykład 2
-        <input type="text" formControlName="example2">
+        <input pInputText type="text" formControlName="example2">
     </label>
 
     <label>
         ucz się
-        <input type="checkbox" formControlName="isVisible">
+        <!-- <p-checkbox formControlName="isVisible"></p-checkbox> -->
     </label>
 
-    <button type="submit">Zapisz</button>
+    <button type="submit" >Zapisz</button>
 </form>

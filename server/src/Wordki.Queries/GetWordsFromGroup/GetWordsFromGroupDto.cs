@@ -6,7 +6,7 @@ namespace Wordki.Queries.GetWordsFromGroup
     public class GetWordsFromGroupDto : IDto
     {
         public long Id { get; set; }
-        public string Langauge1 { get; set; }
+        public string Language1 { get; set; }
         public string Language2 { get; set; }
         public int Drawer { get; set; }
         public DateTime CreationDate { get; set; }

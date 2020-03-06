@@ -38,17 +38,17 @@ export function reducer(state = initialState, action: LessonActions): LessonStat
     }
 }
 
-export function handleSetWords(state: LessonState, words: WordRepeat[]): LessonState {
+function handleSetWords(state: LessonState, words: WordRepeat[]): LessonState {
     const result = { ...state, words: [...state.words, ...words] };
     console.log(result.words);
     return result;
 }
 
-export function handleRemoveWord(state: LessonState): LessonState {
+function handleRemoveWord(state: LessonState): LessonState {
     return { ...state, words: state.words.slice(1, state.words.length) };
 }
 
-export function handleStartLesson(state: LessonState): LessonState {
+function handleStartLesson(state: LessonState): LessonState {
     const result = new LessonResult();
     result.startTime = new Date();
     return {
@@ -58,7 +58,7 @@ export function handleStartLesson(state: LessonState): LessonState {
     };
 }
 
-export function handleAnswer(state: LessonState, answer: number): LessonState {
+function handleAnswer(state: LessonState, answer: number): LessonState {
     const result = state.result;
     if (answer > 0) {
         result.correct++;
@@ -74,7 +74,7 @@ export function handleAnswer(state: LessonState, answer: number): LessonState {
     };
 }
 
-export function handleFinishLesson(state: LessonState): LessonState {
+function handleFinishLesson(state: LessonState): LessonState {
     const result = state.result;
     const time = new Date().getTime() - result.startTime.getTime();
     result.wholeTime = time;

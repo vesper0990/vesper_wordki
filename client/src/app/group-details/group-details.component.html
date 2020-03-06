@@ -1,10 +1,27 @@
-<ng-container *ngIf="groupDetails$ | async as groupDetails; else loading">
-    {{ groupDetails.name }}
-</ng-container>
-<ng-container *ngIf="words$ | async as words; else loading">
-    <app-word-row *ngFor="let item of words" [word]="item" (editWord)="onEditWord($event)"></app-word-row>
-</ng-container>
+<app-edit-word-form *ngIf="editingWord" [word]="editingWord" (submit)="onEditSubmit($event)"></app-edit-word-form>
+<div>
+    Grupa:
+    <ng-container *ngIf="isGroupDetailsLoading$ | async; else groupDetails">
+        ładowanie
+        <!-- <app-progress-horizontal></app-progress-horizontal> -->
+    </ng-container>
+</div>
+<div>
+    Słowa:
+    <ng-container *ngIf="isWordsLoading$ | async; else words">
+        ładowanie
+        <!-- <app-progress-horizontal></app-progress-horizontal> -->
+    </ng-container>
+</div>
 
-<ng-template #loading>
-    loading
+<ng-template #groupDetails>
+    <ng-container *ngIf="groupDetails$ | async as groupDetails">
+        {{ groupDetails.name }}
+    </ng-container>
+</ng-template>
+
+<ng-template #words>
+    <ng-container *ngIf="words$ | async as words">
+        <app-word-row *ngFor="let item of words" [word]="item" (editWord)="onEditWord($event)"></app-word-row>
+    </ng-container>
 </ng-template>

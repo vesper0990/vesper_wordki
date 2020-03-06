@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { GroupListState } from './store/reducer';
 import { Store } from '@ngrx/store';
-import { getGroupsList } from './store/selectors';
+import { getGroupsList, getIsLoading } from './store/selectors';
 import { GetGroupListAction, UpdateGroupInList } from './store/actions';
 
 @Component({
@@ -15,6 +15,7 @@ import { GetGroupListAction, UpdateGroupInList } from './store/actions';
 export class GroupsComponent implements OnInit {
 
   groups$: Observable<Group[]>;
+  isLoading$: Observable<boolean>;
   editingGroup: Group = null;
 
   constructor(private groupProvider: GroupProviderBase,
@@ -23,6 +24,7 @@ export class GroupsComponent implements OnInit {
 
   ngOnInit() {
     this.groups$ = this.groupsListState.select(getGroupsList);
+    this.isLoading$ = this.groupsListState.select(getIsLoading);
     this.groupsListState.dispatch(new GetGroupListAction());
   }
 

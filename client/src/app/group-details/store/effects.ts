@@ -1,10 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Effect, ofType, Actions } from '@ngrx/effects';
-import { GroupDetailsTypes, GetGroupDetailsAction, SetGroupDetailsAction, GetWordsAction } from './actions';
+import {
+    GroupDetailsTypes,
+    GetGroupDetailsAction,
+    SetGroupDetailsAction,
+    GetWordsAction, SetWordsAction,
+    UpdateWordAction,
+    UpdateWordSuccessAction
+} from './actions';
 import { GroupDetailsProviderBase } from '../services/group-details.provider/group-details.provider';
-import { mergeMap, map, catchError } from 'rxjs/operators';
+import { mergeMap, map, catchError, switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { GroupDetails } from '../models/group-details.model';
+import { Word } from '../models/word.model';
 
 @Injectable()
 export class GroupDetailsEffects {
@@ -18,9 +26,16 @@ export class GroupDetailsEffects {
 
     @Effect() getWordsEffect = this.actions$.pipe(
         ofType(GroupDetailsTypes.GetWords),
-        mergeMap((action: GetWordsAction) => this.groupDetailsProvider.getGroupDetails(action.payload.groupId)),
-        map((groupDetails: GroupDetails) => new SetGroupDetailsAction({ groupDetails: groupDetails })),
+        mergeMap((action: GetWordsAction) => this.groupDetailsProvider.getWords(action.payload.groupId)),
+        map((words: Word[]) => new SetWordsAction({ words: words })),
         catchError(error => this.handleError(error))
+    );
+
+    @Effect() updateWordEffect = this.actions$.pipe(
+        ofType(GroupDetailsTypes.UpdateWord),
+        switchMap((action: UpdateWordAction) => this.groupDetailsProvider.updateWord(action.payload.word).pipe(
+            map(() => new UpdateWordSuccessAction({ word: action.payload.word }))
+        ))
     );
 
     constructor(private actions$: Actions,

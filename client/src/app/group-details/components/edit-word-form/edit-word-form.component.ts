@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Word } from '../../models/word.model';
 
@@ -10,6 +10,7 @@ import { Word } from '../../models/word.model';
 export class EditWordFormComponent implements OnInit {
 
   @Input() word: Word;
+  @Output() submit: EventEmitter<Word> = new EventEmitter();
 
   wordForm = this.formBuilder.group({
     language1: (''),
@@ -31,4 +32,13 @@ export class EditWordFormComponent implements OnInit {
     });
   }
 
+  onSubmit(): void {
+    const newWord = new Word(
+      this.word.id,
+      this.wordForm.get('language1').value,
+      this.wordForm.get('language2').value,
+      this.word.drawer
+    );
+    this.submit.emit(newWord);
+  }
 }

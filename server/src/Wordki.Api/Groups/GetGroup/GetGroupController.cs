@@ -22,6 +22,7 @@ namespace Wordki.Api.Groups.GetGroup
         {
             var query = GetGroupQuery.Create(request.GroupId);
             var result = await queryHandler.HandleAsync(query);
+            await Task.Delay(2000);
             return new JsonResult(result);
         }
     }

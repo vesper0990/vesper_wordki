@@ -8,6 +8,9 @@ export enum GroupDetailsTypes {
 
     GetWords = '[GROUP_DETAILS_STATE] GET_WORDS',
     SetWords = '[GROUP_DETAILS_STATE] SET_WORDS',
+
+    UpdateWord = '[GROUP_DETAILS_STATE] UPDATE_WORD',
+    UpdateWordSuccess = '[GROUP_DETAILS_STATE] UPDATE_WORD_SUCCESS'
 }
 
 export class GetGroupDetailsAction implements Action {
@@ -30,7 +33,19 @@ export class SetWordsAction implements Action {
     constructor(public payload: { words: Word[] }) { }
 }
 
+export class UpdateWordAction implements Action {
+    readonly type = GroupDetailsTypes.UpdateWord;
+    constructor(public payload: { word: Word }) { }
+}
+
+export class UpdateWordSuccessAction implements Action {
+    readonly type = GroupDetailsTypes.UpdateWordSuccess;
+    constructor(public payload: { word: Word }) { }
+}
+
 export type GroupDetailsActions = GetGroupDetailsAction |
     SetGroupDetailsAction |
     GetWordsAction |
-    SetWordsAction;
+    SetWordsAction |
+    UpdateWordAction |
+    UpdateWordSuccessAction;

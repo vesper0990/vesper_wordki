@@ -7,11 +7,11 @@ using Wordki.Utils.Queries;
 namespace Wordki.Api.Words.GetWordsFromGroup
 {
     [Route("[controller]")]
-    public class GetWordsFromGroup : ControllerBase
+    public class GetWordsFromGroupController : ControllerBase
     {
         private readonly IQueryManyHandler<GetWordsFromGroupQuery, GetWordsFromGroupDto> queryHandler;
 
-        public GetWordsFromGroup(IQueryManyHandler<GetWordsFromGroupQuery, GetWordsFromGroupDto> queryHandler)
+        public GetWordsFromGroupController(IQueryManyHandler<GetWordsFromGroupQuery, GetWordsFromGroupDto> queryHandler)
         {
             this.queryHandler = queryHandler;
         }

@@ -12,6 +12,13 @@ import {
 import { environment } from 'src/environments/environment';
 import { EditWordFormComponent } from './components/edit-word-form/edit-word-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { GroupDetailsEffects } from './store/effects';
+import { reducer } from './store/reducre';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { WordMapper } from './services/word-mapper/word-mapper';
+import { CheckboxModule } from 'primeng/checkbox';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
   declarations: [
@@ -22,11 +29,16 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    GroupsDetailsRoutingModule
+    GroupsDetailsRoutingModule,
+    CheckboxModule,
+    InputTextModule,
+    StoreModule.forFeature('groupDetailsStore', reducer),
+    EffectsModule.forFeature([GroupDetailsEffects]),
   ],
   providers: [
     { provide: GroupDetailsProviderBase, useClass: environment.production ? GroupDetailsProvider : GroupDetailsProviderMock },
-    GroupDetailsMapper
+    GroupDetailsMapper,
+    WordMapper
   ]
 })
 export class GroupDetailsModule { }
