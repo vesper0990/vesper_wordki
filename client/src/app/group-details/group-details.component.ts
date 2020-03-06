@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { GroupDetailsProviderBase } from './services/group-details.provider/group-details.provider';
 import { GroupDetails } from './models/group-details.model';
 import { Word } from './models/word.model';
+import { filter } from 'rxjs/operators';
 
 @Component({
   templateUrl: './group-details.component.html',
@@ -12,9 +13,11 @@ import { Word } from './models/word.model';
 })
 export class GroupDetailsComponent implements OnInit, OnDestroy {
 
+  private groupId: number;
   private routeParamSub: Subscription;
 
-  groupDetails: GroupDetails;
+  groupDetails$: Observable<GroupDetails>;
+  words$: Observable<Word[]>;
   editingWord: Word = null;
 
   constructor(private route: ActivatedRoute,
@@ -22,7 +25,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     private groupDetailsProvider: GroupDetailsProviderBase) { }
 
   ngOnInit(): void {
-    this.routeParamSub = this.route.params.subscribe((params: Params) => this.handleRouteParam(params));
+    this.route.params.pipe(filter((params: Params) => params['id'] != null)).subscribe((params: Params) => this.handleRouteParam(params));
   }
 
   ngOnDestroy(): void {
@@ -30,14 +33,13 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   }
 
   startLesson(): void {
-    this.router.navigate(['lesson/fiszki', this.groupDetails.id]);
+    this.router.navigate(['lesson/fiszki', this.groupId]);
   }
 
   private handleRouteParam(value: Params): void {
-    const id = +value['id'];
-    this.groupDetailsProvider.getGroupDetails(id).subscribe((groupDetails: GroupDetails) => {
-      this.groupDetails = groupDetails;
-    });
+    this.groupId = +value['id'];
+    this.groupDetails$ = this.groupDetailsProvider.getGroupDetails(this.groupId);
+    this.words$ = this.groupDetailsProvider.getWords(this.groupId);
   }
 
   onEditWord(word: Word): void {

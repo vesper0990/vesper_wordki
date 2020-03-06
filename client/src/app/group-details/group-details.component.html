@@ -1,7 +1,10 @@
-<ng-container *ngIf="groupDetails; else loading">
-    {{ groupDetails?.name }}
-    <app-word-row *ngFor="let item of groupDetails.words" [word]="item" (editWord)="onEditWord($event)"></app-word-row>
+<ng-container *ngIf="groupDetails$ | async as groupDetails; else loading">
+    {{ groupDetails.name }}
 </ng-container>
+<ng-container *ngIf="words$ | async as words; else loading">
+    <app-word-row *ngFor="let item of words" [word]="item" (editWord)="onEditWord($event)"></app-word-row>
+</ng-container>
+
 <ng-template #loading>
     loading
 </ng-template>
