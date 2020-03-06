@@ -3,4 +3,5 @@ export class WordDto {
     language1: string;
     language2: string;
     drawer: number;
+    isVisible: boolean;
 }

@@ -19,7 +19,7 @@
 
     <label>
         ucz się
-        <!-- <p-checkbox formControlName="isVisible"></p-checkbox> -->
+        <p-checkbox [formControl]="wordForm.controls['isVisible']" binary="true"></p-checkbox>
     </label>
 
     <button type="submit" >Zapisz</button>

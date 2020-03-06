@@ -12,10 +12,12 @@ export class Word {
     constructor(id: number,
         language1: string,
         language2: string,
-        drawer: number) {
+        drawer: number,
+        isVisible: boolean) {
         this.id = id;
         this.language1 = language1;
         this.language2 = language2;
         this.drawer = drawer;
+        this.isVisible = isVisible;
     }
 }

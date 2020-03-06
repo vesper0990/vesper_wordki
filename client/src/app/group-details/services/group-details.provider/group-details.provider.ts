@@ -75,7 +75,8 @@ export class GroupDetailsProviderMock extends GroupDetailsProviderBase {
                 id: 1,
                 language1: `word ${i}`,
                 language2: `słowo ${i}`,
-                drawer: 5 % i
+                drawer: 5 % i,
+                isVisible: true
             });
         }
         return of<GroupDetailsDto>(groupDetailsDto).pipe(map((dto: GroupDetailsDto) => this.groupMapper.map(dto)), delay(1000));
@@ -89,7 +90,8 @@ export class GroupDetailsProviderMock extends GroupDetailsProviderBase {
                 id: i,
                 language1: `word ${i}`,
                 language2: `słowo ${i}`,
-                drawer: 5 % i
+                drawer: 5 % i,
+                isVisible: true
             });
         }
         return of(arr).pipe(
