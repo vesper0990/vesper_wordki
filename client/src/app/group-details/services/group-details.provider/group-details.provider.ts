@@ -14,12 +14,12 @@ import { WordDto } from '../../models/word.dto';
 export abstract class GroupDetailsProviderBase {
     abstract getGroupDetails(groupId: number): Observable<GroupDetails>;
     abstract getWords(groupId: number): Observable<Word[]>;
-    abstract updateWord(word: Word): Observable<any>;
+    abstract updateWord(word: Word, groupId: number): Observable<any>;
+    abstract addWord(word: Word, groupId: number): Observable<any>;
 }
 
 @Injectable()
 export class GroupDetailsProvider extends GroupDetailsProviderBase {
-
 
     constructor(private http: HttpClient,
         private groupMapper: GroupDetailsMapper,
@@ -42,14 +42,27 @@ export class GroupDetailsProvider extends GroupDetailsProviderBase {
         );
     }
 
-    updateWord(word: Word): Observable<any> {
+    updateWord(word: Word, groupId: number): Observable<any> {
         const body = {
             wordId: word.id,
             language1: word.language1,
             language2: word.language2,
-            isVisible: word.isVisible
+            isVisible: word.isVisible,
+            groupId: groupId
         };
         return this.http.put(`${environment.apiUrl}/updateWord`, body);
+    }
+
+    addWord(word: Word, groupId: number): Observable<any> {
+        console.log('test');
+        const body = {
+            wordId: word.id,
+            language1: word.language1,
+            language2: word.language2,
+            isVisible: word.isVisible,
+            groupId: groupId
+        };
+        return this.http.post(`${environment.apiUrl}/addWord`, body);
     }
 }
 
@@ -72,7 +85,7 @@ export class GroupDetailsProviderMock extends GroupDetailsProviderBase {
         };
         for (let i = 0; i < 10; i++) {
             groupDetailsDto.words.push({
-                id: 1,
+                wordId: 1,
                 language1: `word ${i}`,
                 language2: `słowo ${i}`,
                 drawer: 5 % i,
@@ -104,7 +117,11 @@ export class GroupDetailsProviderMock extends GroupDetailsProviderBase {
         );
     }
 
-    updateWord(word: Word): Observable<any> {
+    updateWord(word: Word, groupId: number): Observable<any> {
+        return of({});
+    }
+
+    addWord(word: Word, groupId: number): Observable<any> {
         return of({});
     }
 }

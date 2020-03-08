@@ -7,7 +7,7 @@ import { filter } from 'rxjs/operators';
 import { GroupDetailsState } from './store/reducre';
 import { Store } from '@ngrx/store';
 import { getGroupDetails, getWords, getIsGroupDetailsLoading, getIsWordsLoading } from './store/selectors';
-import { GetGroupDetailsAction, GetWordsAction, UpdateWordAction } from './store/actions';
+import { GetGroupDetailsAction, GetWordsAction, UpdateWordAction, AddWordAction } from './store/actions';
 
 @Component({
   templateUrl: './group-details.component.html',
@@ -18,6 +18,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
 
   private groupId: number;
   private routeParamSub: Subscription;
+  private editWordOnSubmit: (word: Word) => void;
 
   groupDetails$: Observable<GroupDetails>;
   isGroupDetailsLoading$: Observable<boolean>;
@@ -55,10 +56,28 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
 
   onEditWord(word: Word): void {
     this.editingWord = word;
+    this.editWordOnSubmit = this.onEditSubmit;
+  }
+
+  onAddWord(): void {
+    this.editingWord = new Word(0, '', '', 0, true);
+    this.editWordOnSubmit = this.onAddSubmit;
   }
 
   onEditSubmit(word: Word): void {
-    this.groupDetailsStore.dispatch(new UpdateWordAction({word: word}));
+    this.groupDetailsStore.dispatch(new UpdateWordAction({ word: word, groupId: this.groupId }));
+  }
+
+  onAddSubmit(word: Word): void {
+    this.groupDetailsStore.dispatch(new AddWordAction({ word: word, groupId: this.groupId }));
+  }
+
+  onSubmit(word: Word): void {
+    this.editWordOnSubmit(word);
+    this.editingWord = null;
+  }
+
+  onCancel(): void {
     this.editingWord = null;
   }
 

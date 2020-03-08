@@ -10,7 +10,13 @@ import { Word } from '../../models/word.model';
 export class EditWordFormComponent implements OnInit {
 
   @Input() word: Word;
+  // @Input() mode: 'edit' | 'add';
+  @Input()
+  set mode(mode: 'edit' | 'add') {
+  }
   @Output() submit: EventEmitter<Word> = new EventEmitter();
+  @Output() cancel: EventEmitter<any> = new EventEmitter();
+
 
   wordForm = this.formBuilder.group({
     language1: (''),
@@ -33,12 +39,19 @@ export class EditWordFormComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log('sumit');
     const newWord = new Word(
       this.word.id,
       this.wordForm.get('language1').value,
       this.wordForm.get('language2').value,
-      this.word.drawer
+      this.word.drawer,
+      this.wordForm.get('isVisible').value
     );
     this.submit.emit(newWord);
+  }
+
+  onCancel(): void {
+    console.log('cancel');
+    this.cancel.emit({});
   }
 }

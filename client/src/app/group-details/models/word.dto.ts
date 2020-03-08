@@ -1,5 +1,5 @@
 export class WordDto {
-    id: number;
+    wordId: number;
     language1: string;
     language2: string;
     drawer: number;

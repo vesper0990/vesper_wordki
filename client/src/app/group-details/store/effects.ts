@@ -6,7 +6,9 @@ import {
     SetGroupDetailsAction,
     GetWordsAction, SetWordsAction,
     UpdateWordAction,
-    UpdateWordSuccessAction
+    UpdateWordSuccessAction,
+    AddWordAction,
+    AddWordSuccessAction
 } from './actions';
 import { GroupDetailsProviderBase } from '../services/group-details.provider/group-details.provider';
 import { mergeMap, map, catchError, switchMap } from 'rxjs/operators';
@@ -33,8 +35,15 @@ export class GroupDetailsEffects {
 
     @Effect() updateWordEffect = this.actions$.pipe(
         ofType(GroupDetailsTypes.UpdateWord),
-        switchMap((action: UpdateWordAction) => this.groupDetailsProvider.updateWord(action.payload.word).pipe(
+        switchMap((action: UpdateWordAction) => this.groupDetailsProvider.updateWord(action.payload.word, action.payload.groupId).pipe(
             map(() => new UpdateWordSuccessAction({ word: action.payload.word }))
+        ))
+    );
+
+    @Effect() addWordEffect = this.actions$.pipe(
+        ofType(GroupDetailsTypes.AddWord),
+        switchMap((action: AddWordAction) => this.groupDetailsProvider.addWord(action.payload.word, action.payload.groupId).pipe(
+            map(() => new AddWordSuccessAction({ word: action.payload.word }))
         ))
     );
 

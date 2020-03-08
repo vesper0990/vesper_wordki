@@ -2,7 +2,8 @@ import {
     GroupDetailsActions,
     GroupDetailsTypes,
     SetGroupDetailsAction,
-    UpdateWordSuccessAction
+    UpdateWordSuccessAction,
+    AddWordSuccessAction
 } from './actions';
 import { GroupDetails } from '../models/group-details.model';
 import { Word } from '../models/word.model';
@@ -29,6 +30,7 @@ export function reducer(state = initialState, action: GroupDetailsActions): Grou
         case GroupDetailsTypes.GetWords: return { ...state, isWordsLoading: true };
         case GroupDetailsTypes.SetWords: return { ...state, words: action.payload.words, isWordsLoading: false };
         case GroupDetailsTypes.UpdateWordSuccess: return handleUpdateWordSuccess(state, action);
+        case GroupDetailsTypes.AddWordSuccess: return handleAddWordSuccess(state, action);
         default: return state;
     }
 }
@@ -41,4 +43,10 @@ function handleUpdateWordSuccess(state: GroupDetailsState, action: UpdateWordSuc
     const arr = [];
     state.words.forEach((item: Word) => arr.push(item.id === action.payload.word.id ? action.payload.word : item));
     return { ...state, words: arr };
+}
+
+function handleAddWordSuccess(state: GroupDetailsState, action: AddWordSuccessAction): GroupDetailsState {
+    const words = state.words;
+    words.push(action.payload.word);
+    return { ...state, words: words };
 }

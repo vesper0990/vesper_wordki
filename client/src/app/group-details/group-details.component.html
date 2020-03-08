@@ -1,4 +1,5 @@
-<app-edit-word-form *ngIf="editingWord" [word]="editingWord" (submit)="onEditSubmit($event)"></app-edit-word-form>
+<app-edit-word-form *ngIf="editingWord" [word]="editingWord" [mode]="edit" (submit)="onSubmit($event)" (cancel)="onCancel()"></app-edit-word-form>
+<button (click)="onAddWord()">Dodaj</button>
 <div>
     Grupa:
     <ng-container *ngIf="isGroupDetailsLoading$ | async; else groupDetails">
