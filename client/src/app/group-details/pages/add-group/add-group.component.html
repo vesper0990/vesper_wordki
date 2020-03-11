@@ -2,14 +2,14 @@
     <label for="name">
         Nazwa grupy
         <input pInputText type="text" formControlName="name">
-        <!-- <div *ngIf="name.invalid && (name.dirty || name.touched)">
+        <div *ngIf="name.invalid && (name.dirty || name.touched)">
             <div *ngIf="name.errors.required">
                 Name is required.
             </div>
             <div *ngIf="name.errors.minlength">
                 Name must be at least 4 characters long.
             </div>
-        </div> -->
+        </div>
     </label>
     <label for="language1">
         Język 1
@@ -25,19 +25,33 @@
         <div [formGroupName]="i">
             <label for="language1">
                 Język 1
-                <input formControlName="language1">
+                <input pInputText formControlName="language1">
+                <ng-container *ngIf="word.get('language1') as language1">
+                    <div *ngIf="language1.invalid && (language1.dirty || language1.touched)">
+                        <div *ngIf="language1.errors.required">
+                            Musisz podać słowo
+                        </div>
+                    </div>
+                </ng-container>
             </label>
             <label for="language2">
                 Język 2
-                <input formControlName="language2">
+                <input pInputText formControlName="language2">
+                <ng-container *ngIf="word.get('language2') as language2">
+                    <div *ngIf="language2.invalid && (language2.dirty || language2.touched)">
+                        <div *ngIf="language2.errors.required">
+                            Musisz podać słowo
+                        </div>
+                    </div>
+                </ng-container>
             </label>
             <label for="example1">
                 Przykład 1
-                <input formControlName="example1">
+                <input pInputText formControlName="example1">
             </label>
             <label for="example2">
                 Przykład 2
-                <input formControlName="example2">
+                <input pInputText formControlName="example2">
             </label>
             <label for="comment">
                 Komentarz

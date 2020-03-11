@@ -13,8 +13,6 @@ export class EditGroupFormComponent implements OnInit {
   @Input() group: Group;
   @Output() submit: EventEmitter<Group> = new EventEmitter();
 
-  languages: LanguageType[];
-
   name = this.formBuilder.control('', [Validators.required, Validators.minLength(4)]);
 
   groupForm = this.formBuilder.group({
@@ -31,7 +29,6 @@ export class EditGroupFormComponent implements OnInit {
       language1: this.group.language1,
       language2: this.group.language2,
     });
-    this.languages = LanguageType.getAll();
   }
 
   onSubmit(): void {

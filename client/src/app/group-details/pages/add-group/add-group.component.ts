@@ -37,8 +37,8 @@ export class AddGroupComponent implements OnInit {
 
   private createItem(): FormGroup {
     return this.formBuilder.group({
-      language1: [''],
-      language2: [''],
+      language1: ['', [Validators.required]],
+      language2: ['', [Validators.required]],
       example1: [''],
       example2: [''],
       comment: [''],
@@ -60,6 +60,6 @@ export class AddGroupComponent implements OnInit {
       language2: this.groupForm.get('language2').value.type,
       words: <AddedWord[]>this.words.value,
     };
-    this.groupDetailsStore.dispatch(new AddGroupAction({group: group}));
+    this.groupDetailsStore.dispatch(new AddGroupAction({ group: group }));
   }
 }
