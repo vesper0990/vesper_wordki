@@ -8,7 +8,8 @@ import {
     UpdateWordAction,
     UpdateWordSuccessAction,
     AddWordAction,
-    AddWordSuccessAction
+    RemoveWordAction,
+    RemoveWordSuccessAction
 } from './actions';
 import { GroupDetailsProviderBase } from '../services/group-details.provider/group-details.provider';
 import { mergeMap, map, catchError, switchMap } from 'rxjs/operators';
@@ -43,7 +44,14 @@ export class GroupDetailsEffects {
     @Effect() addWordEffect = this.actions$.pipe(
         ofType(GroupDetailsTypes.AddWord),
         switchMap((action: AddWordAction) => this.groupDetailsProvider.addWord(action.payload.word, action.payload.groupId).pipe(
-            map(() => new AddWordSuccessAction({ word: action.payload.word }))
+            map(() => new GetWordsAction({ groupId: action.payload.groupId }))
+        ))
+    );
+
+    @Effect() removeWordEffect = this.actions$.pipe(
+        ofType(GroupDetailsTypes.RemoveWord),
+        switchMap((action: RemoveWordAction) => this.groupDetailsProvider.removeWord(action.payload.word).pipe(
+            map(() => new RemoveWordSuccessAction({ word: action.payload.word }))
         ))
     );
 

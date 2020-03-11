@@ -47,12 +47,14 @@ namespace Wordki.Core
         public bool NeedUpdate { get; private set; }
 
         public static Word Restore(long id, long groupId, string language1, string language2, string exapmle1, string exapmle2,
-            string comment, Drawer drawer, bool isVisible, DateTime creationDate, DateTime nextRepeat)
+            string comment, Drawer drawer, bool isVisible, DateTime creationDate, DateTime nextRepeat, IEnumerable<Repeat> repeats)
         {
-            return new Word(id, groupId, language1, language2, exapmle1, exapmle2, comment, drawer, isVisible, creationDate)
+            var word = new Word(id, groupId, language1, language2, exapmle1, exapmle2, comment, drawer, isVisible, creationDate)
             {
-                NextRepeat = nextRepeat
+                NextRepeat = nextRepeat,
             };
+            word.Repeats.AddRange(repeats);
+            return word;
         }
 
         internal void Swap()
@@ -88,6 +90,11 @@ namespace Wordki.Core
             Exapmle2 = example2;
             Comment = comment;
             IsVisible = isVisible;
+        }
+
+        public void Remove(){
+            GroupId = 0;
+            NeedUpdate = true;
         }
 
         public class WordFactory : IWordFactory

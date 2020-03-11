@@ -3,6 +3,7 @@ using Wordki.Commands.AddRepeat;
 using Wordki.Commands.AddWord;
 using Wordki.Commands.Login;
 using Wordki.Commands.Register;
+using Wordki.Commands.RemoveWord;
 using Wordki.Commands.UpdateGroup;
 using Wordki.Commands.UpdateWord;
 
@@ -17,6 +18,7 @@ namespace Wordki.Commands
             builder.RegisterType<AddWordCommandHandler>().AsImplementedInterfaces();
             builder.RegisterType<AddRepeatCommandHandler>().AsImplementedInterfaces();
             builder.RegisterType<UpdateWordCommandHandler>().AsImplementedInterfaces();
+            builder.RegisterType<RemoveWordCommandHandler>().AsImplementedInterfaces();
             builder.RegisterType<UpdateGroupCommandHandler>().AsImplementedInterfaces();
         }
     }

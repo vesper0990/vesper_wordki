@@ -37,6 +37,7 @@ w.drawer        as Drawer
 FROM words w
 JOIN groups2 g ON w.groupId = g.id
 WHERE g.userId = @userId
+AND w.isVisible = 1
 ORDER BY w.nextRepeat, w.id
 LIMIT @offset, @count";
     }

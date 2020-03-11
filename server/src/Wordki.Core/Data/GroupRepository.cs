@@ -103,6 +103,10 @@ id = @id";
             {
                 await InsertWordAsync(connection, word);
             }
+            else if (word.GroupId == 0)
+            {
+                await RemoveWordAsync(connection, word);
+            }
             else
             {
                 await UpdateWordAsync(connection, word);
@@ -138,6 +142,17 @@ SELECT LAST_INSERT_ID();";
             }
         }
 
+private readonly string removeWordSql = $@"
+DELETE FROM words
+where id = @wordId";
+
+        private async Task RemoveWordAsync(IDbConnectionWrapper connection, Word word){
+            var param = new {
+                wordId = word.Id
+            };
+            await connection.Execute(removeWordSql, param);
+        }
+
         private readonly string insertRepeatSql = $@"
 INSERT INTO repeats (wordId, result, date)
 VALUES (@wordId, @result, @date)";
@@ -153,10 +168,9 @@ VALUES (@wordId, @result, @date)";
             await connection.Execute(insertRepeatSql, param);
         }
 
-
-
         private readonly string updateWordSql = $@"
 UPDATE words SET
+groupId = @groupId,
 language1 = @language1,
 language2 = @language2,
 example1 = @example1,
@@ -172,6 +186,7 @@ id = @id";
         {
             var param = new
             {
+                groupId = word.GroupId,
                 language1 = word.Language1,
                 language2 = word.Language2,
                 example1 = word.Exapmle1,
@@ -227,7 +242,6 @@ WHERE g.id = @groupId
             {
                 await conneciton.GetAsync<GroupDto, WordDto, GroupDto>(getGroupSql, param, (group, word) =>
                 {
-                    Console.WriteLine("tes");
                     if (dto == null)
                     {
                         dto = group;

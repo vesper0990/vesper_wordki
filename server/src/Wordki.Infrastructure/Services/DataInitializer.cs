@@ -74,7 +74,8 @@ namespace Wordki.Infrastructure.Services
                             Drawer.Restore(random.Next(0, 4)),
                             random.Next(0, 9) < 2,
                             creationDate,
-                            new DateTime().AddDays(random.Next(0, 5)));
+                            new DateTime().AddDays(random.Next(0, 5)),
+                            new List<Repeat>());
                         for (var l = 0; l < k; l++)
                         {
                             var repeat = Repeat.Restore(0, 0, DateTime.Now.AddDays(random.Next(0, 5) - 10), 1);

@@ -56,6 +56,12 @@ namespace Wordki.Core
             this.words.AddRange(words);
         }
 
+        public void RemoveWord(long wordId){
+            var word = Words.Single(w => w.Id == wordId);
+            word.Remove();
+            NeedUpdate = true;
+        }
+
         public void ChangeName(string newName)
         {
             Name = newName;

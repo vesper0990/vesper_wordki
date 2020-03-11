@@ -18,6 +18,11 @@ namespace Wordki.Core.Mappers
             if (dto == null) return null;
             var language1 = (LanguageEnum)dto.GroupLanguage1;
             var language2 = (LanguageEnum)dto.GroupLanguage2;
+            var words = new List<Word>();
+            foreach (var word in dto.Words)
+            {
+                words.Add(wordMapper.Map(word));
+            }
 
             var group = Group.Restore(
                 dto.GroupId,
@@ -26,11 +31,7 @@ namespace Wordki.Core.Mappers
                 language1,
                 language2,
                 dto.GroupCreationDate,
-                new List<Word>());
-            foreach (var word in dto.Words)
-            {
-                group.AddWord(wordMapper.Map(word));
-            }
+                words);
             return group;
         }
     }

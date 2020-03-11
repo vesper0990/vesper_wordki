@@ -13,7 +13,7 @@ CREATE TABLE `groups2` (
     `language1`         INT NOT NULL,
     `language2`         INT NOT NULL,
     `creationDate`      DATETIME NOT NULL,
-    FOREIGN KEY (userId) REFERENCES users(id)
+    FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE `words` (
@@ -28,7 +28,7 @@ CREATE TABLE `words` (
     `isVisible`         TINYINT(1) NOT NULL,
     `nextRepeat`        DATETIME NOT NULL,
     `creationDate`      DATETIME NOT NULL,
-    FOREIGN KEY (groupId) REFERENCES `groups2`(id)
+    FOREIGN KEY (groupId) REFERENCES `groups2`(id) ON DELETE CASCADE
 );
 
 CREATE TABLE `repeats` (
@@ -36,5 +36,5 @@ CREATE TABLE `repeats` (
     `wordId`            BIGINT NOT NULL,
     `result`            TINYINT(1) NOT NULL,
     `date`              DATETIME,
-    FOREIGN KEY (wordId) REFERENCES words(id)
+    FOREIGN KEY (wordId) REFERENCES words(id) ON DELETE CASCADE
 );

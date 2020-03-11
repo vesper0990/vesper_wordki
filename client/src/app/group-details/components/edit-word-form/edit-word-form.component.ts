@@ -16,6 +16,7 @@ export class EditWordFormComponent implements OnInit {
   }
   @Output() submit: EventEmitter<Word> = new EventEmitter();
   @Output() cancel: EventEmitter<any> = new EventEmitter();
+  @Output() remove: EventEmitter<any> = new EventEmitter();
 
 
   wordForm = this.formBuilder.group({
@@ -53,5 +54,9 @@ export class EditWordFormComponent implements OnInit {
   onCancel(): void {
     console.log('cancel');
     this.cancel.emit({});
+  }
+
+  onRemove(): void {
+    this.remove.emit(this.word);
   }
 }

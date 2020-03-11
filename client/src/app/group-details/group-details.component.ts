@@ -7,7 +7,7 @@ import { filter } from 'rxjs/operators';
 import { GroupDetailsState } from './store/reducre';
 import { Store } from '@ngrx/store';
 import { getGroupDetails, getWords, getIsGroupDetailsLoading, getIsWordsLoading } from './store/selectors';
-import { GetGroupDetailsAction, GetWordsAction, UpdateWordAction, AddWordAction } from './store/actions';
+import { GetGroupDetailsAction, GetWordsAction, UpdateWordAction, AddWordAction, RemoveWordAction } from './store/actions';
 
 @Component({
   templateUrl: './group-details.component.html',
@@ -79,6 +79,11 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
 
   onCancel(): void {
     this.editingWord = null;
+  }
+
+  onRemove(word: Word): void {
+    this.editingWord = null;
+    this.groupDetailsStore.dispatch(new RemoveWordAction({ word: word }));
   }
 
 }

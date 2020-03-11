@@ -16,10 +16,12 @@ export abstract class GroupDetailsProviderBase {
     abstract getWords(groupId: number): Observable<Word[]>;
     abstract updateWord(word: Word, groupId: number): Observable<any>;
     abstract addWord(word: Word, groupId: number): Observable<any>;
+    abstract removeWord(word: Word): Observable<any>;
 }
 
 @Injectable()
 export class GroupDetailsProvider extends GroupDetailsProviderBase {
+
 
     constructor(private http: HttpClient,
         private groupMapper: GroupDetailsMapper,
@@ -63,6 +65,10 @@ export class GroupDetailsProvider extends GroupDetailsProviderBase {
             groupId: groupId
         };
         return this.http.post(`${environment.apiUrl}/addWord`, body);
+    }
+
+    removeWord(word: Word): Observable<any> {
+        return this.http.delete(`${environment.apiUrl}/removeWord/${word.group.id}/${word.id}`);
     }
 }
 
@@ -122,6 +128,10 @@ export class GroupDetailsProviderMock extends GroupDetailsProviderBase {
     }
 
     addWord(word: Word, groupId: number): Observable<any> {
+        return of({});
+    }
+
+    removeWord(word: Word): Observable<any> {
         return of({});
     }
 }

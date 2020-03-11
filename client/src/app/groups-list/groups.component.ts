@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { GroupProviderBase } from './services/group.provider/group.provider';
 import { Group } from './models/group.model';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
@@ -18,8 +17,7 @@ export class GroupsComponent implements OnInit {
   isLoading$: Observable<boolean>;
   editingGroup: Group = null;
 
-  constructor(private groupProvider: GroupProviderBase,
-    private router: Router,
+  constructor(private router: Router,
     private groupsListState: Store<GroupListState>) { }
 
   ngOnInit() {
