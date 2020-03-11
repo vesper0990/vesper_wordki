@@ -32,4 +32,8 @@ export class LanguageType {
     static getAll(): LanguageType[] {
         return Array.from<LanguageType>(this.map.values());
     }
+
+    public toString = (): string => {
+        return 'test';
+    }
 }

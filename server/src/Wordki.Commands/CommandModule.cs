@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Wordki.Commands.AddGroup;
 using Wordki.Commands.AddRepeat;
 using Wordki.Commands.AddWord;
 using Wordki.Commands.Login;
@@ -20,6 +21,7 @@ namespace Wordki.Commands
             builder.RegisterType<UpdateWordCommandHandler>().AsImplementedInterfaces();
             builder.RegisterType<RemoveWordCommandHandler>().AsImplementedInterfaces();
             builder.RegisterType<UpdateGroupCommandHandler>().AsImplementedInterfaces();
+            builder.RegisterType<AddGroupCommandHandler>().AsImplementedInterfaces();
         }
     }
 }

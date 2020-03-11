@@ -19,12 +19,15 @@ import { EffectsModule } from '@ngrx/effects';
 import { WordMapper } from './services/word-mapper/word-mapper';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
+import { AddGroupComponent } from './pages/add-group/add-group.component';
+import { ShareModule } from '../share/share.module';
 
 @NgModule({
   declarations: [
     GroupDetailsComponent,
     WordRowComponent,
-    EditWordFormComponent
+    EditWordFormComponent,
+    AddGroupComponent
   ],
   imports: [
     CommonModule,
@@ -32,6 +35,7 @@ import { InputTextModule } from 'primeng/inputtext';
     GroupsDetailsRoutingModule,
     CheckboxModule,
     InputTextModule,
+    ShareModule,
     StoreModule.forFeature('groupDetailsStore', reducer),
     EffectsModule.forFeature([GroupDetailsEffects]),
   ],

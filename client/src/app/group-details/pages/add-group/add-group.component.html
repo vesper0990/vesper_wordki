@@ -1,0 +1,51 @@
+<form [formGroup]="groupForm" (ngSubmit)="onSubmit()">
+    <label for="name">
+        Nazwa grupy
+        <input pInputText type="text" formControlName="name">
+        <!-- <div *ngIf="name.invalid && (name.dirty || name.touched)">
+            <div *ngIf="name.errors.required">
+                Name is required.
+            </div>
+            <div *ngIf="name.errors.minlength">
+                Name must be at least 4 characters long.
+            </div>
+        </div> -->
+    </label>
+    <label for="language1">
+        Język 1
+        <app-languages-drop-down formControlName="language1"></app-languages-drop-down>
+    </label>
+    <label for="language2">
+        Język 2
+        <app-languages-drop-down formControlName="language2"></app-languages-drop-down>
+    </label>
+    Słowa:<br>
+    <button (click)="addItem()">Dodaj słowo</button>
+    <div formArrayName="words" *ngFor="let word of words.controls; let i = index">
+        <div [formGroupName]="i">
+            <label for="language1">
+                Język 1
+                <input formControlName="language1">
+            </label>
+            <label for="language2">
+                Język 2
+                <input formControlName="language2">
+            </label>
+            <label for="example1">
+                Przykład 1
+                <input formControlName="example1">
+            </label>
+            <label for="example2">
+                Przykład 2
+                <input formControlName="example2">
+            </label>
+            <label for="comment">
+                Komentarz
+                <input formControlName="comment">
+            </label>
+            <button (click)="removeItem(i)">Usuń</button>
+        </div>
+    </div>
+
+    <button type="submit" [disabled]="!groupForm.valid">Zapisz</button>
+</form>

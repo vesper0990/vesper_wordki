@@ -9,13 +9,15 @@ import {
     UpdateWordSuccessAction,
     AddWordAction,
     RemoveWordAction,
-    RemoveWordSuccessAction
+    RemoveWordSuccessAction,
+    AddGroupAction
 } from './actions';
 import { GroupDetailsProviderBase } from '../services/group-details.provider/group-details.provider';
 import { mergeMap, map, catchError, switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { GroupDetails } from '../models/group-details.model';
 import { Word } from '../models/word.model';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class GroupDetailsEffects {
@@ -55,8 +57,20 @@ export class GroupDetailsEffects {
         ))
     );
 
+
+    @Effect({ dispatch: false })
+    addGroupEffect = this.actions$.pipe(
+        ofType(GroupDetailsTypes.AddGroup),
+        switchMap((action: AddGroupAction) => this.groupDetailsProvider.addGroup(action.payload.group).pipe(
+            map(() => {
+                this.router.navigate(['/groups']);
+            })
+        ))
+    );
+
     constructor(private actions$: Actions,
-        private groupDetailsProvider: GroupDetailsProviderBase) {
+        private groupDetailsProvider: GroupDetailsProviderBase,
+        private router: Router) {
 
     }
 

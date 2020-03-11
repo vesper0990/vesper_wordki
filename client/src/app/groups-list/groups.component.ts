@@ -38,4 +38,8 @@ export class GroupsComponent implements OnInit {
     this.groupsListState.dispatch(new UpdateGroupInList({ group: group }));
     this.editingGroup = null;
   }
+
+  addGroup(): void {
+    this.router.navigate(['details/add']);
+  }
 }

@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 import { GroupDetails } from '../models/group-details.model';
 import { Word } from '../models/word.model';
 import { Actions } from '@ngrx/effects';
+import { AddedGroup } from '../models/added-group';
 
 export enum GroupDetailsTypes {
     GetGroupDetails = '[GROUP_DETAILS_STATE] GET_GROUP_DETAILS',
@@ -18,6 +19,8 @@ export enum GroupDetailsTypes {
 
     RemoveWord = '[GROUP_DETAILS_STATE] REMOVE_WORD',
     RemoveWordSuccess = '[GROUP_DETAILS_STATE] REMOVE_WORD_SUCCESS',
+
+    AddGroup = '[GROUP_DETAILS_STATE] ADD_GROUP'
 }
 
 export class GetGroupDetailsAction implements Action {
@@ -70,6 +73,11 @@ export class RemoveWordSuccessAction implements Action {
     constructor(public payload: { word: Word }) { }
 }
 
+export class AddGroupAction implements Action {
+    readonly type = GroupDetailsTypes.AddGroup;
+    constructor(public payload: { group: AddedGroup }) { }
+}
+
 export type GroupDetailsActions = GetGroupDetailsAction |
     SetGroupDetailsAction |
     GetWordsAction |
@@ -79,4 +87,5 @@ export type GroupDetailsActions = GetGroupDetailsAction |
     AddWordAction |
     AddWordSuccessAction |
     RemoveWordAction |
-    RemoveWordSuccessAction;
+    RemoveWordSuccessAction |
+    AddGroupAction;
