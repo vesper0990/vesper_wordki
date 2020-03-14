@@ -60,7 +60,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   }
 
   onAddWord(): void {
-    this.editingWord = new Word(0, '', '', 0, true);
+    this.editingWord = new Word(0, '', '', '', '', 0, true, new Date());
     this.editWordOnSubmit = this.onAddSubmit;
   }
 

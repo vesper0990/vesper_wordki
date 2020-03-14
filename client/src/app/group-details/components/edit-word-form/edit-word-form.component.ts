@@ -40,19 +40,20 @@ export class EditWordFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('sumit');
     const newWord = new Word(
       this.word.id,
       this.wordForm.get('language1').value,
       this.wordForm.get('language2').value,
+      this.wordForm.get('example1').value,
+      this.wordForm.get('example2').value,
       this.word.drawer,
-      this.wordForm.get('isVisible').value
+      this.wordForm.get('isVisible').value,
+      new Date()
     );
     this.submit.emit(newWord);
   }
 
   onCancel(): void {
-    console.log('cancel');
     this.cancel.emit({});
   }
 

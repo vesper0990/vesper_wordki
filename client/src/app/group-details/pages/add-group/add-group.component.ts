@@ -14,7 +14,7 @@ import { AddGroupAction } from '../../store/actions';
 })
 export class AddGroupComponent implements OnInit {
 
-  private name = this.formBuilder.control('', [Validators.required, Validators.minLength(4)]);
+  name = this.formBuilder.control('', [Validators.required, Validators.minLength(4)]);
   words = this.formBuilder.array([this.createItem()]);
 
   groupForm = this.formBuilder.group({

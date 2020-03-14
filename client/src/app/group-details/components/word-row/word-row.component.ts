@@ -22,4 +22,8 @@ export class WordRowComponent implements OnInit {
     this.editWord.emit(word);
   }
 
+  toggle(): void {
+    this.word.toggle();
+  }
+
 }

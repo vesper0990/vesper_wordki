@@ -1,4 +1,32 @@
-<div style="margin: 20px;">
-    {{ word?.language1 }} - {{ word?.language2 }} - {{ word?.isVisible ? 't' : 'f'}} 
-    <button (click)="edit(word)">Edytuj</button>
+<div (click)="toggle()" style="background-color: beige; border-radius: 10px;margin: 5px 10px;position: relative;">
+    <div class="ui-g">
+        <div class="ui-g-10">
+            <div style=" float: left; background-color: blue;">
+                {{ word?.language1 }} - {{ word?.language2 }} - {{ word?.isVisible ? 't' : 'f'}}
+            </div>
+        </div>
+        <div class="ui-g-2">
+            <div style="float: right; background-color: chartreuse;">
+                <button (click)="edit(word)">Edytuj</button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="word.isExpanded">
+        <hr style="margin: 10px 20px;" size=1>
+        <div class="ui-g">
+            <div class="ui-g-7">
+                <p>
+                    {{word.example1}}
+                </p>
+                <p>
+                    {{word.example2}}
+                </p>
+            </div>
+            <div class="ui-g-5">
+                <p>Ostatnia powtórka: </p>
+                <p>Następna powtórka: {{word.nextRepeat | date:"dd/MM/yyyy"}}</p>
+                <p>Wszystkie powróki: {{word.repeatsCount}}</p>
+            </div>
+        </div>
+    </div>
 </div>

@@ -26,11 +26,13 @@ namespace Wordki.Queries.GetWordsFromGroup
             }
         }
 
-        private readonly string sql = @$"
+        private readonly string sql = $@"
 SELECT
 w.id                as WordId,
 w.language1         as Language1,
 w.language2         as Language2,
+w.example1          as Example1,
+w.example2          as Example2,
 w.drawer            as Drawer,
 w.isVisible         as isVisible,
 w.nextRepeat        as NextRepeat,

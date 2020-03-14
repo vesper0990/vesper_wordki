@@ -14,7 +14,7 @@
         <div style="top: 50%;position: absolute;transform: translate(-50%, -50%);">
             Słowa: {{group?.wordsCount}}<br>
             Powtórzenia: {{group?.repeatsCount}}<br>
-            Poziom: {{group?.averageDrawer}}
+            Poziom: {{group?.averageDrawer | number : '1.1-1'}}
         </div>
     </div>
     <div class="ui-g-3 hover-to-show">

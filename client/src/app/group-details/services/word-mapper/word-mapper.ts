@@ -8,7 +8,10 @@ export class WordMapper {
         return new Word(dto.wordId,
             dto.language1,
             dto.language2,
+            dto.example1,
+            dto.example2,
             dto.drawer,
-            dto.isVisible);
+            dto.isVisible,
+            new Date(dto.nextRepeat));
     }
 }

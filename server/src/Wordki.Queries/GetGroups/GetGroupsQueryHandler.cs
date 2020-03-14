@@ -33,9 +33,12 @@ SELECT
     g.name              as Name,
     g.language1         as Language1,
     g.language2         as Language2,
-    count(w.id)         as WordsCount
+    count(w.id)         as WordsCount,
+    count(r.id)         as RepeatsCount,
+    AVG(w.drawer)       as AverageDrawer
 FROM groups2 g
 LEFT JOIN words w ON w.groupId =  g.id
+LEFT JOIN repeats r ON w.id = r.wordId
 WHERE g.userid = @userId
 GROUP BY g.id";
     }

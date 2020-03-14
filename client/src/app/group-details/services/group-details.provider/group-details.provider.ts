@@ -100,8 +100,11 @@ export class GroupDetailsProviderMock extends GroupDetailsProviderBase {
                 wordId: 1,
                 language1: `word ${i}`,
                 language2: `słowo ${i}`,
+                example1: `to ejst jakis przyklad ktory ma byc poprawnie wyswietlony na stronie`,
+                example2: `to ejst jakis przyklad ktory ma byc poprawnie wyswietlony na stronie`,
                 drawer: 5 % i,
-                isVisible: true
+                isVisible: true,
+                nextRepeat: new Date().toString()
             });
         }
         return of<GroupDetailsDto>(groupDetailsDto).pipe(map((dto: GroupDetailsDto) => this.groupMapper.map(dto)), delay(1000));

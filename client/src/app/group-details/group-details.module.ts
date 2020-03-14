@@ -21,13 +21,15 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { AddGroupComponent } from './pages/add-group/add-group.component';
 import { ShareModule } from '../share/share.module';
+import { GroupDescriptionComponent } from './components/group-description/group-description.component';
 
 @NgModule({
   declarations: [
     GroupDetailsComponent,
     WordRowComponent,
     EditWordFormComponent,
-    AddGroupComponent
+    AddGroupComponent,
+    GroupDescriptionComponent
   ],
   imports: [
     CommonModule,

@@ -9,5 +9,7 @@ namespace Wordki.Queries.GetGroups
         public int Language1 { get; set; }
         public int Language2 { get; set; }
         public int WordsCount { get; set; }
+        public int RepeatsCount { get; set; }
+        public double AverageDrawer { get; set; }
     }
 }
