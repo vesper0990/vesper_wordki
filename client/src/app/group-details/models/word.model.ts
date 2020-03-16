@@ -1,4 +1,5 @@
 import { GroupDetails } from './group-details.model';
+import { Repeat } from './repeat.model';
 
 export class Word {
 
@@ -11,6 +12,7 @@ export class Word {
     group: GroupDetails;
     isVisible: boolean;
     nextRepeat: Date;
+    repeats: Repeat[];
 
     isExpanded: boolean;
 
@@ -26,14 +28,19 @@ export class Word {
         this.language1 = language1;
         this.language2 = language2;
         this.example1 = example1,
-        this.example2 = example2,
-        this.drawer = drawer;
+            this.example2 = example2,
+            this.drawer = drawer;
         this.isVisible = isVisible;
         this.nextRepeat = nextRepeat;
         this.isExpanded = false;
+        this.repeats = [];
     }
 
     public toggle(): void {
         this.isExpanded = !this.isExpanded;
+    }
+
+    public addRepeat(repeat: Repeat): void {
+        this.repeats.push(repeat);
     }
 }

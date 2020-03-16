@@ -5,5 +5,4 @@ export class GroupDetailsDto {
     name: string;
     language1: number;
     language2: number;
-    words: WordDto[];
 }

@@ -70,7 +70,7 @@ export class GroupProviderMock extends GroupProviderBase {
                     result.push(this.mapper.map(dto));
                 });
                 return result;
-            })).pipe(delay(5000));
+            })).pipe(delay(500));
     }
 
     updateGroup(group: Group): Observable<any> {

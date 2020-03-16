@@ -9,17 +9,20 @@ import { ProgressSpinnerComponent } from './components/progress-spinner/progress
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { ProgressHorizontalComponent } from './components/progress-horizontal/progress-horizontal.component';
+import { DateSpanToDaysPipe } from './pipes/datespan-to-days.pipe';
 
 @NgModule({
   declarations: [
     ErrorComponent,
     NubmerToTimePipe,
+    DateSpanToDaysPipe,
     LanguagesDropDownComponent,
     ProgressSpinnerComponent,
     ProgressHorizontalComponent
   ],
   exports: [
     NubmerToTimePipe,
+    DateSpanToDaysPipe,
     LanguagesDropDownComponent,
     ProgressSpinnerComponent,
     ProgressHorizontalComponent

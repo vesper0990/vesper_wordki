@@ -1,8 +1,14 @@
 <div (click)="toggle()" style="background-color: beige; border-radius: 10px;margin: 5px 10px;position: relative;">
     <div class="ui-g">
         <div class="ui-g-10">
-            <div style=" float: left; background-color: blue;">
-                {{ word?.language1 }} - {{ word?.language2 }} - {{ word?.isVisible ? 't' : 'f'}}
+            <div style=" float: left; ">
+                <div style="margin: 2px;font-weight: 550;">
+                    - {{ word?.language1 }}
+                </div>
+                <div style="margin: 5px;font-weight: 550;">
+                    - {{ word?.language2 }}
+                </div>
+                <!-- - - {{ word?.isVisible ? 't' : 'f'}} -->
             </div>
         </div>
         <div class="ui-g-2">
@@ -12,20 +18,26 @@
         </div>
     </div>
     <div *ngIf="word.isExpanded">
-        <hr style="margin: 10px 20px;" size=1>
+        <hr style="margin: 5px 20px;" size=1>
         <div class="ui-g">
             <div class="ui-g-7">
-                <p>
-                    {{word.example1}}
-                </p>
-                <p>
-                    {{word.example2}}
-                </p>
+                <div style="margin: 2px;font-weight: 550;">
+                    - {{ word?.example1 }}
+                </div>
+                <div style="margin: 5px;font-weight: 550;">
+                    - {{ word?.example2 }}
+                </div>
             </div>
             <div class="ui-g-5">
-                <p>Ostatnia powtórka: </p>
-                <p>Następna powtórka: {{word.nextRepeat | date:"dd/MM/yyyy"}}</p>
-                <p>Wszystkie powróki: {{word.repeatsCount}}</p>
+                <div>
+                    Ostatnia powtórka: <b>{{word.repeats[word.repeats.length - 1].date | toDays}}</b>
+                </div>
+                <div>
+                    Następna powtórka: <b>{{word.nextRepeat | date:"dd/MM/yyyy"}}</b>
+                </div>
+                <div>
+                    Wszystkie powróki: <b>{{word.repeats.length}}</b>
+                </div>
             </div>
         </div>
     </div>
