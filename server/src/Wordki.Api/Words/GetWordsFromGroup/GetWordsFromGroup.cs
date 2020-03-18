@@ -9,9 +9,9 @@ namespace Wordki.Api.Words.GetWordsFromGroup
     [Route("[controller]")]
     public class GetWordsFromGroupController : ControllerBase
     {
-        private readonly IQueryManyHandler<GetWordsFromGroupQuery, GetWordsFromGroupDto> queryHandler;
+        private readonly IQueryManyHandler<GetWordsFromGroupQuery, WordFromGroupDto> queryHandler;
 
-        public GetWordsFromGroupController(IQueryManyHandler<GetWordsFromGroupQuery, GetWordsFromGroupDto> queryHandler)
+        public GetWordsFromGroupController(IQueryManyHandler<GetWordsFromGroupQuery, WordFromGroupDto> queryHandler)
         {
             this.queryHandler = queryHandler;
         }

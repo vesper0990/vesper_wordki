@@ -3,6 +3,7 @@ import { GroupDetails } from '../models/group-details.model';
 import { Word } from '../models/word.model';
 import { Actions } from '@ngrx/effects';
 import { AddedGroup } from '../models/added-group';
+import { EditWord } from 'src/app/share/components/edit-word-dialog/edit-word.model';
 
 export enum GroupDetailsTypes {
     GetGroupDetails = '[GROUP_DETAILS_STATE] GET_GROUP_DETAILS',
@@ -45,17 +46,17 @@ export class SetWordsAction implements Action {
 
 export class UpdateWordAction implements Action {
     readonly type = GroupDetailsTypes.UpdateWord;
-    constructor(public payload: { word: Word, groupId: number }) { }
+    constructor(public payload: { editword: EditWord }) { }
 }
 
 export class UpdateWordSuccessAction implements Action {
     readonly type = GroupDetailsTypes.UpdateWordSuccess;
-    constructor(public payload: { word: Word }) { }
+    constructor(public payload: { editWord: EditWord }) { }
 }
 
 export class AddWordAction implements Action {
     readonly type = GroupDetailsTypes.AddWord;
-    constructor(public payload: { word: Word, groupId: number }) { }
+    constructor(public payload: { editword: EditWord }) { }
 }
 
 export class AddWordSuccessAction implements Action {

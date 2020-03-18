@@ -3,7 +3,7 @@ using Wordki.Utils.Queries;
 
 namespace Wordki.Queries.GetWordsFromGroup
 {
-    public class GetWordsFromGroupQuery : IQuery<GetWordsFromGroupDto>
+    public class GetWordsFromGroupQuery : IQuery<WordFromGroupDto>
     {
         public long GroupId { get; private set; }
 

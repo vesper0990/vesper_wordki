@@ -52,7 +52,22 @@ function handleSetWords(state: GroupDetailsState, action: SetWordsAction): Group
 
 function handleUpdateWordSuccess(state: GroupDetailsState, action: UpdateWordSuccessAction): GroupDetailsState {
     const arr = [];
-    state.words.forEach((item: Word) => arr.push(item.id === action.payload.word.id ? action.payload.word : item));
+    const updatedWord = action.payload.editWord;
+    state.words.forEach((item: Word) => {
+        if (item.id === updatedWord.wordId) {
+            const newItem = <Word>{
+                ...item,
+                language1: updatedWord.language1,
+                language2: updatedWord.language2,
+                example1: updatedWord.example1,
+                example2: updatedWord.example2,
+                isVisible: updatedWord.isVisible
+            };
+            arr.push(newItem);
+        } else {
+            arr.push(item);
+        }
+    });
     return { ...state, words: arr };
 }
 

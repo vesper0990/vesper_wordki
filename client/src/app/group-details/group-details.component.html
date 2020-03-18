@@ -1,4 +1,4 @@
-<app-edit-word-form *ngIf="editingWord" [word]="editingWord" [mode]="edit" (submit)="onSubmit($event)" (cancel)="onCancel()" (remove)="onRemove($event)"></app-edit-word-form>
+<app-edit-word-dialog [display]="editingWord" [word]="editingWord" (submit2)="onSubmit($event)" (cancel)="onCancel()" (remove)="onRemove($event)"></app-edit-word-dialog>
 <button (click)="onAddWord()">Dodaj</button>
 <div>
     Grupa:

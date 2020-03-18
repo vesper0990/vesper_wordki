@@ -8,6 +8,7 @@ import { GroupDetailsState } from './store/reducre';
 import { Store } from '@ngrx/store';
 import { getGroupDetails, getWords, getIsGroupDetailsLoading, getIsWordsLoading } from './store/selectors';
 import { GetGroupDetailsAction, GetWordsAction, UpdateWordAction, AddWordAction, RemoveWordAction } from './store/actions';
+import { EditWord } from '../share/components/edit-word-dialog/edit-word.model';
 
 @Component({
   templateUrl: './group-details.component.html',
@@ -18,13 +19,13 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
 
   private groupId: number;
   private routeParamSub: Subscription;
-  private editWordOnSubmit: (word: Word) => void;
+  private editWordOnSubmit: (editWord: EditWord) => void;
 
   groupDetails$: Observable<GroupDetails>;
   isGroupDetailsLoading$: Observable<boolean>;
   words$: Observable<Word[]>;
   isWordsLoading$: Observable<boolean>;
-  editingWord: Word = null;
+  editingWord: EditWord = null;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -55,25 +56,37 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   }
 
   onEditWord(word: Word): void {
-    this.editingWord = word;
+    this.editingWord = <EditWord>{
+      wordId: word.id,
+      groupId: this.groupId,
+      language1: word.language1,
+      language2: word.language2,
+      example1: word.example1,
+      example2: word.example2,
+      comment: '',
+      isVisible: word.isVisible
+    };
     this.editWordOnSubmit = this.onEditSubmit;
   }
 
   onAddWord(): void {
-    this.editingWord = new Word(0, '', '', '', '', 0, true, new Date());
+    this.editingWord = <EditWord>{
+      wordId: 0,
+      groupId: this.groupId
+    };
     this.editWordOnSubmit = this.onAddSubmit;
   }
 
-  onEditSubmit(word: Word): void {
-    this.groupDetailsStore.dispatch(new UpdateWordAction({ word: word, groupId: this.groupId }));
+  onEditSubmit(editWord: EditWord): void {
+    this.groupDetailsStore.dispatch(new UpdateWordAction({ editword: editWord }));
   }
 
-  onAddSubmit(word: Word): void {
-    this.groupDetailsStore.dispatch(new AddWordAction({ word: word, groupId: this.groupId }));
+  onAddSubmit(editWord: EditWord): void {
+    this.groupDetailsStore.dispatch(new AddWordAction({ editword: editWord }));
   }
 
-  onSubmit(word: Word): void {
-    this.editWordOnSubmit(word);
+  onSubmit(editWord: EditWord): void {
+    this.editWordOnSubmit(editWord);
     this.editingWord = null;
   }
 

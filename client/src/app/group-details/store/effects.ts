@@ -38,15 +38,15 @@ export class GroupDetailsEffects {
 
     @Effect() updateWordEffect = this.actions$.pipe(
         ofType(GroupDetailsTypes.UpdateWord),
-        switchMap((action: UpdateWordAction) => this.groupDetailsProvider.updateWord(action.payload.word, action.payload.groupId).pipe(
-            map(() => new UpdateWordSuccessAction({ word: action.payload.word }))
+        switchMap((action: UpdateWordAction) => this.groupDetailsProvider.updateWord(action.payload.editword).pipe(
+            map(() => new UpdateWordSuccessAction({ editWord: action.payload.editword }))
         ))
     );
 
     @Effect() addWordEffect = this.actions$.pipe(
         ofType(GroupDetailsTypes.AddWord),
-        switchMap((action: AddWordAction) => this.groupDetailsProvider.addWord(action.payload.word, action.payload.groupId).pipe(
-            map(() => new GetWordsAction({ groupId: action.payload.groupId }))
+        switchMap((action: AddWordAction) => this.groupDetailsProvider.addWord(action.payload.editword).pipe(
+            map(() => new GetWordsAction({ groupId: action.payload.editword.groupId }))
         ))
     );
 

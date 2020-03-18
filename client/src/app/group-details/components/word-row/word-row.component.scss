@@ -1,0 +1,44 @@
+.main-container {
+    // background-color: beige;
+    border-radius: 10px;
+    margin: 5px 10px;
+    position: relative;
+    border: 1px solid #eeeeee;
+
+    .word {
+        height: 50px;
+        margin: 2px;
+        font-weight: 550;
+        font-size: 1.5em;
+        color: #555;
+        display: flex;
+        align-items: center;
+    }
+
+    hr {
+        color: #555;
+    }
+
+    .example {
+        margin-left: 10px;
+        height: 30px;
+        font-size: 1em;
+        color: #555;
+        display: flex;
+        align-items: center;
+    }
+
+    .info-label {
+        font-size: 0.7em;
+        color: #777;
+    }
+}
+
+.action-button {
+    margin: 0.5em;
+    background-color: transparent;
+}
+
+.action-button:hover {
+    background-color: #00000011;
+}

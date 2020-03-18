@@ -11,14 +11,15 @@ import { WordMapper } from '../word-mapper/word-mapper';
 import { WordDto } from '../../models/word.dto';
 import { AddedGroup } from '../../models/added-group';
 import { RepeatDto } from '../../models/repeat.dto';
+import { EditWord } from 'src/app/share/components/edit-word-dialog/edit-word.model';
 
 @Injectable()
 export abstract class GroupDetailsProviderBase {
     abstract getGroupDetails(groupId: number): Observable<GroupDetails>;
     abstract getWords(groupId: number): Observable<Word[]>;
     // abstract getWordDetails(wordId: number): Observable<>;
-    abstract updateWord(word: Word, groupId: number): Observable<any>;
-    abstract addWord(word: Word, groupId: number): Observable<any>;
+    abstract updateWord(editword: EditWord): Observable<any>;
+    abstract addWord(editword: EditWord): Observable<any>;
     abstract removeWord(word: Word): Observable<any>;
     abstract addGroup(group: AddedGroup): Observable<any>;
 }
@@ -47,27 +48,12 @@ export class GroupDetailsProvider extends GroupDetailsProviderBase {
         );
     }
 
-    updateWord(word: Word, groupId: number): Observable<any> {
-        const body = {
-            wordId: word.id,
-            language1: word.language1,
-            language2: word.language2,
-            isVisible: word.isVisible,
-            groupId: groupId
-        };
-        return this.http.put(`${environment.apiUrl}/updateWord`, body);
+    updateWord(editWord: EditWord): Observable<any> {
+        return this.http.put(`${environment.apiUrl}/updateWord`, editWord);
     }
 
-    addWord(word: Word, groupId: number): Observable<any> {
-        console.log('test');
-        const body = {
-            wordId: word.id,
-            language1: word.language1,
-            language2: word.language2,
-            isVisible: word.isVisible,
-            groupId: groupId
-        };
-        return this.http.post(`${environment.apiUrl}/addWord`, body);
+    addWord(editword: EditWord): Observable<any> {
+        return this.http.post(`${environment.apiUrl}/addWord`, editword);
     }
 
     removeWord(word: Word): Observable<any> {
@@ -135,11 +121,11 @@ export class GroupDetailsProviderMock extends GroupDetailsProviderBase {
         );
     }
 
-    updateWord(word: Word, groupId: number): Observable<any> {
+    updateWord(word: EditWord): Observable<any> {
         return of({});
     }
 
-    addWord(word: Word, groupId: number): Observable<any> {
+    addWord(editword: EditWord): Observable<any> {
         return of({});
     }
 

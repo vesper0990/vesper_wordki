@@ -1,19 +1,24 @@
-<div (click)="toggle()" style="background-color: beige; border-radius: 10px;margin: 5px 10px;position: relative;">
-    <div class="ui-g">
-        <div class="ui-g-10">
-            <div style=" float: left; ">
-                <div style="margin: 2px;font-weight: 550;">
-                    - {{ word?.language1 }}
-                </div>
-                <div style="margin: 5px;font-weight: 550;">
-                    - {{ word?.language2 }}
-                </div>
-                <!-- - - {{ word?.isVisible ? 't' : 'f'}} -->
+<div class="main-container" (click)="toggle()">
+    <div class="ui-g basic-info">
+        <div class="ui-g-9">
+            <div class="word flaot-left">
+                {{ word?.language1 }}
+            </div>
+            <!-- <hr size="1px"> -->
+            <div class="word flaot-left">
+                {{ word?.language2 }}
             </div>
         </div>
-        <div class="ui-g-2">
-            <div style="float: right; background-color: chartreuse;">
-                <button (click)="edit(word)">Edytuj</button>
+        <div class="ui-g-2" style="margin: auto;">
+            <div class="float-left">
+                {{ word?.drawer }}
+            </div>
+        </div>
+        <div class="ui-g-1" style="margin: auto;">
+            <div class="float-right">
+                <button appClickStopPropagation class="circle-button action-button" (click)="edit(word)">
+                    <img src="assets/icons/edit.svg" style="width: 25px;" />
+                </button>
             </div>
         </div>
     </div>
@@ -21,23 +26,18 @@
         <hr style="margin: 5px 20px;" size=1>
         <div class="ui-g">
             <div class="ui-g-7">
-                <div style="margin: 2px;font-weight: 550;">
-                    - {{ word?.example1 }}
+                <div class="example">
+                    {{ word?.example1 }}
                 </div>
-                <div style="margin: 5px;font-weight: 550;">
-                    - {{ word?.example2 }}
+                <!-- <hr> -->
+                <div class="example">
+                    {{ word?.example2 }}
                 </div>
             </div>
             <div class="ui-g-5">
-                <div>
-                    Ostatnia powtórka: <b>{{word.repeats[word.repeats.length - 1].date | toDays}}</b>
-                </div>
-                <div>
-                    Następna powtórka: <b>{{word.nextRepeat | date:"dd/MM/yyyy"}}</b>
-                </div>
-                <div>
-                    Wszystkie powróki: <b>{{word.repeats.length}}</b>
-                </div>
+                <span class="info-label">Ostatnia powtórka </span><b>{{word.repeats[word.repeats.length - 1].date | toDays}}</b><br>
+                <span class="info-label">Następna powtórka </span><b>{{word.nextRepeat | date:"dd/MM/yyyy"}}</b><br>
+                <span class="info-label">Wszystkie powróki </span><b>{{word.repeats.length}}</b><br>
             </div>
         </div>
     </div>

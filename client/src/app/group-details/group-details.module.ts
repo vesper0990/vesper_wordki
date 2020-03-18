@@ -10,14 +10,12 @@ import {
   GroupDetailsProviderMock
 } from './services/group-details.provider/group-details.provider';
 import { environment } from 'src/environments/environment';
-import { EditWordFormComponent } from './components/edit-word-form/edit-word-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GroupDetailsEffects } from './store/effects';
 import { reducer } from './store/reducre';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { WordMapper } from './services/word-mapper/word-mapper';
-import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { AddGroupComponent } from './pages/add-group/add-group.component';
 import { ShareModule } from '../share/share.module';
@@ -27,7 +25,6 @@ import { GroupDescriptionComponent } from './components/group-description/group-
   declarations: [
     GroupDetailsComponent,
     WordRowComponent,
-    EditWordFormComponent,
     AddGroupComponent,
     GroupDescriptionComponent
   ],
@@ -35,7 +32,6 @@ import { GroupDescriptionComponent } from './components/group-description/group-
     CommonModule,
     ReactiveFormsModule,
     GroupsDetailsRoutingModule,
-    CheckboxModule,
     InputTextModule,
     ShareModule,
     StoreModule.forFeature('groupDetailsStore', reducer),

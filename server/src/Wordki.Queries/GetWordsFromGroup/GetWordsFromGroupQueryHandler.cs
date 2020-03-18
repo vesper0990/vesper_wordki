@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Wordki.Utils.Dapper;
 using Wordki.Utils.Queries;
 
 namespace Wordki.Queries.GetWordsFromGroup
 {
-    public class GetWordsFromGroupQueryHandler : IQueryManyHandler<GetWordsFromGroupQuery, GetWordsFromGroupDto>
+    public class GetWordsFromGroupQueryHandler : IQueryManyHandler<GetWordsFromGroupQuery, WordFromGroupDto>
     {
         private readonly IDbConnectionProvider dbConnection;
 
@@ -14,15 +15,26 @@ namespace Wordki.Queries.GetWordsFromGroup
             this.dbConnection = dbConnection;
         }
 
-        public async Task<IEnumerable<GetWordsFromGroupDto>> HandleAsync(GetWordsFromGroupQuery query)
+        public async Task<IEnumerable<WordFromGroupDto>> HandleAsync(GetWordsFromGroupQuery query)
         {
             var param = new
             {
                 groupId = query.GroupId
             };
+            var wordDic = new Dictionary<long, WordFromGroupDto>();
             using(var connection = await dbConnection.Connect())
             {
-                return await connection.GetAsync<GetWordsFromGroupDto>(sql, param);
+                var result = (await connection.GetAsync<WordFromGroupDto, ResultFromGroupDto, WordFromGroupDto>(sql, param, (word, repeat) => {
+                    WordFromGroupDto wordEntry;
+                    if(!wordDic.TryGetValue(word.WordId, out wordEntry)){
+                        wordEntry = word;
+                        wordDic.Add(word.WordId, word);
+                    }
+
+                    wordEntry.Repeats.Add(repeat);
+                    return wordEntry;
+                }, "Result")).Distinct();
+                return result;
             }
         }
 
@@ -37,12 +49,13 @@ w.drawer            as Drawer,
 w.isVisible         as isVisible,
 w.nextRepeat        as NextRepeat,
 w.creationDate      as CreationDate,
-count(r.id)         as RepeatsCount,
-max(r.date)         as LastRepeat
+
+r.result            as Result,
+r.date              as Date
+
 FROM words w
 LEFT JOIN repeats r ON r.wordId = w.id
 JOIN groups2 g on g.id = w.groupId
-WHERE g.id = @groupId
-GROUP BY w.id";
+WHERE g.id = @groupId";
     }
 }

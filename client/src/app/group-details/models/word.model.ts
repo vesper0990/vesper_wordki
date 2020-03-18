@@ -27,20 +27,13 @@ export class Word {
         this.id = id;
         this.language1 = language1;
         this.language2 = language2;
-        this.example1 = example1,
-            this.example2 = example2,
-            this.drawer = drawer;
+        this.example1 = example1;
+        this.example2 = example2;
+        this.drawer = drawer;
         this.isVisible = isVisible;
         this.nextRepeat = nextRepeat;
         this.isExpanded = false;
         this.repeats = [];
     }
 
-    public toggle(): void {
-        this.isExpanded = !this.isExpanded;
-    }
-
-    public addRepeat(repeat: Repeat): void {
-        this.repeats.push(repeat);
-    }
 }

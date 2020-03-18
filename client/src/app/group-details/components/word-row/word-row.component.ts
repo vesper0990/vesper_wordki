@@ -23,7 +23,7 @@ export class WordRowComponent implements OnInit {
   }
 
   toggle(): void {
-    this.word.toggle();
+    this.word.isExpanded = !this.word.isExpanded;
   }
 
 }
