@@ -40,5 +40,5 @@ RUN npm install
 
 COPY . /main
 
-CMD npm run test-headless && npm run build:prod
+CMD npm run build:prod && npm run test-headless
 # CMD npm run build:prod
