@@ -8,6 +8,8 @@ services:
    dockerfile: ./src/Wordki.Api/Dockerfile.Development
   ports:
    - "5000:5000"
+  env_file:
+   - secrets.Development.env
   links:
    - mysql
   environment:

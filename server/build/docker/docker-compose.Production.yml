@@ -8,3 +8,7 @@ services:
    dockerfile: ./src/Wordki.Api/Dockerfile.Production
   ports:
    - "5000:5000"
+  env_file:
+   - secrets.Production.env
+  network_mode: "host"
+  
