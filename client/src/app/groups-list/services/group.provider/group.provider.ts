@@ -6,11 +6,13 @@ import { Group } from '../../models/group.model';
 import { GroupMapper } from '../group.mapper/group.mapper';
 import { map, delay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { EditGroup } from 'src/app/share/components/edit-group-dialog/edit-group.model';
 
 @Injectable()
 export abstract class GroupProviderBase {
     abstract getGroups(): Observable<Group[]>;
-    abstract updateGroup(group: Group): Observable<any>;
+    abstract updateGroup(group: EditGroup): Observable<any>;
+    abstract removeGroup(groupId: number): Observable<any>;
 }
 
 @Injectable()
@@ -21,14 +23,8 @@ export class GroupProvider extends GroupProviderBase {
         super();
     }
 
-    updateGroup(group: Group): Observable<any> {
-        const body = {
-            groupId: group.id,
-            groupName: group.name,
-            language1: group.language1.type,
-            language2: group.language2.type
-        };
-        return this.client.put(`${environment.apiUrl}/updateGroup`, body);
+    updateGroup(group: EditGroup): Observable<any> {
+        return this.client.put(`${environment.apiUrl}/updateGroup`, group);
     }
 
     getGroups(): Observable<Group[]> {
@@ -41,10 +37,15 @@ export class GroupProvider extends GroupProviderBase {
                 return result;
             }));
     }
+
+    removeGroup(groupId: number): Observable<any> {
+        return this.client.delete(`${environment.apiUrl}/removeGroup/${groupId}`);
+    }
 }
 
 @Injectable()
 export class GroupProviderMock extends GroupProviderBase {
+
 
     constructor(private mapper: GroupMapper) {
         super();
@@ -73,8 +74,12 @@ export class GroupProviderMock extends GroupProviderBase {
             })).pipe(delay(500));
     }
 
-    updateGroup(group: Group): Observable<any> {
+    updateGroup(group: EditGroup): Observable<any> {
         console.log('group updated');
+        return of<any>({});
+    }
+
+    removeGroup(groupId: number): Observable<any> {
         return of<any>({});
     }
 

@@ -5,7 +5,8 @@ import { Router } from '@angular/router';
 import { GroupListState } from './store/reducer';
 import { Store } from '@ngrx/store';
 import { getGroupsList, getIsLoading } from './store/selectors';
-import { GetGroupListAction, UpdateGroupInList } from './store/actions';
+import { GetGroupListAction, UpdateGroupInList, RemoveGroupAction } from './store/actions';
+import { EditGroup } from '../share/components/edit-group-dialog/edit-group.model';
 
 @Component({
   templateUrl: './groups.component.html',
@@ -15,7 +16,7 @@ export class GroupsComponent implements OnInit {
 
   groups$: Observable<Group[]>;
   isLoading$: Observable<boolean>;
-  editingGroup: Group = null;
+  editingGroup: EditGroup = null;
 
   constructor(private router: Router,
     private groupsListState: Store<GroupListState>) { }
@@ -31,12 +32,27 @@ export class GroupsComponent implements OnInit {
   }
 
   groupEdit(group: Group): void {
-    this.editingGroup = group;
+    const editGroup = <EditGroup>{
+      id: group.id,
+      name : group.name,
+      language1: group.language1.type,
+      language2: group.language2.type
+    };
+    this.editingGroup = editGroup;
   }
 
-  onEditSubmit(group: Group): void {
+  onEditSubmit(group: EditGroup): void {
     this.groupsListState.dispatch(new UpdateGroupInList({ group: group }));
     this.editingGroup = null;
+  }
+
+  onEditCancel(): void {
+    this.editingGroup = null;
+  }
+
+  onEditRemove(groupId: number): void {
+    this.editingGroup = null;
+    this.groupsListState.dispatch(new RemoveGroupAction({ groupId: groupId }));
   }
 
   addGroup(): void {

@@ -1,6 +1,13 @@
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { GroupProviderBase } from '../services/group.provider/group.provider';
-import { GroupListTypes, SetGroupListAction, UpdateGroupInList, UpdateGroupInListSuccess } from './actions';
+import {
+    GroupListTypes,
+    SetGroupListAction,
+    UpdateGroupInList,
+    UpdateGroupInListSuccess,
+    RemoveGroupAction,
+    RemoveGroupSuccessAction
+} from './actions';
 import { map, mergeMap, catchError, switchMap } from 'rxjs/operators';
 import { Group } from '../models/group.model';
 import { Observable, of } from 'rxjs';
@@ -20,7 +27,17 @@ export class GroupListEffects {
         ofType(GroupListTypes.UpdateGroupInList),
         switchMap((action: UpdateGroupInList) =>
             this.groupProvider.updateGroup(action.payload.group).pipe(
-                map(() => new UpdateGroupInListSuccess({ group: action.payload.group }))
+                map(() => new UpdateGroupInListSuccess({ group: action.payload.group })),
+                catchError((error: any) => this.handleError(error))
+            ))
+    );
+
+    @Effect() removeGroupEffect = this.actions$.pipe(
+        ofType(GroupListTypes.RemoveGroup),
+        switchMap((action: RemoveGroupAction) =>
+            this.groupProvider.removeGroup(action.payload.groupId).pipe(
+                map(() => new RemoveGroupSuccessAction({ groupId: action.payload.groupId })),
+                catchError((error: any) => this.handleError(error))
             ))
     );
 

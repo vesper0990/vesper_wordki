@@ -1,4 +1,4 @@
-<app-edit-group-form *ngIf="editingGroup" [group]="editingGroup" (submit)="onEditSubmit($event)"></app-edit-group-form>
+<app-edit-group-dialog [group]="editingGroup" (submit2)="onEditSubmit($event)" (cancel)="onEditCancel()" (remove)="onEditRemove($event)"></app-edit-group-dialog>
 <button (click)="addGroup()">Dodaj</button>
 <ng-container *ngIf="isLoading$ | async; else groups">
   <app-progress-horizontal></app-progress-horizontal>
