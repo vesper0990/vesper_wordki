@@ -35,9 +35,11 @@
                 </div>
             </div>
             <div class="ui-g-5">
-                <span class="info-label">Ostatnia powtórka </span><b>{{word.repeats[word.repeats.length - 1].date | toDays}}</b><br>
-                <span class="info-label">Następna powtórka </span><b>{{word.nextRepeat | date:"dd/MM/yyyy"}}</b><br>
-                <span class="info-label">Wszystkie powróki </span><b>{{word.repeats.length}}</b><br>
+                <app-label-value label="Ostatnia powtórka"
+                    [value]="word.repeats[word.repeats.length - 1].date | toDays"></app-label-value>
+                <app-label-value label="Następna powtórka" [value]="word.nextRepeat | date:'dd/MM/yyyy'">
+                </app-label-value>
+                <app-label-value label="Wszystkie powróki" [value]="word.repeats.length"></app-label-value>
             </div>
         </div>
     </div>

@@ -10,6 +10,7 @@ import { Word } from '../../models/word.model';
 export class WordRowComponent implements OnInit {
 
   @Input() word: Word;
+  // background: string = 'linear-gradient(to right, #f00a 0%,  #fff0 1%);';
 
   @Output() editWord: EventEmitter<Word> = new EventEmitter();
 

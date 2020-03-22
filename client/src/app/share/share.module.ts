@@ -17,6 +17,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { EditGroupDialogComponent } from './components/edit-group-dialog/edit-group-dialog.component';
+import { LabelValueComponent } from './components/label-value/label-value.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { EditGroupDialogComponent } from './components/edit-group-dialog/edit-gr
     ProgressSpinnerComponent,
     ProgressHorizontalComponent,
     EditWordDialogComponent,
-    EditGroupDialogComponent
+    EditGroupDialogComponent,
+    LabelValueComponent
   ],
   exports: [
     NubmerToTimePipe,
@@ -38,7 +40,8 @@ import { EditGroupDialogComponent } from './components/edit-group-dialog/edit-gr
     ProgressSpinnerComponent,
     ProgressHorizontalComponent,
     EditWordDialogComponent,
-    EditGroupDialogComponent
+    EditGroupDialogComponent,
+    LabelValueComponent
   ],
   imports: [
     CommonModule,

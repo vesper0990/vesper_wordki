@@ -1,26 +1,48 @@
 <p-dialog [header]="title" [(visible)]="display" (onHide)="onCancel()">
-    <form [formGroup]="groupForm" (ngSubmit)="onSubmit()">
-        <label for="name">
-            Nazwa grupy
-            <input pInputText type="text" formControlName="name">
-            <div *ngIf="name.invalid && (name.dirty || name.touched)">
-                <div *ngIf="name.errors.required">
-                    Name is required.
-                </div>
-                <div *ngIf="name.errors.minlength">
-                    Name must be at least 4 characters long.
+    <form style="width: 1000px;" [formGroup]="groupForm" (ngSubmit)="onSubmit()">
+        <div class="ui-g">
+            <label for="name" class="ui-g-3 col-form-label">
+                <b>Nazwa grupy</b>
+            </label>
+            <div class="ui-g-9">
+                <input style="width: 100%;" pInputText type="text" formControlName="name">
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="error-message">
+                    <div *ngIf="name.errors.required">
+                        Nazwa grupy jest wymagana
+                    </div>
+                    <div *ngIf="name.errors.minlength">
+                        Nazwa grupy musi mieć conajmniej 4 znaki długości
+                    </div>
                 </div>
             </div>
-        </label>
-        <label for="language1">
-            Język 1
-            <app-languages-drop-down formControlName="language1"></app-languages-drop-down>
-        </label>
-        <label for="language2">
-            Język 2
-            <app-languages-drop-down formControlName="language2"></app-languages-drop-down>
-        </label>
-
-        <button type="submit" [disabled]="!groupForm.valid">Zapisz</button>
+        </div>
+        <div class="ui-g">
+            <label for="language1" class="ui-g-3 col-form-label">
+                <b>Język 1</b>
+            </label>
+            <div class="ui-g-9">
+                <app-languages-drop-down formControlName="language1"></app-languages-drop-down>
+            </div>
+        </div>
+        <div class="ui-g">
+            <label for="language2" class="ui-g-3 col-form-label">
+                <b>Język 2</b>
+            </label>
+            <div class="ui-g-9">
+                <app-languages-drop-down formControlName="language2"></app-languages-drop-down>
+            </div>
+        </div>
+        <div class="ui-g" style="padding: 5px; position: relative;">
+            <button pButton class="ui-button-success" style="width: 100%;" type="submit" label="Zapisz"
+                [disabled]="!groupForm.valid"></button>
+        </div>
     </form>
+    <div class="ui-g">
+        <div class="ui-g-6" style="padding: 5px; position: relative;">
+            <button class="ui-button-danger" style="width: 100%" pButton (click)="onRemove()" label="Usuń"></button>
+        </div>
+        <div class="ui-g-6" style="padding: 5px; position: relative;">
+            <button class="ui-button-warring" style="width: 100%" pButton (click)="onCancel()" label="Anuluj"></button>
+        </div>
+    </div>
 </p-dialog>

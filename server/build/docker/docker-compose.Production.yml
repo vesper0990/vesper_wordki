@@ -8,19 +8,3 @@ services:
    dockerfile: ./src/Wordki.Api/Dockerfile.Production
   ports:
    - "5000:5000"
-  links:
-   - mysql
- mysql:
-  container_name: db
-  image: mysql/mysql-server:5.7
-  restart: always
-  ports:
-   - "3306:3306"
-  volumes:
-   - dbvol:/var/lib/mysql
-  env_file:
-   - secrets.env
-  command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
-volumes:
- dbvol:
-  external: false
