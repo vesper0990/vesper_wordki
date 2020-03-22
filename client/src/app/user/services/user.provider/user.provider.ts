@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 
 export abstract class UserProviderBase {
   abstract login(name: string, password: string): Observable<any>;

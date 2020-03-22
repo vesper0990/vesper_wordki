@@ -23,6 +23,12 @@
 
 <ng-template #words>
     <ng-container *ngIf="words$ | async as words">
-        <app-word-row *ngFor="let item of words" [word]="item" (editWord)="onEditWord($event)"></app-word-row>
+        <ng-container *ngIf="words.length !== 0; else nowords">
+            <app-word-row *ngFor="let item of words" [word]="item" (editWord)="onEditWord($event)"></app-word-row>
+        </ng-container>
     </ng-container>
+</ng-template>
+
+<ng-template #nowords>
+    <b>Brak słów</b>
 </ng-template>

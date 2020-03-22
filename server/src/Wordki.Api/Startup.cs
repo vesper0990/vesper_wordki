@@ -50,7 +50,7 @@ namespace Wordki
         public void Configure(IApplicationBuilder app)
         {
             app.UseCors("AllowAll");
-            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
+            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseMiddleware<ExceptionHandlerMiddleware>();
             app.UseMiddleware<HandleTimeMiddleware>();
             app.UseAuthentication();

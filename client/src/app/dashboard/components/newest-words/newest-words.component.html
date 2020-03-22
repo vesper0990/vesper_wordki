@@ -1,13 +1,19 @@
 <p-card class="card" header="Najnowsze słowa">
     <ng-container *ngIf="words$ | async as words; else loading">
-        <p-carousel [value]="words">
-            <ng-template let-word pTemplate="item">
-                {{word.language1}} - {{word.language2}}
-            </ng-template>
-        </p-carousel>
+        <ng-container *ngIf="words.length !== 0;else nowords">
+            <p-carousel [value]="words">
+                <ng-template let-word pTemplate="item">
+                    {{word.language1}} - {{word.language2}}
+                </ng-template>
+            </p-carousel>
+        </ng-container>
     </ng-container>
 </p-card>
 
 <ng-template #loading>
     <app-progress-spinner></app-progress-spinner>
+</ng-template>
+
+<ng-template #nowords>
+    <b>Brak słów</b>
 </ng-template>
