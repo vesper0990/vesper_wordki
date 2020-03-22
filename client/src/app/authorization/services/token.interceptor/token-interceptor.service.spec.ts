@@ -17,10 +17,7 @@ describe('TokenInterceptorService', () => {
         useClass: TokenInterceptorService,
         multi: true,
       },
-      {
-        provide: UserService,
-        useValue: jasmine.createSpyObj('userService', ['getToken'])
-      },
+      { provide: UserService, useValue: jasmine.createSpyObj('userService', ['getToken']) },
       HttpClient
     ],
   }));
@@ -34,7 +31,7 @@ describe('TokenInterceptorService', () => {
     const httpMock: HttpTestingController = TestBed.get(HttpTestingController);
     const httpClient: HttpClient = TestBed.get(HttpClient);
     const userServiceMock: jasmine.SpyObj<UserService> = TestBed.get(UserService);
-    userServiceMock.getToken.and.returnValue('token');
+    userServiceMock.getToken.and.returnValue({ token: 'token' });
 
     httpClient.get('http://localhost').subscribe();
 

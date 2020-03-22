@@ -2,39 +2,28 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { GroupDetailsComponent } from './group-details.component';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { ActivatedRouteMock } from '../test/services.mock';
-import { GroupDetailsProviderBase } from './services/group-details.provider/group-details.provider';
 import { MockComponent } from 'ng-mocks';
 import { WordRowComponent } from './components/word-row/word-row.component';
-import { of } from 'rxjs';
-import { GroupDetails } from './models/group-details.model';
+import { Store } from '@ngrx/store';
+import { EditWordDialogComponent } from '../share/components/edit-word-dialog/edit-word-dialog.component';
 
 describe('GroupDetailsComponent', () => {
   let component: GroupDetailsComponent;
   let fixture: ComponentFixture<GroupDetailsComponent>;
   let routerMock: Router;
-  let groupDetailsProviderMock: GroupDetailsProviderBase;
-
   const activetedRouteMock = new ActivatedRouteMock();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         GroupDetailsComponent,
-        MockComponent(WordRowComponent)
+        MockComponent(WordRowComponent),
+        MockComponent(EditWordDialogComponent)
       ],
       providers: [
-        {
-          provide: ActivatedRoute,
-          useValue: activetedRouteMock
-        },
-        {
-          provide: Router,
-          useValue: jasmine.createSpyObj('router', ['navigate'])
-        },
-        {
-          provide: GroupDetailsProviderBase,
-          useValue: jasmine.createSpyObj('groupDetailsProvdier', ['getGroupDetails'])
-        },
+        { provide: ActivatedRoute, useValue: activetedRouteMock },
+        { provide: Router, useValue: jasmine.createSpyObj('router', ['navigate']) },
+        { provide: Store, useValue: jasmine.createSpyObj('store', ['select', 'dispatch']) }
       ]
     })
       .compileComponents();
@@ -42,8 +31,6 @@ describe('GroupDetailsComponent', () => {
 
   beforeEach(() => {
     routerMock = TestBed.inject(Router);
-    groupDetailsProviderMock = TestBed.inject(GroupDetailsProviderBase);
-    spyOn(groupDetailsProviderMock, 'getGroupDetails').and.returnValue(of(<GroupDetails>{}));
     fixture = TestBed.createComponent(GroupDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -53,8 +40,4 @@ describe('GroupDetailsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should download group details after init', () => {
-    activetedRouteMock.paramsSubject.next(<Params>{ ['id']: 1 });
-    expect(groupDetailsProviderMock.getGroupDetails).toHaveBeenCalledWith(1);
-  });
 });

@@ -6,7 +6,8 @@ import { Router } from '@angular/router';
 import { MockComponent } from 'ng-mocks';
 import { GroupRowComponent } from './components/group-row/group-row.component';
 import { ProgressHorizontalComponent } from '../share/components/progress-horizontal/progress-horizontal.component';
-import { EditGroupFormComponent } from './components/edit-group-form/edit-group-form.component';
+import { Store } from '@ngrx/store';
+import { EditGroupDialogComponent } from '../share/components/edit-group-dialog/edit-group-dialog.component';
 
 describe('GroupsComponent', () => {
   let component: GroupsComponent;
@@ -17,10 +18,11 @@ describe('GroupsComponent', () => {
       declarations: [GroupsComponent,
         MockComponent(GroupRowComponent),
         MockComponent(ProgressHorizontalComponent),
-        MockComponent(EditGroupFormComponent)],
+        MockComponent(EditGroupDialogComponent)],
       providers: [
         { provide: GroupProviderBase, useValue: jasmine.createSpyObj('groupProvider', ['getGroups']) },
-        { provide: Router, useValue: jasmine.createSpyObj('router', ['navigate']) }
+        { provide: Router, useValue: jasmine.createSpyObj('router', ['navigate']) },
+        { provide: Store, useValue: jasmine.createSpyObj('store', ['select', 'dispatch']) },
       ]
     })
       .compileComponents();

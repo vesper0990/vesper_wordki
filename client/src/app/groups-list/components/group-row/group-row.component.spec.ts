@@ -2,6 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GroupRowComponent } from './group-row.component';
 import { Router } from '@angular/router';
+import { MockComponent } from 'ng-mocks';
+import { LabelValueComponent } from 'src/app/share/components/label-value/label-value.component';
 
 describe('GroupRowComponent', () => {
   let component: GroupRowComponent;
@@ -9,7 +11,10 @@ describe('GroupRowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [GroupRowComponent],
+      declarations: [
+        GroupRowComponent,
+        MockComponent(LabelValueComponent)
+      ],
       providers: [
         {
           provide: Router,
