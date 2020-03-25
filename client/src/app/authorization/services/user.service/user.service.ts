@@ -60,6 +60,7 @@ export class UserService {
 
   private saveCookie(): void {
     this.cookiesService.set(this.cookieTag, JSON.stringify(this.token));
+    console.log(this.cookiesService.check(this.cookieTag) ? 'token w cookie' : 'blad w cookie');
   }
 
 }

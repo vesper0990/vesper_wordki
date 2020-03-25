@@ -14,11 +14,14 @@ export class WordMapper {
             dto.drawer,
             dto.isVisible,
             new Date(dto.nextRepeat));
-        dto.repeats.forEach((repeatDto: RepeatDto) => word.repeats.push({
-            result: repeatDto.result,
-            date: new Date(repeatDto.date),
-            word: word
-        }));
+        if (dto.repeats) {
+            dto.repeats.forEach((repeatDto: RepeatDto) => word.repeats.push({
+                result: repeatDto.result,
+                date: new Date(repeatDto.date),
+                word: word
+            }));
+
+        }
         return word;
     }
 }

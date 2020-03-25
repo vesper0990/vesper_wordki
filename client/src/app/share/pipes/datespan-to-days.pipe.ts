@@ -7,6 +7,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class DateSpanToDaysPipe implements PipeTransform {
 
     transform(value: Date, ...args: any[]): string {
+        if (value === null) {
+            return 'nigdy';
+        }
         const now = new Date().getTime();
         const then = value.getTime();
         const span = Math.floor((now - then) / 1000 / 3600 / 24);

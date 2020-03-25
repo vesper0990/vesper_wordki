@@ -31,7 +31,8 @@ namespace Wordki.Queries.GetWordsFromGroup
                         wordDic.Add(word.WordId, word);
                     }
 
-                    wordEntry.Repeats.Add(repeat);
+                    if(repeat != null)
+                        wordEntry.Repeats.Add(repeat);
                     return wordEntry;
                 }, "Result")).Distinct();
                 return result;

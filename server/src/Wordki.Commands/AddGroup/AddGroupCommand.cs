@@ -49,7 +49,7 @@ namespace Wordki.Commands.AddGroup
 
                 return new Word
                 {
-                    Language1 = language2,
+                    Language1 = language1,
                     Language2 = language2,
                     Example1 = example1,
                     Example2 = example2,
