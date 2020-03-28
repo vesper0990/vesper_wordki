@@ -2,12 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { LoginContract } from './login.contract';
+import { RegisterContract } from './register.contract';
+import { AuthenticateContract } from './authenticate.contract';
 
 export abstract class UserProviderBase {
-  abstract login(name: string, password: string): Observable<any>;
-  abstract getUser(name: string, password: string): Observable<any>;
-  abstract authenticate(name: string, password: string): Observable<any>;
-  abstract refreshToken(token: string): Observable<string>;
+  abstract register(contract: RegisterContract): Observable<any>;
+  abstract login(contract: LoginContract): Observable<any>;
+  abstract authenticate(contract: AuthenticateContract): Observable<any>;
+  abstract refreshToken(): Observable<string>;
 }
 
 @Injectable()
@@ -17,47 +20,39 @@ export class UserProvider extends UserProviderBase {
     super();
   }
 
-  login(name: string, password: string): Observable<any> {
-    const request = {
-      name: name,
-      password: password
-    };
-    return this.client.post(`${environment.apiUrl}/login`, request);
+  register(contract: RegisterContract): Observable<any> {
+    return this.client.post(`${environment.apiUrl}/register`, contract);
   }
 
-  getUser(name: string, password: string): Observable<any> {
-    return this.client.get(`${environment.apiUrl}/user`);
+  login(contract: LoginContract): Observable<any> {
+    return this.client.post(`${environment.apiUrl}/login`, contract);
   }
 
-  authenticate(name: string, password: string): Observable<any> {
-    const request = {
-      name: name,
-      password: password
-    };
-    return this.client.post<any>(`${environment.apiUrl}/authentication`, request);
+  authenticate(contract: AuthenticateContract): Observable<any> {
+    return this.client.post<any>(`${environment.apiUrl}/authentication`, contract);
   }
 
-  refreshToken(token: string): Observable<string> {
-    return this.client.get<string>('');
+  refreshToken(): Observable<string> {
+    return this.client.get<string>(`${environment.apiUrl}/refreshToken`);
   }
 }
 
 @Injectable()
 export class UserProviderMock extends UserProviderBase {
 
-  login(name: string, password: string): Observable<any> {
+  login(contract: LoginContract): Observable<any> {
     return of<any>({});
   }
 
-  getUser(name: string, password: string): Observable<any> {
+  authenticate(contract: AuthenticateContract): Observable<string> {
+    return of<string>('token');
+  }
+
+  refreshToken(): Observable<string> {
+    return of<string>('token');
+  }
+
+  register(contract: RegisterContract): Observable<any> {
     return of<any>({});
-  }
-
-  authenticate(name: string, password: string): Observable<string> {
-    return of<string>('token');
-  }
-
-  refreshToken(token: string): Observable<string> {
-    return of<string>('token');
   }
 }

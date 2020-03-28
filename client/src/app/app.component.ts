@@ -16,7 +16,10 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.userServiceSub = this.userService.subscribe().subscribe((userExists: boolean) => this.isLogin = userExists);
+    this.userServiceSub = this.userService.subscribe().subscribe((userExists: boolean) => {
+      console.log('isLogin', this.isLogin);
+      this.isLogin = userExists;
+    });
     this.login();
   }
 

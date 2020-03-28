@@ -1,9 +1,10 @@
 <nav>
   <ng-container *ngIf="isLogin; else loggedOut">
-    <a [routerLink]="['/user/logout']">Wyloguj</a>
+    <button (click)="logout()">Wyloguj</button>
   </ng-container>
 </nav>
 
 <ng-template #loggedOut>
   <a [routerLink]="['/user/login']">Zaloguj</a>
+  <a [routerLink]="['/user/register']">Zarejestruj</a>
 </ng-template>

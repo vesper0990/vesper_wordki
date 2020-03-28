@@ -14,9 +14,11 @@ export class UserService {
 
   constructor(private cookiesService: CookieService) {
     this.subject = new BehaviorSubject<boolean>(false);
+    console.log('userservice constructor');
   }
 
   subscribe(): Observable<boolean> {
+    console.log('test');
     return this.subject.asObservable();
   }
 
@@ -29,6 +31,7 @@ export class UserService {
   }
 
   loginFromCookie(): void {
+    console.log('login');
     if (!this.cookiesService.check(this.cookieTag)) {
       return;
     }
@@ -38,6 +41,7 @@ export class UserService {
   }
 
   logout(): void {
+    console.log('logout');
     this.token = null;
     if (this.cookiesService.check(this.cookieTag)) {
       this.cookiesService.delete(this.cookieTag);
@@ -46,6 +50,7 @@ export class UserService {
   }
 
   refresh(newToken: any): void {
+    console.log('login', newToken);
     if (newToken.length === 0) {
       return;
     }
@@ -60,7 +65,6 @@ export class UserService {
 
   private saveCookie(): void {
     this.cookiesService.set(this.cookieTag, JSON.stringify(this.token));
-    console.log(this.cookiesService.check(this.cookieTag) ? 'token w cookie' : 'blad w cookie');
   }
 
 }

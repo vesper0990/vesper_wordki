@@ -6,15 +6,24 @@ import { TokenInterceptorService } from '../authorization/services/token.interce
 import { CookieService } from 'ngx-cookie-service';
 import { UserProvider, UserProviderBase, UserProviderMock } from './services/user.provider/user.provider';
 import { environment } from 'src/environments/environment';
-import { LoginComponent } from './components/login/login.component';
-import { LogoutComponent } from './components/logout/logout.component';
 import { UserRoutingModule } from './user-routing.module';
 import { AuthorizationModule } from '../authorization/authorization.module';
+import { RegisterComponent } from './pages/register/register.component';
+import { LoginFormComponent } from './components/login-form/login-form.component';
+import { RegisterFormComponent } from './components/register-form/register-form.component';
+import { LogoutComponent } from './pages/logout/logout.component';
+import { LoginComponent } from './pages/login/login.component';
+import { ButtonModule } from 'primeng/button';
+import { UserService } from '../authorization/services/user.service/user.service';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
   declarations: [
-    LoginComponent,
     LogoutComponent,
+    RegisterComponent,
+    LoginFormComponent,
+    RegisterFormComponent,
+    LoginComponent,
   ],
   imports: [
     CommonModule,
@@ -22,15 +31,13 @@ import { AuthorizationModule } from '../authorization/authorization.module';
     FormsModule,
     ReactiveFormsModule,
     UserRoutingModule,
-    AuthorizationModule
+    AuthorizationModule,
+    ButtonModule,
+    InputTextModule
   ],
   providers: [
     { provide: UserProviderBase, useClass: environment.production ? UserProvider : UserProviderMock },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptorService,
-      multi: true
-    },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
     CookieService,
   ]
 })
