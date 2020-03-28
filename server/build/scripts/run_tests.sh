@@ -1,1 +1,0 @@
-docker-compose -f ../../tests/Wordki.Tests.EndToEnd/docker-compose.Test.yml up --build

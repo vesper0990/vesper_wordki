@@ -1,8 +1,3 @@
-# Node.js with Angular
-# Build a Node.js project that uses Angular.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
 - master
 
@@ -10,3 +5,24 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+#- task: Bash@3
+#  displayName: Build and test client
+#  inputs:
+#    targetType: 'inline'
+#    script: 'docker-compose -f ./client/build/docker/docker-compose.yml up --build'
+- task: DockerCompose@0
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerComposeFile: './server/build/docker/docker-compose.E2ETests.yml'
+    action: 'Run a Docker Compose command'
+    dockerComposeCommand: 'up --abort-on-container-exit'
+- task: Bash@3
+  displayName: Copy build result
+  inputs:
+    targetType: 'inline'
+    script: 'mkdir -p ./build-result/client/dist && docker cp wordkiclient:/main/dist ./build-result/client/dist'
+- task: Bash@3
+  displayName: Copy test coverage
+  inputs:
+    targetType: 'inline'
+    script: 'mkdir -p ./build-result/client/coverage && docker cp wordkiclient:/main/coverage ./build-result/client/coverage'

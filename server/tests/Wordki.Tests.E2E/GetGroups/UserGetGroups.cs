@@ -54,7 +54,7 @@ namespace Wordki.Tests.EndToEnd.GetGroups
         async Task AndThenResponseContainMessage()
         {
             var message = await Response.Content.ReadAsStringAsync();
-            Assert.AreEqual("[{\"id\":1,\"name\":\"group\",\"language1\":1,\"language2\":2,\"wordsCount\":0}]", message);
+            Assert.AreEqual("[{\"id\":1,\"name\":\"group\",\"language1\":1,\"language2\":2,\"wordsCount\":0,\"repeatsCount\":0,\"averageDrawer\":0}]", message);
         }
 
         [Test]

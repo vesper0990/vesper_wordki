@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LogoutComponent } from './logout.component';
+import { UserService } from 'src/app/authorization/services/user.service/user.service';
+import { Router } from '@angular/router';
 
 describe('LogoutComponent', () => {
   let component: LogoutComponent;
@@ -8,9 +10,13 @@ describe('LogoutComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LogoutComponent ]
+      declarations: [LogoutComponent],
+      providers: [
+        { provide: UserService, useValue: jasmine.createSpyObj('userService', ['logout']) },
+        { provide: Router, useValue: jasmine.createSpyObj('router', ['navigate']) }
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

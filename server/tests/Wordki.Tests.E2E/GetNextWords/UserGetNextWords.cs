@@ -51,6 +51,7 @@ namespace Wordki.Tests.EndToEnd.GetNextWords
                         WordLanguage1 = $"word{i}",
                         WordLanguage2 = $"word{i}",
                         Drawer = 2,
+                        IsVisible = true,
                         WordCreationDate = new DateTime(2020, 01, 01).AddDays(-1 * i),
                         NextRepeat = new DateTime(2020, 01, 01).AddDays(i),
                     };

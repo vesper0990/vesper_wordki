@@ -1,6 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RegisterFormComponent } from './register-form.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UserProviderBase } from '../../services/user.provider/user.provider';
+import { UserService } from 'src/app/authorization/services/user.service/user.service';
+import { Router } from '@angular/router';
 
 describe('RegisterFormComponent', () => {
   let component: RegisterFormComponent;
@@ -8,9 +12,15 @@ describe('RegisterFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RegisterFormComponent ]
+      imports: [FormsModule, ReactiveFormsModule],
+      declarations: [RegisterFormComponent],
+      providers: [
+        { provide: UserProviderBase, useValue: jasmine.createSpyObj('userProvider', ['']) },
+        { provide: UserService, useValue: jasmine.createSpyObj('userService', ['']) },
+        { provide: Router, useValue: jasmine.createSpyObj('router', ['']) },
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

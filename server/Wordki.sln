@@ -21,9 +21,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{45ED4D03-BEC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "utils", "utils", "{6F036CBA-D731-4646-83DA-2C29CD802BE1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wordki.Tests.EndToEnd", "tests\Wordki.Tests.EndToEnd\Wordki.Tests.EndToEnd.csproj", "{1D89E32A-8DA3-47B8-B648-3AC5DBEC3409}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wordki.Tests.E2E", "tests\Wordki.Tests.E2E\Wordki.Tests.E2E.csproj", "{1D89E32A-8DA3-47B8-B648-3AC5DBEC3409}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wordki.Tests.Utils", "src\Wordki.Tests.Utils\Wordki.Tests.Utils.csproj", "{59DA6600-BF36-4916-9708-2C1E49087556}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wordki.Tests.Utils", "tests\Wordki.Tests.Utils\Wordki.Tests.Utils.csproj", "{59DA6600-BF36-4916-9708-2C1E49087556}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wordki.Tests.UnitTests", "tests\Wordki.Tests.UnitTests\Wordki.Tests.UnitTests.csproj", "{F5735882-C6B1-4690-8CCD-0A9E2C972AEB}"
 EndProject

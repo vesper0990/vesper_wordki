@@ -27,7 +27,10 @@ export class WordRowComponent implements OnInit {
   }
 
   private setLastRepeat(): void {
-    if (this._word.repeats.length === 0) {
+    if (!this._word || !this._word.repeats) {
+      return;
+    }
+    if (this._word && this._word.repeats && this._word.repeats.length === 0) {
       this.lastRepeat = null;
       return;
     }

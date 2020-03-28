@@ -2,7 +2,7 @@ version: '3'
 services:
  wordki:
   container_name: wordki_dev
-  image: wordki
+  image: wordki_dev_image
   build:
    context: ../../
    dockerfile: ./src/Wordki.Api/Dockerfile.Development
@@ -13,10 +13,10 @@ services:
   links:
    - mysql
   environment:
-   - WAIT_HOSTS=mysql:5672
+   - WAIT_HOSTS=mysql:3306
    - WAIT_HOSTS_TIMEOUT=60
  mysql:
-  container_name: db_dev
+  container_name: mysql_dev
   image: mysql/mysql-server:latest
   restart: always
   ports:
@@ -24,7 +24,7 @@ services:
   volumes:
    - dbvol:/var/lib/mysql
   env_file:
-   - secrets.env
+   - secrets.Development.env
   command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
  phpmyadmin:
   container_name: phpmyadmin
@@ -32,9 +32,12 @@ services:
   ports:
    - "81:80"
   env_file:
-   - secrets.env
+   - secrets.Development.env
   depends_on:
    - mysql
+  environment:
+   - WAIT_HOSTS=mysql:3306
+   - WAIT_HOSTS_TIMEOUT=60
  seq:
   container_name: seq_dev
   image: datalust/seq:latest

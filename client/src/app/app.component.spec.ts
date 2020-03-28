@@ -4,7 +4,7 @@ import { AppComponent } from './app.component';
 import { UserService } from './authorization/services/user.service/user.service';
 import { Subject } from 'rxjs';
 import { NavigationBarComponent } from './navigation/components/navigation-bar/navigation-bar.component';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockService } from 'ng-mocks';
 
 describe('AppComponent', () => {
 
@@ -22,10 +22,7 @@ describe('AppComponent', () => {
         MockComponent(NavigationBarComponent)
       ],
       providers: [
-        {
-          provide: UserService,
-          useValue: jasmine.createSpyObj('userService', ['subscribe', 'loginFromCookie'])
-        }
+        { provide: UserService, useValue: MockService(UserService) }
       ]
     }).compileComponents();
   }));

@@ -1,1 +1,0 @@
-sudo docker exec db /usr/bin/mysqldump -u vesper0990 --password=Arh517117 Wordki > backup.sql
