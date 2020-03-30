@@ -39,23 +39,12 @@ namespace Wordki.Infrastructure.Services
         {
             using (var connection = await dbConnection.Connect())
             {
-                if (await connection.ExecuteScalar("SELECT COUNT(*) FROM users") > 0)
-                {
-                    return;
-                }
-            }
-
-            using (var connection = await dbConnection.Connect())
-            {
-                await connection.Execute("DELETE FROM repeats");
-                await connection.Execute("DELETE FROM words");
-                await connection.Execute("DELETE FROM groups2");
-                await connection.Execute("DELETE FROM users");
+                await connection.Execute("DELETE FROM users where name = 'sampleUser'");
             }
 
             for (int i = 1; i <= 1; i++)
             {
-                var user = userFactory.Create($"user{i}", encrypter.Md5Hash($"pass{i}"));
+                var user = userFactory.Create($"sampleUser", encrypter.Md5Hash($"password"));
                 var userId = await userRepository.SaveAsync(user);
                 for (int j = 1; j <= 10; j++)
                 {

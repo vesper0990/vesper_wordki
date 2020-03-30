@@ -1,7 +1,6 @@
 import { Action } from '@ngrx/store';
 import { GroupDetails } from '../models/group-details.model';
 import { Word } from '../models/word.model';
-import { Actions } from '@ngrx/effects';
 import { AddedGroup } from '../models/added-group';
 import { EditWord } from 'src/app/share/components/edit-word-dialog/edit-word.model';
 

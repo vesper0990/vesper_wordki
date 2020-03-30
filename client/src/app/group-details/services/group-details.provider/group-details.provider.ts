@@ -88,7 +88,7 @@ export class GroupDetailsProviderMock extends GroupDetailsProviderBase {
 
         const arr: WordDto[] = [];
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 1; i < 10; i++) {
             const repeats: RepeatDto[] = [];
             for (let j = 0; j < 5; j++) {
                 const now = new Date();
