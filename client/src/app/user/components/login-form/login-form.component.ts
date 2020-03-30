@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserProvider, UserProviderBase } from '../../services/user.provider/user.provider';
+import { UserProviderBase } from '../../services/user.provider/user.provider';
 import { forkJoin } from 'rxjs';
 import { UserService } from 'src/app/authorization/services/user.service/user.service';
 import { Router } from '@angular/router';
@@ -45,11 +45,7 @@ export class LoginFormComponent implements OnInit {
     }).subscribe((result: { login: any, authenticate: any }) => {
       this.userService.refresh(result.authenticate);
       this.router.navigate(['/dashboard']);
-      console.log('navigate');
-    },
-      error => {
-        console.log('login error', error);
-      });
+    });
   }
 
 }

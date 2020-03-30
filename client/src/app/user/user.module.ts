@@ -16,6 +16,8 @@ import { LoginComponent } from './pages/login/login.component';
 import { ButtonModule } from 'primeng/button';
 import { UserService } from '../authorization/services/user.service/user.service';
 import { InputTextModule } from 'primeng/inputtext';
+import { ShareModule } from '../share/share.module';
+import { HttpErrorInterceptor } from '../share/services/http-error.interceptor';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { InputTextModule } from 'primeng/inputtext';
     CommonModule,
     HttpClientModule,
     FormsModule,
+    ShareModule,
     ReactiveFormsModule,
     UserRoutingModule,
     AuthorizationModule,
@@ -38,6 +41,7 @@ import { InputTextModule } from 'primeng/inputtext';
   providers: [
     { provide: UserProviderBase, useClass: environment.production ? UserProvider : UserProviderMock },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
     CookieService,
   ]
 })

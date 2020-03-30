@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using NLog;
 
 namespace Wordki.Infrastructure.Framework.ExceptionMiddleware
@@ -21,11 +22,14 @@ namespace Wordki.Infrastructure.Framework.ExceptionMiddleware
             try
             {
                 await next(context);
-            }
+            }   
             catch(Exception ex)
             {
                 logger.LogError("Exception {exception}", ex, context.Request.PathBase);
-                throw;
+                var result = JsonConvert.SerializeObject(new { error = ex.Message });
+                context.Response.ContentType = "application/json";
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                await context.Response.WriteAsync(result);
             }
         }
     }
