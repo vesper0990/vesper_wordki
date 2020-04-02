@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using Wordki.Commands.Login;
+using Wordki.Infrastructure.Framework.ExceptionMiddleware;
 using Wordki.Utils.Commands;
 
 namespace Wordki.Api.Login
@@ -19,7 +20,11 @@ namespace Wordki.Api.Login
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            var command = LoginCommand.Create(request.Name, request.Password);
+            if (request == null)
+            {
+                throw new ApiException("Request is null", ErrorCode.EmptyRequest);
+            }
+            var command = LoginCommand.Create(request.UserName, request.Password);
             await commandHandler.HandleAsync(command);
             return new StatusCodeResult((int)HttpStatusCode.OK);
         }
@@ -28,7 +33,7 @@ namespace Wordki.Api.Login
 
     public class LoginRequest
     {
-        public string Name { get; set; }
+        public string UserName { get; set; }
         public string Password { get; set; }
     }
 }

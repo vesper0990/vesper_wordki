@@ -14,11 +14,9 @@ export class UserService {
 
   constructor(private cookiesService: CookieService) {
     this.subject = new BehaviorSubject<boolean>(false);
-    console.log('userservice constructor');
   }
 
   subscribe(): Observable<boolean> {
-    console.log('test');
     return this.subject.asObservable();
   }
 
@@ -50,7 +48,6 @@ export class UserService {
   }
 
   refresh(newToken: any): void {
-    console.log('login', newToken);
     if (newToken.length === 0) {
       return;
     }

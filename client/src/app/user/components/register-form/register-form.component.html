@@ -1,4 +1,4 @@
-<form [formGroup]="registerForm">
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <div class=ui-g>
         <label for="userName" class="ui-g-3 col-form-label">
             <b>Nazwa użytkownika</b>
@@ -42,7 +42,8 @@
         </div>
     </div>
     <div class="ui-g" style="padding: 5px; position: relative;">
-        <button pButton class="ui-button-success" style="width: 100%;" type="submit" label="Zaloguj"
+        <button pButton class="ui-button-success" style="width: 100%;" type="submit" label="Zarejestruj"
             [disabled]="!registerForm.valid"></button>
     </div>
 </form>
+<p-toast position="top-right"></p-toast>

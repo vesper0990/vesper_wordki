@@ -14,10 +14,13 @@ export class GroupRowComponent implements OnInit {
   @Output() lessonStart: EventEmitter<Group> = new EventEmitter();
   @Output() groupEdit: EventEmitter<Group> = new EventEmitter();
 
+  wordsValue: string;
+
   constructor(
     private router: Router) { }
 
   ngOnInit() {
+    this.wordsValue = this.group.visibleWordsCount + '/' + this.group.wordsCount;
   }
 
   startLesson(group: Group): void {

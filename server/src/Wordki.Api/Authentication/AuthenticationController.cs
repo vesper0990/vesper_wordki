@@ -23,7 +23,7 @@ namespace Wordki.Api.Authentication
         [HttpPost]
         public async Task<IActionResult> Authenticate([FromBody] AuthenticateRequest request)
         {
-            var query = GetUserQuery.Create(request.Name, request.Password);
+            var query = GetUserQuery.Create(request.UserName, request.Password);
             var user = await queryHandler.HandleAsync(query);
             if (user == null)
             {

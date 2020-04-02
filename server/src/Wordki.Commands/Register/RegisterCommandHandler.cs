@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Wordki.Core;
 using Wordki.Core.Data;
+using Wordki.Infrastructure.Framework.ExceptionMiddleware;
 using Wordki.Infrastructure.Services;
 using Wordki.Utils.Commands;
 
@@ -25,7 +26,7 @@ namespace Wordki.Commands.Register
             var isExists = await userReposiory.IsExists(command.UserName);
             if(isExists)
             {
-                throw new System.Exception("User exists");
+                throw new ApiException("User already exits", ErrorCode.UserAlreadyExists);
             }
             var user = userFactory.Create(command.UserName, passwordHash);
             await userReposiory.SaveAsync(user);

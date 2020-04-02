@@ -10,14 +10,14 @@ namespace Wordki.Queries.GetUser
         public string Name { get; private set; }
         public string Password { get; private set; }
 
-        public static GetUserQuery Create(string name, string password)
+        public static GetUserQuery Create(string userName, string password)
         {
-            Condition.MustBeDefined(name, nameof(name));
+            Condition.MustBeDefined(userName, nameof(userName));
             Condition.MustBeDefined(password, nameof(password));
 
             return new GetUserQuery()
             {
-                Name = name,
+                Name = userName,
                 Password = password
             };
         }

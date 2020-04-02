@@ -61,6 +61,7 @@ export class GroupProviderMock extends GroupProviderBase {
                 language2: 2,
                 wordsCount: 30 % i,
                 repeatsCount: 30 % i,
+                visibleWordsCount: 30 % i,
                 averageDrawer: 5 % i,
             });
         }

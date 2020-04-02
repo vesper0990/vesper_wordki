@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Wordki.Core;
 using Wordki.Core.Data;
+using Wordki.Infrastructure.Framework.ExceptionMiddleware;
 using Wordki.Infrastructure.Services;
 using Wordki.Utils.Commands;
 
@@ -26,9 +27,9 @@ namespace Wordki.Commands.Login
         {
             var passwordHash = encrypter.Md5Hash(command.Password);
             var user = await userRepository.GetUserAsync(command.UserName, passwordHash);
-            if(user == null)
+            if(user == User.NullObject)
             {
-                throw new Exception();
+                throw new ApiException("User not found", ErrorCode.UserNotFound);
             }
             userLogin.Login(user);
             await userRepository.SaveAsync(user);

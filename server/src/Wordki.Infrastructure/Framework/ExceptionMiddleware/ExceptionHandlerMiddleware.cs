@@ -22,7 +22,15 @@ namespace Wordki.Infrastructure.Framework.ExceptionMiddleware
             try
             {
                 await next(context);
-            }   
+            }
+            catch(ApiException ex)
+            {
+                logger.LogError("Exception {exception}", ex, context.Request.PathBase);
+                var result = JsonConvert.SerializeObject(new { message = ex.Message, code = ex.Code.ToString() });
+                context.Response.ContentType = "application/json";
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                await context.Response.WriteAsync(result);
+            }
             catch(Exception ex)
             {
                 logger.LogError("Exception {exception}", ex, context.Request.PathBase);

@@ -7,6 +7,10 @@ namespace Wordki.Core.Mappers
     {
         public User Map(UserDto dto)
         {
+            if(dto == null)
+            {
+                return User.NullObject;
+            }
             return User.Restore(dto.Id, dto.Name, dto.Password, dto.CreationDate, dto.LastLoginDate);
         }
     }

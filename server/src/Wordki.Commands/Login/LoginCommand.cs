@@ -1,4 +1,4 @@
-﻿using Wordki.Utils;
+﻿using Wordki.Infrastructure.Framework.ExceptionMiddleware;
 using Wordki.Utils.Commands;
 
 namespace Wordki.Commands.Login
@@ -13,8 +13,8 @@ namespace Wordki.Commands.Login
 
         public static LoginCommand Create(string userName, string password)
         {
-            Condition.MustBeDefined(userName, nameof(userName));
-            Condition.MustBeDefined(password, nameof(password));
+            ValidateUserName(userName);
+            ValidatePassword(password);
 
             return new LoginCommand()
             {
@@ -23,5 +23,20 @@ namespace Wordki.Commands.Login
             };
         }
 
+        private static void ValidateUserName(string userName)
+        {
+            if (string.IsNullOrEmpty(userName))
+            {
+                throw new ApiException("Parameter 'userName' cannot be null or empty", ErrorCode.EmptyParameter);
+            }
+        }
+
+        private static void ValidatePassword(string password)
+        {
+            if (string.IsNullOrEmpty(password))
+            {
+                throw new ApiException("Parameter 'password' cannot be null or empty", ErrorCode.EmptyParameter);
+            }
+        }
     }
 }

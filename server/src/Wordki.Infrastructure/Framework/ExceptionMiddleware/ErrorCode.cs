@@ -2,6 +2,15 @@
 {
     public enum ErrorCode
     {
-        Default
+        Default,
+
+        EmptyParameter,
+        EmptyRequest,
+
+        UserNotFound,
+
+        UserAlreadyExists,
+        PasswordNotConfirmed,
+
     }
 }

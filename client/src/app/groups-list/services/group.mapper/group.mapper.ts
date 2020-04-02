@@ -12,6 +12,7 @@ export class GroupMapper {
             LanguageType.getLanguageType(groupDto.language1),
             LanguageType.getLanguageType(groupDto.language2),
             groupDto.wordsCount,
+            groupDto.visibleWordsCount,
             groupDto.repeatsCount,
             groupDto.averageDrawer);
     }

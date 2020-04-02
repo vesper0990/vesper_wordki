@@ -6,11 +6,17 @@ namespace Wordki.Core
 {
     public class User : IDomainObject
     {
+        public static User NullObject = new User();
         public long Id { get; }
         public string Name { get; }
         public string Password { get; }
         public DateTime CreationDate { get; }
         public DateTime? LastLoginDate { get; private set; }
+
+        private User()
+        {
+
+        }
 
         private User(long id, string name, string password, DateTime creationDate, DateTime? lastLoginDate)
         {

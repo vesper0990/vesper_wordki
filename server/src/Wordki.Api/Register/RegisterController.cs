@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using Wordki.Commands.Register;
+using Wordki.Infrastructure.Framework.ExceptionMiddleware;
 using Wordki.Utils;
 using Wordki.Utils.Commands;
 
@@ -20,9 +21,12 @@ namespace Wordki.Api.Register
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
-            Condition.True(request.Password.Equals(request.PasswordRepeat), "Password's are not the same");
+            if (request == null)
+            {
+                throw new ApiException("Request is null", ErrorCode.EmptyRequest);
+            }
 
-            var command = RegisterCommand.Create(request.UserName, request.Password);
+            var command = RegisterCommand.Create(request.UserName, request.Password, request.PasswordConfirmation);
 
             await commandHandler.HandleAsync(command);
 
@@ -34,6 +38,6 @@ namespace Wordki.Api.Register
     {
         public string UserName { get; set; }
         public string Password { get; set; }
-        public string PasswordRepeat { get; set; }
+        public string PasswordConfirmation { get; set; }
     }
 }

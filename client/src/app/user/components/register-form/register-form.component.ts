@@ -6,11 +6,14 @@ import { UserProvider, UserProviderBase } from '../../services/user.provider/use
 import { UserService } from 'src/app/authorization/services/user.service/user.service';
 import { RegisterContract } from '../../services/user.provider/register.contract';
 import { AuthenticateContract } from '../../services/user.provider/authenticate.contract';
+import { ApiException, ErrorCodes } from 'src/app/share/models/error-codes.model';
+import { MessageService, Message } from 'primeng/api';
 
 @Component({
   selector: 'app-register-form',
   templateUrl: './register-form.component.html',
-  styleUrls: ['./register-form.component.scss']
+  styleUrls: ['./register-form.component.scss'],
+  providers: [MessageService]
 })
 export class RegisterFormComponent implements OnInit {
 
@@ -27,26 +30,53 @@ export class RegisterFormComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private userProvider: UserProviderBase,
     private userService: UserService,
-    private router: Router) { }
+    private router: Router,
+    private messageService: MessageService) { }
 
   ngOnInit(): void {
   }
 
   onSubmit(): void {
+    this.registerForm.disable();
     const registerContract = <RegisterContract>this.registerForm.value;
     const authenticateContract = <AuthenticateContract>this.registerForm.value;
-    forkJoin({
-      login: this.userProvider.register(registerContract),
-      authenticate: this.userProvider.authenticate(authenticateContract),
-    }).subscribe((result: { login: any, authenticate: any }) => {
-      this.userService.refresh(result.authenticate);
-      this.router.navigate(['/dashboard']);
+
+    this.userProvider.register(registerContract).subscribe(() => {
+      this.userProvider.authenticate(authenticateContract).subscribe(authenticate => {
+        this.userService.refresh(authenticate);
+        this.router.navigate(['/dashboard']);
+      }, (error: ApiException) => this.handleError(error));
     },
-      error => {
-        console.log('login error', error);
-      });
+      (error: ApiException) => this.handleError(error));
   }
 
+  private handleError(error: ApiException): void {
+    this.registerForm.enable();
+    switch (error.code) {
+      case ErrorCodes.EmptyParameter:
+      case ErrorCodes.EmptyRequest:
+        this.messageService
+          .add(<Message>{
+            closable: true,
+            severity: 'error',
+            summary: 'Rejestracja nie powiodła się',
+            detail: 'Błąd aplikacji'
+          });
+        break;
+      case ErrorCodes.UserAlreadyExists:
+        this.messageService
+          .add(<Message>{
+            closable: true,
+            severity: 'error',
+            summary: 'Rejestracja nie powiodło się',
+            detail: 'Nazwa użytkownika jest już zajęta'
+          });
+        break;
+      default:
+        this.router.navigate(['/error']);
+        break;
+    }
+  }
 }
 
 export function notSameValidator(comparableControl: AbstractControl): ValidatorFn {

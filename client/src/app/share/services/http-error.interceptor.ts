@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { ErrorService } from '../components/error/error-service';
 import { retry, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { ApiException } from '../models/error-codes.model';
 
 
 @Injectable({
@@ -18,15 +19,22 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         return next.handle(req)
             .pipe(
                 catchError((error: HttpErrorResponse) => {
-                    let errorMessage = '';
-                    if (error.error instanceof ErrorEvent) {
-                        errorMessage = `Error: ${error.error.message}`;
-                    } else {
-                        errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+                    switch (error.status) {
+                        case 400:
+                            const apiException = new ApiException(error.error.message, error.error.code);
+                            return throwError(apiException);
+                        default:
+                            let errorMessage = '';
+                            if (error.error instanceof ErrorEvent) {
+                                errorMessage = `Error: ${error.error.message}`;
+                            } else {
+                                errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+                            }
+                            this.errorService.setError('test', error);
+                            this.router.navigate(['/error']);
+                            return throwError(errorMessage);
+
                     }
-                    this.errorService.setError(errorMessage, error);
-                    this.router.navigate(['/error']);
-                    return throwError(errorMessage);
                 })
             );
     }

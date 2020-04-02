@@ -14,10 +14,11 @@ import { RegisterFormComponent } from './components/register-form/register-form.
 import { LogoutComponent } from './pages/logout/logout.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ButtonModule } from 'primeng/button';
-import { UserService } from '../authorization/services/user.service/user.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { ShareModule } from '../share/share.module';
 import { HttpErrorInterceptor } from '../share/services/http-error.interceptor';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -36,12 +37,14 @@ import { HttpErrorInterceptor } from '../share/services/http-error.interceptor';
     UserRoutingModule,
     AuthorizationModule,
     ButtonModule,
-    InputTextModule
+    InputTextModule,
+    ToastModule
   ],
   providers: [
     { provide: UserProviderBase, useClass: environment.production ? UserProvider : UserProviderMock },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
+    MessageService,
     CookieService,
   ]
 })

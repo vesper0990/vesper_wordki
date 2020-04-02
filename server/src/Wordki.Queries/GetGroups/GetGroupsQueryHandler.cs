@@ -29,17 +29,30 @@ namespace Wordki.Queries.GetGroups
 
         private readonly string Sql = $@"
 SELECT
-    g.id                as Id,
-    g.name              as Name,
-    g.language1         as Language1,
-    g.language2         as Language2,
-    count(w.id)         as WordsCount,
-    count(r.id)         as RepeatsCount,
-    AVG(w.drawer)       as AverageDrawer
-FROM groups2 g
-LEFT JOIN words w ON w.groupId =  g.id
-LEFT JOIN repeats r ON w.id = r.wordId
-WHERE g.userid = @userId
-GROUP BY g.id";
+    Id,
+    Name,
+    Language1,
+    Language2,
+    COUNT(WordId)             as WordsCount,
+    COUNT(CASE IsVisible WHEN TRUE THEN 1 ELSE NULL END) as VisibleWordsCount,
+    sum(RepeatsCount)         as RepeatsCount,
+    AVG(Drawer)               as AverageDrawer
+FROM (
+    SELECT
+        g.id                as Id,
+        g.name              as Name,
+        g.language1         as Language1,
+        g.language2         as Language2,
+        w.id                as WordId,
+        count(r.id)         as RepeatsCount,
+        w.drawer            as Drawer,
+        w.isVisible         as IsVisible
+    FROM words w
+    LEFT JOIN repeats r ON w.id = r.wordId
+    LEFT JOIN groups2 g ON w.groupId =  g.id
+    WHERE g.userid = @userId
+    GROUP BY w.id
+) t
+GROUP BY Id";
     }
 }

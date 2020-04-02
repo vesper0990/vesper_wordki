@@ -5,6 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserProviderBase } from '../../services/user.provider/user.provider';
 import { UserService } from 'src/app/authorization/services/user.service/user.service';
 import { Router } from '@angular/router';
+import { MockComponent } from 'ng-mocks';
+import { Toast } from 'primeng/toast';
 
 describe('LoginFormComponent', () => {
   let component: LoginFormComponent;
@@ -13,14 +15,17 @@ describe('LoginFormComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule],
-      declarations: [ LoginFormComponent ],
+      declarations: [
+        LoginFormComponent,
+        MockComponent(Toast)
+      ],
       providers: [
         { provide: UserProviderBase, useValue: jasmine.createSpyObj('userProvider', ['']) },
         { provide: UserService, useValue: jasmine.createSpyObj('userService', ['']) },
         { provide: Router, useValue: jasmine.createSpyObj('router', ['']) },
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
