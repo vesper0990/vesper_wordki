@@ -2,6 +2,7 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using TestStack.BDDfy;
 using Wordki.Core.Dtos;
@@ -46,7 +47,8 @@ namespace Wordki.Tests.EndToEnd.GetLastFailedWord
                 var word1 = new WordDto
                 {
                     WordId = 1,
-                    GroupId = 1
+                    GroupId = 1,
+                    IsVisible = true,
                 };
                 dbContext.Words.Add(word1);
 
@@ -65,6 +67,9 @@ namespace Wordki.Tests.EndToEnd.GetLastFailedWord
                     GroupId = 1,
                     WordLanguage1 = "word2",
                     WordLanguage2 = "word2",
+                    Drawer = 0,
+                    IsVisible = true,
+                    WordCreationDate = Host.TimeProviderMock.Object.GetTime()
                 };
                 dbContext.Words.Add(word2);
 
@@ -90,7 +95,24 @@ namespace Wordki.Tests.EndToEnd.GetLastFailedWord
         async Task AndThenResponseContainLastFailedWord()
         {
             var message = await Response.Content.ReadAsStringAsync();
-            Assert.AreEqual("{\"language1\":\"word2\",\"language2\":\"word2\"}", message);
+            object temp = null;
+            var expectedJsonObj = new
+            {
+                groupName = "group",
+                groupLanguage1 = 1,
+                groupLanguage2 = 2,
+                id = 2,
+                language1 = "word2",
+                language2 = "word2",
+                example1 = temp,
+                example2 = temp,
+                drawer = 0,
+                creationDate = Host.TimeProviderMock.Object.GetTime(),
+                repeatsCount = 1,
+                lastRepeat = new DateTime(2020, 01, 02)
+            };
+            var expectedJson = JsonSerializer.Serialize(expectedJsonObj);
+            Assert.AreEqual(expectedJson, message);
         }
 
         [Test]

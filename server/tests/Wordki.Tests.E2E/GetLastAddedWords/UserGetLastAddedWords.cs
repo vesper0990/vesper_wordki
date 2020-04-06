@@ -1,9 +1,8 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using TestStack.BDDfy;
 using Wordki.Core.Dtos;
@@ -52,7 +51,9 @@ namespace Wordki.Tests.EndToEnd.GetLastAddedWords
                         GroupId = 1,
                         WordLanguage1 = $"word{i}",
                         WordLanguage2 = $"word{i}",
-                        WordCreationDate = new DateTime(2020, 01, 01).AddDays(-1 * i),
+                        IsVisible = true,
+                        Drawer = 1,
+                        WordCreationDate = Host.TimeProviderMock.Object.GetTime().AddDays(-1 * i),
                     };
                     dbContext.Words.Add(word);
                 }
@@ -71,7 +72,42 @@ namespace Wordki.Tests.EndToEnd.GetLastAddedWords
         async Task AndThenResponseContainProperMessage()
         {
             var message = await Response.Content.ReadAsStringAsync();
-            Assert.AreEqual("[{\"language1\":\"word1\",\"language2\":\"word1\",\"creationDate\":\"2019-12-31T00:00:00\"},{\"language1\":\"word2\",\"language2\":\"word2\",\"creationDate\":\"2019-12-30T00:00:00\"}]", message);
+            object temp = null;
+            var expectedJsonObj = new object[]
+            {
+                new
+                {
+                    groupName = "group",
+                    groupLanguage1 = 1,
+                    groupLanguage2 = 2,
+                    id = 1,
+                    language1 = "word1",
+                    language2 = "word1",
+                    example1 = temp,
+                    example2 = temp,
+                    drawer = 1,
+                    creationDate = Host.TimeProviderMock.Object.GetTime().AddDays(-1),
+                    repeatsCount = 0,
+                    lastRepeat = new DateTime()
+                },
+                new
+                {
+                    groupName = "group",
+                    groupLanguage1 = 1,
+                    groupLanguage2 = 2,
+                    id = 2,
+                    language1 = "word2",
+                    language2 = "word2",
+                    example1 = temp,
+                    example2 = temp,
+                    drawer = 1,
+                    creationDate = Host.TimeProviderMock.Object.GetTime().AddDays(-2),
+                    repeatsCount = 0,
+                    lastRepeat = new DateTime()
+                }
+            };
+            var expectedJson = JsonSerializer.Serialize(expectedJsonObj);
+            Assert.AreEqual(expectedJson, message);
         }
 
         [Test]

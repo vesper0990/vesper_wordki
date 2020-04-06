@@ -47,11 +47,11 @@ FROM (
         count(r.id)         as RepeatsCount,
         w.drawer            as Drawer,
         w.isVisible         as IsVisible
-    FROM words w
-    LEFT JOIN repeats r ON w.id = r.wordId
-    LEFT JOIN groups2 g ON w.groupId =  g.id
+    FROM groups2 g
+    left JOIN words w ON w.groupId = g.id
+    left JOIN repeats r ON r.wordId =  w.id
     WHERE g.userid = @userId
-    GROUP BY w.id
+    GROUP BY w.id, g.id
 ) t
 GROUP BY Id";
     }

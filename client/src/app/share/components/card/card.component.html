@@ -1,0 +1,44 @@
+<div (click)="changeSide()" style="width:100%; position: relative;;">
+    <div style="width: 100%; overflow: hidden">
+        <div style="float: left; font-size: 20px;   " class="group-desc">
+            {{word?.groupName}}
+        </div>
+        <button *ngIf="showMore" style="float: right;margin: auto;" pButton class="ui-button-success" appClickStopPropagation
+            (click)="showAdditionalInfo()" label="Więcej"></button>
+        <hr style="float: left; width: 100%;">
+    </div>
+    <ng-container [ngSwitch]="side">
+        <div class="ui-g" *ngSwitchCase="'language1'">
+            <div *ngIf="word" class="ui-g-1">
+                <img  src="assets/flags/{{word.groupLanguage1.flag}}" style="width:24px; float:left;margin: 5px 10px ;" />
+            </div>
+            <div class="ui-g-11">
+                <div class="word">
+                    {{word?.language1}}
+                </div>
+                <div class="example">
+                    {{word?.example1}}
+                </div>
+            </div>
+        </div>
+        <div class="ui-g" *ngSwitchCase="'language2'">
+            <div class="ui-g-1">
+                <img  src="assets/flags/{{word.groupLanguage2.flag}}" style="width:24px; float:left;margin: 5px 10px ;" />
+            </div>
+            <div class="ui-g-11">
+                <div class="word">
+                    {{word.language2}}
+                </div>
+                <div class="example">
+                    {{word.example2}}
+                </div>
+            </div>
+        </div>
+        <div *ngSwitchCase="'additional'">
+            <app-label-value label="Ostatnia powtórka" [value]="word?.lastRepeat | date"></app-label-value>
+            <app-label-value label="Szuflada" [value]="word?.drawer"></app-label-value>
+            <app-label-value label="Powtórki" [value]="word?.repeatsCount"></app-label-value>
+            <app-label-value label="Data dodania" [value]="word?.creationDate | date"></app-label-value>
+        </div>
+    </ng-container>
+</div>

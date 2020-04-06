@@ -2,6 +2,7 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using TestStack.BDDfy;
 using Wordki.Core.Dtos;
@@ -52,7 +53,7 @@ namespace Wordki.Tests.EndToEnd.GetNextWords
                         WordLanguage2 = $"word{i}",
                         Drawer = 2,
                         IsVisible = true,
-                        WordCreationDate = new DateTime(2020, 01, 01).AddDays(-1 * i),
+                        WordCreationDate = Host.TimeProviderMock.Object.GetTime(),
                         NextRepeat = new DateTime(2020, 01, 01).AddDays(i),
                     };
                     dbContext.Words.Add(word);
@@ -72,7 +73,42 @@ namespace Wordki.Tests.EndToEnd.GetNextWords
         async Task AndThenResponseContainProperMessage()
         {
             var message = await Response.Content.ReadAsStringAsync();
-            Assert.AreEqual("[{\"id\":1,\"language1\":\"word1\",\"language2\":\"word1\",\"drawer\":2},{\"id\":2,\"language1\":\"word2\",\"language2\":\"word2\",\"drawer\":2}]", message);
+            object temp = null;
+            var expectedJsonObj = new object[]
+            {
+                new
+                {
+                    groupName = "group",
+                    groupLanguage1 = 1,
+                    groupLanguage2 = 2,
+                    id = 1,
+                    language1 = "word1",
+                    language2 = "word1",
+                    example1 = temp,
+                    example2 = temp,
+                    drawer = 2,
+                    creationDate = Host.TimeProviderMock.Object.GetTime(),
+                    repeatsCount = 0,
+                    lastRepeat = temp
+                },
+                new
+                {
+                    groupName = "group",
+                    groupLanguage1 = 1,
+                    groupLanguage2 = 2,
+                    id = 2,
+                    language1 = "word2",
+                    language2 = "word2",
+                    example1 = temp,
+                    example2 = temp,
+                    drawer = 2,
+                    creationDate = Host.TimeProviderMock.Object.GetTime(),
+                    repeatsCount = 0,
+                    lastRepeat = temp
+                }
+            };
+            var expectedJson = JsonSerializer.Serialize(expectedJsonObj);
+            Assert.AreEqual(expectedJson, message);
 
         }
 

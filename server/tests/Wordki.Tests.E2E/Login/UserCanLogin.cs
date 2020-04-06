@@ -38,7 +38,7 @@ namespace Wordki.Tests.EndToEnd.Login
 
         void AndGivenRequest()
         {
-            Request.Content = new StringContent("{\"name\":\"user\", \"password\":\"pass\"}", Encoding.UTF8, "application/json");
+            Request.Content = new StringContent("{\"userName\":\"user\", \"password\":\"pass\"}", Encoding.UTF8, "application/json");
         }
 
         async Task WhenRequestReceived() => await SendRequest();

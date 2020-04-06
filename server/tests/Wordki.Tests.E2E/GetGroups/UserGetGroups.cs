@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using TestStack.BDDfy;
@@ -54,7 +55,20 @@ namespace Wordki.Tests.EndToEnd.GetGroups
         async Task AndThenResponseContainMessage()
         {
             var message = await Response.Content.ReadAsStringAsync();
-            Assert.AreEqual("[{\"id\":1,\"name\":\"group\",\"language1\":1,\"language2\":2,\"wordsCount\":0,\"repeatsCount\":0,\"averageDrawer\":0}]", message);
+            var expectedJsonObject = new object[]{
+                new {
+                    id = 1,
+                    name = "group",
+                    language1 = 1,
+                    language2 = 2,
+                    wordsCount = 0,
+                    visibleWordsCount = 0,
+                    repeatsCount = 0,
+                    averageDrawer = 0
+                }
+            };
+            var expectedJson = JsonSerializer.Serialize(expectedJsonObject);
+            Assert.AreEqual(expectedJson, message);
         }
 
         [Test]

@@ -3,7 +3,7 @@
         <ng-container *ngIf="words.length !== 0;else nowords">
             <p-carousel [value]="words">
                 <ng-template let-word pTemplate="item">
-                    {{word.language1}} - {{word.language2}}
+                    <app-card [word]="word"></app-card>
                 </ng-template>
             </p-carousel>
         </ng-container>

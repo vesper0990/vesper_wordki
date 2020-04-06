@@ -30,14 +30,24 @@ namespace Wordki.Queries.GetNextWords
 
         private readonly string sql = $@"
 SELECT
+g.name          as GroupName,
+g.language1     as GroupLanguage1,
+g.language2     as GroupLanguage2,
 w.id            as Id,
 w.language1     as Language1,
 w.language2     as Language2,
-w.drawer        as Drawer
+w.example1      as Example1,
+w.example2      as Example2,
+w.drawer        as Drawer,
+w.creationDate  as CreationDate,
+count(r.id)     as RepeatCount,
+max(r.date)     as LastRepeat
 FROM words w
 JOIN groups2 g ON w.groupId = g.id
+LEFT JOIN repeats r ON w.id = r.wordId
 WHERE g.userId = @userId
 AND w.isVisible = 1
+GROUP BY w.id, g.name
 ORDER BY w.nextRepeat, w.id
 LIMIT @offset, @count";
     }

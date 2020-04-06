@@ -8,7 +8,6 @@ import { LastFailedRepeatComponent } from './components/last-failed-repeat/last-
 import { ShareModule } from '../share/share.module';
 import { DataProviderBase, DataProvider, DataProviderMock } from './services/data.provider/data.provider';
 import { environment } from 'src/environments/environment';
-import { LastWordMapper } from './services/last-word.mapper/last-word.mapper';
 import { CardModule } from 'primeng/card';
 import { CarouselModule } from 'primeng/carousel';
 import { RepeatWordMapper } from './services/repeat-word.mapper/repeat-word.mapper';
@@ -28,7 +27,6 @@ import { RepeatWordMapper } from './services/repeat-word.mapper/repeat-word.mapp
     CarouselModule
   ],
   providers: [
-    LastWordMapper,
     RepeatWordMapper,
     { provide: DataProviderBase, useClass: environment.production ? DataProvider : DataProviderMock },
   ]
