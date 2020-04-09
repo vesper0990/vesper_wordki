@@ -17,7 +17,7 @@ export class LessonStep {
         .set(LessonStateEnum.AfterFinish,
             new LessonStep(LessonStateEnum.AfterFinish, false, false, false, false, false));
 
-    readonly step: LessonStateEnum;
+    readonly state: LessonStateEnum;
     readonly questionVisibility: boolean;
     readonly answerIsEnable: boolean;
     readonly startVisibility: boolean;
@@ -26,7 +26,7 @@ export class LessonStep {
 
     constructor(step: LessonStateEnum, questionVisibility: boolean, answerIsEnabled: boolean,
         startVisibility: boolean, checkVisiblity: boolean, answerVisibility: boolean) {
-        this.step = step;
+        this.state = step;
         this.questionVisibility = questionVisibility;
         this.answerIsEnable = answerIsEnabled;
         this.startVisibility = startVisibility;

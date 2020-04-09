@@ -2,6 +2,7 @@
 using Wordki.Commands.AddGroup;
 using Wordki.Commands.AddRepeat;
 using Wordki.Commands.AddWord;
+using Wordki.Commands.ChangeGroupVisibility;
 using Wordki.Commands.Login;
 using Wordki.Commands.Register;
 using Wordki.Commands.RemoveWord;
@@ -22,6 +23,7 @@ namespace Wordki.Commands
             builder.RegisterType<RemoveWordCommandHandler>().AsImplementedInterfaces();
             builder.RegisterType<UpdateGroupCommandHandler>().AsImplementedInterfaces();
             builder.RegisterType<AddGroupCommandHandler>().AsImplementedInterfaces();
+            builder.RegisterType<ChangeGroupVisibilityCommandHandler>().AsImplementedInterfaces();
         }
     }
 }

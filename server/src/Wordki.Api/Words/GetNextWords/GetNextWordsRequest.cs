@@ -4,5 +4,7 @@
     {
         public int Count { get; set; }
         public int Offset { get; set; }
+        public int Question { get; set; }
+        public int Answer { get; set; }
     }
 }

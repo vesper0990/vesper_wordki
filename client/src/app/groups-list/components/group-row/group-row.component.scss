@@ -1,22 +1,14 @@
-@import '../../../../styles.scss';
+@import "../../../../styles.scss";
 
-.action-button {
-  margin: 0.5em;
-  background-color: transparent;
+.main-container {
+  border: 1px solid #ccc;
+  border-radius: 1em;
+  margin: 5px 10px;
+  cursor: pointer;
 }
 
-.action-button:hover {
-  background-color: #ffffff22;
-}
-
-.hover-to-show {
-  opacity: 0;
-  transition: all 0.2s ease-in-out;
-}
-
-.hover-to-show-link:hover .hover-to-show {
-  opacity: 1;
-  transition: all 0.2s ease-in-out;
+.main-container:hover {
+  background-color: #eee;
 }
 
 .group-label {
@@ -32,4 +24,69 @@
 
 .info-container {
   margin: auto;
+}
+
+.flag {
+  width: 50px;
+}
+
+.action-button {
+  width: 25px;
+}
+
+@media only screen and (max-width: 640px) {
+  //small
+  .flag {
+    width: 25px;
+  }
+
+  .actions {
+    display: none;
+  }
+
+  .action-button {
+    width: 16px;
+  }
+
+  .info-container {
+    margin: 0.25em;
+    display: flex;
+
+    app-label-value {
+      margin-right: 5px;
+    }
+  }
+
+  .circle-button {
+    height: 3em;
+    width: 3em;
+  }
+}
+
+@media only screen and (min-width: 641px) {
+  //medium
+  .action-button {
+    width: 20px;
+  }
+
+  .circle-button {
+    height: 3.5em;
+    width: 3.5em;
+  }
+}
+
+@media only screen and (min-width: 1025px) {
+  //large
+  .action-button {
+    width: 25px;
+  }
+
+  .circle-button {
+    height: 4em;
+    width: 4em;
+  }
+}
+
+@media only screen and (min-width: 1441px) {
+  //big
 }

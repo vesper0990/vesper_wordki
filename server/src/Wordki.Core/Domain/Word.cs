@@ -92,8 +92,21 @@ namespace Wordki.Core
             IsVisible = isVisible;
         }
 
-        public void Remove(){
+        public void Remove()
+        {
             GroupId = 0;
+            NeedUpdate = true;
+        }
+
+        public void AddWordToLessons()
+        {
+            IsVisible = true;
+            NeedUpdate = true;
+        }
+
+        public void RemoveWordFromLessons()
+        {
+            IsVisible = false;
             NeedUpdate = true;
         }
 

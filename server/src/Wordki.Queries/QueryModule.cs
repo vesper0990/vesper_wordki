@@ -5,6 +5,7 @@ using Wordki.Queries.GetLastAddedWords;
 using Wordki.Queries.GetLastFailedWord;
 using Wordki.Queries.GetNextWords;
 using Wordki.Queries.GetUser;
+using Wordki.Queries.GetUserSettings;
 using Wordki.Queries.GetWordsFromGroup;
 
 namespace Wordki.Queries
@@ -14,6 +15,7 @@ namespace Wordki.Queries
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<GetUserQueryHandler>().AsImplementedInterfaces();
+            builder.RegisterType<GetUserSettingsQueryHandler>().AsImplementedInterfaces();
             builder.RegisterType<GetNextWordsQueryHandler>().AsImplementedInterfaces();
             builder.RegisterType<GetGroupsQueryHandler>().AsImplementedInterfaces();
             builder.RegisterType<GetGroupQueryHandler>().AsImplementedInterfaces();

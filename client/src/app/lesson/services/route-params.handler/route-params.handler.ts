@@ -16,7 +16,7 @@ export class RouteParamsHandler {
             this.lessonStore.dispatch(new GetWordsFromGroupAction({ groupId: id }));
         } else {
             this.lessonStore.dispatch(new SetLessonMode({ mode: LessonModeType.Repeat }));
-            this.lessonStore.dispatch(new GetWordsAction({ count: 2, offset: 0 }));
+            this.lessonStore.dispatch(new GetWordsAction({ count: 10, offset: 0 }));
         }
     }
 }

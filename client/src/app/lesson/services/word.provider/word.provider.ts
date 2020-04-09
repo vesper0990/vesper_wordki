@@ -5,10 +5,12 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { WordRepeatDto } from '../../models/word-repeat.dto';
 import { map } from 'rxjs/operators';
+import { WordMapper } from '../word-mapper/word-mapper';
 
 @Injectable()
 export abstract class WordProviderBase {
     abstract getNextWord(count: number, offset: number): Observable<WordRepeat[]>;
+    abstract getWordForLesson(count: number, offect: number, question: number, answer: number): Observable<WordRepeat[]>;
     abstract getWordsFromGroup(groupId: number): Observable<WordRepeat[]>;
     abstract sendWord(wordId: number, result: number): Observable<any>;
 }
@@ -16,7 +18,7 @@ export abstract class WordProviderBase {
 @Injectable()
 export class WordProvider extends WordProviderBase {
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private mapper: WordMapper) {
         super();
     }
 
@@ -35,8 +37,18 @@ export class WordProvider extends WordProviderBase {
     getNextWord(count: number, offset: number): Observable<WordRepeat[]> {
         return this.http.get<WordRepeatDto[]>(`${environment.apiUrl}/GetNextWords/${count}/${offset}`).pipe(
             map((dtos: WordRepeatDto[]) => {
-                const arr = [];
-                dtos.forEach((dto: WordRepeatDto) => arr.push(dto)); // todo mapper
+                const arr: WordRepeat[] = [];
+                dtos.forEach((dto: WordRepeatDto) => arr.push(this.mapper.map(dto)));
+                return arr;
+            })
+        );
+    }
+
+    getWordForLesson(count: number, offset: number, question: number, answer: number): Observable<WordRepeat[]> {
+        return this.http.get<WordRepeatDto[]>(`${environment.apiUrl}/GetNextWords/${count}/${offset}/${question}/${answer}`).pipe(
+            map((dtos: WordRepeatDto[]) => {
+                const arr: WordRepeat[] = [];
+                dtos.forEach((dto: WordRepeatDto) => arr.push(this.mapper.map(dto)));
                 return arr;
             })
         );
@@ -48,13 +60,12 @@ export class WordProviderMock extends WordProviderBase {
 
     static index = 1;
 
-    constructor(private http: HttpClient) {
+    constructor(private mapper: WordMapper) {
         super();
     }
 
     getNextWord(count: number, offset: number): Observable<WordRepeat[]> {
-        // return this.http.get<WordRepeat[]>(`http://localhost:5000/getwords/${count}`);
-        const result = [];
+        const result: WordRepeatDto[] = [];
         while (result.length < count) {
             const i = WordProviderMock.index;
             result.push({
@@ -62,10 +73,33 @@ export class WordProviderMock extends WordProviderBase {
                 language1: `word ${i}`,
                 language2: `słowo ${i}`,
                 drawer: 1
-            });
+            } as WordRepeatDto);
             WordProviderMock.index++;
         }
-        return of<WordRepeat[]>(result);
+        return of<WordRepeatDto[]>(result).pipe(map((dtos: WordRepeatDto[]) => {
+            const arr: WordRepeat[] = [];
+            dtos.forEach((dto: WordRepeatDto) => arr.push(this.mapper.map(dto)));
+            return arr;
+        }));
+    }
+
+    getWordForLesson(count: number, offset: number, question: number, answer: number): Observable<WordRepeat[]> {
+        const result: WordRepeatDto[] = [];
+        while (result.length < count) {
+            const i = WordProviderMock.index;
+            result.push({
+                id: i,
+                language1: `word ${i}`,
+                language2: `słowo ${i}`,
+                drawer: 1
+            } as WordRepeatDto);
+            WordProviderMock.index++;
+        }
+        return of<WordRepeatDto[]>(result).pipe(map((dtos: WordRepeatDto[]) => {
+            const arr: WordRepeat[] = [];
+            dtos.forEach((dto: WordRepeatDto) => arr.push(this.mapper.map(dto)));
+            return arr;
+        }));
     }
 
     getWordsFromGroup(groupId: number): Observable<WordRepeat[]> {

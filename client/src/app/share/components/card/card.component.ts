@@ -9,33 +9,36 @@ import { CardModel } from './card.model';
 export class CardComponent implements OnInit {
 
   private isAdditionInfo: boolean;
-  private isLanguage1: boolean;
 
-  side: 'language1' | 'language2' | 'additional';
+  @Input() side: 'language1' | 'language2' | 'additional' = 'language1';
   @Input() word: CardModel;
   @Input() showMore = true;
+  @Input() isLock = false;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.side = 'language1';
     this.isAdditionInfo = false;
-    this.isLanguage1 = true;
   }
 
   private updateSide(): void {
-    this.side = this.isAdditionInfo ? 'additional' : this.isLanguage1 ? 'language1' : 'language2';
+    this.side = this.isAdditionInfo ? 'additional' : this.side;
+    console.log(this.side);
   }
 
   public changeSide(): void {
-    if (!this.isAdditionInfo) {
-      this.isLanguage1 = !this.isLanguage1;
+    if (this.isLock) {
+      return;
     }
     this.isAdditionInfo = false;
+    this.side = this.side === 'language2' ? 'language1' : 'language2';
     this.updateSide();
   }
 
   public showAdditionalInfo(): void {
+    if (this.isLock) {
+      return;
+    }
     this.isAdditionInfo = true;
     this.updateSide();
   }

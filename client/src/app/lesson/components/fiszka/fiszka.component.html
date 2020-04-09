@@ -1,5 +1,14 @@
-<div *ngIf="word">
-    {{word.id}}
-    <span id="question" *ngIf="questionVisibility">{{word.language1}}</span>
-    -- <span id="answer" *ngIf="answerVisibility">{{word.language2}}</span>
-</div>
+<ng-container *ngIf="{
+     word: word$ | async,
+     lessonStep: lessonStep$ | async,
+     lessonSettings: lessonSettings$ | async
+ } as data">
+    <ng-container *ngIf="data.word && data.lessonStep && data.lessonSettings">
+        <div *ngIf="data.lessonStep.questionVisibility" style="width: 100%;">
+            <app-card [side]="getCardSide(data.lessonStep, data.lessonSettings, data.word)"
+                [isLock]="!data.lessonStep.answerVisibility" [showMore]="data.lessonStep.answerVisibility"
+                [word]="data.word">
+            </app-card>
+        </div>
+    </ng-container>
+</ng-container>

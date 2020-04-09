@@ -6,6 +6,7 @@ import { WordRepeat } from '../models/word-repeat';
 import { LessonStateEnum, LessonStep } from '../models/lesson-state';
 import { LessonModeType } from '../models/lesson-mode';
 import { LessonResult } from '../models/lesson-result';
+import { LessonSettings } from '../models/lesson-settings';
 
 export interface LessonState {
     words: WordRepeat[];
@@ -13,6 +14,7 @@ export interface LessonState {
     lessonState: LessonStep;
     lessonMode: LessonModeType;
     result: LessonResult;
+    lessonSettings: LessonSettings;
 }
 
 const initialState: LessonState = {
@@ -20,11 +22,13 @@ const initialState: LessonState = {
     lastAnswer: false,
     lessonState: LessonStep.getLessonStep(LessonStateEnum.BeforeStart),
     lessonMode: LessonModeType.Unknown,
-    result: null
+    result: null,
+    lessonSettings: null
 };
 
 export function reducer(state = initialState, action: LessonActions): LessonState {
     switch (action.type) {
+        case LessonActionTypes.SetLessonSettings: return { ...state, lessonSettings: action.payload.lessonSettings };
         case LessonActionTypes.SetWords: return handleSetWords(state, action.words);
         case LessonActionTypes.RemoveWord: return handleRemoveWord(state);
         case LessonActionTypes.SetLessonMode: return { ...state, lessonMode: action.payload.mode };
@@ -69,6 +73,7 @@ function handleAnswer(state: LessonState, answer: number): LessonState {
     }
     return {
         ...state,
+        words: state.words.slice(1, state.words.length),
         lessonState: LessonStep.getLessonStep(LessonStateEnum.WordDisplay),
         result: result
     };

@@ -1,5 +1,6 @@
 <app-edit-word-dialog [display]="editingWord" [word]="editingWord" (submit2)="onSubmit($event)" (cancel)="onCancel()" (remove)="onRemove($event)"></app-edit-word-dialog>
-<button (click)="onAddWord()">Dodaj</button>
+<button (click)="onAddWord()">Dodaj nowe słowo</button>
+<button (click)="changeGroupVisibility()">Dodaj do lekcji</button>
 <div>
     Grupa:
     <ng-container *ngIf="isGroupDetailsLoading$ | async; else groupDetails">

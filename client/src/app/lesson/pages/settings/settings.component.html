@@ -1,0 +1,38 @@
+<form [formGroup]="settingsForm">
+    <div class="ui-g">
+        <label for="name" class="ui-g-3 col-form-label">
+            <b>Język pytania</b>
+        </label>
+        <div class="ui-g-9">
+            <app-languages-drop-down formControlName="questionLanguage" [items]="languages"></app-languages-drop-down>
+        </div>
+    </div>
+
+    <div class="ui-g">
+        <label for="name" class="ui-g-3 col-form-label">
+            <b>Język odpowiedzi</b>
+        </label>
+        <div class="ui-g-9">
+            <app-languages-drop-down formControlName="answerLanguage" [items]="languages"></app-languages-drop-down>
+        </div>
+    </div>
+
+    <div class="ui-g">
+        <label for="name" class="ui-g-3 col-form-label">
+            <b>Tryb</b>
+        </label>
+        <div class="ui-g-9">
+            Fiszki
+        </div>
+    </div>
+
+    <div class="ui-g">
+        <label for="example2" class="ui-g-3 col-form-label">
+            <b>Wszystkie karty</b>
+        </label>
+        <div class="ui-g-9">
+            <p-checkbox [formControl]="settingsForm.controls['allWords']" binary="true"></p-checkbox>
+        </div>
+    </div>
+    <button pButton type="submit" class="ui-button ui-button-success" label="Rozpocznij" (click)="startLesson()"></button>
+</form>

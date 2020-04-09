@@ -19,6 +19,7 @@ export class LanguagesDropDownComponent implements OnInit, ControlValueAccessor 
 
   @Input() style: any;
   @Input() styleClass: any;
+  @Input() items: LanguageType[] = LanguageType.getAll();
 
   languages: SelectItem[] = [];
 
@@ -38,10 +39,11 @@ export class LanguagesDropDownComponent implements OnInit, ControlValueAccessor 
     return this._value;
   }
 
+
   constructor() { }
 
   ngOnInit() {
-    LanguageType.getAll().forEach((item: LanguageType) => {
+    this.items.forEach((item: LanguageType) => {
       this.languages.push({
         label: item.label,
         value: item

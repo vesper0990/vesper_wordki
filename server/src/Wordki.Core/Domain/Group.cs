@@ -114,5 +114,23 @@ namespace Wordki.Core
             Language1 = language1;
             Language2 = language2;
         }
+            
+        public void AddGroupToLessons()
+        {
+            foreach(var word in words)
+            {
+                word.AddWordToLessons();
+            }
+            NeedUpdate = true;
+        }
+
+        public void RemoveGroupFromLessons()
+        {
+            foreach (var word in words)
+            {
+                word.RemoveWordFromLessons();
+            }
+            NeedUpdate = true;
+        }
     }
 }

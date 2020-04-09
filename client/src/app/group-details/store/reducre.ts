@@ -5,7 +5,8 @@ import {
     UpdateWordSuccessAction,
     AddWordSuccessAction,
     SetWordsAction,
-    RemoveWordSuccessAction
+    RemoveWordSuccessAction,
+    ChangeGroupVisibilitySuccessAction
 } from './actions';
 import { GroupDetails } from '../models/group-details.model';
 import { Word } from '../models/word.model';
@@ -34,6 +35,7 @@ export function reducer(state = initialState, action: GroupDetailsActions): Grou
         case GroupDetailsTypes.UpdateWordSuccess: return handleUpdateWordSuccess(state, action);
         case GroupDetailsTypes.AddWordSuccess: return handleAddWordSuccess(state, action);
         case GroupDetailsTypes.RemoveWordSuccess: return handleRemoveWordSuccess(state, action);
+        case GroupDetailsTypes.ChangeGroupVisibilitySuccess: return handleChangeGroupVisibilitySuccess(state, action);
         default: return state;
     }
 }
@@ -55,14 +57,14 @@ function handleUpdateWordSuccess(state: GroupDetailsState, action: UpdateWordSuc
     const updatedWord = action.payload.editWord;
     state.words.forEach((item: Word) => {
         if (item.id === updatedWord.wordId) {
-            const newItem = <Word>{
+            const newItem = {
                 ...item,
                 language1: updatedWord.language1,
                 language2: updatedWord.language2,
                 example1: updatedWord.example1,
                 example2: updatedWord.example2,
                 isVisible: updatedWord.isVisible
-            };
+            } as Word;
             arr.push(newItem);
         } else {
             arr.push(item);
@@ -79,5 +81,13 @@ function handleAddWordSuccess(state: GroupDetailsState, action: AddWordSuccessAc
 }
 
 function handleRemoveWordSuccess(state: GroupDetailsState, action: RemoveWordSuccessAction): GroupDetailsState {
-    return { ...state, words: state.words.filter(word => word.id !== action.payload.word.id) };
+    return { ...state, words: state.words.filter(word => word.id !== action.payload.wordId) };
+}
+
+function handleChangeGroupVisibilitySuccess(state: GroupDetailsState, action: ChangeGroupVisibilitySuccessAction): GroupDetailsState {
+    const words: Word[] = [];
+    state.words.forEach((word: Word) => {
+        words.push({ ...word, isVisible: true } as Word);
+    });
+    return { ...state, words: words };
 }

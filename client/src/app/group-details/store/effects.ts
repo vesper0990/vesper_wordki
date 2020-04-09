@@ -10,7 +10,9 @@ import {
     AddWordAction,
     RemoveWordAction,
     RemoveWordSuccessAction,
-    AddGroupAction
+    AddGroupAction,
+    ChangeGroupVisibilityAction,
+    ChangeGroupVisibilitySuccessAction
 } from './actions';
 import { GroupDetailsProviderBase } from '../services/group-details.provider/group-details.provider';
 import { mergeMap, map, catchError, switchMap } from 'rxjs/operators';
@@ -52,8 +54,8 @@ export class GroupDetailsEffects {
 
     @Effect() removeWordEffect = this.actions$.pipe(
         ofType(GroupDetailsTypes.RemoveWord),
-        switchMap((action: RemoveWordAction) => this.groupDetailsProvider.removeWord(action.payload.word).pipe(
-            map(() => new RemoveWordSuccessAction({ word: action.payload.word }))
+        switchMap((action: RemoveWordAction) => this.groupDetailsProvider.removeWord(action.payload.groupId, action.payload.wordId).pipe(
+            map(() => new RemoveWordSuccessAction({ wordId: action.payload.wordId }))
         ))
     );
 
@@ -65,6 +67,13 @@ export class GroupDetailsEffects {
             map(() => {
                 this.router.navigate(['/groups']);
             })
+        ))
+    );
+
+    @Effect() changeGroupVisibilityEffect = this.actions$.pipe(
+        ofType(GroupDetailsTypes.ChangeGroupVisibility),
+        switchMap((action: ChangeGroupVisibilityAction) => this.groupDetailsProvider.changeGroupVisibility(action.payload.groupId).pipe(
+            map(() => new ChangeGroupVisibilitySuccessAction(action.payload))
         ))
     );
 

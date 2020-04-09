@@ -3,7 +3,7 @@
         <div style="float: left; font-size: 20px;   " class="group-desc">
             {{word?.groupName}}
         </div>
-        <button *ngIf="showMore" style="float: right;margin: auto;" pButton class="ui-button-success" appClickStopPropagation
+        <button *ngIf="showMore" style="float: right;margin: auto; overflow: hidden;" pButton class="ui-button-secondary" appClickStopPropagation
             (click)="showAdditionalInfo()" label="Więcej"></button>
         <hr style="float: left; width: 100%;">
     </div>

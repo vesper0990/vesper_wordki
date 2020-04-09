@@ -1,4 +1,4 @@
-<div class="main-container" (click)="toggle()">
+<div class="main-container" [ngClass]="{'is-not-visible': !_word?.isVisible}" (click)="toggle()">
     <div class="ui-g basic-info">
         <div class="ui-g-9">
             <div class="word flaot-left">

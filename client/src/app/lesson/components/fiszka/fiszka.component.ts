@@ -1,11 +1,14 @@
-import { Component, OnInit, Input, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { LessonState } from '../../store/reducer';
-import { Subscription } from 'rxjs';
-import { getLessonStateEnum, getFirstWord } from '../../store/selectors';
+import { Subscription, Observable } from 'rxjs';
+import { getLessonStateEnum, getFirstWord, getLessonSettings } from '../../store/selectors';
 import { LessonStateEnum, LessonStep } from '../../models/lesson-state';
 import { WordRepeat } from '../../models/word-repeat';
 import { AnswerAction, CheckAnswerAction } from '../../store/actions';
+import { map, filter } from 'rxjs/operators';
+import { CardModel } from 'src/app/share/components/card/card.model';
+import { LessonSettings } from '../../models/lesson-settings';
 
 @Component({
   selector: 'app-fiszka',
@@ -18,31 +21,56 @@ export class FiszkaComponent implements OnInit, OnDestroy {
   private readonly arrowRight = 'ArrowRight';
 
   private lessonStateSub: Subscription;
-  private wordSub: Subscription;
 
-  lessonStep: LessonStep;
-  word: WordRepeat;
+  word$: Observable<CardModel>;
+  wordId: number;
+
+  lessonStep$: Observable<LessonStep>;
+  lessonState: LessonStateEnum;
+
+  lessonSettings$: Observable<LessonSettings>;
+
   questionVisibility: boolean;
   answerVisibility: boolean;
 
   constructor(private lessonStore: Store<LessonState>) { }
 
   ngOnInit(): void {
-    this.lessonStateSub = this.lessonStore.select(getLessonStateEnum)
-      .subscribe((storeValue: LessonStep) => this.handleLessonStateEnum(storeValue));
+    this.lessonSettings$ = this.lessonStore.select(getLessonSettings);
 
-    this.wordSub = this.lessonStore.select(getFirstWord)
-      .subscribe((storeValue: WordRepeat) => this.handleFirstWord(storeValue));
+    this.lessonStep$ = this.lessonStore.select(getLessonStateEnum).pipe(
+      map((step: LessonStep) => {
+        this.lessonState = step.state;
+        return step;
+      })
+    );
+
+    this.word$ = this.lessonStore.select(getFirstWord).pipe(
+      filter((word: WordRepeat) => {
+        return word !== null && word !== undefined;
+      }),
+      map((word: WordRepeat) => {
+        this.wordId = word.id;
+        return {
+          groupName: word.groupName,
+          groupLanguage1: word.groupLanguage1,
+          groupLanguage2: word.groupLanguage2,
+          language1: word.language1,
+          language2: word.language2,
+          example1: word.example1,
+          example2: word.example2,
+          drawer: word.drawer
+        } as CardModel;
+      })
+    );
   }
 
   ngOnDestroy(): void {
-    this.lessonStateSub.unsubscribe();
-    this.wordSub.unsubscribe();
   }
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent): void {
-    if (this.lessonStep.step === 0) {
+    if (this.lessonState === 0) {
       return;
     }
     switch (event.key) {
@@ -55,29 +83,36 @@ export class FiszkaComponent implements OnInit, OnDestroy {
     }
   }
 
-  private handleLessonStateEnum(storeValue: LessonStep): void {
-    this.lessonStep = storeValue;
-    this.questionVisibility = this.lessonStep.questionVisibility;
-    this.answerVisibility = this.lessonStep.answerVisibility;
-  }
-
-  private handleFirstWord(storeValue: WordRepeat): void {
-    this.word = storeValue;
+  getCardSide(lessonStep: LessonStep, lessonSettings: LessonSettings, word: CardModel): string {
+    console.log('test');
+    if (lessonStep.answerVisibility) {
+      if (lessonSettings.answerLanguage === word.groupLanguage1) {
+        return 'language1';
+      } else {
+        return 'language2';
+      }
+    } else {
+      if (lessonSettings.questionLanguage === word.groupLanguage1) {
+        return 'language1';
+      } else {
+        return 'language2';
+      }
+    }
   }
 
   private handleArrowRight(): void {
     this.lessonStore.dispatch(
-      this.lessonStep.step === LessonStateEnum.WordDisplay
+      this.lessonState === LessonStateEnum.WordDisplay
         ? new CheckAnswerAction()
-        : new AnswerAction({ wordId: this.word.id, result: 1 })
+        : new AnswerAction({ wordId: this.wordId, result: 1 })
     );
   }
 
   private handleArrowLeft(): void {
     this.lessonStore.dispatch(
-      this.lessonStep.step === LessonStateEnum.WordDisplay
+      this.lessonState === LessonStateEnum.WordDisplay
         ? new CheckAnswerAction()
-        : new AnswerAction({ wordId: this.word.id, result: -1 })
+        : new AnswerAction({ wordId: this.wordId, result: -1 })
     );
   }
 }

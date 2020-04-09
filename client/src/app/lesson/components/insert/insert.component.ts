@@ -56,7 +56,7 @@ export class InsertComponent implements OnInit, OnDestroy {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent): void {
-    if (this.lessonStep.step === 0) {
+    if (this.lessonStep.state === 0) {
       return;
     }
     switch (event.key) {
@@ -74,7 +74,7 @@ export class InsertComponent implements OnInit, OnDestroy {
 
   private handleArrowRight(): void {
     this.lessonStore.dispatch(
-      this.lessonStep.step === LessonStateEnum.WordDisplay
+      this.lessonStep.state === LessonStateEnum.WordDisplay
         ? new CheckAnswerAction()
         : new AnswerAction({ wordId: this.word.id, result: this.isCorrect ? 1 : 0 })
     );
@@ -82,16 +82,16 @@ export class InsertComponent implements OnInit, OnDestroy {
 
   private handleArrowLeft(): void {
     this.lessonStore.dispatch(
-      this.lessonStep.step === LessonStateEnum.WordDisplay
+      this.lessonStep.state === LessonStateEnum.WordDisplay
         ? new CheckAnswerAction()
         : new AnswerAction({ wordId: this.word.id, result: -1 })
     );
   }
 
   private handleEnter(): void {
-    if (this.lessonStep.step === LessonStateEnum.WordDisplay) {
+    if (this.lessonStep.state === LessonStateEnum.WordDisplay) {
       this.lessonStore.dispatch(new CheckAnswerAction());
-    } else if (this.lessonStep.step === LessonStateEnum.AnswerDisplay) {
+    } else if (this.lessonStep.state === LessonStateEnum.AnswerDisplay) {
       this.lessonStore.dispatch(new AnswerAction({ wordId: this.word.id, result: this.isCorrect ? 1 : -1 }));
     }
   }
@@ -100,7 +100,7 @@ export class InsertComponent implements OnInit, OnDestroy {
     this.lessonStep = lessonStep;
     this.questionVisibility = this.lessonStep.questionVisibility;
     this.answerIsEnable = this.lessonStep.answerIsEnable;
-    switch (this.lessonStep.step) {
+    switch (this.lessonStep.state) {
       case LessonStateEnum.WordDisplay: {
         this.answer = '';
         this.result = '';

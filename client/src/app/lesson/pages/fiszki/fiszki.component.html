@@ -1,9 +1,14 @@
 <div *ngIf="!isRunning; else finish">
+
     <button (click)="startLesson()">Start</button>
 </div>
 
-<app-fiszka></app-fiszka>
-<app-control-buttons></app-control-buttons>
+<div style="width: 50%;margin-left: auto; margin-right: auto;">
+    <div style="min-height: 150px;">
+        <app-fiszka ></app-fiszka>
+    </div>
+    <app-control-buttons></app-control-buttons>
+</div>
 
 <ng-template #finish>
     <button (click)="finishLesson()">Zakończ</button>

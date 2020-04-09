@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { WordRepeat } from '../models/word-repeat';
 import { LessonModeType } from '../models/lesson-mode';
+import { LessonSettings } from '../models/lesson-settings';
 
 export enum LessonActionTypes {
     GetWords = '[LESSON_STATE] GET_WORDS',
@@ -15,7 +16,9 @@ export enum LessonActionTypes {
     Answer = '[LESSON_STATE] ANSWER',
     FinishLesson = '[LESSON_STATE] FINISH_LESSON',
 
-    ResetStoreAction = '[LESSON_STATE] RESET_STORE'
+    ResetStoreAction = '[LESSON_STATE] RESET_STORE',
+
+    SetLessonSettings = '[LESSON_STATE] SET_LESSON_SETTINGS'
 }
 
 export class GetWordsAction implements Action {
@@ -73,6 +76,11 @@ export class SetLastAnswerAction implements Action {
     constructor(public payload: { isCorrect: boolean }) { }
 }
 
+export class SetLessonSettingsAction implements Action {
+    readonly type = LessonActionTypes.SetLessonSettings;
+    constructor(public payload: { lessonSettings: LessonSettings }) { }
+}
+
 export type LessonActions = GetWordsAction
     | GetWordsFromGroupAction
     | SetWordsAction
@@ -83,4 +91,5 @@ export type LessonActions = GetWordsAction
     | CheckAnswerAction
     | AnswerAction
     | FinishLessonAction
-    | ResetStoreAction;
+    | ResetStoreAction
+    | SetLessonSettingsAction;

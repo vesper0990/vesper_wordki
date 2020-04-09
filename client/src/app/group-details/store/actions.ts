@@ -20,7 +20,10 @@ export enum GroupDetailsTypes {
     RemoveWord = '[GROUP_DETAILS_STATE] REMOVE_WORD',
     RemoveWordSuccess = '[GROUP_DETAILS_STATE] REMOVE_WORD_SUCCESS',
 
-    AddGroup = '[GROUP_DETAILS_STATE] ADD_GROUP'
+    AddGroup = '[GROUP_DETAILS_STATE] ADD_GROUP',
+
+    ChangeGroupVisibility = '[GROUP_DETAILS_STATE] CHANGE_GROUP_VISIBILITY',
+    ChangeGroupVisibilitySuccess = '[GROUP_DETAILS_STATE] CHANGE_GROUP_VISIBILITY_SUCCESS'
 }
 
 export class GetGroupDetailsAction implements Action {
@@ -65,17 +68,27 @@ export class AddWordSuccessAction implements Action {
 
 export class RemoveWordAction implements Action {
     readonly type = GroupDetailsTypes.RemoveWord;
-    constructor(public payload: { word: Word }) { }
+    constructor(public payload: { groupId: number, wordId: number }) { }
 }
 
 export class RemoveWordSuccessAction implements Action {
     readonly type = GroupDetailsTypes.RemoveWordSuccess;
-    constructor(public payload: { word: Word }) { }
+    constructor(public payload: { wordId: number }) { }
 }
 
 export class AddGroupAction implements Action {
     readonly type = GroupDetailsTypes.AddGroup;
     constructor(public payload: { group: AddedGroup }) { }
+}
+
+export class ChangeGroupVisibilityAction implements Action {
+    readonly type = GroupDetailsTypes.ChangeGroupVisibility;
+    constructor(public payload: { groupId: number }) { }
+}
+
+export class ChangeGroupVisibilitySuccessAction implements Action {
+    readonly type = GroupDetailsTypes.ChangeGroupVisibilitySuccess;
+    constructor(public payload: { groupId: number }) { }
 }
 
 export type GroupDetailsActions = GetGroupDetailsAction |
@@ -88,4 +101,6 @@ export type GroupDetailsActions = GetGroupDetailsAction |
     AddWordSuccessAction |
     RemoveWordAction |
     RemoveWordSuccessAction |
-    AddGroupAction;
+    AddGroupAction |
+    ChangeGroupVisibilityAction |
+    ChangeGroupVisibilitySuccessAction;

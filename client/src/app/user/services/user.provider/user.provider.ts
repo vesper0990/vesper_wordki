@@ -5,12 +5,16 @@ import { environment } from 'src/environments/environment';
 import { LoginContract } from './login.contract';
 import { RegisterContract } from './register.contract';
 import { AuthenticateContract } from './authenticate.contract';
+import { UserSettings } from 'src/app/authorization/services/user.service/user-settings.model';
+import { map } from 'rxjs/operators';
+import { LanguageType } from 'src/app/share/models/language-type.mode';
 
 export abstract class UserProviderBase {
   abstract register(contract: RegisterContract): Observable<any>;
   abstract login(contract: LoginContract): Observable<any>;
   abstract authenticate(contract: AuthenticateContract): Observable<any>;
   abstract refreshToken(): Observable<string>;
+  abstract getUserSettings(): Observable<UserSettings>;
 }
 
 @Injectable()
@@ -35,6 +39,20 @@ export class UserProvider extends UserProviderBase {
   refreshToken(): Observable<string> {
     return this.client.get<string>(`${environment.apiUrl}/refreshToken`);
   }
+
+  getUserSettings(): Observable<UserSettings> {
+    return this.client.get<UserSettingsDto>(`${environment.apiUrl}/getUserSettings`).pipe(
+      map((dto: UserSettingsDto) => {
+        const langauges: LanguageType[] = [];
+        dto.languages.forEach((languageType: number) => {
+          langauges.push(LanguageType.getLanguageType(languageType));
+        });
+        return {
+          languages: langauges
+        } as UserSettings;
+      })
+    );
+  }
 }
 
 @Injectable()
@@ -55,4 +73,14 @@ export class UserProviderMock extends UserProviderBase {
   register(contract: RegisterContract): Observable<any> {
     return of<any>({});
   }
+
+  getUserSettings(): Observable<UserSettings> {
+    return of<UserSettings>({
+      languages: LanguageType.getAll()
+    } as UserSettings);
+  }
+}
+
+export class UserSettingsDto {
+  languages: number[];
 }

@@ -1,12 +1,15 @@
-<p-dropdown appendTo="body" [options]="languages" [(ngModel)]="value" [style]="style" [class]="styleClass">
-    <ng-template let-item pTemplate="selectedItem"> 
+<p-dropdown appendTo="body" [options]="languages" [(ngModel)]="value" [style]="style" [class]="styleClass"
+    [showTransitionOptions]="'5ms'" [hideTransitionOptions]="'5ms'">
+    <ng-template let-item pTemplate="selectedItem">
         <div class="ui-helper-clearfix" style="position: relative;height:25px;">
-            <img src="assets/flags/{{item.value.flag}}" style="width:24px;position:absolute;top:1px;left:5px"/> 
-            <div style="font-size:14px;float:right;margin-top:4px">{{item.label}}</div> </div>
-   </ng-template> 
-   <ng-template let-language pTemplate="item"> 
-       <div class="ui-helper-clearfix" style="position: relative;height:25px;">
-       <img src="assets/flags/{{language.value.flag}}" style="width:24px;position:absolute;top:1px;left:5px"/> 
-       <div style="font-size:14px;float:right;margin-top:4px">{{language.label}}</div> </div>
-   </ng-template>
+            <img src="assets/flags/{{item.value.flag}}" style="width:24px;position:absolute;top:1px;left:5px" />
+            <div style="font-size:14px;float:left;margin-top:4px;margin-left:35px">{{item.label}}</div>
+        </div>
+    </ng-template>
+    <ng-template let-language pTemplate="item">
+        <div class="ui-helper-clearfix" style="position: relative;height:25px;">
+            <img src="assets/flags/{{language.value.flag}}" style="width:24px;position:absolute;top:1px;left:5px" />
+            <div style="font-size:14px;float:left;margin-top:4px;margin-left:35px">{{language.label}}</div>
+        </div>
+    </ng-template>
 </p-dropdown>

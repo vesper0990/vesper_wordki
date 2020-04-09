@@ -7,7 +7,14 @@ import { filter } from 'rxjs/operators';
 import { GroupDetailsState } from './store/reducre';
 import { Store } from '@ngrx/store';
 import { getGroupDetails, getWords, getIsGroupDetailsLoading, getIsWordsLoading } from './store/selectors';
-import { GetGroupDetailsAction, GetWordsAction, UpdateWordAction, AddWordAction, RemoveWordAction } from './store/actions';
+import {
+  GetGroupDetailsAction,
+  GetWordsAction,
+  UpdateWordAction,
+  AddWordAction,
+  RemoveWordAction,
+  ChangeGroupVisibilityAction
+} from './store/actions';
 import { EditWord } from '../share/components/edit-word-dialog/edit-word.model';
 
 @Component({
@@ -94,9 +101,13 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.editingWord = null;
   }
 
-  onRemove(word: Word): void {
+  onRemove(wordId: number): void {
     this.editingWord = null;
-    this.groupDetailsStore.dispatch(new RemoveWordAction({ word: word }));
+    this.groupDetailsStore.dispatch(new RemoveWordAction({ groupId: this.groupId, wordId: wordId }));
+  }
+
+  changeGroupVisibility(): void {
+    this.groupDetailsStore.dispatch(new ChangeGroupVisibilityAction({ groupId: this.groupId }));
   }
 
 }

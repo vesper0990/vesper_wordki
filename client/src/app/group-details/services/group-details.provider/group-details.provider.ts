@@ -20,8 +20,9 @@ export abstract class GroupDetailsProviderBase {
     // abstract getWordDetails(wordId: number): Observable<>;
     abstract updateWord(editword: EditWord): Observable<any>;
     abstract addWord(editword: EditWord): Observable<any>;
-    abstract removeWord(word: Word): Observable<any>;
+    abstract removeWord(groupId: number, wordId: number): Observable<any>;
     abstract addGroup(group: AddedGroup): Observable<any>;
+    abstract changeGroupVisibility(groupId: number): Observable<any>;
 }
 
 @Injectable()
@@ -56,12 +57,20 @@ export class GroupDetailsProvider extends GroupDetailsProviderBase {
         return this.http.post(`${environment.apiUrl}/addWord`, editword);
     }
 
-    removeWord(word: Word): Observable<any> {
-        return this.http.delete(`${environment.apiUrl}/removeWord/${word.group.id}/${word.id}`);
+    removeWord(groupId: number, wordId: number): Observable<any> {
+        return this.http.delete(`${environment.apiUrl}/removeWord/${groupId}/${wordId}`);
     }
 
     addGroup(group: AddedGroup): Observable<any> {
         return this.http.post(`${environment.apiUrl}/addGroup`, group);
+    }
+
+    changeGroupVisibility(groupId: number): Observable<any> {
+        const request = {
+            id: groupId,
+            isAddedToLessons: true
+        };
+        return this.http.put(`${environment.apiUrl}/changeGroupVisibility`, request);
     }
 }
 
@@ -129,11 +138,15 @@ export class GroupDetailsProviderMock extends GroupDetailsProviderBase {
         return of({});
     }
 
-    removeWord(word: Word): Observable<any> {
+    removeWord(groupId: number, wordId: number): Observable<any> {
         return of({});
     }
 
     addGroup(group: AddedGroup): Observable<any> {
+        return of({});
+    }
+
+    changeGroupVisibility(groupId: number): Observable<any> {
         return of({});
     }
 

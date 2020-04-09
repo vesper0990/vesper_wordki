@@ -30,5 +30,15 @@ namespace Wordki.Api.Words.GetNextWords
             return new JsonResult(result);
         }
 
+        [HttpGet("{count}/{offset}/{question}/{answer}")]
+        [Authorize]
+        public async Task<IActionResult> GetForLesson([FromRoute] GetNextWordsRequest request)
+        {
+            var userId = httpContextProvider.GetUserId();
+            var query = GetNextWordsQuery.Create(request.Count, request.Offset, userId);
+            var result = await queryHandler.HandleAsync(query);
+            return new JsonResult(result);
+        }
+
     }
 }

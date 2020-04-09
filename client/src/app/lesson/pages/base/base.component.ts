@@ -20,11 +20,11 @@ export class BaseComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.lessonStore.dispatch(new ResetStoreAction());
         this.routeParamSub = this.route.params.subscribe((params: Params) => this.routeParamsHandler.handle(params));
     }
 
     ngOnDestroy(): void {
+        this.lessonStore.dispatch(new FinishLessonAction());
         this.routeParamSub.unsubscribe();
         this.nextWordSub?.unsubscribe();
     }

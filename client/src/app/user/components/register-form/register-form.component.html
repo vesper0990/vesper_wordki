@@ -17,7 +17,7 @@
             <b>Hasło</b>
         </label>
         <div class="ui-g-9">
-            <input style="width: 100%;" pInputText type="text" formControlName="password">
+            <input style="width: 100%;" pInputText type="password" formControlName="password">
             <div *ngIf="password.invalid && (password.dirty || password.touched)" class="error-message">
                 <div *ngIf="password.errors.required">
                     Podaj hasło
@@ -30,7 +30,7 @@
             <b>Potwiedzenie hasła</b>
         </label>
         <div class="ui-g-9">
-            <input style="width: 100%;" pInputText type="text" formControlName="passwordConfirmation">
+            <input style="width: 100%;" pInputText type="password" formControlName="passwordConfirmation">
             <div *ngIf="passwordConfirmation.invalid && (passwordConfirmation.dirty || passwordConfirmation.touched)" class="error-message">
                 <div *ngIf="passwordConfirmation.errors.required">
                     Powtórz hasło

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { UserSettings } from './user-settings.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ export class UserService {
   private readonly cookieTag = 'wordki-usr-tag';
 
   private token: { token: string };
+  userSettings: UserSettings;
   private subject: BehaviorSubject<boolean>;
 
   constructor(private cookiesService: CookieService) {

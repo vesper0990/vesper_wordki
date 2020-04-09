@@ -1,5 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { LessonState } from './reducer';
+import { LessonStep, LessonStateEnum } from '../models/lesson-state';
 
 export const getLessonState = createFeatureSelector<LessonState>('lessonStore');
 
@@ -14,3 +15,8 @@ export const getLessonMode = createSelector(getLessonState, (state: LessonState)
 export const getLessonResult = createSelector(getLessonState, (state: LessonState) => state.result);
 
 export const getLastAnswer = createSelector(getLessonState, (state: LessonState) => state.lastAnswer);
+
+export const getLessonSettings = createSelector(getLessonState, (state: LessonState) => state.lessonSettings);
+
+export const canStartLesson = createSelector(getLessonState, (state: LessonState) =>
+    state.lessonSettings && state.lessonState.state === LessonStateEnum.BeforeStart);

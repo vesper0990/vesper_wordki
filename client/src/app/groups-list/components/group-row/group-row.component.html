@@ -1,37 +1,22 @@
-<div class="ui-g hover-to-show-link" style="border: 1px solid #ccc; border-radius: 1em; margin: 5px 10px;">
-    <div class="ui-g-7 group-label">
-        {{ group?.name }}
-    </div>
-    <div class="flags-container">
-        <img class="ui-g" src="assets/flags/{{group?.language1.flag}}" style="width:50px" />
-        <img class="ui-g" src="assets/flags/{{group?.language2.flag}}" style="width:50px" />
-    </div>
-    <div class="ui-g-2 info-container">
-        <app-label-value label="Słowa" [value]="wordsValue"></app-label-value>
-        <app-label-value label="Powtórzenia" [value]="group?.repeatsCount"></app-label-value>
-        <app-label-value label="Szuflada" [value]="group?.averageDrawer | number : '1.1-1'"></app-label-value>
-    </div>
-    <div class="ui-g-2 hover-to-show">
-        <div style="float: right;">
-            <div>
-                <button class="circle-button action-button">
-                    <img (click)="openGroup(group)" src="assets/icons/words.svg" style="width: 25px;" />
-                </button>
-                <button class="circle-button action-button">
-                    <img src="assets/icons/repeats.svg" style="width: 25px;" />
-                </button>
-                <button class="circle-button action-button" (click)="startLesson(group)">
-                    <img src="assets/icons/lesson.svg" style="width: 25px;" />
-                </button>
-            </div>
-            <div style="margin-left: 2em;">
-                <button class="circle-button action-button" (click)="editGroup(group)">
-                    <img src="assets/icons/edit.svg" style="width: 25px;" />
-                </button>
-                <button class="circle-button action-button">
-                    <img src="assets/icons/remove.svg" style="width: 25px;" />
-                </button>
-            </div>
+<div class="ui-g main-container" (click)="openGroup(group)">
+    <div class="ui-g-11 ui-g">
+        <div class="ui-lg-7 ui-md-7 ui-sm-10 group-label">
+            {{ group?.name }}
         </div>
+        <div class="flags-container ui-g-1">
+            <img class="ui-g flag" src="assets/flags/{{group?.language1.flag}}" />
+            <img class="ui-g flag" src="assets/flags/{{group?.language2.flag}}" />
+        </div>
+        <div class="ui-lg-3 ui-md-3 ui-sm-12 info-container">
+            <app-label-value label="Słowa" [value]="wordsValue"></app-label-value>
+            <app-label-value label="Powtórzenia" [value]="group?.repeatsCount"></app-label-value>
+            <app-label-value label="Szuflada" [value]="group?.averageDrawer | number : '1.1-1'"></app-label-value>
+        </div>
+
+    </div>
+    <div class="ui-g-1" style="margin: auto;">
+        <button appClickStopPropagation class="circle-button" (click)="editGroup(group)">
+            <img class="action-button" src="assets/icons/edit.svg" />
+        </button>
     </div>
 </div>
