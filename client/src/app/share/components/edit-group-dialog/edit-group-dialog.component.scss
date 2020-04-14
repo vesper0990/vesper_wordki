@@ -1,0 +1,20 @@
+.error-message {
+    color: red;
+    font-size: 0.75em;
+}
+
+input {
+    width: 100%;
+}
+
+@media screen and (max-width: 640px) {
+    //small
+    .form-control {
+        margin: 5px 0;
+
+        label{
+            padding-bottom: 0 !important;
+        }
+    }
+    
+}

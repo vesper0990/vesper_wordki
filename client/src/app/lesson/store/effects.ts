@@ -1,13 +1,19 @@
 import { Injectable } from '@angular/core';
-import { LessonActionTypes, RemoveWordAction, GetWordsAction, SetWordsAction, AnswerAction, GetWordsFromGroupAction } from './actions';
+import {
+    LessonActionTypes,
+    GetWordsAction,
+    SetWordsAction,
+    AnswerAction,
+    GetWordsFromGroupAction
+} from './actions';
 import { ofType, Actions, Effect } from '@ngrx/effects';
-import { switchMap, map, mergeMap, withLatestFrom, concatMap, catchError, switchMapTo, filter } from 'rxjs/operators';
+import { switchMap, map, mergeMap, withLatestFrom, concatMap, catchError, filter } from 'rxjs/operators';
 import { WordProviderBase } from '../services/word.provider/word.provider';
 import { WordRepeat } from '../models/word-repeat';
 import { LessonState } from './reducer';
 import { Store } from '@ngrx/store';
-import { of, from, Observable, empty } from 'rxjs';
-import { getLessonMode, getLessonState } from './selectors';
+import { of } from 'rxjs';
+import { getLessonState } from './selectors';
 import { LessonModeType } from '../models/lesson-mode';
 import { LessonSettings } from '../models/lesson-settings';
 import { Router } from '@angular/router';

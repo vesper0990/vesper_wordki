@@ -12,7 +12,7 @@ import { MessageService, Message } from 'primeng/api';
 @Component({
   selector: 'app-register-form',
   templateUrl: './register-form.component.html',
-  styleUrls: ['./register-form.component.scss'],
+  styleUrls: ['./register-form.component.scss', '../../styles-users.scss'],
   providers: [MessageService]
 })
 export class RegisterFormComponent implements OnInit {

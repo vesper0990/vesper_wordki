@@ -12,6 +12,8 @@ export abstract class DataProviderBase {
     abstract getLastWords(count: number): Observable<RepeatWord[]>;
     abstract getNextRepeatWord(): Observable<RepeatWord>;
     abstract getLastFailed(): Observable<RepeatWord>;
+    abstract getTodayWords(): Observable<RepeatWord[]>;
+    abstract getCountWordsByDate(): Observable<number>;
 }
 
 @Injectable()
@@ -40,6 +42,26 @@ export class DataProvider extends DataProviderBase {
                 return arr;
             }));
     }
+
+    getTodayWords(): Observable<RepeatWord[]> {
+        const today = new Date();
+        return this.httpClient.get<RepeatWordDto[]>(
+            `${environment.apiUrl}/getTodayWords/${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`).pipe(
+                map((dto: RepeatWordDto[]) => {
+                    const arr = [];
+                    dto.forEach((item: RepeatWordDto) => arr.push(this.repeatWordMapper.map(item)));
+                    return arr;
+                }));
+    }
+
+    getCountWordsByDate(): Observable<number> {
+        const today = new Date();
+        return this.httpClient.get<any>(
+            `${environment.apiUrl}/getCountWordsByDate/${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`).pipe(
+                map((dto: any) => {
+                    return dto.count;
+                }));
+    }
 }
 
 @Injectable()
@@ -47,6 +69,22 @@ export class DataProviderMock extends DataProviderBase {
 
     constructor(private mapper: RepeatWordMapper) {
         super();
+    }
+
+    getCountWordsByDate(): Observable<number> {
+        return of<number>(10);
+    }
+
+    getTodayWords(): Observable<RepeatWord[]> {
+        const arr: RepeatWordDto[] = [];
+        for (let i = 1; i <= 10; i++) {
+            arr.push(<RepeatWordDto>{
+                language1: `word${i}`,
+                language2: `word${i}`,
+                creationDate: '12/09/2019',
+            });
+        }
+        return of(arr.map((dto: RepeatWordDto) => this.mapper.map(dto))).pipe(delay(4000));
     }
 
     getLastWords(count: number): Observable<RepeatWord[]> {

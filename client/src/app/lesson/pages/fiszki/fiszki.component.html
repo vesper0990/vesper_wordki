@@ -1,11 +1,10 @@
 <div *ngIf="!isRunning; else finish">
-
     <button (click)="startLesson()">Start</button>
 </div>
 
-<div style="width: 50%;margin-left: auto; margin-right: auto;">
-    <div style="min-height: 150px;">
-        <app-fiszka ></app-fiszka>
+<div class="fiszka-container">
+    <div class="card-container">
+        <app-fiszka></app-fiszka>
     </div>
     <app-control-buttons></app-control-buttons>
 </div>

@@ -1,7 +1,9 @@
-<button (click)="lessonFiszki()">Lekcja Fiszki</button>
-<button (click)="lessonInsert()">Lekcja Wpisywanie</button>
 <div class="ui-g">
-    <div class="ui-g-6 ui-lg-6 ui-md-12 ui-sm-12">
+    <div class="ui-g-12">
+        <button (click)="lessonFiszki()">Lekcja Fiszki</button>
+        <app-today-words></app-today-words>
+    </div>
+    <div class="ui-lg-6 ui-md-12 ui-sm-12">
         <div class="card">
             <app-last-failed-repeat></app-last-failed-repeat>
         </div>
@@ -9,7 +11,7 @@
             <app-next-repeat-word></app-next-repeat-word>
         </div>
     </div>
-    <div class="ui-g-6 ui-lg-6 ui-md-12 ui-sm-12">
+    <div class="ui-lg-6 ui-md-12 ui-sm-12">
         <div class="card">
             <app-newest-words></app-newest-words>
         </div>

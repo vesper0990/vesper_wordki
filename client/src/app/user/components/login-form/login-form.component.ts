@@ -12,7 +12,7 @@ import { ApiException, ErrorCodes } from 'src/app/share/models/error-codes.model
 @Component({
   selector: 'app-login-form',
   templateUrl: './login-form.component.html',
-  styleUrls: ['./login-form.component.scss'],
+  styleUrls: ['./login-form.component.scss', '../../styles-users.scss'],
   providers: [MessageService]
 })
 export class LoginFormComponent implements OnInit {

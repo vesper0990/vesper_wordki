@@ -1,10 +1,34 @@
-<nav>
-  <ng-container *ngIf="isLogin; else loggedOut">
-    <button (click)="logout()">Wyloguj</button>
-  </ng-container>
+<nav class="navbar">
+  <span (click)="toggleMenu()" class="navbar-toggle" id="js-navbar-toggle">
+    <img src="assets/icons/menu.svg" style="height: 30px; margin-top: auto; margin-bottom: auto;" />
+  </span>
+  <a class="logo" style="color: #999;">Wordki</a>
+  <ul class="main-nav" [ngClass]="{'active':isOpen}">
+    <li>
+      <a (click)="toggleMenu()" href="#" class="nav-links">Home</a>
+    </li>
+    <ng-container *ngIf="isLogin; else loggedOut">
+      <li>
+        <a (click)="hideMenu()" [routerLink]="['./dashboard']" class="nav-links">Dashboard</a>
+      </li>
+      <li>
+        <a (click)="hideMenu()" [routerLink]="['./groups']" class="nav-links">Grupy</a>
+      </li>
+      <li>
+        <a (click)="hideMenu()" href="#" class="nav-links">Profil</a>
+      </li>
+      <li>
+        <a (click)="hideMenu()" [routerLink]="['./user/logout']" class="nav-links">Wyloguj</a>
+      </li>
+    </ng-container>
+  </ul>
 </nav>
 
 <ng-template #loggedOut>
-  <a [routerLink]="['/user/login']">Zaloguj</a>
-  <a [routerLink]="['/user/register']">Zarejestruj</a>
+  <li>
+    <a (click)="hideMenu()" [routerLink]="['./user/login']" class="nav-links">Zaloguj</a>
+  </li>
+  <li>
+    <a (click)="hideMenu()" [routerLink]="['./user/register']" class="nav-links">Zarejestruj</a>
+  </li>
 </ng-template>

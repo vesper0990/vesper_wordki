@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Wordki.Queries.GetCountWordsByDate;
 using Wordki.Queries.GetGroup;
 using Wordki.Queries.GetGroups;
 using Wordki.Queries.GetLastAddedWords;
@@ -6,6 +7,7 @@ using Wordki.Queries.GetLastFailedWord;
 using Wordki.Queries.GetNextWords;
 using Wordki.Queries.GetUser;
 using Wordki.Queries.GetUserSettings;
+using Wordki.Queries.GetWordsByDate;
 using Wordki.Queries.GetWordsFromGroup;
 
 namespace Wordki.Queries
@@ -22,6 +24,8 @@ namespace Wordki.Queries
             builder.RegisterType<GetWordsFromGroupQueryHandler>().AsImplementedInterfaces();
             builder.RegisterType<GetLastAddedWordsQueryHandler>().AsImplementedInterfaces();
             builder.RegisterType<GetLastFailedWordQueryHandler>().AsImplementedInterfaces();
+            builder.RegisterType<GetWordsByDateQueryHandler>().AsImplementedInterfaces();
+            builder.RegisterType<GetCountWordsByDateQueryHandler>().AsImplementedInterfaces();
         }
     }
 }

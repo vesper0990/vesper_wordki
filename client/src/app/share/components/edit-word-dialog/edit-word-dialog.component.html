@@ -1,51 +1,51 @@
-<p-dialog [header]="title" [(visible)]="display" (onHide)="onCancel()">
-    <form style="width: 1000px;" [formGroup]="wordForm" (ngSubmit)="onSubmit()">
-        <div class="ui-g">
-            <label for="language1" class="ui-g-3 col-form-label">
+<p-dialog [header]="title" [(visible)]="display" (onHide)="onCancel()" [draggable]="false" modal="true" >
+    <form [formGroup]="wordForm" (ngSubmit)="onSubmit()">
+        <div class="ui-g form-control">
+            <label for="language1" class="ui-g-3 ui-sm-12 col-form-label">
                 <b>Język 1</b>
             </label>
-            <div class="ui-g-9">
-                <input style="width: 100%;" pInputText type="text" formControlName="language1">
+            <div class="ui-g-9 ui-sm-12">
+                <input pInputText type="text" formControlName="language1">
                 <div class="error-message"
                     *ngIf="language1.invalid && (language1.dirty || language1.touched) && language1.errors.required">
                     Pole jest wymagane.
                 </div>
             </div>
         </div>
-        <div class="ui-g">
-            <label for="language2" class="ui-g-3 col-form-label">
+        <div class="ui-g form-control">
+            <label for="language2" class="ui-g-3 ui-sm-12 col-form-label">
                 <b>Język 2</b>
             </label>
-            <div class="ui-g-9">
-                <input style="width: 100%;" pInputText type="text" formControlName="language2">
+            <div class="ui-g-9 ui-sm-12">
+                <input pInputText type="text" formControlName="language2">
                 <div class="error-message"
                     *ngIf="language2.invalid && (language2.dirty || language2.touched) && language2.errors.required">
                     Pole jest wymagane
                 </div>
             </div>
         </div>
-        <div class="ui-g">
-            <label for="example1" class="ui-g-3 col-form-label">
+        <div class="ui-g form-control">
+            <label for="example1" class="ui-g-3 ui-sm-12 col-form-label">
                 <b>Przykład 1</b>
             </label>
-            <div class="ui-g-9">
-                <input style="width: 100%;" pInputText type="text" formControlName="example1">
+            <div class="ui-g-9 ui-sm-12">
+                <input pInputText type="text" formControlName="example1">
             </div>
         </div>
-        <div class="ui-g">
-            <label for="example2" class="ui-g-3 col-form-label">
+        <div class="ui-g form-control">
+            <label for="example2" class="ui-g-3 ui-sm-12 col-form-label">
                 <b>Przykład 2</b>
             </label>
-            <div class="ui-g-9">
-                <input style="width: 100%;" pInputText type="text" formControlName="example2">
+            <div class="ui-g-9 ui-sm-12">
+                <input pInputText type="text" formControlName="example2">
             </div>
         </div>
 
-        <div class="ui-g">
-            <label for="example2" class="ui-g-3 col-form-label">
+        <div class="ui-g form-control">
+            <label for="example2" class="ui-g-3 ui-sm-12 col-form-label">
                 <b>Ucz się</b>
             </label>
-            <div class="ui-g-9">
+            <div class="ui-g-9 ui-sm-12">
                 <p-checkbox [formControl]="wordForm.controls['isVisible']" binary="true"></p-checkbox>
             </div>
         </div>

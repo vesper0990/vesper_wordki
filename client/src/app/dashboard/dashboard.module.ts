@@ -11,13 +11,15 @@ import { environment } from 'src/environments/environment';
 import { CardModule } from 'primeng/card';
 import { CarouselModule } from 'primeng/carousel';
 import { RepeatWordMapper } from './services/repeat-word.mapper/repeat-word.mapper';
+import { TodayWordsComponent } from './components/today-words/today-words.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
     NewestWordsComponent,
     NextRepeatWordComponent,
-    LastFailedRepeatComponent
+    LastFailedRepeatComponent,
+    TodayWordsComponent
   ],
   imports: [
     CommonModule,

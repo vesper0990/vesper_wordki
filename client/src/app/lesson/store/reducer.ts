@@ -64,16 +64,19 @@ function handleStartLesson(state: LessonState): LessonState {
 
 function handleAnswer(state: LessonState, answer: number): LessonState {
     const result = state.result;
+    const word = state.words[0];
+    const words: WordRepeat[] = state.words.slice(1, state.words.length);
     if (answer > 0) {
         result.correct++;
     } else if (answer < 0) {
         result.wrong++;
+        words.push(word);
     } else {
         result.accepted++;
     }
     return {
         ...state,
-        words: state.words.slice(1, state.words.length),
+        words: words,
         lessonState: LessonStep.getLessonStep(LessonStateEnum.WordDisplay),
         result: result
     };

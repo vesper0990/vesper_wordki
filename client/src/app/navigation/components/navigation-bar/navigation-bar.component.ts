@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 export class NavigationBarComponent implements OnInit {
 
   @Input() isLogin: boolean;
+  isOpen = false;
 
   constructor(private router: Router) { }
 
@@ -17,6 +18,14 @@ export class NavigationBarComponent implements OnInit {
 
   logout(): void {
     this.router.navigate(['/user/logout']);
+  }
+
+  toggleMenu(): void {
+    this.isOpen = !this.isOpen;
+  }
+
+  hideMenu(): void {
+    this.isOpen = false;
   }
 
 }

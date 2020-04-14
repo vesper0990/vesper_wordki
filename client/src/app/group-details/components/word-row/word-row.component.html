@@ -4,20 +4,19 @@
             <div class="word flaot-left">
                 {{ _word?.language1 }}
             </div>
-            <!-- <hr size="1px"> -->
             <div class="word flaot-left">
                 {{ _word?.language2 }}
             </div>
         </div>
-        <div class="ui-g-2" style="margin: auto;">
+        <div class="ui-g-2 margin-auto">
             <div class="float-left">
                 {{ _word?.drawer }}
             </div>
         </div>
-        <div class="ui-g-1" style="margin: auto;">
+        <div class="ui-g-1 margin-auto">
             <div class="float-right">
                 <button appClickStopPropagation class="circle-button action-button" (click)="edit(_word)">
-                    <img src="assets/icons/edit.svg" style="width: 25px;" />
+                    <img class="button-img" src="assets/icons/edit.svg" />
                 </button>
             </div>
         </div>
@@ -35,8 +34,7 @@
                 </div>
             </div>
             <div class="ui-g-5">
-                <app-label-value label="Ostatnia powtórka"
-                    [value]="lastRepeat | toDays"></app-label-value>
+                <app-label-value label="Ostatnia powtórka" [value]="lastRepeat | toDays"></app-label-value>
                 <app-label-value label="Następna powtórka" [value]="_word.nextRepeat | date:'dd/MM/yyyy'">
                 </app-label-value>
                 <app-label-value label="Wszystkie powróki" [value]="_word.repeats.length"></app-label-value>
