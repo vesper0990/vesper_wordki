@@ -25,6 +25,8 @@ namespace Wordki.Api.Words.UpdateWord
                 request.WordId,
                 request.Language1,
                 request.Language2,
+                request.Example1,
+                request.Example2,
                 request.IsVisible);
             await commandHandler.HandleAsync(command);
             return new StatusCodeResult((int)HttpStatusCode.OK);

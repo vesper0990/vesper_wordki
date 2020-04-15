@@ -21,7 +21,7 @@ namespace Wordki.Api.Groups.UpdateGroup
         [Authorize]
         public async Task<IActionResult> Put([FromBody] UpdateGroupRequest request)
         {
-            var command = UpdateGroupCommand.Create(request.GroupId, request.GroupName, request.Language1, request.Language2);
+            var command = UpdateGroupCommand.Create(request.Id, request.Name, request.Language1, request.Language2);
             await commandHandler.HandleAsync(command);
             return new StatusCodeResult((int)HttpStatusCode.OK);
         }

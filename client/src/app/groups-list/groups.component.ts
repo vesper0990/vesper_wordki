@@ -35,8 +35,8 @@ export class GroupsComponent implements OnInit {
     const editGroup = <EditGroup>{
       id: group.id,
       name : group.name,
-      language1: group.language1.type,
-      language2: group.language2.type
+      language1: group.language1,
+      language2: group.language2
     };
     this.editingGroup = editGroup;
   }

@@ -1,7 +1,7 @@
 import { GroupListActions, GroupListTypes, SetGroupListAction } from './actions';
 import { Group } from '../models/group.model';
 import { EditGroup } from 'src/app/share/components/edit-group-dialog/edit-group.model';
-import { LanguageType } from 'src/app/share/models/language-type.mode';
+import { LanguageType, LanguageTypeEnum } from 'src/app/share/models/language-type.mode';
 
 export interface GroupListState {
     groups: Group[];
@@ -34,8 +34,8 @@ function handleUpdateGroupInList(state: GroupListState, group: EditGroup): Group
         groups.push(item.id === group.id ? <Group>{
             ...item,
             name: group.name,
-            language1: LanguageType.getLanguageType(group.language1),
-            language2: LanguageType.getLanguageType(group.language2),
+            language1: LanguageType.getLanguageType(group.language1 as any) ,
+            language2: LanguageType.getLanguageType(group.language2 as any),
         } : item);
     });
     return { ...state, groups: groups };

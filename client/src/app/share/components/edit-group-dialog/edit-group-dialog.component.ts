@@ -57,7 +57,7 @@ export class EditGroupDialogComponent implements OnInit {
       ...this._group,
       name: this.groupForm.get('name').value,
       language1: this.groupForm.get('language1').value.type,
-      language2: this.groupForm.get('language1').value.type,
+      language2: this.groupForm.get('language2').value.type,
     };
     this.submit2.emit(newGroup);
   }
