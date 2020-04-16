@@ -13,6 +13,7 @@ export abstract class WordProviderBase {
     abstract getWordForLesson(count: number, offect: number, question: number, answer: number): Observable<WordRepeat[]>;
     abstract getWordsFromGroup(groupId: number): Observable<WordRepeat[]>;
     abstract sendWord(wordId: number, result: number): Observable<any>;
+    abstract getTodayWords(): Observable<WordRepeat[]>;
 }
 
 @Injectable()
@@ -52,6 +53,17 @@ export class WordProvider extends WordProviderBase {
                 return arr;
             })
         );
+    }
+
+    getTodayWords(): Observable<WordRepeat[]> {
+        const today = new Date();
+        return this.http.get<WordRepeatDto[]>(
+            `${environment.apiUrl}/getTodayWords/${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`).pipe(
+                map((dto: WordRepeatDto[]) => {
+                    const arr = [];
+                    dto.forEach((item: WordRepeatDto) => arr.push(this.mapper.map(item)));
+                    return arr;
+                }));
     }
 }
 
@@ -102,6 +114,25 @@ export class WordProviderMock extends WordProviderBase {
         }));
     }
 
+    getTodayWords(): Observable<WordRepeat[]> {
+        const result: WordRepeatDto[] = [];
+        while (result.length < 10) {
+            const i = WordProviderMock.index;
+            result.push({
+                id: i,
+                language1: `word ${i}`,
+                language2: `słowo ${i}`,
+                drawer: 1
+            } as WordRepeatDto);
+            WordProviderMock.index++;
+        }
+        return of<WordRepeatDto[]>(result).pipe(map((dtos: WordRepeatDto[]) => {
+            const arr: WordRepeat[] = [];
+            dtos.forEach((dto: WordRepeatDto) => arr.push(this.mapper.map(dto)));
+            return arr;
+        }));
+    }
+
     getWordsFromGroup(groupId: number): Observable<WordRepeat[]> {
         const result = [];
         while (result.length < 3) {
@@ -118,7 +149,6 @@ export class WordProviderMock extends WordProviderBase {
     }
 
     sendWord(wordId: number, result: number): Observable<any> {
-        console.log('sendWord', result);
         return of<any>({});
     }
 

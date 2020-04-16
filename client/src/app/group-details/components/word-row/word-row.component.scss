@@ -1,11 +1,8 @@
 .main-container {
-    // background-color: beige;
     border-radius: 10px;
     margin: 5px 10px;
     position: relative;
     border: 1px solid #ccc;
-    // background: linear-gradient(to right, #f00a 0%,  #fff0 1%);
-    // background-image: linear-gradient(to right, #ff0000aa 1%, #0000 99%);
 
     .word {
         height: 50px;
@@ -23,32 +20,39 @@
 
     .example {
         margin-left: 10px;
+        margin-top: 5px;
+        margin-bottom: 5px;
         height: 30px;
         font-size: 1em;
         color: #555;
-        display: flex;
-        align-items: center;
     }
 
     .info-label {
         font-size: 0.7em;
         color: #777;
     }
+
+    .edit-button {
+        display: flex;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #00000011;
+        }
+
+        img {
+            width: 25px;
+            margin: auto;
+        }
+    }
 }
 
-.action-button {
-    margin: 0.5em;
-    background-color: transparent;
-}
-
-.action-button:hover {
-    background-color: #00000011;
-}
-
-.is-not-visible{
-    background-color: #eee;
-}
-
-.button-img{
-    width: 25px;
+@media only screen and (max-width: 640px) {
+    .main-container {
+        .edit-button {
+            img {
+                width: 16px;
+            }
+        }
+    }
 }

@@ -26,7 +26,6 @@ const initialState: GroupDetailsState = {
 };
 
 export function reducer(state = initialState, action: GroupDetailsActions): GroupDetailsState {
-    console.log('GroupDetailsStore', state, action);
     switch (action.type) {
         case GroupDetailsTypes.GetGroupDetails: return { ...state, isGroupDetailsLoading: true };
         case GroupDetailsTypes.SetGroupDetails: return handleSetGroupDetails(state, action);

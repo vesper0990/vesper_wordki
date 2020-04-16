@@ -22,7 +22,6 @@ export class SummaryComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // console.log('destroy');
     this.resetStore();
   }
 

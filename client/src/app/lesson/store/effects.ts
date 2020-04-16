@@ -12,9 +12,9 @@ import { WordProviderBase } from '../services/word.provider/word.provider';
 import { WordRepeat } from '../models/word-repeat';
 import { LessonState } from './reducer';
 import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { getLessonState } from './selectors';
-import { LessonModeType } from '../models/lesson-mode';
+import { LessonMode } from '../models/lesson-mode';
 import { LessonSettings } from '../models/lesson-settings';
 import { Router } from '@angular/router';
 
@@ -39,7 +39,7 @@ export class LessonEffects {
         ),
         switchMap(([payload, lessonState]) => {
             return this.wordProvider.sendWord(payload.wordId, payload.result).pipe(map(() => {
-                if (lessonState.lessonMode === LessonModeType.Repeat && lessonState.words.length < 5) {
+                if (lessonState.lessonSettings.mode.shouldDownloadNext && lessonState.words.length < 5) {
                     return new GetWordsAction({ count: 9 - lessonState.words.length, offset: lessonState.words.length - 1 });
                 }
             }));
@@ -56,19 +56,26 @@ export class LessonEffects {
         concatMap(action =>
             of(action).pipe(withLatestFrom(this.lessonStore.select(getLessonState))),
         ),
-        switchMap(([payload, lessonState]) =>
-            this.wordProvider.getWordForLesson(
-                payload.count,
-                payload.offset,
-                lessonState.lessonSettings.questionLanguage.type,
-                lessonState.lessonSettings.answerLanguage.type).pipe(
-                    map((words: WordRepeat[]) => {
-                        return new SetWordsAction(words);
-                    }),
-                    catchError(error => {
-                        throw (error);
-                    })
-                )),
+        switchMap(([payload, lessonState]) => {
+            let words$: Observable<WordRepeat[]>;
+            if (lessonState.lessonSettings.mode === LessonMode.dailyRepeat) {
+                words$ = this.wordProvider.getTodayWords();
+            } else {
+                words$ = this.wordProvider.getWordForLesson(
+                    payload.count,
+                    payload.offset,
+                    lessonState.lessonSettings.questionLanguage.type,
+                    lessonState.lessonSettings.answerLanguage.type);
+            }
+            return words$.pipe(
+                map((words: WordRepeat[]) => {
+                    return new SetWordsAction(words);
+                }),
+                catchError(error => {
+                    throw (error);
+                })
+            );
+        }),
         catchError((error: Error) => {
             throw (error);
         })

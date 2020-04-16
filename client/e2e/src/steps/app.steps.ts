@@ -25,6 +25,5 @@ Then(/^I should see navigation bar$/, async () => {
 Then(/^I should see buttons$/, async () => {
     const navigationBar = page.getNavigationBar();
     const buttons = navigationBar.all(by.css('.nav-links'));
-    console.log(await buttons.getText());
     expect(await buttons.getText()).to.equal(['Home', 'Zaloguj', 'Zarejestruj']);
 });

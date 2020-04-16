@@ -14,11 +14,7 @@
         </div>
 
     </div>
-    <div class="ui-g-1" style="margin: auto;">
-        <div class="float-right">
-            <button appClickStopPropagation class="circle-button" (click)="editGroup(group)">
-                <img class="action-button" src="assets/icons/edit.svg" />
-            </button>
-        </div>
+    <div appClickStopPropagation class="ui-g-1 edit-button" (click)="editGroup(group)">
+        <img src="assets/icons/edit.svg" />
     </div>
 </div>

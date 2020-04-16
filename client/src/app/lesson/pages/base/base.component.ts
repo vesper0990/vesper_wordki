@@ -42,6 +42,10 @@ export class BaseComponent implements OnInit, OnDestroy {
 
     protected handleIsAnyWord(isAny: boolean): void {
         if (!isAny) {
+            if (this.isRunning) {
+                this.router.navigate(['lesson/summary']);
+                return;
+            }
             this.router.navigate(['dashboard']);
         }
     }

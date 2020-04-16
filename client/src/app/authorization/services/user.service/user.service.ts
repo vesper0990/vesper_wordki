@@ -31,7 +31,6 @@ export class UserService {
   }
 
   loginFromCookie(): void {
-    console.log('login');
     if (!this.cookiesService.check(this.cookieTag)) {
       return;
     }
@@ -41,7 +40,6 @@ export class UserService {
   }
 
   logout(): void {
-    console.log('logout');
     this.token = null;
     if (this.cookiesService.check(this.cookieTag)) {
       this.cookiesService.delete(this.cookieTag);

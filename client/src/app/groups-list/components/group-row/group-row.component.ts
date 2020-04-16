@@ -33,7 +33,6 @@ export class GroupRowComponent implements OnInit {
   }
 
   openGroup(group: Group): void {
-    console.log(group);
     this.router.navigate(['details', group.id]);
   }
 }

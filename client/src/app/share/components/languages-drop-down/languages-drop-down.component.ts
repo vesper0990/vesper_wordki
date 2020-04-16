@@ -65,7 +65,6 @@ export class LanguagesDropDownComponent implements OnInit, ControlValueAccessor 
   }
 
   setDisabledState?(isDisabled: boolean): void {
-    console.log('setDisabledState', isDisabled);
   }
 
 }

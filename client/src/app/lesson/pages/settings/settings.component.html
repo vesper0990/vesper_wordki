@@ -1,27 +1,27 @@
 <form [formGroup]="settingsForm">
     <div class="ui-g">
-        <label for="name" class="ui-g-3 col-form-label">
+        <label for="name" class="ui-g-3 ui-sm-12 col-form-label">
             <b>Język pytania</b>
         </label>
-        <div class="ui-g-9">
+        <div class="ui-g-9 ui-sm-12">
             <app-languages-drop-down formControlName="questionLanguage" [items]="languages"></app-languages-drop-down>
         </div>
     </div>
 
     <div class="ui-g">
-        <label for="name" class="ui-g-3 col-form-label">
+        <label for="name" class="ui-g-3 ui-sm-12 col-form-label">
             <b>Język odpowiedzi</b>
         </label>
-        <div class="ui-g-9">
+        <div class="ui-g-9 ui-sm-12">
             <app-languages-drop-down formControlName="answerLanguage" [items]="languages"></app-languages-drop-down>
         </div>
     </div>
 
     <div class="ui-g">
-        <label for="name" class="ui-g-3 col-form-label">
+        <label for="name" class="ui-g-3 ui-sm-12 col-form-label">
             <b>Tryb</b>
         </label>
-        <div class="ui-g-9">
+        <div class="ui-g-9 ui-sm-12">
             Fiszki
         </div>
     </div>

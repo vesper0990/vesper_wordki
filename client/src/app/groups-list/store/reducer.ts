@@ -14,7 +14,6 @@ const initialState: GroupListState = {
 };
 
 export function reducer(state = initialState, action: GroupListActions) {
-    console.log('GroupListState', state, action);
     switch (action.type) {
         case GroupListTypes.GetGroupList: return { ...state, isLoading: true };
         case GroupListTypes.SetGroupList: return handleSetGroupList(state, action);

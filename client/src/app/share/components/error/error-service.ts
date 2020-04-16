@@ -14,10 +14,8 @@ export class ErrorService {
 
     setError(errorMessage: string, error: any): void {
         if (this.errorMessage.length > 0 || this.error !== null) {
-            console.log('multiple error:', error);
             return;
         }
-        console.log(error);
         this.errorMessage = errorMessage;
         this.error = error;
     }

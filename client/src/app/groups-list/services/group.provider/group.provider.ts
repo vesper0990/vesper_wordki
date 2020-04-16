@@ -76,7 +76,6 @@ export class GroupProviderMock extends GroupProviderBase {
     }
 
     updateGroup(group: EditGroup): Observable<any> {
-        console.log('group updated');
         return of<any>({});
     }
 

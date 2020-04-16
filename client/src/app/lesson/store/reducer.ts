@@ -4,7 +4,6 @@ import {
 } from './actions';
 import { WordRepeat } from '../models/word-repeat';
 import { LessonStateEnum, LessonStep } from '../models/lesson-state';
-import { LessonModeType } from '../models/lesson-mode';
 import { LessonResult } from '../models/lesson-result';
 import { LessonSettings } from '../models/lesson-settings';
 
@@ -12,7 +11,6 @@ export interface LessonState {
     words: WordRepeat[];
     lastAnswer: boolean;
     lessonState: LessonStep;
-    lessonMode: LessonModeType;
     result: LessonResult;
     lessonSettings: LessonSettings;
 }
@@ -21,7 +19,6 @@ const initialState: LessonState = {
     words: [],
     lastAnswer: false,
     lessonState: LessonStep.getLessonStep(LessonStateEnum.BeforeStart),
-    lessonMode: LessonModeType.Unknown,
     result: null,
     lessonSettings: null
 };
@@ -31,7 +28,6 @@ export function reducer(state = initialState, action: LessonActions): LessonStat
         case LessonActionTypes.SetLessonSettings: return { ...state, lessonSettings: action.payload.lessonSettings };
         case LessonActionTypes.SetWords: return handleSetWords(state, action.words);
         case LessonActionTypes.RemoveWord: return handleRemoveWord(state);
-        case LessonActionTypes.SetLessonMode: return { ...state, lessonMode: action.payload.mode };
         case LessonActionTypes.SetLastAction: return { ...state, lastAnswer: action.payload.isCorrect };
         case LessonActionTypes.StartLesson: return handleStartLesson(state);
         case LessonActionTypes.CheckAnswer: return { ...state, lessonState: LessonStep.getLessonStep(LessonStateEnum.AnswerDisplay) };
@@ -43,6 +39,9 @@ export function reducer(state = initialState, action: LessonActions): LessonStat
 }
 
 function handleSetWords(state: LessonState, words: WordRepeat[]): LessonState {
+    if (state.lessonSettings.mode.shouldShuffle) {
+        shuffleArray(words);
+    }
     const result = { ...state, words: [...state.words, ...words] };
     console.log(result.words);
     return result;
@@ -91,4 +90,19 @@ function handleFinishLesson(state: LessonState): LessonState {
         lessonState: LessonStep.getLessonStep(LessonStateEnum.AfterFinish),
         result: result
     };
+}
+
+function shuffleArray<T>(arra1: T[]): T[] {
+    let ctr = arra1.length;
+    let temp: T;
+    let index = 0;
+
+    while (ctr > 0) {
+        index = Math.floor(Math.random() * ctr);
+        ctr--;
+        temp = arra1[ctr];
+        arra1[ctr] = arra1[index];
+        arra1[index] = temp;
+    }
+    return arra1;
 }

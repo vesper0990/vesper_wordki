@@ -23,7 +23,6 @@ export class CardComponent implements OnInit {
 
   private updateSide(): void {
     this.side = this.isAdditionInfo ? 'additional' : this.side;
-    console.log(this.side);
   }
 
   public changeSide(): void {

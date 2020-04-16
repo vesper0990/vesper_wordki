@@ -1,6 +1,5 @@
 import { Action } from '@ngrx/store';
 import { WordRepeat } from '../models/word-repeat';
-import { LessonModeType } from '../models/lesson-mode';
 import { LessonSettings } from '../models/lesson-settings';
 
 export enum LessonActionTypes {
@@ -8,7 +7,6 @@ export enum LessonActionTypes {
     GetWordsFromGroup = '[LESSON_STATE] GET_WORDS_FROM_GROUP',
     SetWords = '[LESSON_STATE] SET_WORDS',
     RemoveWord = '[LESSON_STATE] REMOVE_WORD',
-    SetLessonMode = '[LESSON_STATE] SET_LESSON_MODE',
     SetLastAction = '[LESSON_STATE] SET_LAST_ACTION',
 
     StartLesson = '[LESSON_STATE] START_LESSON',
@@ -34,11 +32,6 @@ export class GetWordsFromGroupAction implements Action {
 export class SetWordsAction implements Action {
     readonly type = LessonActionTypes.SetWords;
     constructor(public words: WordRepeat[]) { }
-}
-
-export class SetLessonMode implements Action {
-    readonly type = LessonActionTypes.SetLessonMode;
-    constructor(public payload: { mode: LessonModeType }) { }
 }
 
 export class RemoveWordAction implements Action {
@@ -85,7 +78,6 @@ export type LessonActions = GetWordsAction
     | GetWordsFromGroupAction
     | SetWordsAction
     | RemoveWordAction
-    | SetLessonMode
     | SetLastAnswerAction
     | StartLessonAction
     | CheckAnswerAction

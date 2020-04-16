@@ -5,7 +5,7 @@ import { Subscription, Observable } from 'rxjs';
 import { getLessonStateEnum, getFirstWord, getLessonSettings } from '../../store/selectors';
 import { LessonStateEnum, LessonStep } from '../../models/lesson-state';
 import { WordRepeat } from '../../models/word-repeat';
-import { AnswerAction, CheckAnswerAction } from '../../store/actions';
+import { AnswerAction, CheckAnswerAction, SetLastAnswerAction } from '../../store/actions';
 import { map, filter } from 'rxjs/operators';
 import { CardModel } from 'src/app/share/components/card/card.model';
 import { LessonSettings } from '../../models/lesson-settings';
@@ -63,6 +63,8 @@ export class FiszkaComponent implements OnInit, OnDestroy {
         } as CardModel;
       })
     );
+
+    this.lessonStore.dispatch(new SetLastAnswerAction({ isCorrect: true }));
   }
 
   ngOnDestroy(): void {
@@ -84,7 +86,6 @@ export class FiszkaComponent implements OnInit, OnDestroy {
   }
 
   getCardSide(lessonStep: LessonStep, lessonSettings: LessonSettings, word: CardModel): string {
-    console.log('test');
     if (lessonStep.answerVisibility) {
       if (lessonSettings.answerLanguage === word.groupLanguage1) {
         return 'language1';

@@ -1,6 +1,3 @@
-<ng-container *ngIf="wordsCount$ | async as count">
-    <div>
-        Słowa do powtórki: {{count}}
-    </div>
-</ng-container>
-
+<div>
+    Słowa do powtórki: {{wordsCount$ | async}}
+</div>

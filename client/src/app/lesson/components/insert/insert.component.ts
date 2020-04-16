@@ -118,7 +118,7 @@ export class InsertComponent implements OnInit, OnDestroy {
 
   private handleFirstWord(wordRepeat: WordRepeat): void {
     this.word = wordRepeat;
-    console.log(this.word);
+    (this.word);
   }
 
 }
