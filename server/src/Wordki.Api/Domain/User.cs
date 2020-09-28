@@ -10,6 +10,11 @@ namespace Wordki.Api.Domain
         public string Password { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime? LastLoginDate { get; set; }
-        public IReadOnlyCollection<Group> Groups { get; set; }
+        public IList<Group> Groups { get; }
+
+        public User()
+        {
+            Groups = new List<Group>();
+        }
     }
 }
