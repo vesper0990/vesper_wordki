@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Wordki.Api.Repositories.EntityFrameworkRepositories;
 using Wordki.Infrastructure.Framework.ExceptionMiddleware;
 using Wordki.Infrastructure.Framework.HandleTimeMiddleware;
 using Wordki.Utils.Dapper;
@@ -16,5 +17,7 @@ public static class ServicesConfiguration
             .AddScoped<ITimeProvider, TimeProvider>()
             .AddScoped<IMigrationProvider, MigrationProvider>()
             .AddScoped<IHttpContextProvider, HttpContextProvider>()
-            .AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
+            .AddScoped<IDatabaseInitializer, DatabaseInitializer>();
+
 }

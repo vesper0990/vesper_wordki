@@ -11,6 +11,8 @@ using Wordki.Infrastructure;
 using Microsoft.Extensions.Hosting;
 using Wordki.Infrastructure.Framework.HandleTimeMiddleware;
 using Wordki.Infrastructure.Services;
+using MediatR.Extensions.Autofac.DependencyInjection;
+using Wordki.Api.Repositories.EntityFrameworkRepositories;
 
 namespace Wordki
 {
@@ -36,6 +38,7 @@ namespace Wordki
                 .CorsConfig()
                 .LoggingConfig(Configuration)
                 .ServicesConfig()
+                .AddDbContext<WordkiDbContext>()
                 .AddMvc(o => o.EnableEndpointRouting = false);
         }
 
@@ -45,6 +48,7 @@ namespace Wordki
             builder.RegisterModule<InfrastructureModule>();
             builder.RegisterModule<CommandModule>();
             builder.RegisterModule<QueryModule>();
+            builder.AddMediatR(typeof(Startup).Assembly);
         }
 
         public void Configure(IApplicationBuilder app)
@@ -56,9 +60,16 @@ namespace Wordki
             app.UseAuthentication();
             app.UseMvc();
 
-            if(Configuration.GetValue<bool>("General:Mocks")){
-                var initializer = app.ApplicationServices.GetService<IDataInitializer>();
-                initializer.Initialize().Wait();
+            //if (Configuration.GetValue<bool>("General:Mocks"))
+            //{
+            //    var initializer = app.ApplicationServices.GetService<IDataInitializer>();
+            //    initializer.Initialize().Wait();
+            //}
+
+            if (Configuration.GetValue<bool>("General:Mocks"))
+            {
+                var initializer = app.ApplicationServices.GetService<IDatabaseInitializer>();
+                initializer.Init().Wait();
             }
 
             var appLifeTime = app.ApplicationServices.GetService<IHostApplicationLifetime>();

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using Wordki.Infrastructure.Framework.ExceptionMiddleware;
 
-namespace Wordki.Api.Test
+namespace Wordki.Api.Featuers.Test
 {
     [Route("[controller]")]
     [ApiVersion("1.0")]
@@ -13,10 +15,12 @@ namespace Wordki.Api.Test
     public class TestController : ControllerBase
     {
         private readonly IConfiguration configuration;
+        private readonly IMediator mediator;
 
-        public TestController(IConfiguration configuration)
+        public TestController(IConfiguration configuration, IMediator mediator)
         {
             this.configuration = configuration;
+            this.mediator = mediator;
         }
 
         [HttpGet("value/{value}")]
@@ -73,6 +77,9 @@ namespace Wordki.Api.Test
             }
             return new StatusCodeResult((int)HttpStatusCode.OK);
         }
+
+        [HttpGet("handle")]
+        public async Task<IActionResult> Handle() => new ContentResult { Content = await mediator.Send(new TestCommand()) };
     }
 
     public class TestRequest
