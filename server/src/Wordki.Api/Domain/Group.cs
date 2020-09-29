@@ -11,6 +11,11 @@ namespace Wordki.Api.Domain
         public int GroupLanguage2 { get; set; }
         public DateTime GroupCreationDate { get; set; }
         public User User { get; set; }
-        public IReadOnlyCollection<Card> Words { get; set; }
+        public IList<Card> Words { get; set; }
+
+        public Group()
+        {
+            Words = new List<Card>();
+        }
     }
 }

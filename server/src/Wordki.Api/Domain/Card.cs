@@ -15,7 +15,7 @@ namespace Wordki.Api.Domain
         public DateTime WordCreationDate { get; set; }
         public DateTime NextRepeat { get; set; }
         public Group Group { get; set; }
-        public IReadOnlyCollection<Repeat> Repeats { get; set; }
+        public IList<Repeat> Repeats { get;  }
 
         public Card()
         {

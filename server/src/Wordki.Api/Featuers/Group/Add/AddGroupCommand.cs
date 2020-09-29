@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Wordki.Api.Featuers.Group.AddGroup
+namespace Wordki.Api.Featuers.Group.Add
 {
     public class AddGroupCommand : IRequest<long>
     {

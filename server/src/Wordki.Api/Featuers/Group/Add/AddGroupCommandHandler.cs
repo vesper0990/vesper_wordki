@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
 using Wordki.Api.Services;
 
-namespace Wordki.Api.Featuers.Group.AddGroup
+namespace Wordki.Api.Featuers.Group.Add
 {
     public class AddGroupCommandHandler : IRequestHandler<AddGroupCommand, long>
     {

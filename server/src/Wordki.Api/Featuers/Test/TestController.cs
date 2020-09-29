@@ -15,12 +15,10 @@ namespace Wordki.Api.Featuers.Test
     public class TestController : ControllerBase
     {
         private readonly IConfiguration configuration;
-        private readonly IMediator mediator;
 
-        public TestController(IConfiguration configuration, IMediator mediator)
+        public TestController(IConfiguration configuration, IMediator mediator) : base(mediator)
         {
             this.configuration = configuration;
-            this.mediator = mediator;
         }
 
         [HttpGet("value/{value}")]
