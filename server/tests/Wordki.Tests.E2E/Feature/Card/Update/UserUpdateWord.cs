@@ -4,54 +4,63 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using TestStack.BDDfy;
+using Wordki.Api.Domain;
+using Wordki.Api.Repositories.EntityFrameworkRepositories;
 using Wordki.Core.Dtos;
 using Wordki.Tests.EndToEnd.Configuration;
 
-namespace Wordki.Tests.EndToEnd.UpdateWord
+namespace Wordki.Tests.E2E.Feature.Card.Update
 {
     [TestFixture]
-    public class UserUpdateWord : TestBase
+    public class UserUpdateCard : TestBase
     {
 
-        public UserUpdateWord()
+        public UserUpdateCard()
         {
-            Request = new HttpRequestMessage(HttpMethod.Put, "/updateWord");
+            Request = new HttpRequestMessage(HttpMethod.Put, "/word/update");
         }
 
         async Task GivenGroupInDatabase()
         {
-            using (var dbContext = new EntityFramework(DapperSettings))
+            using (var dbContext = new WordkiDbContext(Options))
             {
-                var user = new UserDto
+                var user = new Api.Domain.User
                 {
                     Id = 1,
                     Name = "user",
                     Password = Host.EncrypterMock.Object.GetSalt(string.Empty),
-                    CreationDate = Host.TimeProviderMock.Object.GetTime(),
-                    LastLoginDate = Host.TimeProviderMock.Object.GetTime()
+                    CreationDate = Host.TimeProviderMock.Object.Now(),
+                    LastLoginDate = Host.TimeProviderMock.Object.Now()
                 };
                 dbContext.Users.Add(user);
 
-                var group = new GroupDto
+                var group = new Api.Domain.Group
                 {
-                    UserId = 1,
-                    GroupId = 1,
+                    User = user,
+                    Id = 1,
                     GroupLanguage1 = 1,
                     GroupLanguage2 = 2,
                     Name = "group",
-                    GroupCreationDate = Host.TimeProviderMock.Object.GetTime()
+                    GroupCreationDate = Host.TimeProviderMock.Object.Now()
                 };
                 dbContext.Groups.Add(group);
 
-                var word = new WordDto
+                var word = new Api.Domain.Card
                 {
-                    WordId = 1,
-                    GroupId = 1,
-                    WordLanguage1 = $"word1",
-                    WordLanguage2 = $"word2",
-                    Drawer = 2,
+                    Id = 1,
+                    Group = group,
+                    CardSide1 = new Word
+                    {
+                        Value = "word1",
+                    },
+                    CardSide2 = new Word
+                    {
+                        Value = "word2",
+                    },
+                    Drawer = Drawer.Create(2),
                     IsVisible = true,
                     WordCreationDate = new DateTime(2020, 01, 01),
                     NextRepeat = new DateTime(2020, 01, 01),
@@ -63,7 +72,20 @@ namespace Wordki.Tests.EndToEnd.UpdateWord
 
         void AndGivenRequest()
         {
-            Request.Content = new StringContent("{\"wordId\":1,\"groupId\":1,\"language1\":\"asdf\",\"language2\":\"asdf\",\"isVisible\":false}", Encoding.UTF8, "application/json");
+            var content = new
+            {
+                id = 1,
+                word1 = new
+                {
+                    value = "asdf"
+                },
+                word2 = new
+                {
+                    value = "fdsa"
+                },
+                isVisible = false
+            };
+            Request.Content = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
         }
 
         async Task WhenRequestReceived() => await SendRequest();
@@ -81,17 +103,15 @@ namespace Wordki.Tests.EndToEnd.UpdateWord
 
         async Task AndThenWordIsAdded()
         {
-            using (var dbContext = new EntityFramework(DapperSettings))
+            using (var dbContext = new WordkiDbContext(Options))
             {
                 var word = await dbContext.Words.SingleOrDefaultAsync();
                 Assert.IsNotNull(word);
-                Assert.AreEqual(1, word.WordId);
-                Assert.AreEqual(1, word.GroupId);
-                Assert.AreEqual("asdf", word.WordLanguage1);
-                Assert.AreEqual("asdf", word.WordLanguage2);
+                Assert.AreEqual(1, word.Id);
+                Assert.AreEqual(1, word.Group.Id);
+                Assert.AreEqual("asdf", word.CardSide1.Value);
+                Assert.AreEqual("fdsa", word.CardSide2.Value);
                 Assert.AreEqual(null, word.Comment);
-                Assert.AreEqual(null, word.Example1);
-                Assert.AreEqual(null, word.Example2);
                 Assert.AreEqual(2, word.Drawer);
                 Assert.AreEqual(false, word.IsVisible);
             }
