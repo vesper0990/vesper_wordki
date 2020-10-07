@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Wordki.Api.Featuers
 {
@@ -12,14 +13,14 @@ namespace Wordki.Api.Featuers
             this.mediator = mediator;
         }
 
-        protected IActionResult HandleCommand(IRequest request)
+        protected async Task<IActionResult> HandleCommand(IRequest request)
         {
-            mediator.Send(request);
+            await mediator.Send(request);
             return new StatusCodeResult(200);
         }
 
-        protected IActionResult HandleCommand<T>(IRequest<T> request) => new JsonResult(mediator.Send(request));
+        protected async Task<IActionResult> HandleCommand<T>(IRequest<T> request) => new JsonResult(await mediator.Send(request));
 
-        protected IActionResult HandlerQuery<T>(IRequest<T> request) => new JsonResult(mediator.Send(request));
+        protected async Task<IActionResult> HandlerQuery<T>(IRequest<T> request) => new JsonResult(await mediator.Send(request));
     }
 }

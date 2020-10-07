@@ -13,6 +13,9 @@ using Wordki.Infrastructure.Framework.HandleTimeMiddleware;
 using Wordki.Infrastructure.Services;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Wordki
 {
@@ -39,7 +42,11 @@ namespace Wordki
                 .LoggingConfig(Configuration)
                 .ServicesConfig()
                 .AddDbContext<WordkiDbContext>()
-                .AddMvc(o => o.EnableEndpointRouting = false);
+                .AddMvc(o => { 
+                    o.EnableEndpointRouting = false;
+                    o.Filters.Add(typeof(ValidatorActionFilter));
+                })
+                .AddFluentValidation(f => f.RegisterValidatorsFromAssemblyContaining<Startup>());
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -74,6 +81,22 @@ namespace Wordki
 
             var appLifeTime = app.ApplicationServices.GetService<IHostApplicationLifetime>();
             appLifeTime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
+        }
+    }
+
+    public class ValidatorActionFilter : IActionFilter
+    {
+        public void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (!filterContext.ModelState.IsValid)
+            {
+                filterContext.Result = new BadRequestObjectResult(filterContext.ModelState);
+            }
+        }
+
+        public void OnActionExecuted(ActionExecutedContext filterContext)
+        {
+
         }
     }
 }

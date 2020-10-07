@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Wordki.Api.Featuers.Card.Delete
 {
@@ -9,6 +10,6 @@ namespace Wordki.Api.Featuers.Card.Delete
         public DeleteCardController(IMediator mediator) : base(mediator) { }
 
         [HttpDelete("delete/{cardId}")]
-        public IActionResult Delete([FromRoute] long cardId) => HandleCommand(new DeleteCardComamnd { Id = cardId });
+        public async Task<IActionResult> Delete([FromRoute] long cardId) => await HandleCommand(new DeleteCardComamnd { Id = cardId });
     }
 }

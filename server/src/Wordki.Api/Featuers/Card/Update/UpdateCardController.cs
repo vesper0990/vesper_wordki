@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Wordki.Api.Featuers.Card.Update
 {
@@ -9,6 +10,6 @@ namespace Wordki.Api.Featuers.Card.Update
         public UpdateCardController(IMediator mediator) : base(mediator) { }
 
         [HttpPut("update")]
-        public IActionResult Update([FromBody] UpdateCardCommand command) => HandleCommand(command);
+        public async Task<IActionResult> Update([FromBody] UpdateCardCommand command) => await HandleCommand(command);
     }
 }

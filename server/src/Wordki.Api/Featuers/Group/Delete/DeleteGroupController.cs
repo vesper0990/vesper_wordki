@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Wordki.Api.Featuers.Group.Delete
 {
@@ -9,6 +10,6 @@ namespace Wordki.Api.Featuers.Group.Delete
         public DeleteGroupController(IMediator mediator) : base(mediator) { }
 
         [HttpDelete("delete/{groupId}")]
-        public IActionResult Delete([FromRoute] long groupId) => HandleCommand(new DeleteGroupCommand { GroupId = groupId });
+        public async Task<IActionResult> Delete([FromRoute] long groupId) => await HandleCommand(new DeleteGroupCommand { GroupId = groupId });
     }
 }

@@ -1,41 +1,29 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using TestStack.BDDfy;
-using Wordki.Core.Dtos;
-using Wordki.Tests.EndToEnd.Configuration;
+using Wordki.Api.Repositories.EntityFrameworkRepositories;
 
-namespace Wordki.Tests.EndToEnd.AddGroup
+namespace Wordki.Tests.E2E.Feature.Group.Add
 {
     [TestFixture]
     public class AddGroupWithoutWords : TestBase
     {
         public AddGroupWithoutWords()
         {
-            Request = new System.Net.Http.HttpRequestMessage(HttpMethod.Post, "/addGroup");
+            Request = new HttpRequestMessage(HttpMethod.Post, "/group/add");
         }
 
         async Task GivenUserInDatabase()
         {
-            using (var dbContext = new EntityFramework(DapperSettings))
+            using (var dbContext = new WordkiDbContext(Options))
             {
-                var user = new UserDto
-                {
-                    Id = 1,
-                    Name = "user",
-                    Password = Host.EncrypterMock.Object.GetSalt(string.Empty),
-                    CreationDate = Host.TimeProviderMock.Object.GetTime(),
-                    LastLoginDate = Host.TimeProviderMock.Object.GetTime()
-                };
-                dbContext.Users.Add(user);
-
+                dbContext.Users.Add(Utils.GetUser());
                 await dbContext.SaveChangesAsync();
             }
         }
@@ -44,10 +32,10 @@ namespace Wordki.Tests.EndToEnd.AddGroup
         {
             var jsonObj = new
             {
+                userId = 1,
                 name = "groupName",
                 language1 = 1,
                 language2 = 2,
-                words = new object[0]
             };
             var jsonString = JsonSerializer.Serialize(jsonObj);
             Request.Content = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -63,17 +51,18 @@ namespace Wordki.Tests.EndToEnd.AddGroup
         async Task AndThenResponseIsEmpty()
         {
             var message = await Response.Content.ReadAsStringAsync();
-            Assert.IsEmpty(message);
+            long id = long.Parse(message);
+            Assert.Greater(id, 0);
         }
 
         async Task AndThenGroupIsAdded()
         {
-            using (var dbContext = new EntityFramework(DapperSettings))
+            using (var dbContext = new WordkiDbContext(Options))
             {
-                var group = await dbContext.Groups.SingleAsync();
+                var group = await dbContext.Groups.Include(g => g.User).SingleAsync();
                 Assert.IsNotNull(group);
-                Assert.Greater(group.GroupId, 0);
-                Assert.AreEqual(group.UserId, 1);
+                Assert.Greater(group.Id, 0);
+                Assert.AreEqual(group.User.Id, 1);
                 Assert.AreEqual(group.Name, "groupName");
                 Assert.AreEqual(group.GroupLanguage1, 1);
                 Assert.AreEqual(group.GroupLanguage2, 2);

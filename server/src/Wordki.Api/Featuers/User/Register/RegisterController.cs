@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Wordki.Api.Featuers.User.Register
 {
@@ -9,6 +10,6 @@ namespace Wordki.Api.Featuers.User.Register
         public RegisterController(IMediator mediator) : base(mediator) { }
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterCommand command) => HandleCommand(command);
+        public async Task<IActionResult> Register([FromBody] RegisterCommand command) => await HandleCommand(command);
     }
 }

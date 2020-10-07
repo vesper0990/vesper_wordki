@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Debug;
 using Microsoft.Extensions.Options;
 using Wordki.Api.Domain;
 
@@ -7,6 +9,12 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
     public class WordkiDbContext : DbContext
     {
         private readonly DatabaseConfig databaseConfig;
+        private static readonly ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
+        {
+            builder
+            .AddConsole((options) => { })
+            .AddFilter((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Information);
+        });
 
         public DbSet<User> Users { get; set; }
         public DbSet<Group> Groups { get; set; }
@@ -21,7 +29,10 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var connectionString = $"Server={databaseConfig.Server};Port={databaseConfig.Port};Database={databaseConfig.Database};Uid={databaseConfig.User};Pwd={databaseConfig.Password}";
-            optionsBuilder.UseMySql(connectionString);
+            optionsBuilder
+                .UseLoggerFactory(loggerFactory)
+                .EnableSensitiveDataLogging()
+                .UseMySql(connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

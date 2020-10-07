@@ -1,14 +1,15 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Wordki.Api.Featuers.User.Login
 {
-    [Route("login")]
+    [Route("user")]
     public class LoginController : ControllerBase
     {
         public LoginController(IMediator mediator) : base(mediator) { }
 
-        [HttpPost()]
-        public IActionResult Login([FromBody] LoginCommnad request) => HandleCommand(request);
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginCommnad request) => await HandleCommand(request);
     }
 }

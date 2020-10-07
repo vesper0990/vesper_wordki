@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
-using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -17,32 +16,19 @@ namespace Wordki.Tests.E2E.Feature.Card.Add
 
         public UserAddCard()
         {
-            Request = new HttpRequestMessage(HttpMethod.Post, "/word/add");
+            Request = new HttpRequestMessage(HttpMethod.Post, "/card/add");
         }
 
         async Task GivenGroupInDatabase()
         {
             using (var dbContext = new WordkiDbContext(Options))
             {
-                var user = new Api.Domain.User
-                {
-                    Id = 1,
-                    Name = "user",
-                    Password = Host.EncrypterMock.Object.GetSalt(string.Empty),
-                    CreationDate = Host.TimeProviderMock.Object.Now(),
-                    LastLoginDate = Host.TimeProviderMock.Object.Now()
-                };
+                var user = Utils.GetUser();
                 dbContext.Users.Add(user);
 
-                var group = new Api.Domain.Group
-                {
-                    User = user,
-                    Id = 1,
-                    GroupLanguage1 = 1,
-                    GroupLanguage2 = 2,
-                    Name = "group",
-                    GroupCreationDate = Host.TimeProviderMock.Object.Now()
-                };
+                var group = Utils.GetGroup();
+                group.User = user;
+
                 dbContext.Groups.Add(group);
                 await dbContext.SaveChangesAsync();
             }
@@ -53,14 +39,9 @@ namespace Wordki.Tests.E2E.Feature.Card.Add
             var content = new
             {
                 groupId = 1,
-                cardSide1 = new
-                {
-                    value = "word1"
-                },
-                cardSide2 = new
-                {
-                    value = "word2"
-                },
+                cardSide1 = new { value = "word1" },
+                cardSide2 = new { value = "word2" },
+                comment = "",
                 IsVisible = true
             };
             Request.Content = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
@@ -76,23 +57,24 @@ namespace Wordki.Tests.E2E.Feature.Card.Add
         async Task AndThenResponseIsEmpty()
         {
             var message = await Response.Content.ReadAsStringAsync();
-            Assert.IsEmpty(message);
+            var id = long.Parse(message);
+            Assert.Greater(id, 0);
         }
 
         async Task AndThenWordIsAdded()
         {
             using (var dbContext = new WordkiDbContext(Options))
             {
-                var word = await dbContext.Words.SingleOrDefaultAsync();
+                var word = await dbContext.Words.Include(w => w.Group).SingleOrDefaultAsync();
                 Assert.IsNotNull(word);
                 Assert.Greater(word.Id, 0);
                 Assert.AreEqual(1, word.Group.Id);
                 Assert.AreEqual("word1", word.CardSide1.Value);
                 Assert.AreEqual("word2", word.CardSide2.Value);
                 Assert.AreEqual(string.Empty, word.Comment);
-                Assert.AreEqual(0, word.Drawer);
+                Assert.AreEqual(0, word.Drawer.Value);
                 Assert.AreEqual(true, word.IsVisible);
-                Assert.AreEqual(new DateTime(2000, 1, 1), word.NextRepeat);
+                Assert.AreEqual(Host.TimeProviderMock.Object.Now(), word.NextRepeat);
                 Assert.AreEqual(Host.TimeProviderMock.Object.Now(), word.WordCreationDate);
             }
         }

@@ -32,8 +32,8 @@ namespace Wordki.Api.Featuers.Card.Add
             var newCard = new Domain.Card
             {
                 Group = group,
-                CardSide1 = request.Word1,
-                CardSide2 = request.Word2,
+                CardSide1 = request.CardSide1,
+                CardSide2 = request.CardSide2,
                 Comment = request.Comment,
                 Drawer = Drawer.Create(0),
                 IsVisible = request.IsVisible,

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
+using Wordki.Api.Domain;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
 using Wordki.Api.Services;
 
@@ -20,15 +21,31 @@ namespace Wordki.Api.Featuers.Group.Add
 
         public async Task<long> Handle(AddGroupCommand request, CancellationToken cancellationToken)
         {
-            var user = await dbContext.Users.SingleOrDefaultAsync(u => u.Id == request.UserId);
+            var user = await dbContext.Users.Include(u => u.Groups).SingleOrDefaultAsync(u => u.Id == request.UserId);
             var newGroup = new Domain.Group
             {
-                 Name = request.Name,
-                 GroupLanguage1 = request.Language1,
-                 GroupLanguage2 = request.Language2,
-                 User = user,
-                 GroupCreationDate = dateTimeProvider.Now()
+                Name = request.Name,
+                GroupLanguage1 = request.Language1,
+                GroupLanguage2 = request.Language2,
+                User = user,
+                GroupCreationDate = dateTimeProvider.Now()
             };
+            foreach (var word in request.Words)
+            {
+                newGroup.Words.Add(
+                    new Domain.Card
+                    {
+                        CardSide1 = word.CardSide1,
+                        CardSide2 = word.CardSide2,
+                        Comment = word.Comment,
+                        Drawer = Drawer.Create(0),
+                        Group = newGroup,
+                        IsVisible = word.IsVisible,
+                        NextRepeat = dateTimeProvider.Now(),
+                        WordCreationDate = dateTimeProvider.Now(),
+                    });
+            }
+
             user.Groups.Add(newGroup);
 
             await dbContext.Groups.AddAsync(newGroup);

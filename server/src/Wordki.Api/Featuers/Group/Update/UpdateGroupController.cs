@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Wordki.Api.Featuers.Group.Update
 {
@@ -9,6 +10,6 @@ namespace Wordki.Api.Featuers.Group.Update
         public UpdateGroupController(IMediator mediator) : base(mediator) { }
 
         [HttpPut("update")]
-        public IActionResult Update([FromBody] UpdateGroupCommand request) => HandleCommand(request);
+        public async Task<IActionResult> Update([FromBody] UpdateGroupCommand request) => await HandleCommand(request);
     }
 }
