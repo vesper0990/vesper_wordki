@@ -69,12 +69,10 @@ namespace Wordki.Tests.E2E.Feature.Card.Add
                 Assert.IsNotNull(word);
                 Assert.Greater(word.Id, 0);
                 Assert.AreEqual(1, word.Group.Id);
-                Assert.AreEqual("word1", word.CardSide1.Value);
-                Assert.AreEqual("word2", word.CardSide2.Value);
+                Assert.AreEqual("word1", word.Heads.Value);
+                Assert.AreEqual("word2", word.Tails.Value);
                 Assert.AreEqual(string.Empty, word.Comment);
-                Assert.AreEqual(0, word.Drawer.Value);
                 Assert.AreEqual(true, word.IsVisible);
-                Assert.AreEqual(Host.TimeProviderMock.Object.Now(), word.NextRepeat);
                 Assert.AreEqual(Host.TimeProviderMock.Object.Now(), word.WordCreationDate);
             }
         }

@@ -7,12 +7,12 @@ import { ObservableMock } from 'src/app/test/utils';
 import { FiszkaComponent } from '../fiszka/fiszka.component';
 import { Store } from '@ngrx/store';
 import { LessonState } from '../../store/reducer';
-import { getLessonStateEnum, getFirstWord } from '../../store/selectors';
+import { getLessonStateEnum, selectCurrentCard } from '../../store/selectors';
 import { FormsModule } from '@angular/forms';
 import { WordComparerService } from '../../services/word-comparer/word-comparer.service';
 
 class BeforeLessonContext {
-  givenState = LessonStep.getLessonStep(LessonStateEnum.BeforeStart);
+  givenState = LessonStep.getLessonStep(LessonStateEnum.BEFORE_START);
   givenWord = <WordRepeat>{};
 
   expectedQuestionVisibility = false;
@@ -20,7 +20,7 @@ class BeforeLessonContext {
 }
 
 class WordDisplayContext {
-  givenState = LessonStep.getLessonStep(LessonStateEnum.WordDisplay);
+  givenState = LessonStep.getLessonStep(LessonStateEnum.QUESTION);
   givenWord = <WordRepeat>{};
 
   expectedQuestionVisibility = true;
@@ -28,7 +28,7 @@ class WordDisplayContext {
 }
 
 class AnswerDisplayContext {
-  givenState = LessonStep.getLessonStep(LessonStateEnum.AnswerDisplay);
+  givenState = LessonStep.getLessonStep(LessonStateEnum.ANSWARE);
   givenWord = <WordRepeat>{};
 
   expectedQuestionVisibility = true;
@@ -61,7 +61,7 @@ describe('InsertComponent', () => {
     storeMock = TestBed.get(Store);
     storeMock.select.withArgs(getLessonStateEnum)
       .and.returnValue(lessonStepObservable.getSource());
-    storeMock.select.withArgs(getFirstWord)
+    storeMock.select.withArgs(selectCurrentCard)
       .and.returnValue(wordRepeatObservable.getSource());
     fixture = TestBed.createComponent(InsertComponent);
     component = fixture.componentInstance;

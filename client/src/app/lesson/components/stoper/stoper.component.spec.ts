@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StoperComponent } from './stoper.component';
-import { StoperService } from '../../services/stoper/stoper.service';
+import { StoperService } from '../../services/stoper/stoper2.service';
 import { Store } from '@ngrx/store';
 import { LessonState } from '../../store/reducer';
 import { of } from 'rxjs';

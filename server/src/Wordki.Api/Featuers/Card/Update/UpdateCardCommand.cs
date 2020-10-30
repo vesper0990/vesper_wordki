@@ -6,8 +6,8 @@ namespace Wordki.Api.Featuers.Card.Update
     public class UpdateCardCommand : IRequest
     {
         public long Id { get; set; }
-        public Word CardSide1 { get; set; }
-        public Word CardSide2 { get; set; }
+        public Side CardSide1 { get; set; }
+        public Side CardSide2 { get; set; }
         public string Comment { get; set; }
         public bool IsVisible { get; set; }
     }

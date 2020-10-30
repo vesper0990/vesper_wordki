@@ -35,13 +35,11 @@ namespace Wordki.Api.Featuers.Group.Add
                 newGroup.Words.Add(
                     new Domain.Card
                     {
-                        CardSide1 = word.CardSide1,
-                        CardSide2 = word.CardSide2,
+                        Heads = word.CardSide1,
+                        Tails = word.CardSide2,
                         Comment = word.Comment,
-                        Drawer = Drawer.Create(0),
                         Group = newGroup,
                         IsVisible = word.IsVisible,
-                        NextRepeat = dateTimeProvider.Now(),
                         WordCreationDate = dateTimeProvider.Now(),
                     });
             }

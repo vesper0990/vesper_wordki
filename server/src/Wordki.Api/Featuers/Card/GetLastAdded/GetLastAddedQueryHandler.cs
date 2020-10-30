@@ -35,13 +35,11 @@ namespace Wordki.Api.Featuers.Card.GetLastAdded
                     Language1 = card.Group.GroupLanguage1,
                     Language2 = card.Group.GroupLanguage2,
                     Comment = card.Comment,
-                    Drawer = card.Drawer.Value,
                     IsVisible = card.IsVisible,
-                    Side1 = card.CardSide1,
-                    Side2 = card.CardSide2
+                    Side1 = card.Heads,
+                    Side2 = card.Tails
                 })
-                .AsNoTracking()
-                .AsEnumerable();
+                .AsNoTracking();
             return await Task.FromResult(lastAdded);
         }
     }

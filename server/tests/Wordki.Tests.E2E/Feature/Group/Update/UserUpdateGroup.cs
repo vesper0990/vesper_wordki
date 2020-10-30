@@ -47,12 +47,10 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
 
                 var word = new Api.Domain.Card
                 {
-                    CardSide1 = new Word { Value = "word1" },
-                    CardSide2 = new Word { Value = "word2" },
-                    Drawer = Drawer.Create(2),
+                    Heads = new Side { Value = "word1" },
+                    Tails = new Side { Value = "word2" },
                     IsVisible = true,
                     WordCreationDate = new DateTime(2020, 01, 01),
-                    NextRepeat = new DateTime(2020, 01, 01),
                 };
                 dbContext.Words.Add(word);
                 await dbContext.SaveChangesAsync();

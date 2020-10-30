@@ -1,48 +1,43 @@
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { GroupProviderBase } from '../services/group.provider/group.provider';
-import {
-    GroupListTypes,
-    SetGroupListAction,
-    UpdateGroupInList,
-    UpdateGroupInListSuccess,
-    RemoveGroupAction,
-    RemoveGroupSuccessAction
-} from './actions';
-import { map, mergeMap, catchError, switchMap } from 'rxjs/operators';
+import { GroupsListHttpServiceBase } from '../services/groups-list-http/groups-list-http.service';
+import * as actions from './actions';
+import { map, catchError, exhaustMap, tap, withLatestFrom } from 'rxjs/operators';
 import { Group } from '../models/group.model';
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { GroupListState } from './state';
 
 @Injectable()
 export class GroupListEffects {
 
-    @Effect() getGroupListEffect = this.actions$.pipe(
-        ofType(GroupListTypes.GetGroupList),
-        mergeMap(() => this.groupProvider.getGroups()),
-        map((groups: Group[]) => new SetGroupListAction({ groups: groups })),
+    constructor(private actions$: Actions,
+        private store: Store<GroupListState>,
+        private groupProvider: GroupsListHttpServiceBase) { }
+
+    @Effect()
+    getGroupListEffect = this.actions$.pipe(
+        ofType<actions.GetGroups>(actions.GroupListTypes.GET_GROUPS),
+        exhaustMap(() => this.groupProvider.getGroups()),
+        map((groups: Group[]) => new actions.GetGroupsSuccess({ groups: groups })),
         catchError(error => this.handleError(error))
     );
 
-    @Effect() updateGroupInListEffect = this.actions$.pipe(
-        ofType(GroupListTypes.UpdateGroupInList),
-        switchMap((action: UpdateGroupInList) =>
-            this.groupProvider.updateGroup(action.payload.group).pipe(
-                map(() => new UpdateGroupInListSuccess({ group: action.payload.group })),
-                catchError((error: any) => this.handleError(error))
-            ))
+    @Effect()
+    updateGroupInListEffect = this.actions$.pipe(
+        ofType<actions.UpdateGroup>(actions.GroupListTypes.UPDATE_GROUP),
+        tap(action => this.groupProvider.updateGroup(action.payload.group)),
+        map(action => new actions.UpdateGroupSuccess({ group: action.payload.group })),
+        catchError((error: any) => this.handleError(error))
     );
 
-    @Effect() removeGroupEffect = this.actions$.pipe(
-        ofType(GroupListTypes.RemoveGroup),
-        switchMap((action: RemoveGroupAction) =>
-            this.groupProvider.removeGroup(action.payload.groupId).pipe(
-                map(() => new RemoveGroupSuccessAction({ groupId: action.payload.groupId })),
-                catchError((error: any) => this.handleError(error))
-            ))
+    @Effect()
+    removeGroupEffect = this.actions$.pipe(
+        ofType<actions.RemoveGroup>(actions.GroupListTypes.REMOVE_GROUP),
+        tap(action => this.groupProvider.removeGroup(action.payload.groupId)),
+        map(action => new actions.RemoveGroupSuccess({ groupId: action.payload.groupId })),
+        catchError((error: any) => this.handleError(error))
     );
-
-    constructor(private actions$: Actions,
-        private groupProvider: GroupProviderBase) { }
 
     private handleError(error: any): Observable<any> {
         console.log(error);

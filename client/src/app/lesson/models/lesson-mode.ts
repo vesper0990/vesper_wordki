@@ -1,5 +1,3 @@
-import { LessonStateEnum } from "./lesson-state";
-
 export enum LessonModeEnum {
     Undefined = 0,
     Repeat,

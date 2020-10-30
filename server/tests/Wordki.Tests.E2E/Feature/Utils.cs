@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using FizzWare.NBuilder;
+using Moq;
 using System;
 using Wordki.Api.Services;
 using Wordki.Utils.HttpContext;
@@ -69,16 +70,30 @@ namespace Wordki.Tests.E2E.Feature
 
         public static Api.Domain.Card GetCard()
         {
+            SequentialGenerator<long> generator = new SequentialGenerator<long>()
+            {
+                Increment = 1,
+                Direction = GeneratorDirection.Ascending,
+            };
+
+            generator.StartingWith(1);
+
+            var builder = Builder<Api.Domain.Card>.CreateNew()
+                .With(x => x.Id = generator.Generate())
+                .With(x => x.Heads = Builder<Api.Domain.Side>.CreateNew().Build())
+                .With(x => x.Tails = Builder<Api.Domain.Side>.CreateNew().Build());
+
+            var card = builder.Build();
+            var card2 = builder.Build();
+
             return new Api.Domain.Card
             {
                 Id = 1,
-                CardSide1 = new Api.Domain.Word { Value = "cardSide1", Example = "cardSideExample1" },
-                CardSide2 = new Api.Domain.Word { Value = "cardSide2", Example = "cardSideExample2" },
+                Heads = new Api.Domain.Side { Value = "cardSide1", Example = "cardSideExample1" },
+                Tails = new Api.Domain.Side { Value = "cardSide2", Example = "cardSideExample2" },
                 Comment = "comment",
-                Drawer = Api.Domain.Drawer.Create(2),
                 IsVisible = true,
                 WordCreationDate = new DateTime(1990, 9, 24),
-                NextRepeat = new DateTime(1990, 9, 25)
             };
         }
     }

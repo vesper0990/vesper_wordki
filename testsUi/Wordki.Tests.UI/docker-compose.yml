@@ -1,0 +1,14 @@
+version: '3.5'
+services:
+  wordki.ui.test:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      - wordki.client.ui.test      
+  wordki.client.ui.test:
+    build:
+      context: ../../client/
+      dockerfile: Dockerfile.ui
+    expose:
+      - 8080

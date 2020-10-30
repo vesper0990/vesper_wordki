@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using TestStack.BDDfy;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
@@ -20,7 +21,13 @@ namespace Wordki.Tests.E2E.Feature.User.Register
 
         void GivenRequest()
         {
-            Request.Content = new StringContent("{\"userName\":\"user\", \"password\":\"pass\", \"passwordRepeat\":\"pass\"}", Encoding.UTF8, "application/json");
+            var content = new
+            {
+                userName = "user",
+                password = "pass",
+                passwordRepeat = "pass",
+            };
+            Request.Content = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
         }
 
         async Task WhenRequestReceived() => await SendRequest();

@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Group } from './models/group.model';
 import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
-import { GroupListState } from './store/reducer';
-import { Store } from '@ngrx/store';
-import { getGroupsList, getIsLoading } from './store/selectors';
-import { GetGroupListAction, UpdateGroupInList, RemoveGroupAction } from './store/actions';
 import { EditGroup } from '../share/components/edit-group-dialog/edit-group.model';
+import { GroupsListService } from './services/groups-list/groups-list.service';
 
 @Component({
   templateUrl: './groups.component.html',
-  styleUrls: ['./groups.component.scss']
+  styleUrls: ['./groups.component.scss'],
+  providers: [GroupsListService]
 })
 export class GroupsComponent implements OnInit {
 
@@ -18,23 +15,22 @@ export class GroupsComponent implements OnInit {
   isLoading$: Observable<boolean>;
   editingGroup: EditGroup = null;
 
-  constructor(private router: Router,
-    private groupsListState: Store<GroupListState>) { }
+  constructor(private readonly service: GroupsListService) { }
 
   ngOnInit() {
-    this.groups$ = this.groupsListState.select(getGroupsList);
-    this.isLoading$ = this.groupsListState.select(getIsLoading);
-    this.groupsListState.dispatch(new GetGroupListAction());
+    this.service.loadGroups();
+    this.groups$ = this.service.getList();
+    this.isLoading$ = this.service.isLoading()
   }
 
   openGroup(groupId: number): void {
-    this.router.navigate(['lesson/group', groupId]);
+    this.service.openGroup(groupId);
   }
 
   groupEdit(group: Group): void {
     const editGroup = <EditGroup>{
       id: group.id,
-      name : group.name,
+      name: group.name,
       language1: group.language1,
       language2: group.language2
     };
@@ -42,7 +38,7 @@ export class GroupsComponent implements OnInit {
   }
 
   onEditSubmit(group: EditGroup): void {
-    this.groupsListState.dispatch(new UpdateGroupInList({ group: group }));
+    // this.groupsListState.dispatch(new UpdateGroup({ group: group }));
     this.editingGroup = null;
   }
 
@@ -52,10 +48,10 @@ export class GroupsComponent implements OnInit {
 
   onEditRemove(groupId: number): void {
     this.editingGroup = null;
-    this.groupsListState.dispatch(new RemoveGroupAction({ groupId: groupId }));
+    // this.groupsListState.dispatch(new RemoveGroup({ groupId: groupId }));
   }
 
   addGroup(): void {
-    this.router.navigate(['details/add']);
+    // this.router.navigate(['details/add']);
   }
 }

@@ -2,23 +2,30 @@ p-dropdown {
     min-width: 80%;
 }
 
-.ui-dropdown{
+.ui-dropdown {
     width: 100%;
+}
+
+.p-card .p-card-content {
+    padding: 0px;
+}
+
+.p-card .p-card-body {
+    padding: 0px;
 }
 
 @media screen and (max-width: 640px) {
     //small
-    .ui-dialog{
+    .ui-dialog {
         width: 98%;
         padding-left: 1%;
         padding-right: 1%;
     }
-    
 }
 
 @media screen and (min-width: 641px) {
     //medium
-    .ui-dialog{
+    .ui-dialog {
         width: 90%;
         padding-left: 5%;
         padding-right: 5%;
@@ -27,9 +34,8 @@ p-dropdown {
 
 @media screen and (min-width: 1025px) {
     //small
-    .ui-dialog{
+    .ui-dialog {
         width: 1025px;
         margin: auto;
     }
-    
 }

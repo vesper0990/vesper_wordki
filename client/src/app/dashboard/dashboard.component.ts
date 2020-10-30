@@ -1,24 +1,49 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { RepeatWord } from './models/repeat-word.model';
+import { DashboardService } from './services/dashboard/dashboard.service';
 
 @Component({
-  selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  providers: [DashboardService]
 })
 export class DashboardComponent implements OnInit {
 
+  lastFailed$: Observable<RepeatWord>;
+  nextRepeat$: Observable<RepeatWord>;
+  newestCard$: Observable<RepeatWord>;
+  cardToRepeat$: Observable<number>;
+  lastRepeat$: Observable<number>;
+  groupsCount$: Observable<number>;
+  cardsCount$: Observable<number>;
 
-  constructor(private router: Router) { }
+  constructor(private readonly service: DashboardService) { }
 
   ngOnInit(): void {
+    this.service.init();
+    this.lastFailed$ = this.service.getLastFailed();
+    this.newestCard$ = this.service.getNewestCard();
+    this.nextRepeat$ = this.service.getNextRepeat();
+    this.cardToRepeat$ = this.service.getCardToRepeat();
+    this.lastRepeat$ = this.service.getLastRepeat();
+    this.groupsCount$ = this.service.getGroupsCount();
+    this.cardsCount$ = this.service.getCardsCount();
   }
 
-  lessonFiszki(): void {
-    this.router.navigate(['/lesson/fiszki']);
+  startLesson(): void {
+    this.service.lesson();
   }
 
-  lessonInsert(): void {
-    this.router.navigate(['/lesson/inserting']);
+  history(): void {
+    this.service.history();
+  }
+
+  groups(): void {
+    this.service.groups();
+  }
+
+  cards(): void {
+    this.service.cards();
   }
 }

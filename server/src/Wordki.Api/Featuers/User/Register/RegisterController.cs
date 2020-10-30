@@ -4,8 +4,7 @@ using System.Threading.Tasks;
 
 namespace Wordki.Api.Featuers.User.Register
 {
-    [Route("user")]
-    public class RegisterController : ControllerBase
+    public class RegisterController : UserController
     {
         public RegisterController(IMediator mediator) : base(mediator) { }
 

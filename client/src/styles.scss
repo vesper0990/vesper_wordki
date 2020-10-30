@@ -1,5 +1,10 @@
 @import "./styles-primeng.scss";
 
+@font-face {
+    font-family: Comfortaa;
+    src: url("/assets/fonts/comfortaa.ttf") format("truetype");
+}
+
 .circle-button {
     height: 4em;
     width: 4em;

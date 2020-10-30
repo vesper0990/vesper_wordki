@@ -33,11 +33,6 @@ services:
    - "81:80"
   env_file:
    - secrets.Development.env
-  depends_on:
-   - mysql
-  environment:
-   - WAIT_HOSTS=mysql:3306
-   - WAIT_HOSTS_TIMEOUT=60
  seq:
   container_name: seq_dev
   image: datalust/seq:latest

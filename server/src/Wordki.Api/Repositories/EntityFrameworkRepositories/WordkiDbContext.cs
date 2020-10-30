@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Debug;
 using Microsoft.Extensions.Options;
 using Wordki.Api.Domain;
 
@@ -20,6 +19,7 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
         public DbSet<Group> Groups { get; set; }
         public DbSet<Card> Words { get; set; }
         public DbSet<Repeat> Repeats { get; set; }
+        public DbSet<Lesson> Lessons { get; set; }
 
         public WordkiDbContext(IOptions<DatabaseConfig> databaseConfig)
         {
@@ -28,11 +28,12 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connectionString = $"Server={databaseConfig.Server};Port={databaseConfig.Port};Database={databaseConfig.Database};Uid={databaseConfig.User};Pwd={databaseConfig.Password}";
+            //var connectionString = $"Host=ec2-46-137-156-205.eu-west-1.compute.amazonaws.com;Port=5432;Database=d3eoufsd95lnc0;User Id=bqobwxfagmhqby;Password=6b444f3e788275e0c8ac2809756616f7597c70abc06c1e5d57d9870f1cf84723";
+            var connectionString = $"Host={databaseConfig.Server};Port={databaseConfig.Port};Database={databaseConfig.Database};User Id={databaseConfig.User};Password={databaseConfig.Password}";
             optionsBuilder
                 .UseLoggerFactory(loggerFactory)
                 .EnableSensitiveDataLogging()
-                .UseMySql(connectionString);
+                .UseNpgsql(connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -43,6 +44,7 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
             {
                 user.HasKey(u => u.Id);
                 user.HasMany(u => u.Groups).WithOne(g => g.User);
+                user.HasMany(u => u.Lessons).WithOne(l => l.User);
             });
 
             modelBuilder.Entity<Group>(group =>
@@ -55,15 +57,40 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
             {
                 card.HasKey(w => w.Id);
                 card.HasMany(w => w.Repeats).WithOne(r => r.Word);
+                card.OwnsOne(c => c.Tails, tails =>
+                {
+                    tails.OwnsOne(t => t.State, state =>
+                    {
+                        state.Property(s => s.Drawer)
+                        .HasColumnName("Tails_Drawer")
+                        .HasConversion(
+                        v => v.Value,
+                        v => Drawer.Create(v));
 
-                card
-                .Property(w => w.Drawer)
-                .HasConversion(
-                    v => v.Value,
-                    v => Drawer.Create(v));
+                        state.Property(s => s.NextRepeat)
+                        .HasColumnName("Tails_NextRepeat");
+                    });
+                });
+                card.OwnsOne(c => c.Heads, tails =>
+                {
+                    tails.OwnsOne(t => t.State, state =>
+                    {
+                        state.Property(s => s.Drawer)
+                        .HasColumnName("Heads_Drawer")
+                        .HasConversion(
+                        v => v.Value,
+                        v => Drawer.Create(v));
 
-                card.OwnsOne(c => c.CardSide1);
-                card.OwnsOne(c => c.CardSide2);
+                        state.Property(s => s.NextRepeat)
+                        .HasColumnName("Heads_NextRepeat");
+                    });
+                });
+            });
+
+            modelBuilder.Entity<Lesson>(lesson =>
+            {
+                lesson.HasKey(l => l.Id);
+                lesson.HasMany(l => l.Repeats).WithOne(r => r.Lesson);
             });
 
             modelBuilder.Entity<Repeat>(repeat =>

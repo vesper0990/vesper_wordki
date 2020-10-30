@@ -4,8 +4,7 @@ using System.Threading.Tasks;
 
 namespace Wordki.Api.Featuers.User.Login
 {
-    [Route("user")]
-    public class LoginController : ControllerBase
+    public class LoginController : UserController
     {
         public LoginController(IMediator mediator) : base(mediator) { }
 

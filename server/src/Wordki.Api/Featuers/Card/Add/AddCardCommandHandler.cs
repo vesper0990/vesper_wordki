@@ -23,7 +23,6 @@ namespace Wordki.Api.Featuers.Card.Add
 
         public async Task<long> Handle(AddCardCommand request, CancellationToken cancellationToken)
         {
-            ValidateRequest(request);
             var group = await dbContext.Groups.SingleOrDefaultAsync(g => g.Id == request.GroupId);
             if(group == null)
             {
@@ -32,26 +31,16 @@ namespace Wordki.Api.Featuers.Card.Add
             var newCard = new Domain.Card
             {
                 Group = group,
-                CardSide1 = request.CardSide1,
-                CardSide2 = request.CardSide2,
+                Heads = request.CardSide1,
+                Tails = request.CardSide2,
                 Comment = request.Comment,
-                Drawer = Drawer.Create(0),
                 IsVisible = request.IsVisible,
                 WordCreationDate = dateTimeProvider.Now(),
-                NextRepeat = dateTimeProvider.Now(),
             };
 
             await dbContext.Words.AddAsync(newCard);
             await dbContext.SaveChangesAsync();
             return newCard.Id;
-        }
-
-        private void ValidateRequest(AddCardCommand request)
-        {
-            if(request.GroupId == 0)
-            {
-                throw new Exception();
-            }
         }
     }
 }

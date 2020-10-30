@@ -1,5 +1,3 @@
-<app-edit-group-dialog [group]="editingGroup" (submit2)="onEditSubmit($event)" (cancel)="onEditCancel()"
-  (remove)="onEditRemove($event)"></app-edit-group-dialog>
 <button (click)="addGroup()">Dodaj</button>
 <ng-container *ngIf="isLoading$ | async; else groups">
   <app-progress-horizontal></app-progress-horizontal>
@@ -7,7 +5,9 @@
 <ng-template #groups>
   <ng-container *ngIf="groups$ | async as groups">
     <ng-container *ngIf="groups.length !== 0; else nowords">
-      <app-group-row *ngFor="let item of groups" [group]="item" (groupEdit)="groupEdit($event)"></app-group-row>
+      <div class="row" *ngFor="let item of groups">
+        <app-group-row [group]="item" (groupEdit)="groupEdit($event)"></app-group-row>
+      </div>
     </ng-container>
   </ng-container>
 </ng-template>
@@ -15,3 +15,6 @@
 <ng-template #nowords>
   <b>Brak grup</b>
 </ng-template>
+
+<app-edit-group-dialog [group]="editingGroup" (submit2)="onEditSubmit($event)" (cancel)="onEditCancel()"
+  (remove)="onEditRemove($event)"></app-edit-group-dialog>

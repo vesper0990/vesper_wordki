@@ -9,7 +9,6 @@ namespace Wordki.Api.Featuers.Group.Update
     {
         public UpdateGroupController(IMediator mediator) : base(mediator) { }
 
-        [HttpPut("update")]
-        public async Task<IActionResult> Update([FromBody] UpdateGroupCommand request) => await HandleCommand(request);
+        
     }
 }

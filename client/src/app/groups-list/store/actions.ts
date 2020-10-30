@@ -1,50 +1,96 @@
 import { Action } from '@ngrx/store';
 import { Group } from '../models/group.model';
 import { EditGroup } from 'src/app/share/components/edit-group-dialog/edit-group.model';
+import { LanguageType } from 'src/app/share/models/language-type.mode';
+import { GroupListState } from './state';
 
 export enum GroupListTypes {
-    GetGroupList = '[GROUP_LIST_STATE] GET_GROUP_LIST',
+    GET_GROUPS = '[GROUP_LIST_STATE] GET_GROUPS',
+    GET_GROUPS_SUCCESS = '[GROUP_LIST_STATE] GET_GROUPS_SUCCESS',
 
-    SetGroupList = '[GROUP_LIST_STATE] SET_GROUP_LIST',
-    UpdateGroupInList = '[GROUP_LIST_STATE] UPDATE_GROUP_IN_LIST',
-    UpdateGroupInListSuccess = '[GROUP_LIST_STATE] UPDATE_GROUP_IN_LIST_SUCCESS',
+    UPDATE_GROUP = '[GROUP_LIST_STATE] UPDATE_GROUP',
+    UPDATE_GROUP_SUCCESS = '[GROUP_LIST_STATE] UPDATE_GROUP_SUCCESS',
 
-    RemoveGroup = '[GROUP_LIST_STATE] REMOVE_GROUP',
-    RemoveGroupSuccess = '[GROUP_LIST_STATE] REMOVE_GROUP_SUCCESS'
+    REMOVE_GROUP = '[GROUP_LIST_STATE] REMOVE_GROUP',
+    REMOVE_GROUP_SUCCESS = '[GROUP_LIST_STATE] REMOVE_GROUP_SUCCESS',
 }
 
-export class GetGroupListAction implements Action {
-    readonly type = GroupListTypes.GetGroupList;
+export class GetGroups implements Action {
+    readonly type = GroupListTypes.GET_GROUPS;
+
+    static reduce(state: GroupListState): GroupListState {
+        return {
+            ...state,
+            isLoading: true,
+        };
+    }
 }
 
-export class SetGroupListAction implements Action {
-    readonly type = GroupListTypes.SetGroupList;
+export class GetGroupsSuccess implements Action {
+    readonly type = GroupListTypes.GET_GROUPS_SUCCESS;
     constructor(public payload: { groups: Group[] }) { }
+
+    static reduce(state: GroupListState, action: GetGroupsSuccess): GroupListState {
+        return {
+            ...state,
+            groups: action.payload.groups,
+            isLoading: false
+        };
+    }
 }
 
-export class UpdateGroupInList implements Action {
-    readonly type = GroupListTypes.UpdateGroupInList;
+export class UpdateGroup implements Action {
+    readonly type = GroupListTypes.UPDATE_GROUP;
     constructor(public payload: { group: EditGroup }) { }
+
+    static reduce(state: GroupListState): GroupListState {
+        return {
+            ...state
+        };
+    }
 }
 
-export class UpdateGroupInListSuccess implements Action {
-    readonly type = GroupListTypes.UpdateGroupInListSuccess;
+export class UpdateGroupSuccess implements Action {
+    readonly type = GroupListTypes.UPDATE_GROUP_SUCCESS;
     constructor(public payload: { group: EditGroup }) { }
+    static reduce(state: GroupListState, action: UpdateGroupSuccess): GroupListState {
+        const groups = [];
+        state.groups.forEach((item: Group) => {
+            groups.push(item.id === action.payload.group.id ? <Group>{
+                ...item,
+                name: action.payload.group.name,
+                language1: LanguageType.getLanguageType(action.payload.group.language1 as any),
+                language2: LanguageType.getLanguageType(action.payload.group.language2 as any),
+            } : item);
+        });
+        return { ...state, groups: groups };
+    }
 }
 
-export class RemoveGroupAction implements Action {
-    readonly type = GroupListTypes.RemoveGroup;
+export class RemoveGroup implements Action {
+    readonly type = GroupListTypes.REMOVE_GROUP;
     constructor(public payload: { groupId: number }) { }
+    static reduce(state: GroupListState, action : RemoveGroup) {
+        return {
+            ...state,
+        };
+    }
 }
 
-export class RemoveGroupSuccessAction implements Action {
-    readonly type = GroupListTypes.RemoveGroupSuccess;
+export class RemoveGroupSuccess implements Action {
+    readonly type = GroupListTypes.REMOVE_GROUP_SUCCESS;
     constructor(public payload: { groupId: number }) { }
+    static reduce(state: GroupListState, action: RemoveGroupSuccess) {
+        return {
+            ...state,
+            groups: state.groups.filter((group: Group) => group.id !== action.payload.groupId)
+        };
+    }
 }
 
-export type GroupListActions = GetGroupListAction |
-    SetGroupListAction |
-    UpdateGroupInList |
-    UpdateGroupInListSuccess |
-    RemoveGroupAction |
-    RemoveGroupSuccessAction;
+export type GroupListActions = GetGroups |
+    GetGroupsSuccess |
+    UpdateGroup |
+    UpdateGroupSuccess |
+    RemoveGroup |
+    RemoveGroupSuccess;

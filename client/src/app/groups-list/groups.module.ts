@@ -3,9 +3,8 @@ import { CommonModule } from '@angular/common';
 import { GroupsComponent } from './groups.component';
 import { GroupsRoutingModule } from './groups-routing.module';
 import { GroupRowComponent } from './components/group-row/group-row.component';
-import { GroupProviderBase, GroupProvider, GroupProviderMock } from './services/group.provider/group.provider';
+import { GroupsListHttpServiceBase, GroupsListHttpService, GroupsListHttpMockService } from './services/groups-list-http/groups-list-http.service';
 import { environment } from 'src/environments/environment';
-import { GroupMapper } from './services/group.mapper/group.mapper';
 import { ShareModule } from '../share/share.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -34,8 +33,7 @@ import { reducer } from './store/reducer';
   ],
   providers: [
     Store,
-    { provide: GroupProviderBase, useClass: environment.production ? GroupProvider : GroupProviderMock },
-    GroupMapper
+    { provide: GroupsListHttpServiceBase, useClass: environment.production ? GroupsListHttpService : GroupsListHttpMockService },
   ]
 })
 export class GroupsModule { }

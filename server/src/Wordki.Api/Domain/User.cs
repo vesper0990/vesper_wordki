@@ -11,10 +11,12 @@ namespace Wordki.Api.Domain
         public DateTime CreationDate { get; set; }
         public DateTime? LastLoginDate { get; set; }
         public IList<Group> Groups { get; }
+        public IList<Lesson> Lessons { get; }
 
         public User()
         {
             Groups = new List<Group>();
+            Lessons = new List<Lesson>();
         }
     }
 }

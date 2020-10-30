@@ -15,14 +15,22 @@ export class CardComponent implements OnInit {
   @Input() showMore = true;
   @Input() isLock = false;
 
+  displayingFlag: string;
+
   constructor() { }
 
   ngOnInit(): void {
     this.isAdditionInfo = false;
+    this.updateSide();
   }
 
   private updateSide(): void {
     this.side = this.isAdditionInfo ? 'additional' : this.side;
+    this.displayingFlag = this.isAdditionInfo
+      ? null
+      : (this.side === 'language1'
+        ? this.word.groupLanguage1.flag
+        : this.word.groupLanguage2.flag);
   }
 
   public changeSide(): void {

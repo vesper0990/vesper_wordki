@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 
 namespace Wordki.Api.Domain
 {
@@ -10,7 +8,9 @@ namespace Wordki.Api.Domain
         public long Id { get; set; }
         public DateTime DateTime { get; set; }
         public RepeatResult Result { get; set; }
+        public QuestionSideEnum QuestionSide { get; set; }
         public Card Word { get; set; }
+        public Lesson Lesson { get; set; }
     }
 
     public enum RepeatResultEnum
@@ -43,5 +43,11 @@ namespace Wordki.Api.Domain
         };
 
         public static RepeatResult Create(int value) => Map[value];
+    }
+
+    public enum QuestionSideEnum
+    {
+        Heads,
+        Tails,
     }
 }

@@ -1,49 +1,12 @@
-import { GroupListActions, GroupListTypes, SetGroupListAction } from './actions';
-import { Group } from '../models/group.model';
-import { EditGroup } from 'src/app/share/components/edit-group-dialog/edit-group.model';
-import { LanguageType, LanguageTypeEnum } from 'src/app/share/models/language-type.mode';
+import { GroupListActions, GroupListTypes, GetGroupsSuccess, GetGroups, UpdateGroupSuccess, RemoveGroupSuccess } from './actions';
+import { GroupListState, initialState } from './state';
 
-export interface GroupListState {
-    groups: Group[];
-    isLoading: boolean;
-}
-
-const initialState: GroupListState = {
-    groups: [],
-    isLoading: false
-};
-
-export function reducer(state = initialState, action: GroupListActions) {
+export function reducer(state = initialState, action: GroupListActions): GroupListState {
     switch (action.type) {
-        case GroupListTypes.GetGroupList: return { ...state, isLoading: true };
-        case GroupListTypes.SetGroupList: return handleSetGroupList(state, action);
-        case GroupListTypes.UpdateGroupInListSuccess: return handleUpdateGroupInList(state, action.payload.group);
-        case GroupListTypes.RemoveGroupSuccess: return handleRemoveGroupSuccess(state, action.payload.groupId);
+        case GroupListTypes.GET_GROUPS: return GetGroups.reduce(state);
+        case GroupListTypes.GET_GROUPS_SUCCESS: return GetGroupsSuccess.reduce(state, action);
+        case GroupListTypes.UPDATE_GROUP_SUCCESS: return UpdateGroupSuccess.reduce(state, action);
+        case GroupListTypes.REMOVE_GROUP_SUCCESS: return RemoveGroupSuccess.reduce(state, action);
         default: return state;
     }
-}
-
-function handleSetGroupList(state: GroupListState, action: SetGroupListAction): GroupListState {
-    return { ...state, groups: action.payload.groups, isLoading: false };
-}
-
-function handleUpdateGroupInList(state: GroupListState, group: EditGroup): GroupListState {
-    const groups = [];
-    state.groups.forEach((item: Group) => {
-        groups.push(item.id === group.id ? <Group>{
-            ...item,
-            name: group.name,
-            language1: LanguageType.getLanguageType(group.language1 as any) ,
-            language2: LanguageType.getLanguageType(group.language2 as any),
-        } : item);
-    });
-    return { ...state, groups: groups };
-
-}
-
-function handleRemoveGroupSuccess(state: GroupListState, groupId: number) {
-    return {
-        ...state,
-        groups: state.groups.filter((group: Group) => group.id !== groupId)
-    };
 }

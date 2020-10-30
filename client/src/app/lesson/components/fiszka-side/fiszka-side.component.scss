@@ -1,0 +1,20 @@
+.card-side {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  cursor: default;
+  min-height: 200px;
+
+  .card-word {
+    text-align: center;
+    font-size: 30px;
+    font-weight: 600;
+  }
+
+  .card-example {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 450;
+    color: #888
+  }
+}

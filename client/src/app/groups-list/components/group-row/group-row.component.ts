@@ -5,8 +5,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-group-row',
   templateUrl: './group-row.component.html',
-  styleUrls: ['./group-row.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./group-row.component.scss']
 })
 export class GroupRowComponent implements OnInit {
 
@@ -16,8 +15,7 @@ export class GroupRowComponent implements OnInit {
 
   wordsValue: string;
 
-  constructor(
-    private router: Router) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.wordsValue = this.group.visibleWordsCount + '/' + this.group.wordsCount;

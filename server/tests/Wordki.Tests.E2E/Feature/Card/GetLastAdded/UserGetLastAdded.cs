@@ -1,13 +1,10 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using TestStack.BDDfy;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
-using Wordki.Core.Dtos;
-using Wordki.Tests.EndToEnd.Configuration;
 
 namespace Wordki.Tests.E2E.Feature.Card.GetLastAdded
 {
