@@ -29,6 +29,6 @@ steps:
 - task: DockerCompose@0
   inputs:
     containerregistrytype: 'Container Registry'
-    dockerComposeFile: './uiTests/Wordki.Tests.Ui/docker-compose.yml'
+    dockerComposeFile: './testsUi/Wordki.Tests.UI/docker-compose.yml'
     action: 'Run a Docker Compose command'
     dockerComposeCommand: 'up --abort-on-container-exit'
