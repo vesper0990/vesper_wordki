@@ -34,9 +34,10 @@ steps:
   displayName: Build and Push
   inputs:
     containerRegistry: 'docker-hub-connection'
-    repository: 'vesper0990/wordki-sever'
+    repository: 'vesper0990/wordki-server'
     command: 'buildAndPush'
     Dockerfile: 'server/src/Wordki.Api/Dockerfile.Production'
+    buildContext: 'server/src/'
     tags: |
       $(Build.BuildId)
       latest
