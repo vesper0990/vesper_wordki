@@ -1,10 +1,11 @@
 trigger:
-  paths:
-    include:
-     - './client/*'
   branches:
    include:
      - master
+  paths:
+    include:
+     - 'client/*'
+  
 
 pool:
   vmImage: 'ubuntu-latest'
