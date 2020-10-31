@@ -17,6 +17,7 @@ steps:
     repository: 'vesper0990/wordki'
     command: 'buildAndPush'
     Dockerfile: 'client/Dockerfile.production'
+    buildContext: 'client/.'
     tags: |
       $(Build.BuildId)
       latest
