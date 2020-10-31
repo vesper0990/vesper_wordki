@@ -11,7 +11,8 @@ COPY ["src/Wordki.Infrastructure/Wordki.Infrastructure.csproj", "src/Wordki.Infr
 COPY ["src/Wordki.Utils/Wordki.Utils.csproj", "src/Wordki.Utils/"]
 RUN dotnet restore "src/Wordki.Api/Wordki.Api.csproj"
 COPY . .
-WORKDIR "/src/src/Wordki.Api"
+RUN ls -all
+WORKDIR "/src/Wordki.Api"
 RUN dotnet build "Wordki.Api.csproj" -c Release -o /app
 
 FROM build AS publish
