@@ -32,6 +32,12 @@ namespace Wordki.Api.Featuers.Test
             return new JsonResult(new { Value = builder.ToString() });
         }
 
+        [HttpGet("test")]
+        public IActionResult Test()
+        {
+            return new JsonResult("test");
+        }
+
         [HttpGet("version")]
         [MapToApiVersion("1.0")]
         public IActionResult Version_1()
