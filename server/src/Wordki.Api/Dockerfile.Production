@@ -1,18 +1,15 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
-WORKDIR /app
 EXPOSE 80
 
 ENV ASPNETCORE_ENVIRONMENT=Production
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /src
-COPY ["src/Wordki.Api/Wordki.Api.csproj", "src/Wordki.Api/"]
-COPY ["src/Wordki.Infrastructure/Wordki.Infrastructure.csproj", "src/Wordki.Infrastructure/"]
-COPY ["src/Wordki.Utils/Wordki.Utils.csproj", "src/Wordki.Utils/"]
-RUN dotnet restore "src/Wordki.Api/Wordki.Api.csproj"
 COPY . .
-RUN ls -all
+RUN dotnet restore "Wordki.Api/Wordki.Api.csproj"
+
 WORKDIR "/src/Wordki.Api"
+
 RUN dotnet build "Wordki.Api.csproj" -c Release -o /app
 
 FROM build AS publish
