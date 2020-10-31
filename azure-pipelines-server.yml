@@ -34,7 +34,7 @@ steps:
   displayName: Build and Push
   inputs:
     containerRegistry: 'docker-hub-connection'
-    repository: 'vesper0990/oazachaosu'
+    repository: 'vesper0990/wordki-sever'
     command: 'buildAndPush'
     Dockerfile: 'server/src/Wordki.Api/Dockerfile.Production'
     tags: |
