@@ -37,6 +37,7 @@ steps:
     repository: 'vesper0990/wordki-sever'
     command: 'buildAndPush'
     Dockerfile: 'server/src/Wordki.Api/Dockerfile.Production'
+    buildContext: 'server/src/'
     tags: |
       $(Build.BuildId)
       latest
