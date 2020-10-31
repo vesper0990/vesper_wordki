@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Wordki.Infrastructure.Settings;
+using Wordki.Infrastructure.Services;
 
 public static class JwtConfiguration
 {

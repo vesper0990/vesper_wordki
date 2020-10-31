@@ -1,119 +1,77 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { LessonState } from '../../store/reducer';
-import { Subscription, Observable } from 'rxjs';
-import { getLessonStateEnum, getFirstWord, getLessonSettings } from '../../store/selectors';
-import { LessonStateEnum, LessonStep } from '../../models/lesson-state';
+import { Observable } from 'rxjs';
+import { LessonStep } from '../../models/lesson-state';
 import { WordRepeat } from '../../models/word-repeat';
-import { AnswerAction, CheckAnswerAction, SetLastAnswerAction } from '../../store/actions';
-import { map, filter } from 'rxjs/operators';
-import { CardModel } from 'src/app/share/components/card/card.model';
-import { LessonSettings } from '../../models/lesson-settings';
+import { FiszkaService } from './services/fiszka/fiszka.service';
 
 @Component({
-  selector: 'app-fiszka',
   templateUrl: './fiszka.component.html',
-  styleUrls: ['./fiszka.component.scss']
+  styleUrls: ['./fiszka.component.scss'],
+  providers: [FiszkaService]
 })
 export class FiszkaComponent implements OnInit, OnDestroy {
 
   private readonly arrowLeft = 'ArrowLeft';
   private readonly arrowRight = 'ArrowRight';
+  private readonly enter = 'Enter';
 
-  private lessonStateSub: Subscription;
-
-  word$: Observable<CardModel>;
-  wordId: number;
-
+  currentCard$: Observable<WordRepeat>;
   lessonStep$: Observable<LessonStep>;
-  lessonState: LessonStateEnum;
 
-  lessonSettings$: Observable<LessonSettings>;
-
-  questionVisibility: boolean;
-  answerVisibility: boolean;
-
-  constructor(private lessonStore: Store<LessonState>) { }
+  constructor(private readonly service: FiszkaService) { }
 
   ngOnInit(): void {
-    this.lessonSettings$ = this.lessonStore.select(getLessonSettings);
+    this.service.loadWords();
+    this.currentCard$ = this.service.getCurrentCard();
+    this.lessonStep$ = this.service.getLessonStep();
+    this.service.init()
 
-    this.lessonStep$ = this.lessonStore.select(getLessonStateEnum).pipe(
-      map((step: LessonStep) => {
-        this.lessonState = step.state;
-        return step;
-      })
-    );
-
-    this.word$ = this.lessonStore.select(getFirstWord).pipe(
-      filter((word: WordRepeat) => {
-        return word !== null && word !== undefined;
-      }),
-      map((word: WordRepeat) => {
-        this.wordId = word.id;
-        return {
-          groupName: word.groupName,
-          groupLanguage1: word.groupLanguage1,
-          groupLanguage2: word.groupLanguage2,
-          language1: word.language1,
-          language2: word.language2,
-          example1: word.example1,
-          example2: word.example2,
-          drawer: word.drawer
-        } as CardModel;
-      })
-    );
-
-    this.lessonStore.dispatch(new SetLastAnswerAction({ isCorrect: true }));
   }
 
   ngOnDestroy(): void {
+    this.service.unsubsccribe();
   }
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent): void {
-    if (this.lessonState === 0) {
-      return;
-    }
     switch (event.key) {
       case this.arrowRight:
-        this.handleArrowRight();
+        this.correct();
         break;
       case this.arrowLeft:
-        this.handleArrowLeft();
+        this.wrong();
+        break;
+      case this.enter:
+        this.check();
         break;
     }
   }
 
-  getCardSide(lessonStep: LessonStep, lessonSettings: LessonSettings, word: CardModel): string {
-    if (lessonStep.answerVisibility) {
-      if (lessonSettings.answerLanguage === word.groupLanguage1) {
-        return 'language1';
-      } else {
-        return 'language2';
-      }
-    } else {
-      if (lessonSettings.questionLanguage === word.groupLanguage1) {
-        return 'language1';
-      } else {
-        return 'language2';
-      }
-    }
+  startLesson(): void {
+    this.service.startLesson();
   }
 
-  private handleArrowRight(): void {
-    this.lessonStore.dispatch(
-      this.lessonState === LessonStateEnum.WordDisplay
-        ? new CheckAnswerAction()
-        : new AnswerAction({ wordId: this.wordId, result: 1 })
-    );
+  check(): void {
+    this.service.check();
   }
 
-  private handleArrowLeft(): void {
-    this.lessonStore.dispatch(
-      this.lessonState === LessonStateEnum.WordDisplay
-        ? new CheckAnswerAction()
-        : new AnswerAction({ wordId: this.wordId, result: -1 })
-    );
+  correct(): void {
+    this.service.correct();
+  }
+
+  wrong(): void {
+    this.service.wrong();
+  }
+
+  finishLesson(): void {
+    this.service.finishLesson()
+  }
+
+  pause(): void {
+    this.service.pause();
+  }
+
+  restart(): void {
+    this.service.restart();
   }
 }

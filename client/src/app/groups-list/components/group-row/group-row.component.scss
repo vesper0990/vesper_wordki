@@ -1,112 +1,44 @@
 @import "../../../../styles.scss";
 
 .main-container {
-  border: 1px solid #ccc;
-  border-radius: 1em;
-  margin: 5px 10px;
-  cursor: pointer;
-}
-
-.main-container:hover {
-  background-color: #eee;
-}
-
-.group-label {
-  @extend .float-left;
-  margin: auto;
-  color: #555;
-  font-size: 2em;
-}
-
-.flags-container {
-  margin: auto;
-}
-
-.info-container {
-  margin: auto;
-}
-
-.flag {
-  width: 50px;
-}
-
-.action-button {
-  width: 25px;
-}
-
-.edit-button {
   display: flex;
-  cursor: pointer;
+  border-radius: 5px;
+  border: 1px solid rgb(120, 120, 120);
+  align-items: center;
 
   &:hover {
-    background-color: #00000011;
+    background-color: rgb(220, 220, 220);
   }
 
-  img {
-    width: 25px;
-    margin: auto;
-  }
-}
-
-@media only screen and (max-width: 640px) {
-  //small
-  .flag {
-    width: 25px;
+  .group-label {
+    flex: 10;
+    padding-left: 15px;
+    font-size: 25px;
   }
 
-  .actions {
-    display: none;
-  }
-
-  .action-button {
-    width: 16px;
+  .flags-container {
+    img {
+      width: 36px;
+    }
   }
 
   .info-container {
-    margin: 0.25em;
-    display: flex;
-
-    app-label-value {
-      margin-right: 5px;
-    }
-  }
-
-  .circle-button {
-    height: 3em;
-    width: 3em;
+    padding: 10px 50px 10px 10px;
   }
 
   .edit-button {
-    .button-img {
-        width: 16px;
+    padding: 0 15px;
+    cursor: pointer;
+    align-self: stretch;
+    display: flex;
+    align-items: stretch;
+
+    img {
+      width: 24px;
     }
-}
-}
 
-@media only screen and (min-width: 641px) {
-  //medium
-  .action-button {
-    width: 20px;
+    &:hover {
+      background-color: rgb(200, 200, 200);
+    }
   }
-
-  .circle-button {
-    height: 3.5em;
-    width: 3.5em;
-  }
-}
-
-@media only screen and (min-width: 1025px) {
-  //large
-  .action-button {
-    width: 25px;
-  }
-
-  .circle-button {
-    height: 4em;
-    width: 4em;
-  }
-}
-
-@media only screen and (min-width: 1441px) {
-  //big
 }

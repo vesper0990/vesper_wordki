@@ -1,20 +1,17 @@
-<div class="ui-g main-container" (click)="openGroup(group)">
-    <div class="ui-g-11 ui-g">
-        <div class="ui-lg-7 ui-md-7 ui-sm-10 group-label">
-            {{ group?.name }}
-        </div>
-        <div class="flags-container ui-g-1">
-            <img class="ui-g flag" src="assets/flags/{{group?.language1.flag}}" />
-            <img class="ui-g flag" src="assets/flags/{{group?.language2.flag}}" />
-        </div>
-        <div class="ui-lg-3 ui-md-3 ui-sm-12 info-container">
-            <app-label-value label="Słowa" [value]="wordsValue"></app-label-value>
-            <app-label-value label="Powtórzenia" [value]="group?.repeatsCount"></app-label-value>
-            <app-label-value label="Szuflada" [value]="group?.averageDrawer | number : '1.1-1'"></app-label-value>
-        </div>
-
+<div class="main-container" (click)="openGroup(group)">
+    <div class="group-label">
+        <b>{{ group?.name }}</b>
     </div>
-    <div appClickStopPropagation class="ui-g-1 edit-button" (click)="editGroup(group)">
+    <div class="flags-container">
+        <img src="assets/flags/{{group?.language1.flag}}" /><br>
+        <img src="assets/flags/{{group?.language2.flag}}" />
+    </div>
+    <div class="info-container">
+        <app-label-value label="Słowa" [value]="wordsValue"></app-label-value>
+        <app-label-value label="Powtórzenia" [value]="group?.repeatsCount"></app-label-value>
+        <app-label-value label="Szuflada" [value]="group?.averageDrawer | number : '1.1-1'"></app-label-value>
+    </div>
+    <div appClickStopPropagation class="edit-button" (click)="editGroup(group)">
         <img src="assets/icons/edit.svg" />
     </div>
 </div>

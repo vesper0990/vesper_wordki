@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GroupsComponent } from './groups.component';
-import { GroupProviderBase } from './services/group.provider/group.provider';
+import { GroupsListHttpServiceBase } from './services/groups-list-http/groups-list-http.service';
 import { Router } from '@angular/router';
 import { MockComponent } from 'ng-mocks';
 import { GroupRowComponent } from './components/group-row/group-row.component';
@@ -20,7 +20,7 @@ describe('GroupsComponent', () => {
         MockComponent(ProgressHorizontalComponent),
         MockComponent(EditGroupDialogComponent)],
       providers: [
-        { provide: GroupProviderBase, useValue: jasmine.createSpyObj('groupProvider', ['getGroups']) },
+        { provide: GroupsListHttpServiceBase, useValue: jasmine.createSpyObj('groupProvider', ['getGroups']) },
         { provide: Router, useValue: jasmine.createSpyObj('router', ['navigate']) },
         { provide: Store, useValue: jasmine.createSpyObj('store', ['select', 'dispatch']) },
       ]

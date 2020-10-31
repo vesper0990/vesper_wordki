@@ -1,29 +1,24 @@
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, UrlTree } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { LessonState } from '../../store/reducer';
 import { Store } from '@ngrx/store';
-import { take } from 'rxjs/operators';
-import {  getLessonResult } from '../../store/selectors';
-import { LessonResult } from '../../models/lesson-result';
+import { map } from 'rxjs/operators';
+import { LessonState } from '../../store/state';
+import { Observable } from 'rxjs';
+import { selectLessonResult } from '../../store/selectors';
 
 @Injectable()
 export class SummaryGuardService implements CanActivate {
 
-    constructor(private lessonStore: Store<LessonState>, private router: Router) {
+    constructor(private readonly store: Store<LessonState>,
+        private readonly router: Router) {
     }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        let isResultsSet = false;
-        this.lessonStore.select(getLessonResult).pipe(take(1)).subscribe(
-            (results: LessonResult) => {
-                isResultsSet = results !== null;
-            }
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
+        return this.store.select(selectLessonResult).pipe(
+            map(value => {
+                return value === null ? this.router.parseUrl('/dashboard') : true
+            })
         );
-        if (isResultsSet) {
-            return true;
-        } else {
-            return this.router.parseUrl('/lesson/settings');
-        }
     }
 }
 

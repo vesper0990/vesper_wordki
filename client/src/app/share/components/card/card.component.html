@@ -1,37 +1,26 @@
-<div (click)="changeSide()" style="width:100%; position: relative;;">
-    <div style="width: 100%; overflow: hidden">
-        <div style="float: left; font-size: 20px;   " class="group-desc">
-            {{word?.groupName}}
+<div class="main-container">
+    <div class="group-container">
+        <div class="more" (click)="showAdditionalInfo()"><b>more</b></div>
+        <div class="group-info">
+            <img *ngIf="displayingFlag" src="assets/flags/{{displayingFlag}}" />
+            <b>{{word?.groupName}}</b>
         </div>
-        <button *ngIf="showMore" style="float: right;margin: auto; overflow: hidden;" pButton class="ui-button-secondary" appClickStopPropagation
-            (click)="showAdditionalInfo()" label="Więcej"></button>
-        <hr style="float: left; width: 100%;">
     </div>
-    <ng-container [ngSwitch]="side">
-        <div class="ui-g" *ngSwitchCase="'language1'">
-            <div *ngIf="word" class="ui-g-1">
-                <img  src="assets/flags/{{word.groupLanguage1.flag}}" style="width:24px; float:left;margin: 5px 10px ;" />
+    <div class="content-container" [ngSwitch]="side" (click)="changeSide()">
+        <div *ngSwitchCase="'language1'">
+            <div class="word">
+                &bull; {{word?.cardSide1?.value}}
             </div>
-            <div class="ui-g-11">
-                <div class="word">
-                    {{word?.language1}}
-                </div>
-                <div class="example">
-                    {{word?.example1}}
-                </div>
+            <div class="example">
+                {{word?.cardSide1?.example}}
             </div>
         </div>
-        <div class="ui-g" *ngSwitchCase="'language2'">
-            <div class="ui-g-1">
-                <img  src="assets/flags/{{word.groupLanguage2.flag}}" style="width:24px; float:left;margin: 5px 10px ;" />
+        <div *ngSwitchCase="'language2'">
+            <div class="word">
+                &bull; {{word?.cardSide2?.value}}
             </div>
-            <div class="ui-g-11">
-                <div class="word">
-                    {{word.language2}}
-                </div>
-                <div class="example">
-                    {{word.example2}}
-                </div>
+            <div class="example">
+                {{word?.cardSide2?.example}}
             </div>
         </div>
         <div *ngSwitchCase="'additional'">
@@ -40,5 +29,5 @@
             <app-label-value label="Powtórki" [value]="word?.repeatsCount"></app-label-value>
             <app-label-value label="Data dodania" [value]="word?.creationDate | date"></app-label-value>
         </div>
-    </ng-container>
+    </div>
 </div>

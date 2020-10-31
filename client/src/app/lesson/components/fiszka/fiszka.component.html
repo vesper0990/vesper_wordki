@@ -1,14 +1,27 @@
-<ng-container *ngIf="{
-     word: word$ | async,
-     lessonStep: lessonStep$ | async,
-     lessonSettings: lessonSettings$ | async
- } as data">
-    <ng-container *ngIf="data.word && data.lessonStep && data.lessonSettings">
-        <div *ngIf="data.lessonStep.questionVisibility" style="width: 100%;">
-            <app-card [side]="getCardSide(data.lessonStep, data.lessonSettings, data.word)"
-                [isLock]="!data.lessonStep.answerVisibility" [showMore]="data.lessonStep.answerVisibility"
-                [word]="data.word">
-            </app-card>
-        </div>
-    </ng-container>
+<ng-container *ngIf="lessonStep$ | async as lessonStep">
+    <div class="card" [ngClass]="{'blur': lessonStep.restartBtn}">
+        <ng-container *ngIf="currentCard$ | async as currentWord">
+            <app-fiszka-side [isTextVisible]="lessonStep.question" [value]="currentWord.language1"
+                [example]="currentWord.example1"></app-fiszka-side>
+            <hr>
+            <app-fiszka-side [isTextVisible]="lessonStep.answare" [value]="currentWord.language2"
+                [example]="currentWord.example2"></app-fiszka-side>
+        </ng-container>
+    </div>
+    <div class="buttons-container">
+        <p-button *ngIf="lessonStep.startBtn" class="ui-button-warring" (click)="startLesson()" label="Start">
+        </p-button>
+        <p-button *ngIf="lessonStep.finishBtn" class="ui-button-warring" (click)="finishLesson()" label="Zakończ">
+        </p-button>
+        <p-button *ngIf="lessonStep.checkBtn" class="ui-button-warring" (click)="check()" label="Sprawdź">
+        </p-button>
+        <p-button *ngIf="lessonStep.answareBtn" class="ui-button-warring" (click)="correct()" label="Znam">
+        </p-button>
+        <p-button *ngIf="lessonStep.answareBtn" class="ui-button-warring" (click)="wrong()" label="Nie znam">
+        </p-button>
+    </div>
+    <p-button *ngIf="lessonStep.pauseBtn" class="ui-button-warring" (click)="pause()" label="Przerwa">
+    </p-button>
+    <p-button *ngIf="lessonStep.restartBtn" class="ui-button-warring" (click)="restart()" label="Koniec przerwy">
+    </p-button>
 </ng-container>

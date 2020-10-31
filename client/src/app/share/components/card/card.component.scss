@@ -1,16 +1,52 @@
-.word {
-    text-align: center;
-    font-size: 20px;
-    font-weight: 600;
-    margin: 5px 0;
-    cursor: pointer;
+.main-container {
+    width: 100%;
+    position: relative;
+
+    .group-container {
+        background-image: linear-gradient(to right, transparent, #ff3e3c99);
+        width: 100%;
+        padding-right: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .more {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            margin-left: 10px;
+            color: rgb(100, 100, 100);
+        }
+
+        .group-info {
+            display: flex;
+            align-items: center;
+            height: 24px;
+            img {
+                width: 24px;
+                margin-right: 5px;
+            }
+        }
+    }
+
+    .content-container {
+        width: 100%;
+        padding: 20px;
+
+        .word {
+            font-size: 25px;
+            font-weight: 600;
+            margin: 5px 0;
+            cursor: pointer;
+            padding-bottom: 10px;
+        }
+
+        .example {
+            padding-left: 15px;
+            font-size: 16px;
+            font-weight: 500;
+            color: rgb(100, 100, 100);
+            cursor: pointer;
+        }
+    }
 }
-
-.example {
-    text-align: center;
-    font-size: 12px;
-    font-weight: 450;
-    cursor: pointer;
-}
-
-

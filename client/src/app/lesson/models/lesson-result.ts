@@ -3,5 +3,5 @@ export class LessonResult {
     accepted = 0;
     wrong = 0;
     startTime: Date;
-    wholeTime = 0;
+    totalTime = 0;
 }

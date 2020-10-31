@@ -1,14 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FiszkaComponent } from './fiszka.component';
 import { Store } from '@ngrx/store';
-import { LessonState } from '../../store/reducer';
 import { ObservableMock, selectDebugElementById } from 'src/app/test/utils';
 import { LessonStep, LessonStateEnum } from '../../models/lesson-state';
 import { WordRepeat } from '../../models/word-repeat';
-import { getLessonStateEnum, getFirstWord } from '../../store/selectors';
+import { selectCurrentCard } from '../../store/selectors';
+import { LessonState } from '../../store/state';
 
 class BeforeLessonContext {
-  givenState = LessonStep.getLessonStep(LessonStateEnum.BeforeStart);
+  givenState = LessonStep.getLessonStep(LessonStateEnum.BEFORE_START);
   givenWord = <WordRepeat>{};
 
   expectedQuestionVisibility = false;
@@ -16,7 +16,7 @@ class BeforeLessonContext {
 }
 
 class WordDisplayContext {
-  givenState = LessonStep.getLessonStep(LessonStateEnum.WordDisplay);
+  givenState = LessonStep.getLessonStep(LessonStateEnum.QUESTION);
   givenWord = <WordRepeat>{};
 
   expectedQuestionVisibility = true;
@@ -24,7 +24,7 @@ class WordDisplayContext {
 }
 
 class AnswerDisplayContext {
-  givenState = LessonStep.getLessonStep(LessonStateEnum.AnswerDisplay);
+  givenState = LessonStep.getLessonStep(LessonStateEnum.ANSWARE);
   givenWord = <WordRepeat>{};
 
   expectedQuestionVisibility = true;
@@ -52,11 +52,11 @@ describe('FiszkaComponent', () => {
   }));
 
   beforeEach(() => {
-    storeMock = TestBed.get(Store);
-    storeMock.select.withArgs(getLessonStateEnum)
-      .and.returnValue(lessonStepObservable.getSource());
-    storeMock.select.withArgs(getFirstWord)
-      .and.returnValue(wordRepeatObservable.getSource());
+    // storeMock = TestBed.get(Store);
+    // storeMock.select.withArgs(getLessonStateEnum)
+    //   .and.returnValue(lessonStepObservable.getSource());
+    // storeMock.select.withArgs(selectCurrentCard)
+    //   .and.returnValue(wordRepeatObservable.getSource());
     fixture = TestBed.createComponent(FiszkaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

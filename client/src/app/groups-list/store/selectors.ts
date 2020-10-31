@@ -1,5 +1,5 @@
-import { GroupListState } from './reducer';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { GroupListState } from './state';
 
 export const getGroupListState = createFeatureSelector<GroupListState>('groupListStore');
 

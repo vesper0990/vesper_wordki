@@ -1,19 +1,94 @@
-<div class="ui-g">
-    <div class="ui-g-12">
-        <button (click)="lessonFiszki()">Lekcja Fiszki</button>
-        <app-today-words></app-today-words>
+<div class="lesson-info">
+    <div class="info-card" (click)="startLesson()">
+        <div class="title">
+            Powtórzenia dzisiaj
+        </div>
+        <ng-container *ngIf="cardToRepeat$ | async as cardToRepeat; else loading">
+            <div class="value">
+                {{cardToRepeat}}
+            </div>
+        </ng-container>
     </div>
-    <div class="ui-lg-6 ui-md-12 ui-sm-12">
-        <div class="card">
-            <app-last-failed-repeat></app-last-failed-repeat>
+    <div class="info-card" (click)="history()">
+        <div class="title">
+            Ostatnia lekcja
         </div>
-        <div class="card">
-            <app-next-repeat-word></app-next-repeat-word>
-        </div>
+        <ng-container *ngIf="lastRepeat$ | async as lastRepeat; else loading">
+            <div class="value">
+                {{lastRepeat}}
+            </div>
+        </ng-container>
     </div>
-    <div class="ui-lg-6 ui-md-12 ui-sm-12">
-        <div class="card">
-            <app-newest-words></app-newest-words>
+    <div class="info-card" (click)="groups()">
+        <div class="title">
+            Grupy
         </div>
+        <ng-container *ngIf="groupsCount$ | async as groupsCount; else loading">
+            <div class="value">
+                {{groupsCount}}
+            </div>
+        </ng-container>
+    </div>
+    <div class="info-card" (click)="cards()">
+        <div class="title">
+            Karty
+        </div>
+        <ng-container *ngIf="cardsCount$ | async as cardsCount; else loading">
+            <div class="value">
+                {{cardsCount}}
+            </div>
+        </ng-container>
     </div>
 </div>
+<div class="cards-container">
+    <div class="card-element">
+        <p-card styleClass="card">
+            <p-header>
+                <div class="card-header">
+                    Najnowsze słowo
+                </div>
+            </p-header>
+            <ng-container *ngIf="newestCard$ | async as word; else loading">
+                <ng-container *ngIf="word.groupLanguage1 !== null; else nowords">
+                    <app-card [word]="word"></app-card>
+                </ng-container>
+            </ng-container>
+        </p-card>
+    </div>
+    <div class="card-element">
+        <p-card styleClass="card">
+            <p-header>
+                <div class="card-header">
+                    Następna powtórka
+                </div>
+            </p-header>
+            <ng-container *ngIf="nextRepeat$ | async as word; else loading">
+                <ng-container *ngIf="word.groupLanguage1 !== null; else nowords">
+                    <app-card [word]="word"></app-card>
+                </ng-container>
+            </ng-container>
+        </p-card>
+    </div>
+    <div class="card-element">
+        <p-card styleClass="card">
+            <p-header>
+                <div class="card-header">
+                    Ostatnia pomyłka
+                </div>
+            </p-header>
+            <ng-container *ngIf="lastFailed$ | async as word; else loading">
+                <ng-container *ngIf="word.groupLanguage1 !== null; else nowords">
+                    <app-card [word]="word"></app-card>
+                </ng-container>
+            </ng-container>
+        </p-card>
+    </div>
+</div>
+
+<ng-template #loading>
+    <app-progress-spinner></app-progress-spinner>
+</ng-template>
+
+<ng-template #nowords>
+    <b>Brak słów</b>
+</ng-template>

@@ -1,41 +1,38 @@
 export enum LessonStateEnum {
-    BeforeStart = 0,
-    WordDisplay,
-    AnswerDisplay,
-    AfterFinish,
+    BEFORE_START = 0,
+    QUESTION,
+    ANSWARE,
+    AFTER_FINISH,
+    PAUSE
 }
 
 export class LessonStep {
 
+    public static BEFORE_START = new LessonStep(LessonStateEnum.BEFORE_START, true, false, false, false, false, false, false, false);
+    public static QUESTION = new LessonStep(LessonStateEnum.QUESTION, false, true, false, false, true, false, true, false);
+    public static ANSWARE = new LessonStep(LessonStateEnum.ANSWARE, false, false, true, false, true, false, true, true);
+    public static AFTER_FINISH = new LessonStep(LessonStateEnum.AFTER_FINISH, false, false, false, true, false, false, false, false);
+    public static PAUSE = new LessonStep(LessonStateEnum.PAUSE, false, false, false, false, false, true, true, false);
+
     private static readonly map = new Map<LessonStateEnum, LessonStep>()
-        .set(LessonStateEnum.BeforeStart,
-            new LessonStep(LessonStateEnum.BeforeStart, false, false, true, false, false))
-        .set(LessonStateEnum.WordDisplay,
-            new LessonStep(LessonStateEnum.WordDisplay, true, true, false, true, false))
-        .set(LessonStateEnum.AnswerDisplay,
-            new LessonStep(LessonStateEnum.AnswerDisplay, true, false, false, false, true))
-        .set(LessonStateEnum.AfterFinish,
-            new LessonStep(LessonStateEnum.AfterFinish, false, false, false, false, false));
+        .set(LessonStateEnum.BEFORE_START, LessonStep.BEFORE_START)
+        .set(LessonStateEnum.QUESTION, LessonStep.QUESTION)
+        .set(LessonStateEnum.ANSWARE, LessonStep.ANSWARE)
+        .set(LessonStateEnum.AFTER_FINISH, LessonStep.AFTER_FINISH);
 
-    readonly state: LessonStateEnum;
-    readonly questionVisibility: boolean;
-    readonly answerIsEnable: boolean;
-    readonly startVisibility: boolean;
-    readonly checkVisibility: boolean;
-    readonly answerVisibility: boolean;
-
-    constructor(step: LessonStateEnum, questionVisibility: boolean, answerIsEnabled: boolean,
-        startVisibility: boolean, checkVisiblity: boolean, answerVisibility: boolean) {
-        this.state = step;
-        this.questionVisibility = questionVisibility;
-        this.answerIsEnable = answerIsEnabled;
-        this.startVisibility = startVisibility;
-        this.checkVisibility = checkVisiblity;
-        this.answerVisibility = answerVisibility;
+    constructor(
+        public readonly step: LessonStateEnum,
+        public readonly startBtn: boolean,
+        public readonly checkBtn: boolean,
+        public readonly answareBtn: boolean,
+        public readonly finishBtn: boolean,
+        public readonly pauseBtn: boolean,
+        public readonly restartBtn: boolean,
+        public readonly question: boolean,
+        public answare: boolean) {
     }
 
     static getLessonStep(lessonStateEnum: LessonStateEnum): LessonStep {
         return this.map.get(lessonStateEnum);
     }
-
 }

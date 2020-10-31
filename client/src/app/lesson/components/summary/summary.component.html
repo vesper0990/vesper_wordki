@@ -1,0 +1,6 @@
+<ng-container *ngIf="result$ | async as result">
+    Znane: {{result.correct}}<br>
+    Nieznanne: {{result.wrong}}
+</ng-container>
+
+<p-button class="ui-button-warring" (click)="finish()" label="Zakończ"></p-button>
