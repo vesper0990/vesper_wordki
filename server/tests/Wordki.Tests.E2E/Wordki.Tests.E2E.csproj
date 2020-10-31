@@ -39,7 +39,6 @@
   <ItemGroup>
 	<ProjectReference Include="..\Wordki.Tests.Utils\Wordki.Tests.Utils.csproj" />
     <ProjectReference Include="..\..\src\Wordki.Api\Wordki.Api.csproj" />
-    <ProjectReference Include="..\..\src\Wordki.Utils\Wordki.Utils.csproj" />
   </ItemGroup>
 
 </Project>
