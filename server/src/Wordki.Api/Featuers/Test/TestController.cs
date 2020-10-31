@@ -35,7 +35,7 @@ namespace Wordki.Api.Featuers.Test
         [HttpGet("test")]
         public IActionResult Test()
         {
-            return new JsonResult("test");
+            return new JsonResult("tes2");
         }
 
         [HttpGet("version")]
