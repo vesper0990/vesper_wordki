@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Wordki.Api.Featuers.Group.Add;
 using Wordki.Api.Featuers.Group.Delete;
+using Wordki.Api.Featuers.Group.GetCount;
 using Wordki.Api.Featuers.Group.Update;
 
 namespace Wordki.Api.Featuers.Group
@@ -11,6 +12,10 @@ namespace Wordki.Api.Featuers.Group
     public class GroupController : ControllerBase
     {
         public GroupController(IMediator mediator) : base(mediator) { }
+
+        [HttpGet("count")]
+        public async Task<IActionResult> GetCount() => await HandlerQuery(new GetCountQuery());
+
 
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromBody] AddGroupCommand command) => await HandleCommand(command);

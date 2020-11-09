@@ -9,7 +9,7 @@ namespace Wordki.Api.Domain
         public DateTime StartDate { get; set; }
         public DateTime? FinishDate { get; set; }
         public User User { get; set; }
-        public IReadOnlyCollection<Repeat> Repeats { get; set; }
+        public IList<Repeat> Repeats { get; set; }
 
         public Lesson()
         {

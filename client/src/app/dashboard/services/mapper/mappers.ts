@@ -8,20 +8,12 @@ export function mapToRepeatWord(dto: RepeatWordDto): RepeatWord {
             LanguageType.getLanguageType(LanguageTypeEnum.Undefined),
             LanguageType.getLanguageType(LanguageTypeEnum.Undefined),
             null,
-            null,
-            0,
-            null,
-            0,
             null);
     }
     return new RepeatWord(
         dto.groupName,
         LanguageType.getLanguageType(dto.language1),
         LanguageType.getLanguageType(dto.language2),
-        dto.cardSide1,
-        dto.cardSide2,
-        dto.drawer,
-        new Date(dto.creationDate),
-        dto.repeatsCount,
-        new Date(dto.lastRepeat));
+        dto.heads,
+        dto.tails);
 }

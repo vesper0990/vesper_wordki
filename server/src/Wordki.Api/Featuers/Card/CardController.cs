@@ -4,8 +4,10 @@ using System.Threading.Tasks;
 using Wordki.Api.Featuers.Card.Add;
 using Wordki.Api.Featuers.Card.Delete;
 using Wordki.Api.Featuers.Card.GetCardDetails;
+using Wordki.Api.Featuers.Card.GetCount;
 using Wordki.Api.Featuers.Card.GetLastAdded;
 using Wordki.Api.Featuers.Card.GetLastFailed;
+using Wordki.Api.Featuers.Card.GetNextRepeat;
 using Wordki.Api.Featuers.Card.Update;
 
 namespace Wordki.Api.Featuers.Card
@@ -16,6 +18,9 @@ namespace Wordki.Api.Featuers.Card
         public CardController(IMediator mediator) : base(mediator)
         {
         }
+
+        [HttpGet("count")]
+        public async Task<IActionResult> GetAllCount() => await HandlerQuery(new GetCountQuery());
 
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromBody] AddCardCommand command) => await HandleCommand(command);
@@ -31,6 +36,9 @@ namespace Wordki.Api.Featuers.Card
 
         [HttpGet("lastAdded/{count}")]
         public async Task<IActionResult> GetLastAdded([FromRoute] GetLastAddedQuery query) => await HandlerQuery(query);
+
+        [HttpGet("nextRepeat")]
+        public async Task<IActionResult> GetNextRepeat() => await HandlerQuery(new GetNextRepeatQuery());
 
         [HttpGet("details/{id}")]
         public async Task<IActionResult> GetCardDetails([FromRoute] GetCardDetailsQuery query) => await HandlerQuery(query);

@@ -14,7 +14,7 @@ export class DashboardComponent implements OnInit {
   nextRepeat$: Observable<RepeatWord>;
   newestCard$: Observable<RepeatWord>;
   cardToRepeat$: Observable<number>;
-  lastRepeat$: Observable<number>;
+  lastRepeat$: Observable<Date>;
   groupsCount$: Observable<number>;
   cardsCount$: Observable<number>;
 

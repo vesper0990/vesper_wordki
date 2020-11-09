@@ -1,8 +1,8 @@
 version: '3'
 services:
- wordkiclient:
-  container_name: wordkiclient
-  image: wordkiclient
-  build:
-   context: ../../
-   dockerfile: ./Dockerfile
+  wordkiclient:
+    container_name: wordkiclient
+    image: wordkiclient
+    build:
+      context: ../../
+      dockerfile: ./Dockerfile

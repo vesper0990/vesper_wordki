@@ -38,7 +38,7 @@ import { GroupDescriptionComponent } from './components/group-description/group-
     EffectsModule.forFeature([GroupDetailsEffects]),
   ],
   providers: [
-    { provide: GroupDetailsProviderBase, useClass: environment.production ? GroupDetailsProvider : GroupDetailsProviderMock },
+    { provide: GroupDetailsProviderBase, useClass: environment.mockServer ? GroupDetailsProvider : GroupDetailsProviderMock },
     GroupDetailsMapper,
     WordMapper
   ]

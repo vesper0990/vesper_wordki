@@ -34,10 +34,8 @@ namespace Wordki.Api.Featuers.Card.GetLastAdded
                     GroupName = card.Group.Name,
                     Language1 = card.Group.GroupLanguage1,
                     Language2 = card.Group.GroupLanguage2,
-                    Comment = card.Comment,
-                    IsVisible = card.IsVisible,
-                    Side1 = card.Heads,
-                    Side2 = card.Tails
+                    Heads = card.Heads,
+                    Tails = card.Tails
                 })
                 .AsNoTracking();
             return await Task.FromResult(lastAdded);

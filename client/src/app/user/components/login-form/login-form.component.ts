@@ -44,14 +44,13 @@ export class LoginFormComponent implements OnInit {
       userName: this.userName.value,
       password: this.password.value
     };
-    forkJoin({
-      login: this.userProvider.login(loginContract),
-      authenticate: this.userProvider.authenticate(authenticateContract),
-    }).subscribe((result: { login: any, authenticate: any }) => {
-      this.loginForm.enable();
-      this.userService.refresh(result.authenticate);
-      this.router.navigate(['/dashboard']);
-    }, (error: any) => this.handleError(error));
+    this.userProvider.login(loginContract).subscribe(
+      token => {
+        this.loginForm.enable();
+        this.userService.refresh(token);
+        this.router.navigate(['/dashboard']);
+      }
+    )
   }
 
   private handleError(error: ApiException): void {

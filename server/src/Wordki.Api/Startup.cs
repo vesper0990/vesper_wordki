@@ -32,10 +32,10 @@ namespace Wordki
         {
             services
                 .OptionConfig(Configuration)
-                //.JwtConfig(Configuration)
+                .JwtConfig(Configuration)
                 .CorsConfig()
                 .LoggingConfig(Configuration)
-                .ServicesConfig()
+                .ServicesConfig(Configuration)
                 .AddDbContext<WordkiDbContext>()
                 .AddMediatR(typeof(Startup).Assembly)
                 .AddMvc(o => { 

@@ -15,7 +15,7 @@
         </div>
         <ng-container *ngIf="lastRepeat$ | async as lastRepeat; else loading">
             <div class="value">
-                {{lastRepeat}}
+                {{lastRepeat | toDays}}
             </div>
         </ng-container>
     </div>

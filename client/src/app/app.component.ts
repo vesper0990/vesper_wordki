@@ -22,7 +22,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.userServiceSub = this.userService.subscribe().subscribe((userExists: boolean) => {
       this.isLogin = userExists;
       if (userExists) {
-        this.getUserSettings();
       }
     });
     this.login();

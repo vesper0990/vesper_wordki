@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { Never } from '../utils/date-util';
 
 @Pipe({
     pure: true,
@@ -7,7 +8,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class DateSpanToDaysPipe implements PipeTransform {
 
     transform(value: Date, ...args: any[]): string {
-        if (value === null) {
+        if (value === Never) {
             return 'nigdy';
         }
         const now = new Date().getTime();

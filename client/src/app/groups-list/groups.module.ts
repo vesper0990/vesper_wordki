@@ -33,7 +33,7 @@ import { reducer } from './store/reducer';
   ],
   providers: [
     Store,
-    { provide: GroupsListHttpServiceBase, useClass: environment.production ? GroupsListHttpService : GroupsListHttpMockService },
+    { provide: GroupsListHttpServiceBase, useClass: environment.mockServer ? GroupsListHttpService : GroupsListHttpMockService },
   ]
 })
 export class GroupsModule { }

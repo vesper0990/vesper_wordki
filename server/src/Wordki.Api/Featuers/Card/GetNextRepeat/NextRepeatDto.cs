@@ -1,8 +1,8 @@
 ﻿using Wordki.Api.Domain;
 
-namespace Wordki.Api.Featuers.Card.GetLastFailed
+namespace Wordki.Api.Featuers.Card.GetNextRepeat
 {
-    public class LastFailedDto
+    public class NextRepeatDto
     {
         public string GroupName { get; set; }
         public int Language1 { get; set; }

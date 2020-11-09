@@ -26,7 +26,7 @@ import { dashboardReducer } from './store/reducer';
     EffectsModule.forFeature([DashboardEffects]),
   ],
   providers: [
-    { provide: DashboardHttpServiceBase, useClass: environment.production ? DashboardHttpService : DashboardHttpMockService },
+    { provide: DashboardHttpServiceBase, useClass: environment.mockServer ? DashboardHttpService : DashboardHttpMockService },
   ]
 })
 export class DashboardModule { }

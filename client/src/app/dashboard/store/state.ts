@@ -5,7 +5,7 @@ export interface DashbordState {
     nextRepeat: RepeatWord;
     newestCard: RepeatWord;
     cardToRepeat: number;
-    lastRepeat: number;
+    lastRepeat: Date;
     groupsCount: number;
     cardsCount: number;
 }
