@@ -21,7 +21,7 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
 
         async Task GivenUserInDatabase()
         {
-            using (var dbContext = new WordkiDbContext(Options))
+            using (var dbContext = new WordkiDbContext(ConnectionStringProvider))
             {
                 dbContext.Users.Add(Utils.GetUser());
                 await dbContext.SaveChangesAsync();
@@ -57,7 +57,7 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
 
         async Task AndThenGroupIsAdded()
         {
-            using (var dbContext = new WordkiDbContext(Options))
+            using (var dbContext = new WordkiDbContext(ConnectionStringProvider))
             {
                 var group = await dbContext.Groups.Include(g => g.User).SingleAsync();
                 Assert.IsNotNull(group);
@@ -66,7 +66,7 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
                 Assert.AreEqual(group.Name, "groupName");
                 Assert.AreEqual(group.GroupLanguage1, 1);
                 Assert.AreEqual(group.GroupLanguage2, 2);
-                Assert.AreEqual(group.GroupCreationDate, new DateTime(1990, 9, 24));
+                Assert.AreEqual(group.GroupCreationDate, Utils.Now);
 
                 var wordsCount = await dbContext.Words.CountAsync();
                 Assert.AreEqual(0, wordsCount);

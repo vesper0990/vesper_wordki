@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
@@ -18,7 +19,7 @@ namespace Wordki.Tests.E2E.Feature.Card.GetLastAdded
 
         async Task GivenDatabaseContainData()
         {
-            using (var dbContext = new WordkiDbContext(Options))
+            using (var dbContext = new WordkiDbContext(ConnectionStringProvider))
             {
                 var user = Utils.GetUser();
                 dbContext.Users.Add(user);
@@ -56,22 +57,20 @@ namespace Wordki.Tests.E2E.Feature.Card.GetLastAdded
                 groupName = "GroupName",
                 language1 = 1,
                 language2 = 2,
-                side1 = new { value = "cardSide1", example = "cardSideExample1" },
-                side2 = new { value = "cardSide2", example = "cardSideExample2" },
-                comment = "comment",
-                drawer = 2,
-                isVisible = true
+                heads = new { value = "Value1", example = "Example1", state = new { drawer = 2, nextRepeat = new DateTime(2020, 1,1) } },
+                tails = new { value = "Value1", example = "Example1", state = new { drawer = 2, nextRepeat = new DateTime(2020, 1,1)  } },
+                // comment = "Comment1",
+                // isVisible = true
             },
             new
             {
                 groupName = "GroupName",
                 language1 = 1,
                 language2 = 2,
-                side1 = new { value = "cardSide1", example = "cardSideExample1" },
-                side2 = new { value = "cardSide2", example = "cardSideExample2" },
-                comment = "comment",
-                drawer = 2,
-                isVisible = true
+                heads = new { value = "Value1", example = "Example1", state = new { drawer = 2, nextRepeat = new DateTime(2020, 1,1)  } } ,
+                tails = new { value = "Value1", example = "Example1" , state = new { drawer = 2, nextRepeat = new DateTime(2020, 1,1)  } },
+                // comment = "Comment1",
+                // isVisible = true
             },
             };
             var expectedJson = JsonSerializer.Serialize(expectedJsonObj);

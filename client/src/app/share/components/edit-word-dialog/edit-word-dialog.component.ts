@@ -9,35 +9,34 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class EditWordDialogComponent {
 
-  @Input() display = false;
-
   private _word: EditWord;
-  @Input()
-  set word(value: EditWord) {
+  @Input()  set word(value: EditWord) {
     this._word = value;
-    if (this._word === null) {
-      return;
-    }
     this.initForm();
-    this.setTitle();
   }
 
-  @Output() submit2: EventEmitter<EditWord> = new EventEmitter();
+  @Input() set mode(value: 'edit' | 'add') {
+    this.setTitle(value);
+    this.setRemoveBtnVisibility(value);
+  }
+
+  @Input() isVisible = false;
+
+  @Output() save: EventEmitter<EditWord> = new EventEmitter();
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() remove: EventEmitter<number> = new EventEmitter();
 
-  title: string;
-
-  language1 = this.formBuilder.control('', [Validators.required]);
-  language2 = this.formBuilder.control('', [Validators.required]);
-
   wordForm = this.formBuilder.group({
-    language1: this.language1,
-    language2: this.language2,
+    language1: this.formBuilder.control('', [Validators.required]),
+    language2: this.formBuilder.control('', [Validators.required]),
     example1: (''),
     example2: (''),
     isVisible: ('')
   });
+
+  title: string;
+  isRemoveVisible: boolean;
+
 
   constructor(private formBuilder: FormBuilder) { }
 
@@ -51,11 +50,7 @@ export class EditWordDialogComponent {
     });
   }
 
-  private setTitle(): void {
-    this.title = this._word.wordId === 0 ? 'Dodaj kartę' : 'Edytuj kartę';
-  }
-
-  onSubmit(): void {
+  onSave(): void {
     const newWord = {
       ...this._word,
       language1: this.wordForm.get('language1').value,
@@ -64,7 +59,7 @@ export class EditWordDialogComponent {
       example2: this.wordForm.get('example2').value,
       isVisible: this.wordForm.get('isVisible').value,
     };
-    this.submit2.emit(newWord);
+    this.save.emit(newWord);
   }
 
   onCancel(): void {
@@ -73,5 +68,13 @@ export class EditWordDialogComponent {
 
   onRemove(): void {
     this.remove.emit(this._word.wordId);
+  }
+
+  private setTitle(value: 'edit' | 'add'): void {
+    this.title = value === 'add' ? 'Add a new card' : 'Edit the card';
+  }
+
+  private setRemoveBtnVisibility(value: 'edit' | 'add'): void {
+    this.isRemoveVisible = value === 'edit';
   }
 }

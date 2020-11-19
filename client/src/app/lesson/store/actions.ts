@@ -94,7 +94,7 @@ export class AnswerCorrect implements Action {
 
     static reduce(state: LessonState): LessonState {
         const cards = state.words.slice(1, state.words.length);
-        const step = cards.length !== 0 ? LessonStep.QUESTION :  LessonStep.AFTER_FINISH;
+        const step = cards.length !== 0 ? LessonStep.QUESTION : LessonStep.AFTER_FINISH;
         return {
             ...state,
             lessonStep: step,
@@ -115,7 +115,7 @@ export class AnswerWrong implements Action {
         const currentCard = state.words[0];
         const cards = state.words.slice(1, state.words.length);
         cards.push(currentCard);
-        const step = cards.length !== 0 ? LessonStep.QUESTION :  LessonStep.AFTER_FINISH;
+        const step = cards.length !== 0 ? LessonStep.QUESTION : LessonStep.AFTER_FINISH;
         return {
             ...state,
             lessonStep: step,
@@ -150,7 +150,7 @@ export class PauseLesson implements Action {
     static reduce(state: LessonState): LessonState {
         const stepBeforePause = state.lessonStep;
         const step = LessonStep.PAUSE;
-        step.answare = stepBeforePause.answare
+        step.answare = stepBeforePause.answare;
         return {
             ...state,
             lessonStep: LessonStep.PAUSE,

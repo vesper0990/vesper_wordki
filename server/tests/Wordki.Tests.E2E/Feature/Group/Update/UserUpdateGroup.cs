@@ -23,7 +23,7 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
 
         async Task GivenGroupInDatabase()
         {
-            using (var dbContext = new WordkiDbContext(Options))
+            using (var dbContext = new WordkiDbContext(ConnectionStringProvider))
             {
                 var user = new Api.Domain.User
                 {
@@ -84,7 +84,7 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
 
         async Task AndThenWordIsAdded()
         {
-            using (var dbContext = new WordkiDbContext(Options))
+            using (var dbContext = new WordkiDbContext(ConnectionStringProvider))
             {
                 var group = await dbContext.Groups.SingleOrDefaultAsync();
                 Assert.IsNotNull(group);

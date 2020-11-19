@@ -1,6 +1,4 @@
-﻿using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,20 +16,21 @@ namespace Wordki.Tests.Utils.ServerMock
             CreateMocks();
             CreateServer();
         }
+
         private void CreateServer()
         {
             Server = new TestServer(new WebHostBuilder()
-                .ConfigureTestContainer<ContainerBuilder>(ConfigureTestContainer)
+                .ConfigureTestServices(ConfigureTestContainer)
                 .ConfigureServices(ConfigureServices)
                 .UseEnvironment("Test")
                 .UseStartup<TStartup>());
             Client = Server.CreateClient();
         }
+
         protected abstract void CreateMocks();
-        protected abstract void ConfigureTestContainer(ContainerBuilder builder);
+        protected abstract void ConfigureTestContainer(IServiceCollection services);
         protected virtual void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutofac();
             services.AddMvc(options =>
             {
                 options.Filters.Add(new AllowAnonymousFilter());

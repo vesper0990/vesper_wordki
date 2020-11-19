@@ -1,7 +1,7 @@
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { GroupsListHttpServiceBase } from '../services/groups-list-http/groups-list-http.service';
 import * as actions from './actions';
-import { map, catchError, exhaustMap, tap, withLatestFrom } from 'rxjs/operators';
+import { map, catchError, exhaustMap, tap, withLatestFrom, concatMap } from 'rxjs/operators';
 import { Group } from '../models/group.model';
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -27,7 +27,10 @@ export class GroupListEffects {
     updateGroupInListEffect = this.actions$.pipe(
         ofType<actions.UpdateGroup>(actions.GroupListTypes.UPDATE_GROUP),
         tap(action => this.groupProvider.updateGroup(action.payload.group)),
-        map(action => new actions.UpdateGroupSuccess({ group: action.payload.group })),
+        concatMap(action => [
+            new actions.UpdateGroupSuccess({ group: action.payload.group }),
+            new actions.HideDialog(),
+        ]),
         catchError((error: any) => this.handleError(error))
     );
 
@@ -35,7 +38,10 @@ export class GroupListEffects {
     removeGroupEffect = this.actions$.pipe(
         ofType<actions.RemoveGroup>(actions.GroupListTypes.REMOVE_GROUP),
         tap(action => this.groupProvider.removeGroup(action.payload.groupId)),
-        map(action => new actions.RemoveGroupSuccess({ groupId: action.payload.groupId })),
+        concatMap(action => [
+            new actions.RemoveGroupSuccess({ groupId: action.payload.groupId }),
+            new actions.HideDialog()
+        ]),
         catchError((error: any) => this.handleError(error))
     );
 

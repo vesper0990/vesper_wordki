@@ -14,8 +14,8 @@ public static class ServicesConfiguration
     {
         return services.AddScoped<ExceptionHandlerMiddleware>()
             .AddScoped<HandleTimeMiddleware>()
-            .AddScoped<IHttpContextProvider, HttpContextProvider>()
             .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
+            .AddScoped<IHttpContextProvider, HttpContextProvider>()
             .AddScoped<IUserCreator, UserCreator>()
             .AddScoped<IDateTimeProvider, DateTimeProvider>()
             .AddScoped<ITimeProvider, TimeProvider>()

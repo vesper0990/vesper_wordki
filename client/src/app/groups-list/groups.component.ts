@@ -3,6 +3,7 @@ import { Group } from './models/group.model';
 import { Observable } from 'rxjs';
 import { EditGroup } from '../share/components/edit-group-dialog/edit-group.model';
 import { GroupsListService } from './services/groups-list/groups-list.service';
+import { DialogMode } from '../share/components/edit-group-dialog/mode-dialog';
 
 @Component({
   templateUrl: './groups.component.html',
@@ -13,45 +14,42 @@ export class GroupsComponent implements OnInit {
 
   groups$: Observable<Group[]>;
   isLoading$: Observable<boolean>;
-  editingGroup: EditGroup = null;
+  dialogVisibility$: Observable<boolean>;
+  dialogMode$: Observable<DialogMode>;
+  dialogGroup$: Observable<EditGroup>;
 
   constructor(private readonly service: GroupsListService) { }
 
   ngOnInit() {
     this.service.loadGroups();
     this.groups$ = this.service.getList();
-    this.isLoading$ = this.service.isLoading()
+    this.isLoading$ = this.service.isLoading();
+    this.dialogVisibility$ = this.service.isDialogVisible();
+    this.dialogMode$ = this.service.getDialogMode();
+    this.dialogGroup$ = this.service.getDialogGroup();
   }
 
   openGroup(groupId: number): void {
     this.service.openGroup(groupId);
   }
 
-  groupEdit(group: Group): void {
-    const editGroup = <EditGroup>{
-      id: group.id,
-      name: group.name,
-      language1: group.language1,
-      language2: group.language2
-    };
-    this.editingGroup = editGroup;
+  onEdit(group: Group): void {
+    this.service.openDialogToEdit(group);
   }
 
-  onEditSubmit(group: EditGroup): void {
-    // this.groupsListState.dispatch(new UpdateGroup({ group: group }));
-    this.editingGroup = null;
+  onEditSave(group: EditGroup): void {
+    this.service.dialogSave(group);
   }
 
   onEditCancel(): void {
-    this.editingGroup = null;
+    this.service.dialogCancel();
   }
 
   onEditRemove(groupId: number): void {
-    this.editingGroup = null;
-    // this.groupsListState.dispatch(new RemoveGroup({ groupId: groupId }));
+    this.service.dialogRemove(groupId);
   }
 
   addGroup(): void {
-    // this.router.navigate(['details/add']);
+    this.service.openDialogToAdd();
   }
 }

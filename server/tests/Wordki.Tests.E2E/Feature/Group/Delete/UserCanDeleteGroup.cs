@@ -19,7 +19,7 @@ namespace Wordki.Tests.E2E.Feature.Group.Delete
 
         async Task GivenGroupsInDatabase()
         {
-            using(var dbContext = new WordkiDbContext(Options))
+            using(var dbContext = new WordkiDbContext(ConnectionStringProvider))
             {
                 var user = Builder<Api.Domain.User>.CreateNew()
                     .With(u => u.Id = 1)
@@ -59,7 +59,7 @@ namespace Wordki.Tests.E2E.Feature.Group.Delete
 
         async Task AndThenWordIsAdded()
         {
-            using (var dbContext = new WordkiDbContext(Options))
+            using (var dbContext = new WordkiDbContext(ConnectionStringProvider))
             {
                 var count = await dbContext.Groups.CountAsync();
                 Assert.AreEqual(1, count);

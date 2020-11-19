@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserProviderBase } from '../../services/user.provider/user.provider';
-import { forkJoin } from 'rxjs';
 import { UserService } from 'src/app/authorization/services/user.service/user.service';
 import { Router } from '@angular/router';
 import { LoginContract } from '../../services/user.provider/login.contract';
@@ -50,7 +49,7 @@ export class LoginFormComponent implements OnInit {
         this.userService.refresh(token);
         this.router.navigate(['/dashboard']);
       }
-    )
+    );
   }
 
   private handleError(error: ApiException): void {

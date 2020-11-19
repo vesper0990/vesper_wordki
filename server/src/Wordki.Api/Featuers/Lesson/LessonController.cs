@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Wordki.Api.Featuers.Card.GetLastAdded;
 using Wordki.Api.Featuers.Lesson.Answare;
 using Wordki.Api.Featuers.Lesson.Finish;
+using Wordki.Api.Featuers.Lesson.GetLastLesson;
 using Wordki.Api.Featuers.Lesson.GetTodayCardsCount;
 using Wordki.Api.Featuers.Lesson.Start;
 
@@ -27,6 +28,6 @@ namespace Wordki.Api.Featuers.Lesson
         public async Task<IActionResult> GetTodayCardsCount() => await HandlerQuery(new GetTodayCardsCountQuery());
 
         [HttpGet("lastLessonDate")]
-        public async Task<IActionResult> GetLastLessonDate() => await HandlerQuery(new GetLastAddedQuery());
+        public async Task<IActionResult> GetLastLessonDate() => await HandlerQuery(new GetLastLessonQuery());
     }
 }

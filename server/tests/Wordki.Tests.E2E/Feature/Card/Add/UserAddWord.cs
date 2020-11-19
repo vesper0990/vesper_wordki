@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -21,7 +22,7 @@ namespace Wordki.Tests.E2E.Feature.Card.Add
 
         async Task GivenGroupInDatabase()
         {
-            using (var dbContext = new WordkiDbContext(Options))
+            using (var dbContext = new WordkiDbContext(ConnectionStringProvider))
             {
                 var user = Utils.GetUser();
                 dbContext.Users.Add(user);
@@ -39,9 +40,8 @@ namespace Wordki.Tests.E2E.Feature.Card.Add
             var content = new
             {
                 groupId = 1,
-                cardSide1 = new { value = "word1" },
-                cardSide2 = new { value = "word2" },
-                comment = "",
+                heads = new { value = "word1", example="example1" },
+                tails = new { value = "word2", example="example2" },
                 IsVisible = true
             };
             Request.Content = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
@@ -63,7 +63,7 @@ namespace Wordki.Tests.E2E.Feature.Card.Add
 
         async Task AndThenWordIsAdded()
         {
-            using (var dbContext = new WordkiDbContext(Options))
+            using (var dbContext = new WordkiDbContext(ConnectionStringProvider))
             {
                 var word = await dbContext.Words.Include(w => w.Group).SingleOrDefaultAsync();
                 Assert.IsNotNull(word);
@@ -71,9 +71,12 @@ namespace Wordki.Tests.E2E.Feature.Card.Add
                 Assert.AreEqual(1, word.Group.Id);
                 Assert.AreEqual("word1", word.Heads.Value);
                 Assert.AreEqual("word2", word.Tails.Value);
-                Assert.AreEqual(string.Empty, word.Comment);
+                Assert.AreEqual("example1", word.Heads.Example);
+                Assert.AreEqual("example2", word.Tails.Example);
+                Assert.AreEqual(0, word.Heads.State.Drawer.Value);
+                Assert.AreEqual(0, word.Tails.State.Drawer.Value);
                 Assert.AreEqual(true, word.IsVisible);
-                Assert.AreEqual(Host.TimeProviderMock.Object.Now(), word.WordCreationDate);
+                Assert.AreEqual(new DateTime(0), word.WordCreationDate);
             }
         }
 

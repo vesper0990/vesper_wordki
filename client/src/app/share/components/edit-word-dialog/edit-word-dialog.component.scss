@@ -1,20 +1,21 @@
-.error-message {
-    color: red;
-    font-size: 0.75em;
-}
-
-input {
-    width: 100%;
-}
+.container {
+    width: 600px;
+    padding: 20px;
+  
+    .row {
+      display: flex;
+      margin-bottom: 10px;
+  
+      label {
+        width: 30%;
+      }
+  
+      .input {
+        width: 70%;
+      }
+    }
+  
+  }
 
 @media screen and (max-width: 640px) {
-    //small
-    .form-control {
-        margin: 5px 0;
-
-        label{
-            padding-bottom: 0 !important;
-        }
-    }
-    
 }

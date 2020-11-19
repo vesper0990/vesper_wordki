@@ -7,7 +7,7 @@ namespace Wordki.Api.Domain
     {
         public long Id { get; set; }
         public DateTime DateTime { get; set; }
-        public RepeatResult Result { get; set; }
+        public int Result { get; set; }
         public QuestionSideEnum QuestionSide { get; set; }
         public Card Word { get; set; }
         public Lesson Lesson { get; set; }

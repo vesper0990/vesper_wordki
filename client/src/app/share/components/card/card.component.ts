@@ -29,8 +29,8 @@ export class CardComponent implements OnInit {
     this.displayingFlag = this.isAdditionInfo
       ? null
       : (this.side === 'language1'
-        ? this.word.groupLanguage1.flag
-        : this.word.groupLanguage2.flag);
+        ? this.word.language1.flag
+        : this.word.language2.flag);
   }
 
   public changeSide(): void {

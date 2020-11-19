@@ -36,8 +36,8 @@ export class DashboardHttpService extends DashboardHttpServiceBase {
     }
 
     getNextRepeatWord(): Observable<RepeatWord> {
-        return this.httpClient.get<RepeatWordDto[]>(`${environment.apiUrl}/card/nextRepeat`).pipe(
-            map((dto: RepeatWordDto[]) => mapToRepeatWord(dto[0])));
+        return this.httpClient.get<RepeatWordDto>(`${environment.apiUrl}/card/nextRepeat`).pipe(
+            map((dto: RepeatWordDto) => mapToRepeatWord(dto)));
     }
 
     getLastWords(count: number): Observable<RepeatWord[]> {
@@ -179,7 +179,7 @@ export class DashboardHttpMockService extends DashboardHttpServiceBase {
             lastRepeat: 2,
             groupsCount: 10,
             cardsCount: 181
-        }
+        };
         return of(dto).pipe(delay(500));
     }
 }

@@ -66,7 +66,7 @@ export class LessonHttpService extends LessonHttpBaseService {
     getTodayWords(): Observable<WordRepeat[]> {
         const today = new Date();
         return this.http.get<WordRepeatDto[]>(
-            `${environment.apiUrl}/getTodayWords/${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`).pipe(
+            `${environment.apiUrl}/card/allRepeats`).pipe(
                 map((dto: WordRepeatDto[]) => {
                     const arr = [];
                     dto.forEach((item: WordRepeatDto) => arr.push(this.mapper.map(item)));

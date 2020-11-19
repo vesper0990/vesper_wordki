@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { Router } from "@angular/router";
-import { Store } from "@ngrx/store";
-import { Observable } from "rxjs";
-import { RepeatWord } from "../../models/repeat-word.model";
-import * as action from "../../store/actions";
-import * as selector from "../../store/selectors";
-import { DashbordState } from "../../store/state";
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { RepeatWord } from '../../models/repeat-word.model';
+import * as action from '../../store/actions';
+import * as selector from '../../store/selectors';
+import { DashbordState } from '../../store/state';
 
 @Injectable()
 export class DashboardService {

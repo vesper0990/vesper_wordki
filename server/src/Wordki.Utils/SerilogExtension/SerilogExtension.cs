@@ -69,7 +69,7 @@ public static class WebhostBuilderExtensions
                .Enrich.WithHttpContextContent(serviceProvider)
                .Enrich.WithDayOfWeek(serviceProvider)
                .CreateLogger();
-           collection.AddSingleton(services => (ILoggerFactory)new SerilogLoggerFactory(Log.Logger, true));
+           collection.AddSingleton(services => (ILoggerFactory)new Serilog.Extensions.Logging.SerilogLoggerFactory(Log.Logger, true));
        });
        return builder;
    }

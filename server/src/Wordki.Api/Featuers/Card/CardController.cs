@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Wordki.Api.Featuers.Card.Add;
 using Wordki.Api.Featuers.Card.Delete;
+using Wordki.Api.Featuers.Card.GetAllRepeat;
 using Wordki.Api.Featuers.Card.GetCardDetails;
 using Wordki.Api.Featuers.Card.GetCount;
 using Wordki.Api.Featuers.Card.GetLastAdded;
@@ -42,5 +43,8 @@ namespace Wordki.Api.Featuers.Card
 
         [HttpGet("details/{id}")]
         public async Task<IActionResult> GetCardDetails([FromRoute] GetCardDetailsQuery query) => await HandlerQuery(query);
+
+        [HttpGet("allRepeats")]
+        public async Task<IActionResult> GetCardsToRepeat() => await HandlerQuery(new GetAllRepeatQuery());
     }
 }

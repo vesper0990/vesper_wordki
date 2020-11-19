@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Autofac.Extensions.DependencyInjection;
 using Serilog;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -24,7 +23,6 @@ namespace Wordki
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .ConfigureServices(services => services.AddAutofac())
                 .UseSerilog()
                 .UseStartup<Startup>();
     }

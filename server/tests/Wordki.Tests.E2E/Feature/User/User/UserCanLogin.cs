@@ -21,7 +21,7 @@ namespace Wordki.Tests.E2E.Feature.User.User
 
         async Task GivenUserInDatabase()
         {
-            using(var dbContext = new WordkiDbContext(Options))
+            using(var dbContext = new WordkiDbContext(ConnectionStringProvider))
             {
                 var user = Builder<Api.Domain.User>.CreateNew()
                     .With(u => u.Id = 1)
@@ -61,7 +61,7 @@ namespace Wordki.Tests.E2E.Feature.User.User
 
         async Task AndThenUserAdded()
         {
-            using (var dbContext = new WordkiDbContext(Options))
+            using (var dbContext = new WordkiDbContext(ConnectionStringProvider))
             {
                 var user = await dbContext.Users.SingleAsync();
                 Assert.AreEqual(user.Name, "user");

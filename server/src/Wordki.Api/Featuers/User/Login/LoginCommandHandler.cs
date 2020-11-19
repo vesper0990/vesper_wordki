@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
 using Wordki.Api.Services;
+using Wordki.Infrastructure.Framework.ExceptionMiddleware;
 
 namespace Wordki.Api.Featuers.User.Login
 {
@@ -28,29 +29,20 @@ namespace Wordki.Api.Featuers.User.Login
 
         public async Task<string> Handle(LoginCommnad request, CancellationToken cancellationToken)
         {
-            ValidateRequest(request);
             var hashedPassword = encrypter.Md5Hash(request.Password);
             var user = await dbContext.Users.SingleOrDefaultAsync(u =>
                 u.Name.Equals(request.UserName) &&
                 u.Password.Equals(hashedPassword));
+
+            if (user == null)
+            {
+                throw new ApiException("User is not found");
+            }
             user.LastLoginDate = dateTimeProvider.Now();
 
             dbContext.Users.Update(user);
             await dbContext.SaveChangesAsync();
             return authenticationService.Authenticate(user.Id, new string[0]);
-        }
-
-        private void ValidateRequest(LoginCommnad commnad)
-        {
-            if (string.IsNullOrEmpty(commnad.Password))
-            {
-                throw new Exception();
-            }
-
-            if (string.IsNullOrEmpty(commnad.UserName))
-            {
-                throw new Exception();
-            }
         }
     }
 }

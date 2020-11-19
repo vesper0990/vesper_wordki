@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Wordki.Api.Repositories.EntityFrameworkRepositories;
 using Wordki.Infrastructure.Framework.ExceptionMiddleware;
 
 namespace Wordki.Api.Featuers.Test
@@ -16,7 +17,7 @@ namespace Wordki.Api.Featuers.Test
     {
         private readonly IConfiguration configuration;
 
-        public TestController(IConfiguration configuration, IMediator mediator) : base(mediator)
+        public TestController(IConfiguration configuration, IMediator mediator, IDatabaseInitializer init) : base(mediator)
         {
             this.configuration = configuration;
         }

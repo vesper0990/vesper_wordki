@@ -33,15 +33,37 @@ namespace Wordki.Api.Featuers.Card.GetNextRepeat
                 .Include(w => w.Group).ThenInclude(g => g.User)
                 .Where(c => c.Group.User.Id == userId).OrderBy(w => w.Tails.State.NextRepeat).Take(1).FirstOrDefaultAsync();
 
-            var card = minHeads.Heads.State.NextRepeat < minTails.Tails.State.NextRepeat ? minHeads : minTails;
+            var card = GetNextRepeat(minHeads, minTails);
             return new NextRepeatDto
             {
                 GroupName = card.Group.Name,
-                Language1 = card.Group.GroupLanguage1,
-                Language2 = card.Group.GroupLanguage2,
-                Heads = card.Heads,
-                Tails = card.Tails
+                Heads = new Dto.SideDto{
+                    Value = card.Heads.Value,
+                    Example = card.Heads.Example,
+                    Drawer = card.Heads.State.Drawer.Value,
+                    Language = card.Group.GroupLanguage1,
+                },
+                Tails = new Dto.SideDto{
+                    Value = card.Tails.Value,
+                    Example = card.Tails.Example,
+                    Drawer = card.Tails.State.Drawer.Value,
+                    Language = card.Group.GroupLanguage2,
+                },
             };
+        }
+
+        private Domain.Card GetNextRepeat(Domain.Card minHeads, Domain.Card minTails)
+        {
+            if(minHeads == null && minTails == null){
+                return null;
+            }
+            if(minHeads == null){
+                return minTails;
+            }
+            if(minTails == null){
+                return minHeads;
+            }
+            return minHeads.Heads.State.NextRepeat < minTails.Tails.State.NextRepeat ? minHeads : minTails;
         }
     }
 }

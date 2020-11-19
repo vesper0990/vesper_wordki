@@ -20,8 +20,10 @@ namespace Wordki.Api.Featuers.Card.Update
         {
             ValidateRequest(request);
             var card = await dbContext.Words.SingleOrDefaultAsync(c => c.Id == request.Id);
-            card.Heads = request.CardSide1;
-            card.Tails = request.CardSide2;
+            card.Heads.Value = request.Heads.Value;
+            card.Heads.Example = request.Heads.Example;
+            card.Tails.Value = request.Tails.Value;
+            card.Tails.Example = request.Tails.Example;
             card.Comment = request.Comment;
             card.IsVisible = request.IsVisible;
             dbContext.Words.Update(card);

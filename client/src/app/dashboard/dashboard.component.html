@@ -1,7 +1,7 @@
 <div class="lesson-info">
     <div class="info-card" (click)="startLesson()">
         <div class="title">
-            Powtórzenia dzisiaj
+            Today repeats
         </div>
         <ng-container *ngIf="cardToRepeat$ | async as cardToRepeat; else loading">
             <div class="value">
@@ -11,7 +11,7 @@
     </div>
     <div class="info-card" (click)="history()">
         <div class="title">
-            Ostatnia lekcja
+            Last lesson
         </div>
         <ng-container *ngIf="lastRepeat$ | async as lastRepeat; else loading">
             <div class="value">
@@ -21,7 +21,7 @@
     </div>
     <div class="info-card" (click)="groups()">
         <div class="title">
-            Grupy
+            Groups
         </div>
         <ng-container *ngIf="groupsCount$ | async as groupsCount; else loading">
             <div class="value">
@@ -31,7 +31,7 @@
     </div>
     <div class="info-card" (click)="cards()">
         <div class="title">
-            Karty
+            Cards
         </div>
         <ng-container *ngIf="cardsCount$ | async as cardsCount; else loading">
             <div class="value">
@@ -45,7 +45,7 @@
         <p-card styleClass="card">
             <p-header>
                 <div class="card-header">
-                    Najnowsze słowo
+                    The newest card
                 </div>
             </p-header>
             <ng-container *ngIf="newestCard$ | async as word; else loading">
@@ -59,7 +59,7 @@
         <p-card styleClass="card">
             <p-header>
                 <div class="card-header">
-                    Następna powtórka
+                    Next repeat
                 </div>
             </p-header>
             <ng-container *ngIf="nextRepeat$ | async as word; else loading">
@@ -73,7 +73,7 @@
         <p-card styleClass="card">
             <p-header>
                 <div class="card-header">
-                    Ostatnia pomyłka
+                    Last failure
                 </div>
             </p-header>
             <ng-container *ngIf="lastFailed$ | async as word; else loading">
@@ -90,5 +90,5 @@
 </ng-template>
 
 <ng-template #nowords>
-    <b>Brak słów</b>
+    <b>You do not have any cards</b>
 </ng-template>

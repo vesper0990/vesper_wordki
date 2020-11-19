@@ -1,35 +1,37 @@
-<app-edit-word-dialog [display]="editingWord" [word]="editingWord" (submit2)="onSubmit($event)" (cancel)="onCancel()" (remove)="onRemove($event)"></app-edit-word-dialog>
-<button (click)="onAddWord()">Dodaj nowe słowo</button>
-<button (click)="changeGroupVisibility()">Dodaj do lekcji</button>
+<button (click)="addCard()">Dodaj nowe słowo</button>
 <div>
-    Grupa:
-    <ng-container *ngIf="isGroupDetailsLoading$ | async; else groupDetails">
-        ładowanie
-        <!-- <app-progress-horizontal></app-progress-horizontal> -->
-    </ng-container>
+  Grupa:
+  <ng-container *ngIf="isGroupDetailsLoading$ | async; else groupDetails">
+    ładowanie
+    <!-- <app-progress-horizontal></app-progress-horizontal> -->
+  </ng-container>
 </div>
 <div>
-    Słowa:
-    <ng-container *ngIf="isWordsLoading$ | async; else words">
-        ładowanie
-        <!-- <app-progress-horizontal></app-progress-horizontal> -->
-    </ng-container>
+  Słowa:
+  <ng-container *ngIf="isCardsLoading$ | async; else words">
+    ładowanie
+    <!-- <app-progress-horizontal></app-progress-horizontal> -->
+  </ng-container>
 </div>
 
 <ng-template #groupDetails>
-    <ng-container *ngIf="groupDetails$ | async as groupDetails">
-        {{ groupDetails.name }}
-    </ng-container>
+  <ng-container *ngIf="groupDetails$ | async as groupDetails">
+    {{ groupDetails.name }}
+  </ng-container>
 </ng-template>
 
 <ng-template #words>
-    <ng-container *ngIf="words$ | async as words">
-        <ng-container *ngIf="words.length !== 0; else nowords">
-            <app-word-row *ngFor="let item of words" [word]="item" (editWord)="onEditWord($event)"></app-word-row>
-        </ng-container>
+  <ng-container *ngIf="cards$ | async as cards">
+    <ng-container *ngIf="cards.length !== 0; else nowords">
+      <app-word-row *ngFor="let item of cards" [word]="item" (editWord)="editCard($event)"></app-word-row>
     </ng-container>
+  </ng-container>
 </ng-template>
 
 <ng-template #nowords>
-    <b>Brak słów</b>
+  <b>Brak słów</b>
 </ng-template>
+
+<app-edit-word-dialog [isVisible]="dialogVisibility$ | async" [mode]="dialogMode$ | async"
+  [word]="dialogCard$ | async" (save)="onEditSave($event)" (cancel)="onEditCancel()" (remove)="onEditRemove($event)">
+</app-edit-word-dialog>

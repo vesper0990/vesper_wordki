@@ -50,7 +50,7 @@ namespace Wordki.Api.Featuers.Lesson.Answare
                 DateTime = timeProvider.GetTime(),
                 Lesson = lesson,
                 QuestionSide = questionSide,
-                Result = RepeatResult.Create((int)repeatReuslt),
+                Result = (int)repeatReuslt,
                 Word = card
             };
 
@@ -62,11 +62,6 @@ namespace Wordki.Api.Featuers.Lesson.Answare
             var nextRepeat = nextRepeatCalculator.Calculate(card, questionSide);
             var side = questionSide == QuestionSideEnum.Heads ? card.Heads : card.Tails;
             side.State.NextRepeat = nextRepeat;
-        }
-
-        private void UpdateCard(Domain.Card card, QuestionSideEnum questionSide, RepeatResultEnum repeatResult)
-        {
-
         }
 
         private void UpdateDrawer(State state, RepeatResultEnum repeatResult)

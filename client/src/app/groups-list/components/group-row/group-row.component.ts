@@ -11,7 +11,7 @@ export class GroupRowComponent implements OnInit {
 
   @Input() group: Group;
   @Output() lessonStart: EventEmitter<Group> = new EventEmitter();
-  @Output() groupEdit: EventEmitter<Group> = new EventEmitter();
+  @Output() edit: EventEmitter<Group> = new EventEmitter();
 
   wordsValue: string;
 
@@ -27,7 +27,7 @@ export class GroupRowComponent implements OnInit {
   }
 
   editGroup(group: Group): void {
-    this.groupEdit.emit(group);
+    this.edit.emit(group);
   }
 
   openGroup(group: Group): void {

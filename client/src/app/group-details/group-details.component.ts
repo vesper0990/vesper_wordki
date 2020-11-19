@@ -1,113 +1,63 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Subscription, Observable } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable } from 'rxjs';
+import { DialogMode } from '../share/components/edit-group-dialog/mode-dialog';
+import { EditWord } from '../share/components/edit-word-dialog/edit-word.model';
 import { GroupDetails } from './models/group-details.model';
 import { Word } from './models/word.model';
-import { filter } from 'rxjs/operators';
-import { GroupDetailsState } from './store/reducre';
-import { Store } from '@ngrx/store';
-import { getGroupDetails, getWords, getIsGroupDetailsLoading, getIsWordsLoading } from './store/selectors';
-import {
-  GetGroupDetailsAction,
-  GetWordsAction,
-  UpdateWordAction,
-  AddWordAction,
-  RemoveWordAction,
-  ChangeGroupVisibilityAction
-} from './store/actions';
-import { EditWord } from '../share/components/edit-word-dialog/edit-word.model';
+import { CardsListService } from './services/words-list/words-list.service';
 
 @Component({
   templateUrl: './group-details.component.html',
   styleUrls: ['./group-details.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  providers: [
+    CardsListService
+  ]
 })
 export class GroupDetailsComponent implements OnInit, OnDestroy {
 
-  private groupId: number;
-  private routeParamSub: Subscription;
-  private editWordOnSubmit: (editWord: EditWord) => void;
-
+  cards$: Observable<Word[]>;
+  isCardsLoading$: Observable<boolean>;
   groupDetails$: Observable<GroupDetails>;
   isGroupDetailsLoading$: Observable<boolean>;
-  words$: Observable<Word[]>;
-  isWordsLoading$: Observable<boolean>;
-  editingWord: EditWord = null;
 
-  constructor(private route: ActivatedRoute,
-    private router: Router,
-    private groupDetailsStore: Store<GroupDetailsState>) { }
+  dialogVisibility$: Observable<boolean>;
+  dialogMode$: Observable<DialogMode>;
+  dialogCard$: Observable<EditWord>;
+
+  constructor(private readonly service: CardsListService) { }
 
   ngOnInit(): void {
-    this.groupDetails$ = this.groupDetailsStore.select(getGroupDetails);
-    this.isGroupDetailsLoading$ = this.groupDetailsStore.select(getIsGroupDetailsLoading);
-    this.words$ = this.groupDetailsStore.select(getWords);
-    this.isWordsLoading$ = this.groupDetailsStore.select(getIsWordsLoading);
-    this.routeParamSub = this.route.params
-      .pipe(filter((params: Params) => params['id'] != null))
-      .subscribe((params: Params) => this.handleRouteParam(params));
+    this.service.init();
+    this.cards$ = this.service.getCards();
+    this.groupDetails$ = this.service.getGroupDetails();
+    this.isCardsLoading$ = this.service.isCardsLoading();
+    this.isGroupDetailsLoading$ = this.service.isCardsLoading(); // todo change to isGroupDetailsLoading$
+
+    this.dialogVisibility$ = this.service.isDialogVisible();
+    this.dialogMode$ = this.service.getDialogMode();
+    this.dialogCard$ = this.service.getDialogCard();
   }
 
   ngOnDestroy(): void {
-    this.routeParamSub.unsubscribe();
   }
 
-  startLesson(): void {
-    this.router.navigate(['lesson/fiszki', this.groupId]);
+  addCard(): void {
+    this.service.openDialogToAdd();
   }
 
-  private handleRouteParam(value: Params): void {
-    this.groupId = +value['id'];
-    this.groupDetailsStore.dispatch(new GetGroupDetailsAction({ groupId: this.groupId }));
-    this.groupDetailsStore.dispatch(new GetWordsAction({ groupId: this.groupId }));
+  editCard(card: Word): void {
+    this.service.openDialogToEdit(card);
   }
 
-  onEditWord(word: Word): void {
-    this.editingWord = <EditWord>{
-      wordId: word.id,
-      groupId: this.groupId,
-      language1: word.language1,
-      language2: word.language2,
-      example1: word.example1,
-      example2: word.example2,
-      comment: '',
-      isVisible: word.isVisible
-    };
-    this.editWordOnSubmit = this.onEditSubmit;
+  onEditCancel(): void {
+    this.service.dialogCancel();
   }
 
-  onAddWord(): void {
-    this.editingWord = <EditWord>{
-      wordId: 0,
-      groupId: this.groupId
-    };
-    this.editWordOnSubmit = this.onAddSubmit;
+  onEditSave(card: EditWord): void {
+    this.service.dialogSave(card);
   }
 
-  onEditSubmit(editWord: EditWord): void {
-    this.groupDetailsStore.dispatch(new UpdateWordAction({ editword: editWord }));
+  onEditRemove(id: number): void {
+    this.service.dialogRemove(id);
   }
-
-  onAddSubmit(editWord: EditWord): void {
-    this.groupDetailsStore.dispatch(new AddWordAction({ editword: editWord }));
-  }
-
-  onSubmit(editWord: EditWord): void {
-    this.editWordOnSubmit(editWord);
-    this.editingWord = null;
-  }
-
-  onCancel(): void {
-    this.editingWord = null;
-  }
-
-  onRemove(wordId: number): void {
-    this.editingWord = null;
-    this.groupDetailsStore.dispatch(new RemoveWordAction({ groupId: this.groupId, wordId: wordId }));
-  }
-
-  changeGroupVisibility(): void {
-    this.groupDetailsStore.dispatch(new ChangeGroupVisibilityAction({ groupId: this.groupId }));
-  }
-
 }

@@ -1,10 +1,11 @@
-﻿using System.Linq;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Wordki.Api.Domain;
 using Wordki.Api.Services;
 using Wordki.Utils.TimeProvider;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Wordki.Api.Framework.Options;
 
 namespace Wordki.Api.Repositories.EntityFrameworkRepositories
 {
@@ -19,18 +20,28 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
         private readonly WordkiDbContext dbContext;
         private readonly ITimeProvider timeProvider;
         private readonly IEncrypter encrypter;
+        private readonly General options;
 
 
-        public DatabaseInitializer(WordkiDbContext dbContext, ITimeProvider timeProvider, IEncrypter encrypter)
+        public DatabaseInitializer(WordkiDbContext dbContext,
+         ITimeProvider timeProvider,
+          IEncrypter encrypter,
+          IOptions<General> options)
         {
             this.dbContext = dbContext;
             this.timeProvider = timeProvider;
             this.encrypter = encrypter;
+            this.options = options.Value;
         }
 
         public async Task Init()
         {
             await dbContext.Database.EnsureCreatedAsync();
+
+            if (!options.Mocks)
+            {
+                return;
+            }
 
             if (await dbContext.Users.AnyAsync(u => u.Name.Equals("testUser")))
             {
@@ -110,7 +121,7 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
                         {
                             Lesson = lesson,
                             DateTime = newCard.WordCreationDate.AddDays(random.Next(-7, 0)),
-                            Result = RepeatResult.Create(random.Next(-1, 1)),
+                            Result = random.Next(-1, 1),
                             QuestionSide = random.Next(0, 1) > 0 ? QuestionSideEnum.Heads : QuestionSideEnum.Tails,
                             Word = newCard
                         };

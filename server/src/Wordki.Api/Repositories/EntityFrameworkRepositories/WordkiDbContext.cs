@@ -38,6 +38,8 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.HasDefaultSchema("wrd");
+
             modelBuilder.Entity<User>(user =>
             {
                 user.HasKey(u => u.Id);
@@ -93,11 +95,7 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
 
             modelBuilder.Entity<Repeat>(repeat =>
             {
-                repeat
-                .Property(x => x.Result)
-                .HasConversion(
-                    v => v.Value,
-                    v => RepeatResult.Create(v));
+                repeat.HasKey(r => r.Id);
             });
         }
     }
