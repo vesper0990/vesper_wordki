@@ -14,7 +14,7 @@ import { RepeatDto } from '../../models/repeat.dto';
 import { EditWord } from 'src/app/share/components/edit-word-dialog/edit-word.model';
 
 @Injectable()
-export abstract class GroupDetailsProviderBase {
+export abstract class GroupDetailsHttpBase {
     abstract getGroupDetails(groupId: number): Observable<GroupDetails>;
     abstract getWords(groupId: number): Observable<Word[]>;
     // abstract getWordDetails(wordId: number): Observable<>;
@@ -26,7 +26,7 @@ export abstract class GroupDetailsProviderBase {
 }
 
 @Injectable()
-export class GroupDetailsProvider extends GroupDetailsProviderBase {
+export class GroupDetailsHttp extends GroupDetailsHttpBase {
 
     constructor(private http: HttpClient,
         private groupMapper: GroupDetailsMapper,
@@ -35,12 +35,12 @@ export class GroupDetailsProvider extends GroupDetailsProviderBase {
     }
 
     getGroupDetails(groupId: number): Observable<GroupDetails> {
-        return this.http.get<GroupDetailsDto>(`${environment.apiUrl}/getGroup/${groupId}`).pipe(
+        return this.http.get<GroupDetailsDto>(`${environment.apiUrl}/group/details/${groupId}`).pipe(
             map((dto: GroupDetailsDto) => this.groupMapper.map(dto)));
     }
 
     getWords(groupId: number): Observable<Word[]> {
-        return this.http.get<WordDto[]>(`${environment.apiUrl}/getWordsFromGroup/${groupId}`).pipe(
+        return this.http.get<WordDto[]>(`${environment.apiUrl}/card/all/${groupId}`).pipe(
             map((dtos: WordDto[]) => {
                 const arr = [];
                 dtos.forEach((dto: WordDto) => arr.push(this.wordMapper.map(dto)));
@@ -50,19 +50,47 @@ export class GroupDetailsProvider extends GroupDetailsProviderBase {
     }
 
     updateWord(editWord: EditWord): Observable<any> {
-        return this.http.put(`${environment.apiUrl}/updateWord`, editWord);
+        const body = {
+            id: editWord.wordId,
+            groupId: editWord.groupId,
+            heads: {
+                value: editWord.language1,
+                example: editWord.example1
+            },
+            tails: {
+                value: editWord.language2,
+                example: editWord.example2
+            },
+            comment: editWord.comment,
+            isVisible: editWord.isVisible
+        };
+        return this.http.put(`${environment.apiUrl}/card/update`, body);
     }
 
     addWord(editword: EditWord): Observable<any> {
-        return this.http.post(`${environment.apiUrl}/addWord`, editword);
+        const body = {
+            groupId: editword.groupId,
+            heads: {
+                value: editword.language1,
+                example: editword.example1
+            },
+            tails: {
+                value: editword.language2,
+                example: editword.example2
+            },
+            comment: editword.comment,
+            isVisible: editword.isVisible
+        };
+        console.log(editword, body);
+        return this.http.post(`${environment.apiUrl}/card/add`, body);
     }
 
     removeWord(groupId: number, wordId: number): Observable<any> {
-        return this.http.delete(`${environment.apiUrl}/removeWord/${groupId}/${wordId}`);
+        return this.http.delete(`${environment.apiUrl}/card/delete/${wordId}`);
     }
 
     addGroup(group: AddedGroup): Observable<any> {
-        return this.http.post(`${environment.apiUrl}/addGroup`, group);
+        return this.http.post(`${environment.apiUrl}/group/add`, group);
     }
 
     changeGroupVisibility(groupId: number): Observable<any> {
@@ -75,7 +103,7 @@ export class GroupDetailsProvider extends GroupDetailsProviderBase {
 }
 
 @Injectable()
-export class GroupDetailsProviderMock extends GroupDetailsProviderBase {
+export class GroupDetailsHttpMock extends GroupDetailsHttpBase {
 
 
     constructor(private groupMapper: GroupDetailsMapper,
@@ -108,17 +136,17 @@ export class GroupDetailsProviderMock extends GroupDetailsProviderBase {
                 });
             }
 
-            arr.push({
-                wordId: i,
-                language1: `word ${i}`,
-                language2: `słowo ${i}`,
-                example1: 'to ejst jakis przyklad ktory ma byc poprawnie wyswietlony na stronie',
-                example2: 'to ejst jakis przyklad ktory ma byc poprawnie wyswietlony na stronie',
-                drawer: 5 % i,
-                isVisible: true,
-                nextRepeat: new Date().toString(),
-                repeats: repeats
-            });
+            // arr.push({
+            //     id: i,
+            //     language1: `word ${i}`,
+            //     language2: `słowo ${i}`,
+            //     example1: 'to ejst jakis przyklad ktory ma byc poprawnie wyswietlony na stronie',
+            //     example2: 'to ejst jakis przyklad ktory ma byc poprawnie wyswietlony na stronie',
+            //     drawer: 5 % i,
+            //     isVisible: true,
+            //     nextRepeat: new Date().toString(),
+            //     repeats: repeats
+            // });
         }
         return of(arr).pipe(
             map((dtos: WordDto[]) => {
@@ -135,6 +163,7 @@ export class GroupDetailsProviderMock extends GroupDetailsProviderBase {
     }
 
     addWord(editword: EditWord): Observable<any> {
+        console.log('mock');
         return of({});
     }
 

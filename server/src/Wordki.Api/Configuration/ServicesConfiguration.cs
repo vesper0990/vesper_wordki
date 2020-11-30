@@ -22,6 +22,7 @@ public static class ServicesConfiguration
             .AddScoped<IDatabaseInitializer, DatabaseInitializer>()
             .AddScoped<IAuthenticationService, AuthenticationService>()
             .AddScoped<IEncrypter, Encrypter>()
+            .AddScoped<INextRepeatCalculator, NextRepeatCalculator>()
             .AddIConnectionStringProvider(configuration);
     }
 

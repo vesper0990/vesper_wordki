@@ -28,7 +28,7 @@ namespace Wordki.Api.Featuers.Card.GetLastFailed
             .Take(1)
             .FirstOrDefaultAsync();
 
-            var card = result.Word;
+            var card = result?.Word;
             return card != null ? new LastFailedDto
             {
                 GroupName = card.Group.Name,

@@ -9,6 +9,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
+using System.Text.Json.Serialization;
 
 namespace Wordki
 {
@@ -35,9 +36,14 @@ namespace Wordki
                 .ServicesConfig(Configuration)
                 .AddDbContext<WordkiDbContext>()
                 .AddMediatR(typeof(Startup).Assembly)
-                .AddMvc(o => { 
+                .AddMvc(o =>
+                {
                     o.EnableEndpointRouting = false;
                     o.Filters.Add(typeof(ValidatorActionFilter));
+                })
+                .AddJsonOptions(opt =>
+                {
+                    opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 })
                 .AddFluentValidation(f => f.RegisterValidatorsFromAssemblyContaining<Startup>());
         }

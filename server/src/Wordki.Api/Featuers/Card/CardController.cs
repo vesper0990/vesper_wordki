@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Wordki.Api.Featuers.Card.Add;
 using Wordki.Api.Featuers.Card.Delete;
+using Wordki.Api.Featuers.Card.GetAll;
 using Wordki.Api.Featuers.Card.GetAllRepeat;
 using Wordki.Api.Featuers.Card.GetCardDetails;
 using Wordki.Api.Featuers.Card.GetCount;
@@ -23,14 +24,8 @@ namespace Wordki.Api.Featuers.Card
         [HttpGet("count")]
         public async Task<IActionResult> GetAllCount() => await HandlerQuery(new GetCountQuery());
 
-        [HttpPost("add")]
-        public async Task<IActionResult> Add([FromBody] AddCardCommand command) => await HandleCommand(command);
-
-        [HttpDelete("delete/{cardId}")]
-        public async Task<IActionResult> Delete([FromRoute] long cardId) => await HandleCommand(new DeleteCardComamnd { Id = cardId });
-
-        [HttpPut("update")]
-        public async Task<IActionResult> Update([FromBody] UpdateCardCommand command) => await HandleCommand(command);
+        [HttpGet("all/{groupId}")]
+        public async Task<IActionResult> getAll([FromRoute] GetAllQuery query) => await HandlerQuery(query);
 
         [HttpGet("lastFailed")]
         public async Task<IActionResult> GetLastFailed() => await HandlerQuery(new GetLastFailedQuery());
@@ -46,5 +41,17 @@ namespace Wordki.Api.Featuers.Card
 
         [HttpGet("allRepeats")]
         public async Task<IActionResult> GetCardsToRepeat() => await HandlerQuery(new GetAllRepeatQuery());
+
+        [HttpPut("update")]
+        public async Task<IActionResult> Update([FromBody] UpdateCardCommand command) => await HandleCommand(command);
+
+        [HttpPost("add")]
+        public async Task<IActionResult> Add([FromBody] AddCardCommand command) => await HandleCommand(command);
+
+        [HttpDelete("delete/{cardId}")]
+        public async Task<IActionResult> Delete([FromRoute] long cardId) => await HandleCommand(new DeleteCardComamnd { Id = cardId });
+
+        
+        
     }
 }

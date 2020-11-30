@@ -15,9 +15,9 @@ namespace Wordki.Api.Domain
 
     public enum RepeatResultEnum
     {
-        Correct,
-        Accepted,
-        Wrong
+        Correct = 1,
+        Accepted = 0,
+        Wrong = -1
     }
 
     public class RepeatResult

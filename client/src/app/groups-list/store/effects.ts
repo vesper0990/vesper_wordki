@@ -3,7 +3,7 @@ import { GroupsListHttpServiceBase } from '../services/groups-list-http/groups-l
 import * as actions from './actions';
 import { map, catchError, exhaustMap, tap, withLatestFrom, concatMap } from 'rxjs/operators';
 import { Group } from '../models/group.model';
-import { Observable, of } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { GroupListState } from './state';
@@ -30,6 +30,20 @@ export class GroupListEffects {
         concatMap(action => [
             new actions.UpdateGroupSuccess({ group: action.payload.group }),
             new actions.HideDialog(),
+        ]),
+        catchError((error: any) => this.handleError(error))
+    );
+
+    @Effect()
+    addGroupToListEffect = this.actions$.pipe(
+        ofType<actions.AddGroup>(actions.GroupListTypes.ADD_GROUP),
+        exhaustMap((action: actions.AddGroup) => forkJoin([
+            of(action.payload.group),
+            this.groupProvider.addGroup(action.payload.group)
+        ])),
+        concatMap(data => [
+            new actions.AddGroupSuccess({ group: data[0], groupId: data[1] }),
+            new actions.HideDialog()
         ]),
         catchError((error: any) => this.handleError(error))
     );

@@ -1,4 +1,4 @@
-import { RepeatWord } from "../models/repeat-word.model";
+import { RepeatWord } from '../models/repeat-word.model';
 
 export interface DashbordState {
     lastFailed: RepeatWord;
@@ -18,4 +18,4 @@ export const initialState: DashbordState = {
     lastRepeat: null,
     groupsCount: null,
     cardsCount: null,
-}
+};

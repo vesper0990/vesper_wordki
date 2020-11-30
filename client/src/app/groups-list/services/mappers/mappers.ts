@@ -7,7 +7,7 @@ export function mapToGroup(dto: GroupDto): Group {
         dto.name,
         LanguageType.getLanguageType(dto.language1),
         LanguageType.getLanguageType(dto.language2),
-        dto.wordsCount,
+        dto.cardsCount,
         dto.visibleWordsCount,
         dto.repeatsCount,
         dto.averageDrawer);

@@ -18,7 +18,7 @@ export class GroupRowComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit() {
-    this.wordsValue = this.group.visibleWordsCount + '/' + this.group.wordsCount;
+    this.wordsValue = this.group.visibleWordsCount + '/' + this.group.cardsCount;
   }
 
   startLesson(group: Group): void {

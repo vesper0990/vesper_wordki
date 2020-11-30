@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Wordki.Api.Domain;
 
-namespace Wordki.Api.Featuers.Lesson.Answare
+namespace Wordki.Api.Featuers.Lesson.Answer
 {
-    public class AnswareCommand : IRequest
+    public class AnswerCommand : IRequest
     {
         public long LessonId { get; set; }
         public long CardId { get; set; }

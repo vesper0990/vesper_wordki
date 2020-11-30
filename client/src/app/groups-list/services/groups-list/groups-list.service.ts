@@ -3,10 +3,11 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AddedGroup } from 'src/app/group-details/models/added-group';
 import { EditGroup } from 'src/app/share/components/edit-group-dialog/edit-group.model';
 import { DialogMode } from 'src/app/share/components/edit-group-dialog/mode-dialog';
 import { Group } from '../../models/group.model';
-import { GetGroups, HideDialog, RemoveGroup, ShowDialog, UpdateGroup } from '../../store/actions';
+import { AddGroup, GetGroups, HideDialog, RemoveGroup, ShowDialog, UpdateGroup } from '../../store/actions';
 import { getGroupsList, getIsLoading, selectDialogGroup, selectDialogMode, selectDialogVisibility } from '../../store/selectors';
 import { GroupListState } from '../../store/state';
 
@@ -65,7 +66,11 @@ export class GroupsListService {
     }
 
     dialogSave(group: EditGroup): void {
-        this.store.dispatch(new UpdateGroup({ group: group }));
+        if (group.id !== 0) {
+            this.store.dispatch(new UpdateGroup({ group: group }));
+        } else {
+            this.store.dispatch(new AddGroup({ group: group }));
+        }
     }
 
     dialogCancel(): void {

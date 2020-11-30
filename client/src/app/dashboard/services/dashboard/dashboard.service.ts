@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { RepeatWord } from '../../models/repeat-word.model';
 import * as action from '../../store/actions';
 import * as selector from '../../store/selectors';
@@ -45,6 +46,12 @@ export class DashboardService {
 
     getGroupsCount(): Observable<number> {
         return this.store.select(selector.selectGroupsCount);
+    }
+
+    isGroupsCountReady(): Observable<boolean> {
+        return this.store.select(selector.selectGroupsCount).pipe(
+            map(value => value !== null)
+        );
     }
 
     getCardsCount(): Observable<number> {

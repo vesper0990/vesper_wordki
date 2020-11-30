@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LessonStep } from '../../models/lesson-state';
 import { WordRepeat } from '../../models/word-repeat';
+import { LessonCardDto } from '../../models/word-repeat.dto';
 import { FiszkaService } from './services/fiszka/fiszka.service';
 
 @Component({
@@ -15,7 +16,7 @@ export class FiszkaComponent implements OnInit, OnDestroy {
   private readonly arrowRight = 'ArrowRight';
   private readonly enter = 'Enter';
 
-  currentCard$: Observable<WordRepeat>;
+  currentCard$: Observable<LessonCardDto>;
   lessonStep$: Observable<LessonStep>;
 
   constructor(private readonly service: FiszkaService) { }
@@ -24,7 +25,7 @@ export class FiszkaComponent implements OnInit, OnDestroy {
     this.service.loadWords();
     this.currentCard$ = this.service.getCurrentCard();
     this.lessonStep$ = this.service.getLessonStep();
-    this.service.init()
+    this.service.init();
 
   }
 
@@ -64,7 +65,7 @@ export class FiszkaComponent implements OnInit, OnDestroy {
   }
 
   finishLesson(): void {
-    this.service.finishLesson()
+    this.service.finishLesson();
   }
 
   pause(): void {

@@ -11,6 +11,7 @@ import { mapToGroup } from '../mappers/mappers';
 @Injectable()
 export abstract class GroupsListHttpServiceBase {
     abstract getGroups(): Observable<Group[]>;
+    abstract addGroup(editGroup: EditGroup): Observable<number>;
     abstract updateGroup(group: EditGroup): Observable<any>;
     abstract removeGroup(groupId: number): Observable<any>;
 }
@@ -23,11 +24,15 @@ export class GroupsListHttpService extends GroupsListHttpServiceBase {
     }
 
     updateGroup(group: EditGroup): Observable<any> {
-        return this.client.put(`${environment.apiUrl}/updateGroup`, group);
+        return this.client.put(`${environment.apiUrl}/group/update`, group);
+    }
+
+    addGroup(editGroup: EditGroup): Observable<number> {
+        return this.client.post<number>(`${environment.apiUrl}/group/add`, editGroup);
     }
 
     getGroups(): Observable<Group[]> {
-        return this.client.get<GroupDto[]>(`${environment.apiUrl}/getGroups`).pipe(
+        return this.client.get<GroupDto[]>(`${environment.apiUrl}/group/all`).pipe(
             map((dtos: GroupDto[]) => {
                 const result = [];
                 dtos.forEach((dto: GroupDto) => {
@@ -38,7 +43,7 @@ export class GroupsListHttpService extends GroupsListHttpServiceBase {
     }
 
     removeGroup(groupId: number): Observable<any> {
-        return this.client.delete(`${environment.apiUrl}/removeGroup/${groupId}`);
+        return this.client.delete(`${environment.apiUrl}/group/delete/${groupId}`);
     }
 }
 
@@ -49,6 +54,10 @@ export class GroupsListHttpMockService extends GroupsListHttpServiceBase {
         super();
     }
 
+    addGroup(editGroup: EditGroup): Observable<number> {
+        return of(1);
+    }
+
     getGroups(): Observable<Group[]> {
         const groups: GroupDto[] = [];
         for (let i = 1; i < 100; i++) {
@@ -57,7 +66,7 @@ export class GroupsListHttpMockService extends GroupsListHttpServiceBase {
                 name: `group ${i}`,
                 language1: 1,
                 language2: 2,
-                wordsCount: 30 % i,
+                cardsCount: 30 % i,
                 repeatsCount: 30 % i,
                 visibleWordsCount: 30 % i,
                 averageDrawer: 5 % i,

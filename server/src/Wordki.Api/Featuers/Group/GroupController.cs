@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Wordki.Api.Featuers.Group.Add;
 using Wordki.Api.Featuers.Group.Delete;
 using Wordki.Api.Featuers.Group.GetCount;
+using Wordki.Api.Featuers.Group.GetDetails;
+using Wordki.Api.Featuers.Group.GetGroups;
 using Wordki.Api.Featuers.Group.Update;
 
 namespace Wordki.Api.Featuers.Group
@@ -16,6 +18,11 @@ namespace Wordki.Api.Featuers.Group
         [HttpGet("count")]
         public async Task<IActionResult> GetCount() => await HandlerQuery(new GetCountQuery());
 
+        [HttpGet("all")]
+        public async Task<IActionResult> Get() => await HandlerQuery(new GetGroupsQuery());
+
+        [HttpGet("details/{groupId}")]
+        public async Task<IActionResult> GetDetails([FromRoute] GetDetailsQuery query) => await HandlerQuery(query);
 
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromBody] AddGroupCommand command) => await HandleCommand(command);

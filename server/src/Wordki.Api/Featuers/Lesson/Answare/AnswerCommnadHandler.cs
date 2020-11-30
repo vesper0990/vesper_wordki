@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Wordki.Api.Domain;
@@ -8,16 +9,16 @@ using Wordki.Api.Services;
 using Wordki.Utils.HttpContext;
 using Wordki.Utils.TimeProvider;
 
-namespace Wordki.Api.Featuers.Lesson.Answare
+namespace Wordki.Api.Featuers.Lesson.Answer
 {
-    public class AnswareCommnadHandler : IRequestHandler<AnswareCommand>
+    public class AnswerCommnadHandler : IRequestHandler<AnswerCommand>
     {
         private readonly WordkiDbContext dbContext;
         private readonly IHttpContextProvider contextProvider;
         private readonly INextRepeatCalculator nextRepeatCalculator;
         private readonly ITimeProvider timeProvider;
 
-        public AnswareCommnadHandler(
+        public AnswerCommnadHandler(
             WordkiDbContext dbContext,
             IHttpContextProvider contextProvider,
             INextRepeatCalculator nextRepeatCalculator,
@@ -29,11 +30,20 @@ namespace Wordki.Api.Featuers.Lesson.Answare
             this.timeProvider = timeProvider;
         }
 
-        public async Task<Unit> Handle(AnswareCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(AnswerCommand request, CancellationToken cancellationToken)
         {
             var userId = contextProvider.GetUserId();
+            if(userId == 0){
+                throw new ApiException("userId == 0");
+            }
             var card = await dbContext.Words.Include(c => c.Repeats).SingleOrDefaultAsync(c => c.Id == request.CardId && c.Group.User.Id == userId, cancellationToken);
+            if(card == null){
+                throw new ApiException($"Card not found for id {request.CardId}");
+            }
             var lesson = await dbContext.Lessons.SingleOrDefaultAsync(l => l.Id == request.LessonId && l.User.Id == userId, cancellationToken);
+            if(lesson == null){
+                throw new ApiException($"Lesson not found for id {request.LessonId}");
+            }
             UpdateDrawer(request.QuestionSide == QuestionSideEnum.Heads ? card.Heads.State : card.Tails.State, request.repeatReuslt);
             UpdateNextRepeat(card, request.QuestionSide);
             AddRepeat(card, request.QuestionSide, request.repeatReuslt, lesson);
@@ -78,6 +88,26 @@ namespace Wordki.Api.Featuers.Lesson.Answare
                         state.Drawer = Drawer.Create(0);
                         break;
                     }
+            }
+        }
+
+        [System.Serializable]
+        private class ApiException : System.Exception
+        {
+            public ApiException()
+            {
+            }
+
+            public ApiException(string message) : base(message)
+            {
+            }
+
+            public ApiException(string message, System.Exception innerException) : base(message, innerException)
+            {
+            }
+
+            protected ApiException(SerializationInfo info, StreamingContext context) : base(info, context)
+            {
             }
         }
     }

@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { GroupDetails } from '../../models/group-details.model';
 import { Word } from '../../models/word.model';
-import { GetGroupDetails, GetWords, RemoveWordAction, ShowDialog, UpdateWord } from '../../store/actions';
+import { AddWord, AddWordSuccess, GetGroupDetails, GetWords, RemoveWordAction, ShowDialog, UpdateWord } from '../../store/actions';
 import { GroupDetailsState } from '../../store/state';
 import { selectDialogCard, selectDialogMode, selectDialogVisibility, selectGroupDetails, selectIsCardsLoading, selectWords } from '../../store/selectors';
 import { ActivatedRoute } from '@angular/router';
@@ -21,7 +21,7 @@ export class CardsListService {
         private readonly actRoute: ActivatedRoute) { }
 
     init(): void {
-        this.handleRouteParam(this.actRoute.snapshot.params.id);
+        this.handleRouteParam(+this.actRoute.snapshot.params.id);
     }
 
     getCards(): Observable<Word[]> {
@@ -76,7 +76,9 @@ export class CardsListService {
     }
 
     dialogSave(editCard: EditWord): void {
-        this.store.dispatch(new UpdateWord({ editword: editCard }));
+        editCard.groupId = this.groupId;
+        const action = editCard.wordId === 0 ? new AddWord({ editword: editCard }) : new UpdateWord({ editword: editCard });
+        this.store.dispatch(action);
     }
 
     dialogRemove(cardId: number): void {

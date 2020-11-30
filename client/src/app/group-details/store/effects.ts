@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Effect, ofType, Actions } from '@ngrx/effects';
 import * as actions from './actions';
-import { GroupDetailsProviderBase } from '../services/group-details.provider/group-details.provider';
-import { mergeMap, map, catchError, tap, concatMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { GroupDetailsHttpBase } from '../services/group-details-http/group-details-http.service';
+import { mergeMap, map, catchError, tap, concatMap, switchMap, exhaustMap } from 'rxjs/operators';
+import { forkJoin, Observable, of } from 'rxjs';
 import { GroupDetails } from '../models/group-details.model';
 import { Word } from '../models/word.model';
 
@@ -26,9 +26,12 @@ export class GroupDetailsEffects {
 
     @Effect() updateWordEffect = this.actions$.pipe(
         ofType(actions.GroupDetailsTypes.UpdateWord),
-        tap((action: actions.UpdateWord) => this.groupDetailsProvider.updateWord(action.payload.editword)),
-        concatMap((action: actions.UpdateWord) => [
-            new actions.UpdateWordSuccess({editWord: action.payload.editword}),
+        exhaustMap((action: actions.UpdateWord) => forkJoin([
+            of(action.payload.editword),
+            this.groupDetailsProvider.updateWord(action.payload.editword)
+        ])),
+        concatMap(data => [
+            new actions.UpdateWordSuccess({editWord: data[0]}),
             new actions.HideDialog()
         ]),
         catchError(error => this.handleError(error))
@@ -36,9 +39,12 @@ export class GroupDetailsEffects {
 
     @Effect() addWordEffect = this.actions$.pipe(
         ofType(actions.GroupDetailsTypes.AddWord),
-        tap((action: actions.AddWord) => this.groupDetailsProvider.addWord(action.payload.editword)),
-        concatMap((action: actions.AddWord) => [
-            new actions.GetWords({ groupId: action.payload.editword.groupId }),
+        exhaustMap((action: actions.AddWord) => forkJoin([
+            of(action.payload.editword.groupId),
+            this.groupDetailsProvider.addWord(action.payload.editword)
+        ])),
+        concatMap(data => [
+            new actions.GetWords({ groupId: data[0] }),
             new actions.HideDialog()
         ]),
         catchError(error => this.handleError(error))
@@ -46,16 +52,19 @@ export class GroupDetailsEffects {
 
     @Effect() removeWordEffect = this.actions$.pipe(
         ofType(actions.GroupDetailsTypes.RemoveWord),
-        tap((action: actions.RemoveWordAction) => this.groupDetailsProvider.removeWord(action.payload.groupId, action.payload.wordId)),
-        concatMap((action: actions.RemoveWordAction) => [
-            new actions.RemoveWordSuccess({ wordId: action.payload.wordId }),
+        exhaustMap((action: actions.RemoveWordAction) => forkJoin([
+            of(action.payload.wordId),
+            this.groupDetailsProvider.removeWord(action.payload.groupId, action.payload.wordId)
+        ])),
+        concatMap(data => [
+            new actions.RemoveWordSuccess({ wordId: data[0] }),
             new actions.HideDialog()
         ]),
         catchError(error => this.handleError(error))
     );
 
     constructor(private actions$: Actions,
-        private groupDetailsProvider: GroupDetailsProviderBase) {
+        private groupDetailsProvider: GroupDetailsHttpBase) {
 
     }
 

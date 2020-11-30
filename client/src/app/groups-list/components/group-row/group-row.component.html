@@ -7,7 +7,7 @@
         <img src="assets/flags/{{group?.language2.flag}}" />
     </div>
     <div class="info-container">
-        <app-label-value label="Słowa" [value]="wordsValue"></app-label-value>
+        <app-label-value label="Słowa" [value]="group?.cardsCount"></app-label-value>
         <app-label-value label="Powtórzenia" [value]="group?.repeatsCount"></app-label-value>
         <app-label-value label="Szuflada" [value]="group?.averageDrawer | number : '1.1-1'"></app-label-value>
     </div>

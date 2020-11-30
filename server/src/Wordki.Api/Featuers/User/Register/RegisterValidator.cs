@@ -8,7 +8,7 @@ namespace Wordki.Api.Featuers.User.Register
             {
                 RuleFor(r => r.Password).NotEmpty().NotNull().WithMessage($"{nameof(RegisterCommand.Password)} cannot be empty").WithErrorCode("0");
                 RuleFor(r => r.UserName).NotEmpty().NotNull().WithMessage($"{nameof(RegisterCommand.UserName)} cannot be null");
-                RuleFor(r => r.PasswordRepeat).Equal(r => r.Password).WithMessage($"{nameof(RegisterCommand.Password)} confirmation is wrong").WithErrorCode("0");
+                RuleFor(r => r.PasswordConfirmation).Equal(r => r.Password).WithMessage($"{nameof(RegisterCommand.Password)} confirmation is wrong").WithErrorCode("0");
             }
         }
 }

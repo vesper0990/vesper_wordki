@@ -59,6 +59,7 @@ export class EditWordDialogComponent {
       example2: this.wordForm.get('example2').value,
       isVisible: this.wordForm.get('isVisible').value,
     };
+    console.log('onsave', newWord);
     this.save.emit(newWord);
   }
 

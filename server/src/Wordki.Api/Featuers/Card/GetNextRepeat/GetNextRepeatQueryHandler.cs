@@ -34,16 +34,22 @@ namespace Wordki.Api.Featuers.Card.GetNextRepeat
                 .Where(c => c.Group.User.Id == userId).OrderBy(w => w.Tails.State.NextRepeat).Take(1).FirstOrDefaultAsync();
 
             var card = GetNextRepeat(minHeads, minTails);
+            if (card == null)
+            {
+                return null;
+            }
             return new NextRepeatDto
             {
                 GroupName = card.Group.Name,
-                Heads = new Dto.SideDto{
+                Heads = new Dto.SideDto
+                {
                     Value = card.Heads.Value,
                     Example = card.Heads.Example,
                     Drawer = card.Heads.State.Drawer.Value,
                     Language = card.Group.GroupLanguage1,
                 },
-                Tails = new Dto.SideDto{
+                Tails = new Dto.SideDto
+                {
                     Value = card.Tails.Value,
                     Example = card.Tails.Example,
                     Drawer = card.Tails.State.Drawer.Value,
@@ -54,13 +60,16 @@ namespace Wordki.Api.Featuers.Card.GetNextRepeat
 
         private Domain.Card GetNextRepeat(Domain.Card minHeads, Domain.Card minTails)
         {
-            if(minHeads == null && minTails == null){
+            if (minHeads == null && minTails == null)
+            {
                 return null;
             }
-            if(minHeads == null){
+            if (minHeads == null)
+            {
                 return minTails;
             }
-            if(minTails == null){
+            if (minTails == null)
+            {
                 return minHeads;
             }
             return minHeads.Heads.State.NextRepeat < minTails.Tails.State.NextRepeat ? minHeads : minTails;
