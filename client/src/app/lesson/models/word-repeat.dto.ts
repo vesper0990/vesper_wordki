@@ -9,3 +9,18 @@ export class WordRepeatDto {
     example2: string;
     drawer: number;
 }
+
+
+export class LessonCardDto {
+    id: number;
+    groupName: string;
+    question: SideDto;
+    answer: SideDto;
+}
+
+export class SideDto {
+    value: string;
+    example: string;
+    drawer: number;
+    language: number;
+}

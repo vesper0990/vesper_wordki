@@ -1,18 +1,19 @@
-import { LanguageType } from "src/app/share/models/language-type.mode";
+import { LanguageType } from 'src/app/share/models/language-type.mode';
 
 export class CardModel {
     groupName: string;
-    groupLanguage1: LanguageType;
-    groupLanguage2: LanguageType;
-    cardSide1: Word;
-    cardSide2: Word;
-    drawer: number;
-    repeatsCount: number;
-    creationDate: Date;
-    lastRepeat: string;
+    language1: LanguageType;
+    language2: LanguageType;
+    heads: Word;
+    tails: Word;
 }
 
 export class Word {
     value: string;
     example: string;
+    state: State;
+}
+
+export class State {
+    drawer: number;
 }

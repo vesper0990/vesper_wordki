@@ -3,32 +3,54 @@ import { Observable, of } from 'rxjs';
 import { WordRepeat } from '../../models/word-repeat';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { WordRepeatDto } from '../../models/word-repeat.dto';
+import { LessonCardDto, WordRepeatDto } from '../../models/word-repeat.dto';
 import { delay, map, tap } from 'rxjs/operators';
 import { WordMapper } from '../word-mapper/word-mapper';
 
 @Injectable()
 export abstract class LessonHttpBaseService {
+
+    abstract createLesson(): Observable<number>;
     abstract getNextWord(count: number, offset: number): Observable<WordRepeat[]>;
     abstract getWordForLesson(count: number, offect: number, question: number, answer: number): Observable<WordRepeat[]>;
     abstract getWordsFromGroup(groupId: number): Observable<WordRepeat[]>;
     abstract sendWord(wordId: number, result: number): Observable<any>;
-    abstract getTodayWords(): Observable<WordRepeat[]>;
-    abstract correct(cardId: number): Observable<any>;
-    abstract wrong(cardId: number): Observable<any>;
+    abstract getTodayWords(): Observable<LessonCardDto[]>;
+    abstract correct(lessonId: number, wordId: number, questionSide: string): Observable<any>;
+    abstract wrong(lessonId: number, wordId: number, questionSide: string): Observable<any>;
+    abstract finish(lessonId: number): Observable<any>;
 }
 
 @Injectable()
 export class LessonHttpService extends LessonHttpBaseService {
-    correct(): Observable<any> {
-        throw new Error('Method not implemented.');
-    }
-    wrong(): Observable<any> {
-        throw new Error('Method not implemented.');
-    }
 
     constructor(private http: HttpClient, private mapper: WordMapper) {
         super();
+    }
+
+    createLesson(): Observable<number> {
+        console.log('createLesson');
+        return this.http.post<number>(`${environment.apiUrl}/lesson/start`, null);
+    }
+
+    correct(cardId: number, lessonId: number, questionSide: string): Observable<any> {
+        const body = {
+            lessonId: lessonId,
+            cardId: cardId,
+            questionSide: 'Heads',
+            repeatReuslt: 'Correct'
+        };
+        return this.http.post(`${environment.apiUrl}/lesson/answer`, body);
+    }
+
+    wrong(cardId: number, lessonId: number, questionSide: string): Observable<any> {
+        const body = {
+            lessonId: lessonId,
+            cardId: cardId,
+            questionSide: 'Heads',
+            repeatReuslt: 'Wrong'
+        };
+        return this.http.post(`${environment.apiUrl}/lesson/answer`, body);
     }
 
     getWordsFromGroup(groupId: number): Observable<WordRepeat[]> {
@@ -63,20 +85,28 @@ export class LessonHttpService extends LessonHttpBaseService {
         );
     }
 
-    getTodayWords(): Observable<WordRepeat[]> {
-        const today = new Date();
-        return this.http.get<WordRepeatDto[]>(
-            `${environment.apiUrl}/getTodayWords/${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`).pipe(
-                map((dto: WordRepeatDto[]) => {
-                    const arr = [];
-                    dto.forEach((item: WordRepeatDto) => arr.push(this.mapper.map(item)));
-                    return arr;
-                }));
+    getTodayWords(): Observable<LessonCardDto[]> {
+        return this.http.get<LessonCardDto[]>(`${environment.apiUrl}/card/allRepeats`);
+    }
+
+    finish(lessonId: number): Observable<any> {
+        const body = {
+            lessonId: lessonId
+        };
+        return this.http.put<any>(`${environment.apiUrl}/lesson/finish`, body);
     }
 }
 
 @Injectable()
 export class LessonHttpMockService extends LessonHttpBaseService {
+    finish(lessonId: number): Observable<any> {
+        return of({});
+    }
+
+    createLesson(): Observable<number> {
+        return of(1);
+    }
+
     correct(cardId: number): Observable<any> {
         return of({}).pipe(
             delay(2000),
@@ -134,25 +164,8 @@ export class LessonHttpMockService extends LessonHttpBaseService {
         }));
     }
 
-    getTodayWords(): Observable<WordRepeat[]> {
-        const result: WordRepeatDto[] = [];
-        while (result.length < 3) {
-            const i = LessonHttpMockService.index;
-            result.push({
-                id: i,
-                language1: `word ${i}, word ${i}, word ${i}`,
-                example1: 'THis is an example of sentence where word is used. And this is a very long example. THis is an example of sentence where word is used. And this is a very long example. THis is an example of sentence where word is used. And this is a very long example.',
-                language2: `słowo ${i}, słowo ${i}, słowo ${i}`,
-                example2: 'To jest bardzo długi przykład zdania gdzie zostało użyte słowo, To jest bardzo długi przykład zdania gdzie zostało użyte słowo, To jest bardzo długi przykład zdania gdzie zostało użyte słowo',
-                drawer: 1
-            } as WordRepeatDto);
-            LessonHttpMockService.index++;
-        }
-        return of<WordRepeatDto[]>(result).pipe(map((dtos: WordRepeatDto[]) => {
-            const arr: WordRepeat[] = [];
-            dtos.forEach((dto: WordRepeatDto) => arr.push(this.mapper.map(dto)));
-            return arr;
-        }));
+    getTodayWords(): Observable<LessonCardDto[]> {
+        return of([]);
     }
 
     getWordsFromGroup(groupId: number): Observable<WordRepeat[]> {

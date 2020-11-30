@@ -1,3 +1,47 @@
+#container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  #additional-info {
+    margin-top: 5px;
+    text-align: center;
+  }
+}
+
+form {
+  .element-container {
+    margin: 30px;
+
+    input {
+      width: 100%;
+      border: none;
+      border-radius: 3px;
+      background-color: #e4e4e4;
+      padding: 13px 15px 7px 15px;
+      font-size: 30px;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 0.75em;
+      margin: 5px;
+    }
+  }
+
+  button {
+    width: 100%;
+    border: none;
+    font-size: 30px;
+    padding-top: 16px;
+    padding-bottom: 11px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+}
+
+
+
 .form-container {
   width: 640px;
   padding: 50px 50px;
@@ -22,6 +66,7 @@
 }
 
 @media only screen and (max-width: 640px) {
+
   //large
   .form-container {
     width: 98%;
@@ -29,7 +74,7 @@
     margin: 200px auto 0 auto;
     background-color: rgb(240, 240, 240);
     border-radius: 20px;
-  
+
     .header {
       text-align: center;
       font-size: x-large;

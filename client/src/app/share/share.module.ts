@@ -19,6 +19,7 @@ import { ButtonModule } from 'primeng/button';
 import { EditGroupDialogComponent } from './components/edit-group-dialog/edit-group-dialog.component';
 import { LabelValueComponent } from './components/label-value/label-value.component';
 import { CardComponent } from './components/card/card.component';
+import { ButtonComponent } from './components/button/button.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { CardComponent } from './components/card/card.component';
     EditWordDialogComponent,
     EditGroupDialogComponent,
     LabelValueComponent,
-    CardComponent
+    CardComponent,
+    ButtonComponent
   ],
   exports: [
     NubmerToTimePipe,
@@ -44,7 +46,8 @@ import { CardComponent } from './components/card/card.component';
     EditWordDialogComponent,
     EditGroupDialogComponent,
     LabelValueComponent,
-    CardComponent
+    CardComponent,
+    ButtonComponent
   ],
   imports: [
     CommonModule,

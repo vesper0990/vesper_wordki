@@ -25,7 +25,9 @@ namespace Wordki.Api.Featuers.Lesson.GetTodayCardsCount
         {
             var userId = contextProvider.GetUserId();
             var date = timeProvider.GetDate().AddDays(1);
-            var count = await dbContext.Words.CountAsync(c => c.Group.User.Id == userId && (c.Tails.State.NextRepeat <= date || c.Heads.State.NextRepeat <= date), cancellationToken);
+            var count = 0;
+            count += await dbContext.Words.CountAsync(c => c.Group.User.Id == userId && c.Tails.State.NextRepeat <= date, cancellationToken);
+            count += await dbContext.Words.CountAsync(c => c.Group.User.Id == userId && c.Heads.State.NextRepeat <= date, cancellationToken);
 
             return count;
         }

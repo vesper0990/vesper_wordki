@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserProviderBase } from '../../services/user.provider/user.provider';
-import { forkJoin } from 'rxjs';
 import { UserService } from 'src/app/authorization/services/user.service/user.service';
 import { Router } from '@angular/router';
 import { LoginContract } from '../../services/user.provider/login.contract';
@@ -44,14 +43,13 @@ export class LoginFormComponent implements OnInit {
       userName: this.userName.value,
       password: this.password.value
     };
-    forkJoin({
-      login: this.userProvider.login(loginContract),
-      authenticate: this.userProvider.authenticate(authenticateContract),
-    }).subscribe((result: { login: any, authenticate: any }) => {
-      this.loginForm.enable();
-      this.userService.refresh(result.authenticate);
-      this.router.navigate(['/dashboard']);
-    }, (error: any) => this.handleError(error));
+    this.userProvider.login(loginContract).subscribe(
+      token => {
+        this.loginForm.enable();
+        this.userService.refresh(token);
+        this.router.navigate(['/dashboard']);
+      }
+    );
   }
 
   private handleError(error: ApiException): void {

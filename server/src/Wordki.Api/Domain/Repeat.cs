@@ -7,7 +7,7 @@ namespace Wordki.Api.Domain
     {
         public long Id { get; set; }
         public DateTime DateTime { get; set; }
-        public RepeatResult Result { get; set; }
+        public int Result { get; set; }
         public QuestionSideEnum QuestionSide { get; set; }
         public Card Word { get; set; }
         public Lesson Lesson { get; set; }
@@ -15,9 +15,9 @@ namespace Wordki.Api.Domain
 
     public enum RepeatResultEnum
     {
-        Correct,
-        Accepted,
-        Wrong
+        Correct = 1,
+        Accepted = 0,
+        Wrong = -1
     }
 
     public class RepeatResult

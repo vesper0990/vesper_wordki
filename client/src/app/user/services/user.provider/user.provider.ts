@@ -25,11 +25,11 @@ export class UserProvider extends UserProviderBase {
   }
 
   register(contract: RegisterContract): Observable<any> {
-    return this.client.post(`${environment.apiUrl}/register`, contract);
+    return this.client.post(`${environment.apiUrl}/user/register`, contract);
   }
 
   login(contract: LoginContract): Observable<any> {
-    return this.client.post(`${environment.apiUrl}/login`, contract);
+    return this.client.put(`${environment.apiUrl}/user/login`, contract);
   }
 
   authenticate(contract: AuthenticateContract): Observable<any> {

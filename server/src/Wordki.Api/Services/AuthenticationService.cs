@@ -7,7 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
-namespace Wordki.Infrastructure.Services
+namespace Wordki.Api.Services
 {
     public interface IAuthenticationService
     {

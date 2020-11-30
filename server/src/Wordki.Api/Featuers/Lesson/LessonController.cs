@@ -1,8 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Wordki.Api.Featuers.Lesson.Answare;
 using Wordki.Api.Featuers.Lesson.Finish;
+using Wordki.Api.Featuers.Lesson.Answer;
+using Wordki.Api.Featuers.Lesson.GetLastLesson;
 using Wordki.Api.Featuers.Lesson.GetTodayCardsCount;
 using Wordki.Api.Featuers.Lesson.Start;
 
@@ -19,10 +20,13 @@ namespace Wordki.Api.Featuers.Lesson
         [HttpPut("finish")]
         public async Task<IActionResult> Finish([FromBody] FinishCommand command) => await HandleCommand(command);
 
-        [HttpPost("answare")]
-        public async Task<IActionResult> Answare([FromBody] AnswareCommand command) => await HandleCommand(command);
+        [HttpPost("answer")]
+        public async Task<IActionResult> Answare([FromBody] AnswerCommand command) => await HandleCommand(command);
 
         [HttpGet("todaysCardCount")]
         public async Task<IActionResult> GetTodayCardsCount() => await HandlerQuery(new GetTodayCardsCountQuery());
+
+        [HttpGet("lastLessonDate")]
+        public async Task<IActionResult> GetLastLessonDate() => await HandlerQuery(new GetLastLessonQuery());
     }
 }

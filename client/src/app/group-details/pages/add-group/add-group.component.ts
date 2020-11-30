@@ -3,9 +3,8 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { LanguageType, LanguageTypeEnum } from 'src/app/share/models/language-type.mode';
 import { AddedGroup } from '../../models/added-group';
 import { AddedWord } from '../../models/added-word';
-import { GroupDetailsState } from '../../store/reducre';
+import { GroupDetailsState } from '../../store/state';
 import { Store } from '@ngrx/store';
-import { AddGroupAction } from '../../store/actions';
 
 @Component({
   selector: 'app-add-group',
@@ -60,6 +59,6 @@ export class AddGroupComponent implements OnInit {
       language2: this.groupForm.get('language2').value.type,
       words: <AddedWord[]>this.words.value,
     };
-    this.groupDetailsStore.dispatch(new AddGroupAction({ group: group }));
+    // this.groupDetailsStore.dispatch(new AddGroupAction({ group: group }));
   }
 }

@@ -45,7 +45,7 @@ namespace Wordki.Tests.E2E.Feature.User.Register
 
         async Task AndThenUserAdded()
         {
-            using (var dbContext = new WordkiDbContext(Options))
+            using (var dbContext = new WordkiDbContext(ConnectionStringProvider))
             {
                 var user = await dbContext.Users.SingleAsync();
                 Assert.AreEqual("user", user.Name);

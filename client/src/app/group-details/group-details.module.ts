@@ -5,14 +5,14 @@ import { GroupsDetailsRoutingModule } from './group-details-routing.module';
 import { WordRowComponent } from './components/word-row/word-row.component';
 import { GroupDetailsMapper } from './services/group-details.mapper/group-details.mapper';
 import {
-  GroupDetailsProviderBase,
-  GroupDetailsProvider,
-  GroupDetailsProviderMock
-} from './services/group-details.provider/group-details.provider';
+  GroupDetailsHttpBase,
+  GroupDetailsHttp,
+  GroupDetailsHttpMock
+} from './services/group-details-http/group-details-http.service';
 import { environment } from 'src/environments/environment';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GroupDetailsEffects } from './store/effects';
-import { reducer } from './store/reducre';
+import { reducer } from './store/reducer';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { WordMapper } from './services/word-mapper/word-mapper';
@@ -38,7 +38,7 @@ import { GroupDescriptionComponent } from './components/group-description/group-
     EffectsModule.forFeature([GroupDetailsEffects]),
   ],
   providers: [
-    { provide: GroupDetailsProviderBase, useClass: environment.production ? GroupDetailsProvider : GroupDetailsProviderMock },
+    { provide: GroupDetailsHttpBase, useClass: environment.mockServer ? GroupDetailsHttp : GroupDetailsHttpMock },
     GroupDetailsMapper,
     WordMapper
   ]

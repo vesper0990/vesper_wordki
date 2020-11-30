@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { filter, map, tap } from 'rxjs/operators';
 import { RepeatWord } from './models/repeat-word.model';
 import { DashboardService } from './services/dashboard/dashboard.service';
 
@@ -13,10 +14,17 @@ export class DashboardComponent implements OnInit {
   lastFailed$: Observable<RepeatWord>;
   nextRepeat$: Observable<RepeatWord>;
   newestCard$: Observable<RepeatWord>;
+
   cardToRepeat$: Observable<number>;
-  lastRepeat$: Observable<number>;
+  isCardToRepeatReady$: Observable<boolean>;
+
+  lastRepeat$: Observable<Date>;
+
   groupsCount$: Observable<number>;
+  isGroupsCountReady$: Observable<boolean>;
+
   cardsCount$: Observable<number>;
+  isCardsCountReady$: Observable<boolean>;
 
   constructor(private readonly service: DashboardService) { }
 
@@ -26,9 +34,19 @@ export class DashboardComponent implements OnInit {
     this.newestCard$ = this.service.getNewestCard();
     this.nextRepeat$ = this.service.getNextRepeat();
     this.cardToRepeat$ = this.service.getCardToRepeat();
+
     this.lastRepeat$ = this.service.getLastRepeat();
+    this.isCardToRepeatReady$ = this.service.getLastRepeat().pipe(
+      map(value => value !== null)
+    );
+
     this.groupsCount$ = this.service.getGroupsCount();
+    this.isGroupsCountReady$ = this.service.isGroupsCountReady();
+
     this.cardsCount$ = this.service.getCardsCount();
+    this.isCardsCountReady$ = this.service.getCardsCount().pipe(
+      map(value => value !== null)
+    );
   }
 
   startLesson(): void {

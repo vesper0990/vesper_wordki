@@ -28,11 +28,13 @@ namespace Wordki.Api.Featuers.Card.Add
             {
                 throw new Exception();
             }
+            var heads = Side.New(request.Heads.Value, request.Heads.Example);
+            var tails = Side.New(request.Tails.Value, request.Tails.Example);
             var newCard = new Domain.Card
             {
                 Group = group,
-                Heads = request.CardSide1,
-                Tails = request.CardSide2,
+                Heads = heads,
+                Tails = tails,
                 Comment = request.Comment,
                 IsVisible = request.IsVisible,
                 WordCreationDate = dateTimeProvider.Now(),

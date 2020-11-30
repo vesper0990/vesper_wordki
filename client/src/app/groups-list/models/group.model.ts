@@ -5,7 +5,7 @@ export class Group {
         public name: string,
         public language1: LanguageType,
         public language2: LanguageType,
-        public wordsCount: number,
+        public cardsCount: number,
         public visibleWordsCount: number,
         public repeatsCount: number,
         public averageDrawer: number) {

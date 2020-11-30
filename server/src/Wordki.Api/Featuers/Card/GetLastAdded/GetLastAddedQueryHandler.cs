@@ -24,8 +24,7 @@ namespace Wordki.Api.Featuers.Card.GetLastAdded
         {
             var userId = httpContextProvider.GetUserId();
             var lastAdded = dbContext.Words
-                .Include(w => w.Group)
-                .ThenInclude(g => g.User)
+                .Include(w => w.Group).ThenInclude(g => g.User)
                 .Where(w => w.Group.User.Id == userId)
                 .OrderByDescending(w => w.WordCreationDate)
                 .Take(request.Count)
@@ -34,10 +33,8 @@ namespace Wordki.Api.Featuers.Card.GetLastAdded
                     GroupName = card.Group.Name,
                     Language1 = card.Group.GroupLanguage1,
                     Language2 = card.Group.GroupLanguage2,
-                    Comment = card.Comment,
-                    IsVisible = card.IsVisible,
-                    Side1 = card.Heads,
-                    Side2 = card.Tails
+                    Heads = card.Heads.ConvertToDto(),
+                    Tails = card.Tails.ConvertToDto()
                 })
                 .AsNoTracking();
             return await Task.FromResult(lastAdded);

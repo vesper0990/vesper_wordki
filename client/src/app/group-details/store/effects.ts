@@ -1,85 +1,70 @@
 import { Injectable } from '@angular/core';
 import { Effect, ofType, Actions } from '@ngrx/effects';
-import {
-    GroupDetailsTypes,
-    GetGroupDetailsAction,
-    SetGroupDetailsAction,
-    GetWordsAction, SetWordsAction,
-    UpdateWordAction,
-    UpdateWordSuccessAction,
-    AddWordAction,
-    RemoveWordAction,
-    RemoveWordSuccessAction,
-    AddGroupAction,
-    ChangeGroupVisibilityAction,
-    ChangeGroupVisibilitySuccessAction
-} from './actions';
-import { GroupDetailsProviderBase } from '../services/group-details.provider/group-details.provider';
-import { mergeMap, map, catchError, switchMap } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import * as actions from './actions';
+import { GroupDetailsHttpBase } from '../services/group-details-http/group-details-http.service';
+import { mergeMap, map, catchError, tap, concatMap, switchMap, exhaustMap } from 'rxjs/operators';
+import { forkJoin, Observable, of } from 'rxjs';
 import { GroupDetails } from '../models/group-details.model';
 import { Word } from '../models/word.model';
-import { Router } from '@angular/router';
 
 @Injectable()
 export class GroupDetailsEffects {
 
     @Effect() getGroupDetailsEffect = this.actions$.pipe(
-        ofType(GroupDetailsTypes.GetGroupDetails),
-        mergeMap((action: GetGroupDetailsAction) => this.groupDetailsProvider.getGroupDetails(action.payload.groupId)),
-        map((groupDetails: GroupDetails) => new SetGroupDetailsAction({ groupDetails: groupDetails })),
+        ofType(actions.GroupDetailsTypes.GetGroupDetails),
+        mergeMap((action: actions.GetGroupDetails) => this.groupDetailsProvider.getGroupDetails(action.payload.groupId)),
+        map((groupDetails: GroupDetails) => new actions.GetGroupDetailsSuccess({ groupDetails: groupDetails })),
         catchError(error => this.handleError(error))
     );
 
     @Effect() getWordsEffect = this.actions$.pipe(
-        ofType(GroupDetailsTypes.GetWords),
-        mergeMap((action: GetWordsAction) => this.groupDetailsProvider.getWords(action.payload.groupId)),
-        map((words: Word[]) => new SetWordsAction({ words: words })),
+        ofType(actions.GroupDetailsTypes.GetWords),
+        mergeMap((action: actions.GetWords) => this.groupDetailsProvider.getWords(action.payload.groupId)),
+        map((words: Word[]) => new actions.GetWordsSuccess({ words: words })),
         catchError(error => this.handleError(error))
     );
 
     @Effect() updateWordEffect = this.actions$.pipe(
-        ofType(GroupDetailsTypes.UpdateWord),
-        switchMap((action: UpdateWordAction) => this.groupDetailsProvider.updateWord(action.payload.editword).pipe(
-            map(() => new UpdateWordSuccessAction({ editWord: action.payload.editword }))
-        ))
+        ofType(actions.GroupDetailsTypes.UpdateWord),
+        exhaustMap((action: actions.UpdateWord) => forkJoin([
+            of(action.payload.editword),
+            this.groupDetailsProvider.updateWord(action.payload.editword)
+        ])),
+        concatMap(data => [
+            new actions.UpdateWordSuccess({editWord: data[0]}),
+            new actions.HideDialog()
+        ]),
+        catchError(error => this.handleError(error))
     );
 
     @Effect() addWordEffect = this.actions$.pipe(
-        ofType(GroupDetailsTypes.AddWord),
-        switchMap((action: AddWordAction) => this.groupDetailsProvider.addWord(action.payload.editword).pipe(
-            map(() => new GetWordsAction({ groupId: action.payload.editword.groupId }))
-        ))
+        ofType(actions.GroupDetailsTypes.AddWord),
+        exhaustMap((action: actions.AddWord) => forkJoin([
+            of(action.payload.editword.groupId),
+            this.groupDetailsProvider.addWord(action.payload.editword)
+        ])),
+        concatMap(data => [
+            new actions.GetWords({ groupId: data[0] }),
+            new actions.HideDialog()
+        ]),
+        catchError(error => this.handleError(error))
     );
 
     @Effect() removeWordEffect = this.actions$.pipe(
-        ofType(GroupDetailsTypes.RemoveWord),
-        switchMap((action: RemoveWordAction) => this.groupDetailsProvider.removeWord(action.payload.groupId, action.payload.wordId).pipe(
-            map(() => new RemoveWordSuccessAction({ wordId: action.payload.wordId }))
-        ))
-    );
-
-
-    @Effect({ dispatch: false })
-    addGroupEffect = this.actions$.pipe(
-        ofType(GroupDetailsTypes.AddGroup),
-        switchMap((action: AddGroupAction) => this.groupDetailsProvider.addGroup(action.payload.group).pipe(
-            map(() => {
-                this.router.navigate(['/groups']);
-            })
-        ))
-    );
-
-    @Effect() changeGroupVisibilityEffect = this.actions$.pipe(
-        ofType(GroupDetailsTypes.ChangeGroupVisibility),
-        switchMap((action: ChangeGroupVisibilityAction) => this.groupDetailsProvider.changeGroupVisibility(action.payload.groupId).pipe(
-            map(() => new ChangeGroupVisibilitySuccessAction(action.payload))
-        ))
+        ofType(actions.GroupDetailsTypes.RemoveWord),
+        exhaustMap((action: actions.RemoveWordAction) => forkJoin([
+            of(action.payload.wordId),
+            this.groupDetailsProvider.removeWord(action.payload.groupId, action.payload.wordId)
+        ])),
+        concatMap(data => [
+            new actions.RemoveWordSuccess({ wordId: data[0] }),
+            new actions.HideDialog()
+        ]),
+        catchError(error => this.handleError(error))
     );
 
     constructor(private actions$: Actions,
-        private groupDetailsProvider: GroupDetailsProviderBase,
-        private router: Router) {
+        private groupDetailsProvider: GroupDetailsHttpBase) {
 
     }
 

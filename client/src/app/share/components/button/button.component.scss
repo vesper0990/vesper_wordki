@@ -1,0 +1,43 @@
+button{
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    font-size: 30px;
+
+    &:hover{
+
+    }
+}
+
+button.green{
+    background-color: rgb(7, 116, 21);
+
+    &:hover{
+        background-color: rgb(4, 143, 22);
+    }
+}
+
+button.red{
+    background-color: rgb(179, 15, 15);
+
+    &:hover{
+        background-color: rgb(199, 22, 22);
+    }
+}
+
+button.yellow{
+    background-color: rgb(166, 184, 12);
+
+    &:hover{
+        background-color: rgb(188, 207, 9);
+    }
+}
+
+button.blue{
+    background-color: rgb(43, 45, 189);
+
+    &:hover{
+        background-color: rgb(49, 51, 214);
+    }
+}
+

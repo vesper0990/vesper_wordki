@@ -9,18 +9,18 @@
     <div class="content-container" [ngSwitch]="side" (click)="changeSide()">
         <div *ngSwitchCase="'language1'">
             <div class="word">
-                &bull; {{word?.cardSide1?.value}}
+                &bull; {{word?.heads?.value}}
             </div>
             <div class="example">
-                {{word?.cardSide1?.example}}
+                {{word?.heads?.example}}
             </div>
         </div>
         <div *ngSwitchCase="'language2'">
             <div class="word">
-                &bull; {{word?.cardSide2?.value}}
+                &bull; {{word?.tails?.value}}
             </div>
             <div class="example">
-                {{word?.cardSide2?.example}}
+                {{word?.tails?.example}}
             </div>
         </div>
         <div *ngSwitchCase="'additional'">

@@ -52,7 +52,7 @@ import { FiszkaSideComponent } from './components/fiszka-side/fiszka-side.compon
   ],
   providers: [
     Store,
-    { provide: LessonHttpBaseService, useClass: environment.production ? LessonHttpService : LessonHttpMockService },
+    { provide: LessonHttpBaseService, useClass: environment.mockServer ? LessonHttpService : LessonHttpMockService },
     WordComparerService,
     StoperService,
     WordMapper,

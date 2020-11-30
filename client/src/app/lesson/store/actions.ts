@@ -2,9 +2,13 @@ import { Action } from '@ngrx/store';
 import { LessonResult } from '../models/lesson-result';
 import { LessonStep } from '../models/lesson-state';
 import { WordRepeat } from '../models/word-repeat';
+import { LessonCardDto } from '../models/word-repeat.dto';
 import { initialLessonsState, LessonState } from './state';
 
 export enum LessonActionEnum {
+    CREATE_NEW_LESSON = '[LESSON_STATE] CREATE_NEW_LESSON',
+    CREATE_NEW_LESSON_SUCCESS = '[LESSON_STATE] CREATE_NEW_LESSON_SUCCESS',
+
     GET_WORDS = '[LESSON_STATE] GET_WORDS',
     GET_WORDS_SUCCESS = '[LESSON_STATE] GET_WORDS_SUCCESS',
     GET_WORDS_FAILES = '[LESSON_STATE] GET_WORDS_FAILED',
@@ -28,6 +32,29 @@ export enum LessonActionEnum {
     FINISH = '[LESSON_STATE] FINISH',
 }
 
+export class CreateNewLesson implements Action {
+    readonly type = LessonActionEnum.CREATE_NEW_LESSON;
+    constructor() { }
+
+    static reduce(state: LessonState): LessonState {
+        return {
+            ...state
+        };
+    }
+}
+
+export class CreateNewLessonSuccess implements Action {
+    readonly type = LessonActionEnum.CREATE_NEW_LESSON_SUCCESS;
+    constructor(public payload: { lessonId: number }) { }
+
+    static reduce(state: LessonState, action: CreateNewLessonSuccess): LessonState {
+        return {
+            ...state,
+            lessonId: action.payload.lessonId
+        };
+    }
+}
+
 export class GetWords implements Action {
     readonly type = LessonActionEnum.GET_WORDS;
     constructor() { }
@@ -39,7 +66,7 @@ export class GetWords implements Action {
 
 export class GetWordsSuccess implements Action {
     readonly type = LessonActionEnum.GET_WORDS_SUCCESS;
-    constructor(public payload: { cards: WordRepeat[] }) { }
+    constructor(public payload: { cards: LessonCardDto[] }) { }
 
     static reduce(state: LessonState, action: GetWordsSuccess): LessonState {
         return {
@@ -94,7 +121,7 @@ export class AnswerCorrect implements Action {
 
     static reduce(state: LessonState): LessonState {
         const cards = state.words.slice(1, state.words.length);
-        const step = cards.length !== 0 ? LessonStep.QUESTION :  LessonStep.AFTER_FINISH;
+        const step = cards.length !== 0 ? LessonStep.QUESTION : LessonStep.AFTER_FINISH;
         return {
             ...state,
             lessonStep: step,
@@ -115,7 +142,7 @@ export class AnswerWrong implements Action {
         const currentCard = state.words[0];
         const cards = state.words.slice(1, state.words.length);
         cards.push(currentCard);
-        const step = cards.length !== 0 ? LessonStep.QUESTION :  LessonStep.AFTER_FINISH;
+        const step = cards.length !== 0 ? LessonStep.QUESTION : LessonStep.AFTER_FINISH;
         return {
             ...state,
             lessonStep: step,
@@ -150,7 +177,7 @@ export class PauseLesson implements Action {
     static reduce(state: LessonState): LessonState {
         const stepBeforePause = state.lessonStep;
         const step = LessonStep.PAUSE;
-        step.answare = stepBeforePause.answare
+        step.answare = stepBeforePause.answare;
         return {
             ...state,
             lessonStep: LessonStep.PAUSE,
@@ -247,7 +274,10 @@ export class Finish implements Action {
     }
 }
 
-export type LessonActionType = GetWords |
+export type LessonActionType =
+    CreateNewLesson |
+    CreateNewLessonSuccess |
+    GetWords |
     GetWordsSuccess |
     GetWordsFailed |
     StartLesson |

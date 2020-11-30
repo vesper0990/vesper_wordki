@@ -3,7 +3,7 @@ export class GroupDto {
     name: string;
     language1: number;
     language2: number;
-    wordsCount: number;
+    cardsCount: number;
     visibleWordsCount: number;
     repeatsCount: number;
     averageDrawer: number;

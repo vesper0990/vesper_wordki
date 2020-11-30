@@ -1,4 +1,9 @@
-.error-message{
-    color: red;
-    font-size: 0.75em;
-}
+
+  button {
+
+    background-color: #9280f8;
+
+    &:hover{
+      background-color: #8876eb;
+    }
+  }

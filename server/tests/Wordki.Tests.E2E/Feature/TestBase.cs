@@ -12,24 +12,26 @@ namespace Wordki.Tests.E2E.Feature
         protected HttpRequestMessage Request { get; set; }
         protected HttpResponseMessage Response { get; set; }
         protected TestServerMock Host { get; set; }
-        protected IOptions<DatabaseConfig> Options { get; }
+        protected IConnectionStringProvider ConnectionStringProvider { get; }
 
         public TestBase()
         {
             Host = new TestServerMock();
-            Options = Host.Server.Services.GetService(typeof(IOptions<DatabaseConfig>)) as IOptions<DatabaseConfig>;
+            var options = Host.Server.Services.GetService(typeof(IOptions<DatabaseConfig>)) as IOptions<DatabaseConfig>;
+            ConnectionStringProvider = new SimpleConnectionStringProvider(options);
         }
 
         [SetUp]
         protected async Task CreateDatabase()
         {
-            using (var dbContext = new WordkiDbContext(Options))
+            using (var dbContext = new WordkiDbContext(ConnectionStringProvider))
             {
                 await dbContext.Database.EnsureCreatedAsync();
-                await dbContext.Database.ExecuteSqlRawAsync("Delete from Repeats");
-                await dbContext.Database.ExecuteSqlRawAsync("Delete from Words");
-                await dbContext.Database.ExecuteSqlRawAsync("Delete from `Groups`");
-                await dbContext.Database.ExecuteSqlRawAsync("Delete from Users");
+                await dbContext.Database.ExecuteSqlRawAsync("Delete from wrd.\"Repeats\"");
+                await dbContext.Database.ExecuteSqlRawAsync("Delete from wrd.\"Lessons\"");
+                await dbContext.Database.ExecuteSqlRawAsync("Delete from wrd.\"Words\"");
+                await dbContext.Database.ExecuteSqlRawAsync("Delete from wrd.\"Groups\"");
+                await dbContext.Database.ExecuteSqlRawAsync("Delete from wrd.\"Users\"");
             }
         }
 

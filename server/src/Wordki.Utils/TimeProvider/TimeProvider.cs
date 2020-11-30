@@ -12,12 +12,12 @@ namespace Wordki.Utils.TimeProvider
     {
         public DateTime GetTime()
         {
-            return DateTime.Now;
+            return DateTime.UtcNow;
         }
 
         public DateTime GetDate()
         {
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
             return new DateTime(now.Year, now.Month, now.Day);
         }
 

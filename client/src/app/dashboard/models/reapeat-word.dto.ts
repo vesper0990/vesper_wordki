@@ -2,8 +2,8 @@ export interface RepeatWordDto {
     groupName: string;
     language1: number;
     language2: number;
-    cardSide1: Word;
-    cardSide2: Word;
+    heads: Word;
+    tails: Word;
     drawer: number;
     repeatsCount: number;
     creationDate: string;
@@ -13,4 +13,9 @@ export interface RepeatWordDto {
 export interface Word {
     value: string;
     example: string;
+    state: State;
+}
+
+export interface State{
+    drawer: number;
 }

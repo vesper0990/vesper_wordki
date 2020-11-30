@@ -1,13 +1,12 @@
-import { RepeatDto } from './repeat.dto';
-
 export class WordDto {
-    wordId: number;
-    language1: string;
-    language2: string;
-    example1: string;
-    example2: string;
+    id: number;
+    comment: string;
+    word1: SideDto;
+    word2: SideDto;
+}
+
+export class SideDto {
+    value: string;
+    example: string;
     drawer: number;
-    isVisible: boolean;
-    nextRepeat: string;
-    repeats: RepeatDto[];
 }

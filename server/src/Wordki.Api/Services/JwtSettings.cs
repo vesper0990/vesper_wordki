@@ -1,7 +1,7 @@
-﻿namespace Wordki.Infrastructure.Services
+﻿namespace Wordki.Api.Services
 {
     public class JwtSettings
     {
-        public string Secret { get; internal set; }
+        public string Secret { get; set; }
     }
 }

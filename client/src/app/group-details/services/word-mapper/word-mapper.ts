@@ -1,27 +1,18 @@
 import { Injectable } from '@angular/core';
 import { WordDto } from '../../models/word.dto';
 import { Word } from '../../models/word.model';
-import { RepeatDto } from '../../models/repeat.dto';
 
 @Injectable()
 export class WordMapper {
     map(dto: WordDto): Word {
-        const word = new Word(dto.wordId,
-            dto.language1,
-            dto.language2,
-            dto.example1,
-            dto.example2,
-            dto.drawer,
-            dto.isVisible,
-            new Date(dto.nextRepeat));
-        if (dto.repeats) {
-            dto.repeats.forEach((repeatDto: RepeatDto) => word.repeats.push({
-                result: repeatDto.result,
-                date: new Date(repeatDto.date),
-                word: word
-            }));
-
-        }
+        const word = new Word(dto.id,
+            dto.word1.value,
+            dto.word2.value,
+            dto.word1.example,
+            dto.word2.example,
+            dto.word1.drawer,
+            true,
+            new Date());
         return word;
     }
 }

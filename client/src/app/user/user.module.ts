@@ -19,6 +19,7 @@ import { ShareModule } from '../share/share.module';
 import { HttpErrorInterceptor } from '../share/services/http-error.interceptor';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [
@@ -38,10 +39,10 @@ import { ToastModule } from 'primeng/toast';
     AuthorizationModule,
     ButtonModule,
     InputTextModule,
-    ToastModule
+    ToastModule,
   ],
   providers: [
-    { provide: UserProviderBase, useClass: environment.production ? UserProvider : UserProviderMock },
+    { provide: UserProviderBase, useClass: environment.mockServer ? UserProvider : UserProviderMock },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
     MessageService,

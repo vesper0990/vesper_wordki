@@ -3,6 +3,7 @@ using Moq;
 using System;
 using Wordki.Api.Services;
 using Wordki.Utils.HttpContext;
+using Wordki.Utils.TimeProvider;
 
 namespace Wordki.Tests.E2E.Feature
 {
@@ -14,12 +15,28 @@ namespace Wordki.Tests.E2E.Feature
         public static DateTime CreationDate { get; } = new DateTime(1990, 1, 1);
         public static DateTime LastLoginDate { get; } = new DateTime(1990, 9, 24);
 
+        public static DateTime Now = new DateTime(2020, 1, 1);
+        public static DateTime Time = new DateTime(2020, 1, 1, 1, 1, 1);
+        public static DateTime Yesterday = new DateTime(2019, 12, 31);
+        public static DateTime Tommorow = new DateTime(2020, 1, 2);
+
         public static Mock<IDateTimeProvider> DateTimeProvider
         {
             get
             {
                 var timeProviderMock = new Mock<IDateTimeProvider>();
-                timeProviderMock.Setup(x => x.Now()).Returns(new DateTime(1990, 9, 24));
+                timeProviderMock.Setup(x => x.Now()).Returns(Now);
+                return timeProviderMock;
+            }
+        }
+
+        public static Mock<ITimeProvider> TimeProvider
+        {
+            get
+            {
+                var timeProviderMock = new Mock<ITimeProvider>();
+                timeProviderMock.Setup(x => x.GetDate()).Returns(Now);
+                timeProviderMock.Setup(x => x.GetTime()).Returns(Time);
                 return timeProviderMock;
             }
         }
@@ -51,8 +68,8 @@ namespace Wordki.Tests.E2E.Feature
                 Id = 1,
                 Name = "UserName",
                 Password = "aaaa",
-                CreationDate = new DateTime(1990, 9, 24),
-                LastLoginDate = new DateTime(1990, 9, 25)
+                CreationDate = Yesterday,
+                LastLoginDate = Yesterday
             };
         }
 
@@ -64,7 +81,7 @@ namespace Wordki.Tests.E2E.Feature
                 GroupLanguage1 = 1,
                 GroupLanguage2 = 2,
                 Name = "GroupName",
-                GroupCreationDate = new DateTime(1990, 9, 24)
+                GroupCreationDate = Yesterday
             };
         }
 
@@ -80,21 +97,34 @@ namespace Wordki.Tests.E2E.Feature
 
             var builder = Builder<Api.Domain.Card>.CreateNew()
                 .With(x => x.Id = generator.Generate())
-                .With(x => x.Heads = Builder<Api.Domain.Side>.CreateNew().Build())
-                .With(x => x.Tails = Builder<Api.Domain.Side>.CreateNew().Build());
+                .With(x => x.Heads = GetSide())
+                .With(x => x.Tails = GetSide())
+                .With(x => x.WordCreationDate = Yesterday);
+            return builder.Build();
+        }
 
-            var card = builder.Build();
-            var card2 = builder.Build();
+        public static Api.Domain.State GetState()
+            => Builder<Api.Domain.State>.CreateNew()
+            .With(s => s.Drawer = Api.Domain.Drawer.Create(2))
+            .With(s => s.NextRepeat = Tommorow)
+            .Build();
 
-            return new Api.Domain.Card
+        public static Api.Domain.Side GetSide()
+         => Builder<Api.Domain.Side>.CreateNew()
+         .With(s => s.State = GetState())
+         .Build();
+
+        public static Api.Domain.Repeat GetRepeat()
+        {
+            return new Api.Domain.Repeat
             {
-                Id = 1,
-                Heads = new Api.Domain.Side { Value = "cardSide1", Example = "cardSideExample1" },
-                Tails = new Api.Domain.Side { Value = "cardSide2", Example = "cardSideExample2" },
-                Comment = "comment",
-                IsVisible = true,
-                WordCreationDate = new DateTime(1990, 9, 24),
+                DateTime = Yesterday,
+                QuestionSide = Api.Domain.QuestionSideEnum.Heads,
+                Result = -1
             };
         }
+
+        public static Api.Domain.Lesson GetLesson()
+        => Builder<Api.Domain.Lesson>.CreateNew().Build();
     }
 }
