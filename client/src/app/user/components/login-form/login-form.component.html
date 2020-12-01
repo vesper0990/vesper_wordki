@@ -1,22 +1,33 @@
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  <div class="element-container">
+  <div id="userName" class="element-container">
     <input type="text" formControlName="userName" placeholder="Username">
-    <div *ngIf="userName.invalid && (userName.dirty || userName.touched)" class="error-message">
-      <div *ngIf="userName.errors.required">
-        Username cannot be empty
+    <ng-container *ngIf="loginForm.get('userName') as userName">
+      <div *ngIf="userName.invalid && (userName.dirty || userName.touched)" class="error-message">
+        <div *ngIf="userName.errors.required">
+          Username cannot be empty
+        </div>
+        <div *ngIf="userName.errors.minlength">
+          Username is too short
+        </div>
       </div>
+    </ng-container>
+  </div>
+  <div id="password" class="element-container">
+    <input type="password" autocomplete="off" formControlName="password" placeholder="Password">
+    <ng-container *ngIf="loginForm.get('password') as password">
+      <div *ngIf="password.invalid && (password.dirty || password.touched)" class="error-message">
+        <div *ngIf="password.errors.required">
+          Password cannot be empty
+        </div>
+        <div *ngIf="password.errors.minlength">
+          Password is too short
+        </div>
+      </div>
+    </ng-container>
+    <div class="error-message" *ngFor="let item of errors$ | async">
+      {{item}}
     </div>
   </div>
-  <div class="element-container">
-    <input type="password" autocomplete="off" formControlName="password" placeholder="Password">
-    <div *ngIf="password.invalid && (password.dirty || password.touched)" class="error-message">
-      <div *ngIf="password.errors.required">
-        Password cannot be empty
-      </div>
-    </div>
-    </div>
-    <div class="ui-g" style="padding: 5px; position: relative;">
-      <app-button type="submit" label="Sign In"></app-button>
-    </div>
+  
+  <button type="submit" [disabled]="loginForm.disabled">Sign In</button>
 </form>
-<p-toast position="top-right"></p-toast>

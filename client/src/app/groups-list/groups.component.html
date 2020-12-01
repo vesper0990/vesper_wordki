@@ -1,4 +1,7 @@
-<button (click)="addGroup()">Add a new group</button>
+<div class="button-container">
+  <button id="add-group-btn" class="custom-button" (click)="addGroup()">Add new group</button>
+  <button class="custom-button">Add existing group</button>
+</div>
 <ng-container *ngIf="isLoading$ | async; else groups">
   <app-progress-horizontal></app-progress-horizontal>
 </ng-container>
@@ -6,12 +9,12 @@
   <ng-container *ngIf="groups$ | async as groups">
     <ng-container *ngIf="groups.length !== 0; else nowords">
       <div class="row" *ngFor="let item of groups">
-        <app-group-row [group]="item" (edit)="onEdit($event)"></app-group-row>
+        <app-group-row [group]="item" (edit)="onEdit($event)" (click)="showDetails(item)"></app-group-row>
       </div>
+      <!-- <app-paginator [currentPage]="currentPage" (currentPageChanged)="currentPageChanged($event)" [pagesCount]="pagesCount"></app-paginator> -->
     </ng-container>
   </ng-container>
 </ng-template>
-
 <ng-template #nowords>
   <b>You do not have any groups yet.</b>
 </ng-template>

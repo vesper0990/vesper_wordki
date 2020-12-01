@@ -2,18 +2,32 @@
 
 .main-container {
   display: flex;
-  border-radius: 5px;
-  border: 1px solid rgb(120, 120, 120);
   align-items: center;
+  background-color: #fff;
+  color: rgb(144, 144, 144);
+  margin: 5px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 0 10px -5px rgba(0, 0, 0, 0.301);
+  -moz-box-shadow: 0 0 10px -5px rgba(0, 0, 0, 0.301);
+  box-shadow: 0 0 10px -5px rgba(0, 0, 0, 0.301);
 
   &:hover {
-    background-color: rgb(220, 220, 220);
+    color: rgb(100, 100, 100);
+    -webkit-box-shadow: 0 0 20px -10px #0000004d;
+    -moz-box-shadow: 0 0 20px -10px #0000004d;
+    box-shadow: 0 0 20px -10px #00000080;
+    cursor: pointer;
   }
 
   .group-label {
     flex: 10;
     padding-left: 15px;
     font-size: 25px;
+
+    b {
+      font-family: Comfortaa;
+    }
+
   }
 
   .flags-container {

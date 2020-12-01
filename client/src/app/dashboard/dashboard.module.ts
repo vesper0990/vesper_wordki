@@ -11,6 +11,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { DashboardEffects } from './store/effects';
 import { dashboardReducer } from './store/reducer';
+import { DashboardService } from './services/dashboard/dashboard.service';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { dashboardReducer } from './store/reducer';
   ],
   providers: [
     { provide: DashboardHttpServiceBase, useClass: environment.mockServer ? DashboardHttpService : DashboardHttpMockService },
+    DashboardService
   ]
 })
 export class DashboardModule { }

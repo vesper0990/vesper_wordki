@@ -23,15 +23,15 @@ describe('TokenInterceptorService', () => {
   }));
 
   it('should be created', () => {
-    const service: TokenInterceptorService = TestBed.get(TokenInterceptorService);
+    const service: TokenInterceptorService = TestBed.inject(TokenInterceptorService);
     expect(service).toBeTruthy();
   });
 
   it('should inject authorization token', () => {
-    const httpMock: HttpTestingController = TestBed.get(HttpTestingController);
-    const httpClient: HttpClient = TestBed.get(HttpClient);
-    const userServiceMock: jasmine.SpyObj<UserService> = TestBed.get(UserService);
-    userServiceMock.getToken.and.returnValue({ token: 'token' });
+    const httpMock: HttpTestingController = TestBed.inject(HttpTestingController);
+    const httpClient: HttpClient = TestBed.inject(HttpClient);
+    const userServiceMock = TestBed.inject(UserService) as jasmine.SpyObj<UserService>;
+    userServiceMock.getToken.and.returnValue('token');
 
     httpClient.get('http://localhost').subscribe();
 

@@ -24,9 +24,9 @@ namespace Wordki.Api.Featuers.User.Register
         public async Task<Unit> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             var hashedPassword = encrypter.Md5Hash(request.Password);
-            if (await dbContext.Users.AsNoTracking().AnyAsync(u => u.Name.Equals(request.UserName) && u.Password.Equals(hashedPassword)))
+            if (await dbContext.Users.AnyAsync(u => u.Name.Equals(request.UserName) && u.Password.Equals(hashedPassword)))
             {
-                throw new ApiException("User already exists");
+                throw new ApiException("User already exists", ErrorCode.RegisterUserAlreadyExists);
             }
             var newUser = userCreator.Create(request.UserName, hashedPassword);
             await dbContext.Users.AddAsync(newUser);

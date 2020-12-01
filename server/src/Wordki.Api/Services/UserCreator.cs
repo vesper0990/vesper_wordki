@@ -1,4 +1,5 @@
 ﻿using Wordki.Api.Domain;
+using Wordki.Utils.TimeProvider;
 
 namespace Wordki.Api.Services
 {
@@ -8,9 +9,9 @@ namespace Wordki.Api.Services
     }
     public class UserCreator : IUserCreator
     {
-        private readonly IDateTimeProvider dateTimeProvider;
+        private readonly ITimeProvider dateTimeProvider;
 
-        public UserCreator(IDateTimeProvider dateTimeProvider)
+        public UserCreator(ITimeProvider dateTimeProvider)
         {
             this.dateTimeProvider = dateTimeProvider;
         }
@@ -21,7 +22,7 @@ namespace Wordki.Api.Services
             {
                 Name = userName,
                 Password = hashedPassword,
-                CreationDate = dateTimeProvider.Now(),
+                CreationDate = dateTimeProvider.GetTime(),
             };
             return newUser;
         }

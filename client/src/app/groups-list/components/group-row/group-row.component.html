@@ -1,4 +1,4 @@
-<div class="main-container" (click)="openGroup(group)">
+<div class="main-container">
     <div class="group-label">
         <b>{{ group?.name }}</b>
     </div>
@@ -9,7 +9,6 @@
     <div class="info-container">
         <app-label-value label="Słowa" [value]="group?.cardsCount"></app-label-value>
         <app-label-value label="Powtórzenia" [value]="group?.repeatsCount"></app-label-value>
-        <app-label-value label="Szuflada" [value]="group?.averageDrawer | number : '1.1-1'"></app-label-value>
     </div>
     <div appClickStopPropagation class="edit-button" (click)="editGroup(group)">
         <img src="assets/icons/edit.svg" />

@@ -1,40 +1,18 @@
-<div class="main-container" [ngClass]="{'is-not-visible': !_word?.isVisible}" (click)="toggle()">
-    <div class="ui-g basic-info">
-        <div class="ui-g-9">
-            <div class="word flaot-left">
-                {{ _word?.language1 }}
-            </div>
-            <div class="word flaot-left">
-                {{ _word?.language2 }}
-            </div>
-        </div>
-        <div class="ui-g-2 margin-auto">
-            <div class="float-left">
-                {{ _word?.drawer }}
-            </div>
-        </div>
-        <div appClickStopPropagation class="ui-g-1 edit-button" (click)="edit(_word)">
-            <img src="assets/icons/edit.svg" />
-        </div>
+<div class="main-container">
+  <div class="side">
+    <div class="word">
+      {{ _word?.language1 }}
     </div>
-    <div *ngIf="_word.isExpanded">
-        <hr style="margin: 5px 20px;" size=1>
-        <div class="ui-g">
-            <div class="ui-g-7">
-                <div class="example">
-                    {{ _word?.example1 }}
-                </div>
-                <!-- <hr> -->
-                <div class="example">
-                    {{ _word?.example2 }}
-                </div>
-            </div>
-            <div class="ui-g-5">
-                <app-label-value label="Ostatnia powtórka" [value]="lastRepeat | toDays"></app-label-value>
-                <app-label-value label="Następna powtórka" [value]="_word.nextRepeat | date:'dd/MM/yyyy'">
-                </app-label-value>
-                <app-label-value label="Wszystkie powróki" [value]="_word.repeats.length"></app-label-value>
-            </div>
-        </div>
+    <div class="example">
+      {{ _word?.example1 }}
     </div>
+  </div>
+  <div class="side">
+    <div class="word">
+      {{ _word?.language2 }}
+    </div>
+    <div class="example">
+      {{ _word?.example2 }}
+    </div>
+  </div>
 </div>

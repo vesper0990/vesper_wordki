@@ -1,22 +1,22 @@
-<button (click)="addCard()">Dodaj nowe słowo</button>
-<div>
-  Grupa:
+<div id="group-container">
   <ng-container *ngIf="isGroupDetailsLoading$ | async; else groupDetails">
-    ładowanie
-    <!-- <app-progress-horizontal></app-progress-horizontal> -->
+    Loading...
   </ng-container>
 </div>
-<div>
-  Słowa:
+<div class="button-container">
+  <button class="custom-button" (click)="addCard()">Add new card</button>
+</div>
+
+<div id="cards-container">
   <ng-container *ngIf="isCardsLoading$ | async; else words">
-    ładowanie
-    <!-- <app-progress-horizontal></app-progress-horizontal> -->
+    Loading...
   </ng-container>
 </div>
 
 <ng-template #groupDetails>
   <ng-container *ngIf="groupDetails$ | async as groupDetails">
-    {{ groupDetails.name }}
+    <app-group-description [groupName]="groupDetails.name" [language1]="groupDetails.language1"
+      [language2]="groupDetails.language2" wordsCount="16" repeatsCount="123"></app-group-description>
   </ng-container>
 </ng-template>
 
@@ -29,9 +29,9 @@
 </ng-template>
 
 <ng-template #nowords>
-  <b>Brak słów</b>
+  <b>Any cards has not been added to the group</b>
 </ng-template>
 
-<app-edit-word-dialog [isVisible]="dialogVisibility$ | async" [mode]="dialogMode$ | async"
-  [word]="dialogCard$ | async" (save)="onEditSave($event)" (cancel)="onEditCancel()" (remove)="onEditRemove($event)">
+<app-edit-word-dialog [isVisible]="dialogVisibility$ | async" [mode]="dialogMode$ | async" [word]="dialogCard$ | async"
+  (save)="onEditSave($event)" (cancel)="onEditCancel()" (remove)="onEditRemove($event)">
 </app-edit-word-dialog>

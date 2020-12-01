@@ -12,10 +12,10 @@
         <a (click)="hideMenu()" [routerLink]="['./dashboard']" class="nav-links">Dashboard</a>
       </li>
       <li>
-        <a (click)="hideMenu()" href="#" class="nav-links">Profil</a>
+        <a (click)="hideMenu()" href="#" class="nav-links">Profile</a>
       </li>
       <li>
-        <a (click)="hideMenu()" [routerLink]="['./user/logout']" class="nav-links">Wyloguj</a>
+        <a (click)="hideMenu()" [routerLink]="['./user/logout']" class="nav-links">Sign out</a>
       </li>
     </ng-container>
   </ul>
@@ -23,9 +23,9 @@
 
 <ng-template #loggedOut>
   <li>
-    <a (click)="hideMenu()" [routerLink]="['./user/login']" class="nav-links">Zaloguj</a>
+    <a (click)="hideMenu()" [routerLink]="['./user/login']" class="nav-links">Sign in</a>
   </li>
   <li>
-    <a (click)="hideMenu()" [routerLink]="['./user/register']" class="nav-links">Zarejestruj</a>
+    <a (click)="hideMenu()" [routerLink]="['./user/register']" class="nav-links">Register</a>
   </li>
 </ng-template>

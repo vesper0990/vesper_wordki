@@ -1,0 +1,14 @@
+<div class="main-container" [ngClass]="{clickable: clickable}">
+  <div class="title">
+    {{title}}
+  </div>
+  <ng-container *ngIf="isLoading; else value">
+    <app-progress-spinner></app-progress-spinner>
+  </ng-container>
+</div>
+
+<ng-template #value>
+  <div class="value">
+    {{label}}
+  </div>
+</ng-template>

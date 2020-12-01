@@ -1,29 +1,46 @@
 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-  <div class="element-container">
+  <div id="userName" class="element-container">
     <input type="text" formControlName="userName" autocomplete="off" placeholder="Username">
-    <div *ngIf="userName.invalid && (userName.dirty || userName.touched)" class="error-message">
-      <div *ngIf="userName.errors.required">
-        Username cannot be empty.
+    <ng-container *ngIf="registerForm.get('userName') as userName">
+      <div *ngIf="userName.invalid && (userName.dirty || userName.touched)" class="error-message">
+        <div *ngIf="userName.errors.required">
+          Username cannot be empty.
+        </div>
+        <div *ngIf="userName.errors.minlength">
+          Username must be at least 5 characters
+        </div>
       </div>
-    </div>
+    </ng-container>
   </div>
-  <div class="element-container">
-      <input type="password" formControlName="password" autocomplete="off" placeholder="Password">
+  <div id="password" class="element-container">
+    <input type="password" formControlName="password" autocomplete="off" placeholder="Password">
+    <ng-container *ngIf="registerForm.get('password') as password">
       <div *ngIf="password.invalid && (password.dirty || password.touched)" class="error-message">
         <div *ngIf="password.errors.required">
           Password cannot be empty
         </div>
-    </div>
+        <div *ngIf="password.errors.minlength">
+          Password must be at least 5 characters
+        </div>
+      </div>
+    </ng-container>
   </div>
-  <div class="element-container">
-      <input type="password" formControlName="passwordConfirmation" placeholder="Confirm Password">
+  <div id="passwordConfirmation" class="element-container">
+    <input type="password" formControlName="passwordConfirmation" placeholder="Confirm Password">
+    <ng-container *ngIf="registerForm.get('passwordConfirmation') as passwordConfirmation">
       <div *ngIf="passwordConfirmation.invalid && (passwordConfirmation.dirty || passwordConfirmation.touched)"
         class="error-message">
         <div *ngIf="passwordConfirmation.errors.notSame">
           Passwords are not the same
         </div>
-    </div>
+        <div *ngIf="passwordConfirmation.errors.required">
+          Password cannot be empty
+        </div>
+      </div>
+      <div class="error-message" *ngFor="let item of errors$ | async">
+        {{item}}
+      </div>
+    </ng-container>
   </div>
-    <button type="submit">Sign Up</button>
+  <button type="submit">Sign Up</button>
 </form>
-<p-toast position="top-right"></p-toast>

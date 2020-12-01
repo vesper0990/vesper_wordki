@@ -20,6 +20,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { AddGroupComponent } from './pages/add-group/add-group.component';
 import { ShareModule } from '../share/share.module';
 import { GroupDescriptionComponent } from './components/group-description/group-description.component';
+import { CardsListService } from './services/words-list/words-list.service';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { GroupDescriptionComponent } from './components/group-description/group-
   providers: [
     { provide: GroupDetailsHttpBase, useClass: environment.mockServer ? GroupDetailsHttp : GroupDetailsHttpMock },
     GroupDetailsMapper,
-    WordMapper
+    WordMapper,
+    CardsListService
   ]
 })
 export class GroupDetailsModule { }

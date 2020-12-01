@@ -1,14 +1,13 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 import { LessonStep } from '../../models/lesson-state';
-import { WordRepeat } from '../../models/word-repeat';
 import { LessonCardDto } from '../../models/word-repeat.dto';
 import { FiszkaService } from './services/fiszka/fiszka.service';
 
 @Component({
   templateUrl: './fiszka.component.html',
   styleUrls: ['./fiszka.component.scss'],
-  providers: [FiszkaService]
 })
 export class FiszkaComponent implements OnInit, OnDestroy {
 
@@ -19,9 +18,11 @@ export class FiszkaComponent implements OnInit, OnDestroy {
   currentCard$: Observable<LessonCardDto>;
   lessonStep$: Observable<LessonStep>;
 
-  constructor(private readonly service: FiszkaService) { }
+  constructor(private readonly service: FiszkaService,
+  private readonly titleService: Title) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Wordki - Lesson');
     this.service.loadWords();
     this.currentCard$ = this.service.getCurrentCard();
     this.lessonStep$ = this.service.getLessonStep();

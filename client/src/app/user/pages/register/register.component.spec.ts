@@ -1,5 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RegisterComponent } from './register.component';
 import { MockComponent } from 'ng-mocks';
 import { RegisterFormComponent } from '../../components/register-form/register-form.component';
@@ -8,13 +7,13 @@ describe('RegisterComponent', () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ RegisterComponent,
-        MockComponent(RegisterFormComponent) ]
+      declarations: [RegisterComponent,
+        MockComponent(RegisterFormComponent)]
     })
-    .compileComponents();
-  }));
+      .compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RegisterComponent);

@@ -1,42 +1,17 @@
-.lesson-info {
+.basic-summary {
   padding: 40px 0;
   width: 95%;
   margin: auto;
   display: flex;
-  justify-content: space-around;
   position: relative;
 
-  .info-card {
+  app-info-card {
     flex-grow: 1;
-    margin: 5px;
-    border-radius: 4px;
-    height: 200px;
-    background-color: #fff;
-    -webkit-box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, 0.29);
-    -moz-box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, 0.29);
-    box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, 0.29);
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
+    margin-right: 10px;
+  }
 
-    &:hover {
-      background-color: #f5f5f5;
-    }
-
-    .title {
-      color: rgb(134, 134, 134);
-      margin: 10px 10px;
-      font-size: 15px;
-    }
-
-    .value {
-      color: rgb(83, 83, 83);
-      width: 100%;
-      text-align: center;
-      margin-top: 70px;
-      font-size: 50px;
-      font-family: Comfortaa;
-    }
+  &:last-child {
+    margin-right: 0px;
   }
 }
 

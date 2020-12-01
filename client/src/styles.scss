@@ -1,32 +1,73 @@
 @import "./styles-primeng.scss";
 
 @font-face {
-    font-family: Comfortaa;
-    src: url("/assets/fonts/comfortaa.ttf") format("truetype");
+  font-family: Comfortaa;
+  src: url("/assets/fonts/comfortaa.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: Montserrat;
+  src: url("/assets/fonts/Montserrat-Light.ttf") format("truetype");
 }
 
 .circle-button {
-    height: 4em;
-    width: 4em;
-    border: none;
-    border-radius: 2em;
-    cursor: pointer;
+  height: 4em;
+  width: 4em;
+  border: none;
+  border-radius: 2em;
+  cursor: pointer;
 }
 
 
-html *
-{
-   font-family: Helvetica;
+html * {
+  font-family: Helvetica;
 }
 
-.float-left{
-    float: left;
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: rgb(245, 245, 245);
 }
 
-.float-right{
-    float: right;
+.float-left {
+  float: left;
 }
 
-.margin-auto{
-    margin: auto;
+.float-right {
+  float: right;
+}
+
+.margin-auto {
+  margin: auto;
+}
+
+.button-container {
+  width: 100%;
+  display: flex;
+  margin: 15px 0;
+
+  .custom-button {
+    flex-grow: 1;
+    border-radius: 5px;
+    background-color: #fff;
+    border: rgb(172, 172, 172);
+    color: rgb(172, 172, 172);
+    font-size: large;
+    font-family: Comfortaa;
+    margin: 0 10px;
+    padding: 10px 10px;
+    -webkit-box-shadow: 0 0 10px -5px rgba(0, 0, 0, 0.301);
+    -moz-box-shadow: 0 0 10px -5px rgba(0, 0, 0, 0.301);
+    box-shadow: 0 0 10px -5px rgba(0, 0, 0, 0.301);
+
+    &:hover {
+      cursor: pointer;
+      border: rgb(116, 116, 116);
+      color: rgb(116, 116, 116);
+      -webkit-box-shadow: 0 0 20px -10px #0000004d;
+      -moz-box-shadow: 0 0 20px -10px #0000004d;
+      box-shadow: 0 0 20px -10px #00000080;
+    }
+  }
 }

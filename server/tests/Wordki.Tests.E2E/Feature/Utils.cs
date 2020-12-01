@@ -3,7 +3,6 @@ using Moq;
 using System;
 using Wordki.Api.Services;
 using Wordki.Utils.HttpContext;
-using Wordki.Utils.TimeProvider;
 
 namespace Wordki.Tests.E2E.Feature
 {
@@ -20,21 +19,11 @@ namespace Wordki.Tests.E2E.Feature
         public static DateTime Yesterday = new DateTime(2019, 12, 31);
         public static DateTime Tommorow = new DateTime(2020, 1, 2);
 
-        public static Mock<IDateTimeProvider> DateTimeProvider
+        public static Mock<Wordki.Utils.TimeProvider.ITimeProvider> TimeProvider
         {
             get
             {
-                var timeProviderMock = new Mock<IDateTimeProvider>();
-                timeProviderMock.Setup(x => x.Now()).Returns(Now);
-                return timeProviderMock;
-            }
-        }
-
-        public static Mock<ITimeProvider> TimeProvider
-        {
-            get
-            {
-                var timeProviderMock = new Mock<ITimeProvider>();
+                var timeProviderMock = new Mock<Wordki.Utils.TimeProvider.ITimeProvider>();
                 timeProviderMock.Setup(x => x.GetDate()).Returns(Now);
                 timeProviderMock.Setup(x => x.GetTime()).Returns(Time);
                 return timeProviderMock;

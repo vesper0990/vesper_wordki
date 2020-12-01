@@ -1,4 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { DialogMode } from '../share/components/edit-group-dialog/mode-dialog';
 import { EditWord } from '../share/components/edit-word-dialog/edit-word.model';
@@ -9,9 +11,6 @@ import { CardsListService } from './services/words-list/words-list.service';
 @Component({
   templateUrl: './group-details.component.html',
   styleUrls: ['./group-details.component.scss'],
-  providers: [
-    CardsListService
-  ]
 })
 export class GroupDetailsComponent implements OnInit, OnDestroy {
 
@@ -24,10 +23,13 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   dialogMode$: Observable<DialogMode>;
   dialogCard$: Observable<EditWord>;
 
-  constructor(private readonly service: CardsListService) { }
+  constructor(private readonly service: CardsListService,
+    private readonly route: ActivatedRoute,
+    private readonly titleService: Title) { }
 
   ngOnInit(): void {
-    this.service.init();
+    this.titleService.setTitle('Wordki - Details');
+    this.service.handleRouteParam(+this.route.snapshot.paramMap.get('id'));
     this.cards$ = this.service.getCards();
     this.groupDetails$ = this.service.getGroupDetails();
     this.isCardsLoading$ = this.service.isCardsLoading();

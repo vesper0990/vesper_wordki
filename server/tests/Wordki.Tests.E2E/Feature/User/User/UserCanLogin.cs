@@ -67,7 +67,7 @@ namespace Wordki.Tests.E2E.Feature.User.User
                 Assert.AreEqual(user.Name, "user");
                 Assert.AreEqual(user.Id, 1);
                 Assert.AreEqual(Host.EncrypterMock.Object.Md5Hash("pass"), user.Password);
-                Assert.AreEqual(Host.TimeProviderMock.Object.Now(), user.LastLoginDate);
+                Assert.AreEqual(Host.Time2ProviderMock.Object.GetTime(), user.LastLoginDate);
                 Assert.AreEqual(new DateTime(2020, 1, 1), user.CreationDate);
             }
         }

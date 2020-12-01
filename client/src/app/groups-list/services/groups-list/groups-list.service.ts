@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AddedGroup } from 'src/app/group-details/models/added-group';
 import { EditGroup } from 'src/app/share/components/edit-group-dialog/edit-group.model';
 import { DialogMode } from 'src/app/share/components/edit-group-dialog/mode-dialog';
 import { Group } from '../../models/group.model';
@@ -19,10 +18,6 @@ export class GroupsListService {
 
     loadGroups(): void {
         this.store.dispatch(new GetGroups());
-    }
-
-    openGroup(groupId: number): void {
-        this.router.navigate(['lesson/group', groupId]);
     }
 
     getList(): Observable<Group[]> {
@@ -66,7 +61,7 @@ export class GroupsListService {
     }
 
     dialogSave(group: EditGroup): void {
-        if (group.id !== 0) {
+        if (group.id !== 0 && group.id !== undefined) {
             this.store.dispatch(new UpdateGroup({ group: group }));
         } else {
             this.store.dispatch(new AddGroup({ group: group }));
@@ -79,5 +74,10 @@ export class GroupsListService {
 
     dialogRemove(groupId: number): void {
         this.store.dispatch(new RemoveGroup({ groupId: groupId }));
+    }
+
+    showDetails(groupId: number): void {
+        const id = groupId;
+        this.router.navigate(['/details', id]);
     }
 }

@@ -1,1 +1,50 @@
-<p>group-description works!</p>
+<div class="main-container">
+  <div class="row">
+    <div id="group-name">
+      {{groupName}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="info-item">
+      <div class="label">
+        Front
+      </div>
+      <div class="value">
+        <img src="assets/flags/{{language1.flag}}" />
+      </div>
+    </div>
+    <div class="info-item">
+      <div class="label">
+        Back
+      </div>
+      <div class="value">
+        <img src="assets/flags/{{language2.flag}}" />
+      </div>
+    </div>
+    <div class="info-item">
+      <div class="label">
+        Words
+      </div>
+      <div class="value">
+        {{wordsCount}}
+      </div>
+    </div>
+    <div class="info-item">
+      <div class="label">
+        Created
+      </div>
+      <div class="value">
+        {{creationDate | toDays}}
+      </div>
+    </div>
+
+    <div class="info-item">
+      <div class="label">
+        Repeats
+      </div>
+      <div class="value">
+        {{repeatsCount}}
+      </div>
+    </div>
+  </div>
+</div>

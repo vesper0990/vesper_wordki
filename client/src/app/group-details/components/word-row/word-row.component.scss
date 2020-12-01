@@ -1,58 +1,48 @@
 .main-container {
-    border-radius: 10px;
-    margin: 5px 10px;
-    position: relative;
-    border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+  margin: 10px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  -webkit-box-shadow: 0 0 10px -5px rgba(0, 0, 0, 0.301);
+  -moz-box-shadow: 0 0 10px -5px rgba(0, 0, 0, 0.301);
+  box-shadow: 0 0 10px -5px rgba(0, 0, 0, 0.301);
+  color: rgb(110, 110, 110);
+
+  &:hover {
+    color: rgb(50, 50, 50);
+    -webkit-box-shadow: 0 0 20px -10px #0000004d;
+    -moz-box-shadow: 0 0 20px -10px #0000004d;
+    box-shadow: 0 0 20px -10px #00000080;
+    cursor: pointer;
+  }
+
+  .side {
+    width: 48%;
 
     .word {
-        height: 50px;
-        margin: 2px;
-        font-weight: 550;
-        font-size: 1.5em;
-        color: #555;
-        display: flex;
-        align-items: center;
-    }
-
-    hr {
-        color: #ccc;
+      margin-bottom: 10px;
+      font-size: xx-large;
+      font-family: Comfortaa;
+      text-align: center;
     }
 
     .example {
-        margin-left: 10px;
-        margin-top: 5px;
-        margin-bottom: 5px;
-        height: 30px;
-        font-size: 1em;
-        color: #555;
+      font-size: medium;
+      font-family: Comfortaa;
+      text-align: center;
     }
-
-    .info-label {
-        font-size: 0.7em;
-        color: #777;
-    }
-
-    .edit-button {
-        display: flex;
-        cursor: pointer;
-
-        &:hover {
-            background-color: #00000011;
-        }
-
-        img {
-            width: 25px;
-            margin: auto;
-        }
-    }
+  }
 }
 
 @media only screen and (max-width: 640px) {
-    .main-container {
-        .edit-button {
-            img {
-                width: 16px;
-            }
-        }
+  .main-container {
+    .edit-button {
+      img {
+        width: 16px;
+      }
     }
+  }
 }

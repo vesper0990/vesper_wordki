@@ -52,7 +52,7 @@ namespace Wordki.Tests.E2E.Feature.User.Register
                 Assert.Greater(user.Id, 0);
                 Assert.AreEqual(Host.EncrypterMock.Object.Md5Hash("pass"), user.Password);
                 Assert.IsNull(user.LastLoginDate);
-                Assert.AreEqual(Host.TimeProviderMock.Object.Now(), user.CreationDate);
+                Assert.AreEqual(Host.Time2ProviderMock.Object.GetTime(), user.CreationDate);
             }
         }
 

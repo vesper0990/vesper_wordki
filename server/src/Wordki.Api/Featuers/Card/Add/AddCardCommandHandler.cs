@@ -6,16 +6,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using Wordki.Api.Domain;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
-using Wordki.Api.Services;
+using Wordki.Utils.TimeProvider;
 
 namespace Wordki.Api.Featuers.Card.Add
 {
     public class AddCardCommandHandler : IRequestHandler<AddCardCommand, long>
     {
         private readonly WordkiDbContext dbContext;
-        private readonly IDateTimeProvider dateTimeProvider;
+        private readonly ITimeProvider dateTimeProvider;
 
-        public AddCardCommandHandler(WordkiDbContext dbContext, IDateTimeProvider dateTimeProvider)
+        public AddCardCommandHandler(WordkiDbContext dbContext, ITimeProvider dateTimeProvider)
         {
             this.dbContext = dbContext;
             this.dateTimeProvider = dateTimeProvider;
@@ -37,7 +37,7 @@ namespace Wordki.Api.Featuers.Card.Add
                 Tails = tails,
                 Comment = request.Comment,
                 IsVisible = request.IsVisible,
-                WordCreationDate = dateTimeProvider.Now(),
+                WordCreationDate = dateTimeProvider.GetDate(),
             };
 
             await dbContext.Words.AddAsync(newCard);
