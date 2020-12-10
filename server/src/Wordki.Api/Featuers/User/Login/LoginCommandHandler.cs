@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
 using Wordki.Api.Services;
 using Wordki.Infrastructure.Framework.ExceptionMiddleware;
+using Wordki.Utils.TimeProvider;
 
 namespace Wordki.Api.Featuers.User.Login
 {
@@ -13,12 +13,12 @@ namespace Wordki.Api.Featuers.User.Login
     {
         private readonly WordkiDbContext dbContext;
         private readonly IEncrypter encrypter;
-        private readonly IDateTimeProvider dateTimeProvider;
+        private readonly ITimeProvider dateTimeProvider;
         private readonly IAuthenticationService authenticationService;
 
         public LoginCommandHandler(WordkiDbContext dbContext,
             IEncrypter encrypter,
-            IDateTimeProvider dateTimeProvider,
+            ITimeProvider dateTimeProvider,
             IAuthenticationService authenticationService)
         {
             this.dbContext = dbContext;
@@ -36,9 +36,9 @@ namespace Wordki.Api.Featuers.User.Login
 
             if (user == null)
             {
-                throw new ApiException("User is not found");
+                throw new ApiException("User is not found", ErrorCode.LoginUserNotFound);
             }
-            user.LastLoginDate = dateTimeProvider.Now();
+            user.LastLoginDate = dateTimeProvider.GetTime();
 
             dbContext.Users.Update(user);
             await dbContext.SaveChangesAsync();

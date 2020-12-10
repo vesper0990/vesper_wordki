@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserService } from './authorization/services/user.service/user.service';
 import { Subscription } from 'rxjs';
-import { UserProvider, UserProviderBase } from './user/services/user.provider/user.provider';
-import { UserSettings } from './authorization/services/user.service/user-settings.model';
 
 @Component({
   selector: 'app-root',
@@ -15,8 +13,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   isLogin: boolean;
 
-  constructor(private userService: UserService,
-    private userProvider: UserProviderBase) { }
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
     this.userServiceSub = this.userService.subscribe().subscribe((userExists: boolean) => {
@@ -33,11 +30,5 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private login(): void {
     this.userService.loginFromCookie();
-  }
-
-  private getUserSettings(): void {
-    this.userProvider.getUserSettings().subscribe((settings: UserSettings) => {
-      this.userService.userSettings = settings;
-    });
   }
 }

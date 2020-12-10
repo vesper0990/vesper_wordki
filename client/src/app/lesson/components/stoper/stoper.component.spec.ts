@@ -3,14 +3,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { StoperComponent } from './stoper.component';
 import { StoperService } from '../../services/stoper/stoper2.service';
 import { Store } from '@ngrx/store';
-import { LessonState } from '../../store/reducer';
 import { of } from 'rxjs';
 
 describe('StoperComponent', () => {
   let component: StoperComponent;
   let fixture: ComponentFixture<StoperComponent>;
   let stoperServiceMock: jasmine.SpyObj<StoperService>;
-  let storeMock: jasmine.SpyObj<Store<LessonState>>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -26,7 +24,6 @@ describe('StoperComponent', () => {
   beforeEach(() => {
     stoperServiceMock = TestBed.get(StoperService);
     stoperServiceMock.getObservable.and.returnValue(of());
-    storeMock = TestBed.get(Store);
     fixture = TestBed.createComponent(StoperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

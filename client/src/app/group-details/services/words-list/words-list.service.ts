@@ -3,11 +3,11 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { GroupDetails } from '../../models/group-details.model';
 import { Word } from '../../models/word.model';
-import { AddWord, AddWordSuccess, GetGroupDetails, GetWords, RemoveWordAction, ShowDialog, UpdateWord } from '../../store/actions';
+import { AddWord, GetGroupDetails, GetWords, RemoveWordAction, ShowDialog, UpdateWord } from '../../store/actions';
 import { GroupDetailsState } from '../../store/state';
 import { selectDialogCard, selectDialogMode, selectDialogVisibility, selectGroupDetails, selectIsCardsLoading, selectWords } from '../../store/selectors';
 import { ActivatedRoute } from '@angular/router';
-import { map, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { DialogMode } from 'src/app/share/components/edit-group-dialog/mode-dialog';
 import { EditWord } from 'src/app/share/components/edit-word-dialog/edit-word.model';
 import { HideDialog } from 'src/app/groups-list/store/actions';
@@ -17,11 +17,14 @@ export class CardsListService {
 
     groupId: number;
 
-    constructor(private readonly store: Store<GroupDetailsState>,
-        private readonly actRoute: ActivatedRoute) { }
+    constructor(private readonly store: Store<GroupDetailsState>) { }
 
     init(): void {
-        this.handleRouteParam(+this.actRoute.snapshot.params.id);
+
+        // this.actRoute.params.subscribe(params => {
+        //     console.log(params);
+        //     this.handleRouteParam(params['id']);
+        // });
     }
 
     getCards(): Observable<Word[]> {
@@ -86,7 +89,7 @@ export class CardsListService {
     }
 
 
-    private handleRouteParam(groupId: number): void {
+    handleRouteParam(groupId: number): void {
         this.groupId = groupId;
         this.store.dispatch(new GetGroupDetails({ groupId: this.groupId }));
         this.store.dispatch(new GetWords({ groupId: this.groupId }));

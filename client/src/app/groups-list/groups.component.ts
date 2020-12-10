@@ -4,13 +4,16 @@ import { Observable } from 'rxjs';
 import { EditGroup } from '../share/components/edit-group-dialog/edit-group.model';
 import { GroupsListService } from './services/groups-list/groups-list.service';
 import { DialogMode } from '../share/components/edit-group-dialog/mode-dialog';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   templateUrl: './groups.component.html',
-  styleUrls: ['./groups.component.scss'],
-  providers: [GroupsListService]
+  styleUrls: ['./groups.component.scss']
 })
 export class GroupsComponent implements OnInit {
+
+  currentPage = 1;
+  pagesCount = 10;
 
   groups$: Observable<Group[]>;
   isLoading$: Observable<boolean>;
@@ -18,19 +21,17 @@ export class GroupsComponent implements OnInit {
   dialogMode$: Observable<DialogMode>;
   dialogGroup$: Observable<EditGroup>;
 
-  constructor(private readonly service: GroupsListService) { }
+  constructor(private readonly service: GroupsListService,
+    private readonly titleService: Title) { }
 
   ngOnInit() {
+    this.titleService.setTitle('Wordki - Groups');
     this.service.loadGroups();
     this.groups$ = this.service.getList();
     this.isLoading$ = this.service.isLoading();
     this.dialogVisibility$ = this.service.isDialogVisible();
     this.dialogMode$ = this.service.getDialogMode();
     this.dialogGroup$ = this.service.getDialogGroup();
-  }
-
-  openGroup(groupId: number): void {
-    this.service.openGroup(groupId);
   }
 
   onEdit(group: Group): void {
@@ -51,5 +52,13 @@ export class GroupsComponent implements OnInit {
 
   addGroup(): void {
     this.service.openDialogToAdd();
+  }
+
+  showDetails(group: Group): void {
+    this.service.showDetails(group.id);
+  }
+
+  currentPageChanged($event: number): void {
+    console.log('currentpage', $event);
   }
 }

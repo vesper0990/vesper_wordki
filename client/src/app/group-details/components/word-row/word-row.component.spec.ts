@@ -1,5 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { WordRowComponent } from './word-row.component';
 import { Word } from '../../models/word.model';
 import { MockComponent } from 'ng-mocks';
@@ -9,14 +8,14 @@ describe('WordRowComponent', () => {
   let component: WordRowComponent;
   let fixture: ComponentFixture<WordRowComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [WordRowComponent,
         MockComponent(LabelValueComponent)
       ]
     })
       .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WordRowComponent);

@@ -20,6 +20,8 @@ import { HttpErrorInterceptor } from '../share/services/http-error.interceptor';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { BrowserModule } from '@angular/platform-browser';
+import { LoginService } from './components/login-form/services/login/login.service';
+import { RegisterService } from './components/register-form/services/register/register.service';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { BrowserModule } from '@angular/platform-browser';
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
     MessageService,
     CookieService,
+    LoginService,
+    RegisterService
   ]
 })
 export class UserModule { }

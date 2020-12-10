@@ -1,9 +1,12 @@
+.font {
+  font-weight: 400;
+}
 
-  button {
+button {
 
-    background-color: #9cf29c;
+  background-color: #9cf29c;
 
-    &:hover{
-      background-color: #90e090;
-    }
+  &:hover {
+    background-color: #90e090;
   }
+}

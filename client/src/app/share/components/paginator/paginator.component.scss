@@ -1,0 +1,26 @@
+.main-container {
+  margin: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  .item {
+    padding: 10px;
+    margin-right: 2px;
+
+    &:hover {
+      border-bottom: 2px solid red;
+      cursor: pointer;
+    }
+  }
+
+  .item-selected {
+    border-bottom: 2px solid red;
+  }
+
+  .item-disabled {
+    border-bottom: none !important;
+    cursor: default !important;
+    color: lightslategrey !important;
+  }
+}

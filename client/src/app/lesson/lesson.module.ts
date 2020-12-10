@@ -27,6 +27,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { SummaryGuardService } from './services/summary-guard/summage-guard';
 import { SummaryComponent } from './components/summary/summary.component';
 import { FiszkaSideComponent } from './components/fiszka-side/fiszka-side.component';
+import { FiszkaService } from './components/fiszka/services/fiszka/fiszka.service';
+import { SummaryService } from './components/summary/services/summary/summary.service';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,9 @@ import { FiszkaSideComponent } from './components/fiszka-side/fiszka-side.compon
     WordComparerService,
     StoperService,
     WordMapper,
-    SummaryGuardService
+    SummaryGuardService,
+    FiszkaService,
+    SummaryService
   ]
 })
 export class LessonModule {

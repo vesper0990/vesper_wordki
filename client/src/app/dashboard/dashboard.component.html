@@ -1,44 +1,15 @@
-<div class="lesson-info">
-  <div class="info-card" (click)="startLesson()">
-    <div class="title">
-      Today repeats
-    </div>
-    <ng-container *ngIf="isCardToRepeatReady$ | async; else loading">
-      <div class="value">
-        {{cardToRepeat$ | async}}
-      </div>
-    </ng-container>
-  </div>
-  <div class="info-card" (click)="history()">
-    <div class="title">
-      Last lesson
-    </div>
-    <ng-container *ngIf="lastRepeat$ | async as lastRepeat; else loading">
-      <div class="value">
-        {{lastRepeat | toDays}}
-      </div>
-    </ng-container>
-  </div>
-  <div class="info-card" (click)="groups()">
-    <div class="title">
-      Groups
-    </div>
-    <ng-container *ngIf="isGroupsCountReady$ | async; else loading">
-        <div class="value">
-            {{groupsCount$ | async}}
-          </div>
-    </ng-container>
-  </div>
-  <div class="info-card" (click)="cards()">
-    <div class="title">
-      Cards
-    </div>
-    <ng-container *ngIf="isCardsCountReady$ | async; else loading">
-      <div class="value">
-        {{cardsCount$ | async}}
-      </div>
-    </ng-container>
-  </div>
+<div class="basic-summary">
+  <app-info-card id="lesson-card" title="Today repeats" [label]="cardToRepeat$ | async" clickable="true"
+    [isLoading]="!(isCardToRepeatReady$ | async)" (click)="startLesson()"></app-info-card>
+
+  <app-info-card id="history-card" title="Last lesson" [label]="lastRepeat$ | async | toDays" clickable="true"
+    [isLoading]="!(lastRepeat$ | async)" (click)="history()"></app-info-card>
+
+  <app-info-card id="groups-card" title="Groups" [label]="groupsCount$ | async" clickable="true"
+    [isLoading]="!(isGroupsCountReady$ | async)" (click)="groups()"></app-info-card>
+    
+  <app-info-card id="cards-card" title="Cards" [label]="isCardsCountReady$ | async" clickable="true"
+    [isLoading]="!(cardsCount$ | async)" (click)="cards()"></app-info-card>
 </div>
 <div class="cards-container">
   <div class="card-element">

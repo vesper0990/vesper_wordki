@@ -4,13 +4,9 @@
     {
         Default,
 
-        EmptyParameter,
-        EmptyRequest,
+        RegisterUserAlreadyExists,
 
-        UserNotFound,
-
-        UserAlreadyExists,
-        PasswordNotConfirmed,
+        LoginUserNotFound,
 
     }
 }

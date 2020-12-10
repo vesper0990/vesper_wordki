@@ -32,7 +32,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                             }
                             this.errorService.setError('test', error);
                             this.router.navigate(['/error']);
-                            return throwError(errorMessage);
+                            return throwError(error);
 
                     }
                 })

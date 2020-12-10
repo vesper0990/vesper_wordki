@@ -20,6 +20,8 @@ import { EditGroupDialogComponent } from './components/edit-group-dialog/edit-gr
 import { LabelValueComponent } from './components/label-value/label-value.component';
 import { CardComponent } from './components/card/card.component';
 import { ButtonComponent } from './components/button/button.component';
+import { InfoCardComponent } from './components/info-card/info-card.component';
+import { PaginatorComponent } from './components/paginator/paginator.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { ButtonComponent } from './components/button/button.component';
     EditGroupDialogComponent,
     LabelValueComponent,
     CardComponent,
-    ButtonComponent
+    ButtonComponent,
+    InfoCardComponent,
+    PaginatorComponent,
   ],
   exports: [
     NubmerToTimePipe,
@@ -47,7 +51,9 @@ import { ButtonComponent } from './components/button/button.component';
     EditGroupDialogComponent,
     LabelValueComponent,
     CardComponent,
-    ButtonComponent
+    ButtonComponent,
+    InfoCardComponent,
+    PaginatorComponent
   ],
   imports: [
     CommonModule,

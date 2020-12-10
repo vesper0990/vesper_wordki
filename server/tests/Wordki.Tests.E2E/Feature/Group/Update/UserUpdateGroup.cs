@@ -30,8 +30,8 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
                     Id = 1,
                     Name = "user",
                     Password = Host.EncrypterMock.Object.GetSalt(string.Empty),
-                    CreationDate = Host.TimeProviderMock.Object.Now(),
-                    LastLoginDate = Host.TimeProviderMock.Object.Now()
+                    CreationDate = Host.Time2ProviderMock.Object.GetTime(),
+                    LastLoginDate = Host.Time2ProviderMock.Object.GetTime()
                 };
                 dbContext.Users.Add(user);
 
@@ -41,7 +41,7 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
                     GroupLanguage1 = 1,
                     GroupLanguage2 = 2,
                     Name = "group",
-                    GroupCreationDate = Host.TimeProviderMock.Object.Now()
+                    GroupCreationDate = Host.Time2ProviderMock.Object.GetTime()
                 };
                 dbContext.Groups.Add(group);
 

@@ -1,0 +1,11 @@
+<div class="main-container">
+  <div class="item" [ngClass]="{'item-disabled': isFirst}" (click)="first()">&lt;&lt;</div>
+  <div class="item" [ngClass]="{'item-disabled': isFirst}" (click)="previousPage()">&lt;</div>
+  <ng-container *ngFor="let item of items">
+    <div class="item" [ngClass]="{'item-selected': item.isSelected}" (click)="changePage(item)">
+      {{item.label}}
+    </div>
+  </ng-container>
+  <div class="item" [ngClass]="{'item-disabled': isLast}" (click)="nextPage()">&gt;</div>
+  <div class="item" [ngClass]="{'item-disabled': isLast}" (click)="last()">&gt;&gt;</div>
+</div>

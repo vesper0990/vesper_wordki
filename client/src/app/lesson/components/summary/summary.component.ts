@@ -6,11 +6,10 @@ import { SummaryService } from './services/summary/summary.service';
 @Component({
   templateUrl: './summary.component.html',
   styleUrls: ['./summary.component.scss'],
-  providers: [SummaryService]
 })
 export class SummaryComponent implements OnInit {
 
-  result$: Observable<LessonResult>
+  result$: Observable<LessonResult>;
 
   constructor(private readonly service: SummaryService) { }
 
@@ -18,7 +17,7 @@ export class SummaryComponent implements OnInit {
     this.result$ = this.service.getResults();
   }
 
-  finish(): void{
+  finish(): void {
     this.service.finish();
   }
 }

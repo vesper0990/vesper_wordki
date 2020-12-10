@@ -10,7 +10,7 @@ export class UserService {
 
   private readonly cookieTag = 'wordki-usr-tag';
 
-  private token: { token: string };
+  private token: string;
   userSettings: UserSettings;
   private subject: BehaviorSubject<boolean>;
 
@@ -22,7 +22,7 @@ export class UserService {
     return this.subject.asObservable();
   }
 
-  getToken(): { token: string } {
+  getToken(): string {
     return this.token;
   }
 
@@ -32,10 +32,11 @@ export class UserService {
 
   loginFromCookie(): void {
     if (!this.cookiesService.check(this.cookieTag)) {
+      console.log(this.cookiesService.getAll());
       return;
     }
     const cookieValue = this.cookiesService.get(this.cookieTag);
-    this.token = JSON.parse(cookieValue);
+    this.token = cookieValue;
     this.sendToSubscribers();
   }
 
@@ -61,7 +62,7 @@ export class UserService {
   }
 
   private saveCookie(): void {
-    this.cookiesService.set(this.cookieTag, JSON.stringify(this.token));
+    this.cookiesService.set(this.cookieTag, this.token);
   }
 
 }

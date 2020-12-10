@@ -14,6 +14,7 @@ import { StoreModule, Store } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { GroupListEffects } from './store/effects';
 import { reducer } from './store/reducer';
+import { GroupsListService } from './services/groups-list/groups-list.service';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { reducer } from './store/reducer';
   providers: [
     Store,
     { provide: GroupsListHttpServiceBase, useClass: environment.mockServer ? GroupsListHttpService : GroupsListHttpMockService },
+    GroupsListService
   ]
 })
 export class GroupsModule { }

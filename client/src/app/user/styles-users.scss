@@ -6,26 +6,43 @@
   #additional-info {
     margin-top: 5px;
     text-align: center;
+    font-family: Montserrat;
+
+    a {
+      font-family: Montserrat;
+    }
   }
 }
 
 form {
   .element-container {
     margin: 30px;
+    font-family: Montserrat;
 
     input {
       width: 100%;
       border: none;
-      border-radius: 3px;
+      border-radius: 10px;
       background-color: #e4e4e4;
       padding: 13px 15px 7px 15px;
       font-size: 30px;
+      font-family: Montserrat;
+
+      &:focus {
+        outline: none;
+        background-color: #e0e0e0;
+      }
     }
 
     .error-message {
       color: red;
-      font-size: 0.75em;
+      font-size: 1em;
       margin: 5px;
+      font-family: Montserrat;
+
+      div {
+        font-family: Montserrat;
+      }
     }
   }
 
@@ -35,8 +52,15 @@ form {
     font-size: 30px;
     padding-top: 16px;
     padding-bottom: 11px;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
+    font-family: Montserrat;
+    outline: none;
+
+    &:disabled{
+      background-color: rgb(200, 200, 200);
+      cursor: default;
+    }
   }
 }
 

@@ -15,12 +15,24 @@ export function selectDebugElementByClass<T>(fixture: ComponentFixture<T>, $clas
     return fixture.debugElement.query(By.css(`.${$class}`));
 }
 
+export function selectDebugElementByAttribute<T>(fixture: ComponentFixture<T>, attribute: string): DebugElement {
+    return fixture.debugElement.query(By.css(attribute));
+}
+
 export function selectNativeElementByClass<T>(fixture: ComponentFixture<T>, $class: string): any {
     return selectDebugElementByClass<T>(fixture, $class).nativeElement;
 }
 
+export function selectNativeElementByAttribute<T>(fixture: ComponentFixture<T>, attribute: string): any {
+    return selectDebugElementByAttribute<T>(fixture, attribute).nativeElement;
+}
+
 export function selectDebugElement<T>(fixture: ComponentFixture<T>, type: string): DebugElement {
     return fixture.debugElement.query(By.css(type));
+}
+
+export function selectAllDebugElements<T>(fixture: ComponentFixture<T>, type: string): DebugElement[] {
+    return fixture.debugElement.queryAll(By.css(type));
 }
 
 export function selectNativeElement<T>(fixture: ComponentFixture<T>, type: string): any {
@@ -35,6 +47,12 @@ export function inputValueToInputElementById<T>(fixture: ComponentFixture<T>, id
 
 export function inputValueToInputElementByClass<T>(fixture: ComponentFixture<T>, $class: string, value: string): void {
     const element = selectNativeElementByClass(fixture, $class);
+    element.value = value;
+    element.dispatchEvent(new Event('input'));
+}
+
+export function inputValueToInputElementByAttribute<T>(fixture: ComponentFixture<T>, attribute: string, value: string): void {
+    const element = selectNativeElementByAttribute(fixture, attribute);
     element.value = value;
     element.dispatchEvent(new Event('input'));
 }

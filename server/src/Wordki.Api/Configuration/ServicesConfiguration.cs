@@ -17,7 +17,6 @@ public static class ServicesConfiguration
             .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
             .AddScoped<IHttpContextProvider, HttpContextProvider>()
             .AddScoped<IUserCreator, UserCreator>()
-            .AddScoped<IDateTimeProvider, DateTimeProvider>()
             .AddScoped<ITimeProvider, TimeProvider>()
             .AddScoped<IDatabaseInitializer, DatabaseInitializer>()
             .AddScoped<IAuthenticationService, AuthenticationService>()

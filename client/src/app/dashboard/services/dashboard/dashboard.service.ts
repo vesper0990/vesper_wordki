@@ -48,12 +48,6 @@ export class DashboardService {
         return this.store.select(selector.selectGroupsCount);
     }
 
-    isGroupsCountReady(): Observable<boolean> {
-        return this.store.select(selector.selectGroupsCount).pipe(
-            map(value => value !== null)
-        );
-    }
-
     getCardsCount(): Observable<number> {
         return this.store.select(selector.selectCardsCount);
     }
