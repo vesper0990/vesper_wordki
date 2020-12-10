@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Wordki.Api.Repositories.EntityFrameworkRepositories
@@ -21,11 +22,22 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
 
     public class HerokuConnectionStringProvider : IConnectionStringProvider
     {
+
+        
+
         private readonly string PostgressTag = "DATABASE_URL";
+        private readonly ILogger<IConnectionStringProvider> logger;
+
         public string ConnectionString { get; }
+
+        public HerokuConnectionStringProvider(ILogger<IConnectionStringProvider> logger){
+            this.logger = logger;
+        }
+
         public HerokuConnectionStringProvider(IConfiguration configuration)
         {
             var value = configuration.GetValue<string>(PostgressTag);
+            logger.LogInformation(value);
             value = value.Remove(0, "postgres://".Length);
             var counter = value.IndexOf(':');
             var user = value.Substring(0, counter);
@@ -46,6 +58,7 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
             var database = value;
 
             ConnectionString = $"Host={host};Port={port};Database={database};User Id={user};Password={password}";
+            logger.LogInformation(ConnectionString);
         }
     }
 }

@@ -32,8 +32,7 @@ namespace Wordki.Tests.UI.Groups
         }
 
         void AndGivenUserClickEditGroupButton(){
-            var test = Driver.FindElement(By.CssSelector("body > app-root > div > ng-component > div:nth-child(2) > app-group-row > div > div.edit-button"));
-            Driver.FindElement(By.CssSelector("body > app-root > div > ng-component > div:nth-child(2) > app-group-row > div > div.edit-button")).Click();
+            Driver.FindElement(By.CssSelector("body > app-root > ng-component > div:nth-child(2) > app-group-row > div > div.edit-button > img")).Click();
         }
 
         void WhenUserFillTheForm()

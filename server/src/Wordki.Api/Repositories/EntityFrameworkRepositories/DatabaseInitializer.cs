@@ -6,6 +6,7 @@ using Wordki.Utils.TimeProvider;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Wordki.Api.Framework.Options;
+using Microsoft.Extensions.Logging;
 
 namespace Wordki.Api.Repositories.EntityFrameworkRepositories
 {
@@ -20,23 +21,28 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
         private readonly WordkiDbContext dbContext;
         private readonly ITimeProvider timeProvider;
         private readonly IEncrypter encrypter;
+        private readonly ILogger<IDatabaseInitializer> logger;
         private readonly General options;
 
 
         public DatabaseInitializer(WordkiDbContext dbContext,
          ITimeProvider timeProvider,
           IEncrypter encrypter,
-          IOptions<General> options)
+          IOptions<General> options,
+          ILogger<IDatabaseInitializer> logger)
         {
             this.dbContext = dbContext;
             this.timeProvider = timeProvider;
             this.encrypter = encrypter;
+            this.logger = logger;
             this.options = options.Value;
         }
 
         public async Task Init()
         {
+            logger.LogInformation("Beginnin init");
             await dbContext.Database.EnsureCreatedAsync();
+            logger.LogInformation("finish init");
 
             if (!options.Mocks)
             {

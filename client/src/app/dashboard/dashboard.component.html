@@ -8,8 +8,8 @@
   <app-info-card id="groups-card" title="Groups" [label]="groupsCount$ | async" clickable="true"
     [isLoading]="!(isGroupsCountReady$ | async)" (click)="groups()"></app-info-card>
     
-  <app-info-card id="cards-card" title="Cards" [label]="isCardsCountReady$ | async" clickable="true"
-    [isLoading]="!(cardsCount$ | async)" (click)="cards()"></app-info-card>
+  <app-info-card id="cards-card" title="Cards" [label]="cardsCount$ | async" clickable="true"
+    [isLoading]="!(isCardsCountReady$ | async)" (click)="cards()"></app-info-card>
 </div>
 <div class="cards-container">
   <div class="card-element">

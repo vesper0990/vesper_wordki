@@ -117,6 +117,9 @@ export class GroupDetailsHttpMock extends GroupDetailsHttpBase {
             name: `group ${groupId}`,
             language1: 1,
             language2: 2,
+            cardsCount: 1,
+            creationDate: "2020/01/01",
+            repeatsCount: 3,
         };
         return of<GroupDetailsDto>(groupDetailsDto).pipe(map((dto: GroupDetailsDto) => this.groupMapper.map(dto)), delay(500));
     }

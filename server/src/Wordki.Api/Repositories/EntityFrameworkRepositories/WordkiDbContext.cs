@@ -50,13 +50,13 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
             modelBuilder.Entity<Group>(group =>
             {
                 group.HasKey(g => g.Id);
-                group.HasMany(g => g.Words).WithOne(w => w.Group);
+                group.HasMany(g => g.Words).WithOne(w => w.Group).OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Card>(card =>
             {
                 card.HasKey(w => w.Id);
-                card.HasMany(w => w.Repeats).WithOne(r => r.Word);
+                card.HasMany(w => w.Repeats).WithOne(r => r.Word).OnDelete(DeleteBehavior.Cascade);
                 card.OwnsOne(c => c.Tails, tails =>
                 {
                     tails.OwnsOne(t => t.State, state =>

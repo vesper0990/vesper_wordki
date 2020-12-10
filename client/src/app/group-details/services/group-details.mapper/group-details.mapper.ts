@@ -9,7 +9,10 @@ export class GroupDetailsMapper {
         const groupDetails = new GroupDetails(groupDetailsDto.id,
             groupDetailsDto.name,
             LanguageType.getLanguageType(groupDetailsDto.language1),
-            LanguageType.getLanguageType(groupDetailsDto.language2));
+            LanguageType.getLanguageType(groupDetailsDto.language2),
+            groupDetailsDto.cardsCount,
+            groupDetailsDto.repeatsCount,
+            new Date(groupDetailsDto.creationDate));
         return groupDetails;
     }
 }

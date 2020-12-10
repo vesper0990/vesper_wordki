@@ -11,7 +11,7 @@ COPY package.json package-lock.json ./
 RUN npm install
 COPY . .
 
-RUN npm run build --c=production
+RUN npm run build:prod
 
 FROM nginx:alpine as e2e-release
 

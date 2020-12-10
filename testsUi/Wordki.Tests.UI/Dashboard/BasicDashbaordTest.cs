@@ -37,6 +37,6 @@ namespace Wordki.Tests.UI.Dashboard
         }
 
         [Test]
-        public void ExecuteTest() => this.BDDfy();
+        public void CheckPageAppearance() => this.BDDfy();
     }
 }

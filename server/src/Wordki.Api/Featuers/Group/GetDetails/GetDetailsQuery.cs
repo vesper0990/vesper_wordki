@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -27,6 +29,7 @@ namespace Wordki.Api.Featuers.Group.GetDetails
         {
             var userId = contextProvider.GetUserId();
             var group = await dbContext.Groups
+            .Include(g => g.Words).ThenInclude(c => c.Repeats)
             .FirstOrDefaultAsync(g => g.Id == request.GroupId && g.User.Id == userId);
 
             return new GroupDetailsDto
@@ -34,7 +37,10 @@ namespace Wordki.Api.Featuers.Group.GetDetails
                 GroupId = group.Id,
                 Language1 = group.GroupLanguage1,
                 Language2 = group.GroupLanguage2,
-                Name = group.Name
+                Name = group.Name,
+                CreationDate = group.GroupCreationDate,
+                CardsCount = group.Words.Count,
+                RepeatsCount = group.Words.Select(c => c.Repeats.Count).Sum()
             };
         }
     }
@@ -45,5 +51,8 @@ namespace Wordki.Api.Featuers.Group.GetDetails
         public string Name { get; set; }
         public int Language1 { get; set; }
         public int Language2 { get; set; }
+        public int CardsCount { get; set; }
+        public int RepeatsCount { get; set; }
+        public DateTime CreationDate { get; set; }
     }
 }

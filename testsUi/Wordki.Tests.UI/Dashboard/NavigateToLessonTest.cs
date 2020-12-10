@@ -29,6 +29,6 @@ namespace Wordki.Tests.UI.Dashboard
         void ThenAppNavigateToLesson() => Assert.AreEqual($"{AppUrl}/lesson/fiszki", Driver.Url);
 
         [Test]
-        public void ExecuteTest() => this.BDDfy();
+        public void CheckNavigationToLesson() => this.BDDfy();
     }
 }

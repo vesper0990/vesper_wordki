@@ -52,7 +52,7 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "baseHref": "/wordki/",
+              "baseHref": "/",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
