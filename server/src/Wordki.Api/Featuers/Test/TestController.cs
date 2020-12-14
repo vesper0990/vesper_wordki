@@ -16,10 +16,13 @@ namespace Wordki.Api.Featuers.Test
     public class TestController : ControllerBase
     {
         private readonly IConfiguration configuration;
+        private readonly IDatabaseInitializer init;
 
-        public TestController(IConfiguration configuration, IMediator mediator, IDatabaseInitializer init) : base(mediator)
+        public TestController(IConfiguration configuration,
+         IMediator mediator, IDatabaseInitializer init) : base(mediator)
         {
             this.configuration = configuration;
+            this.init = init;
         }
 
         [HttpGet("value/{value}")]
@@ -37,6 +40,13 @@ namespace Wordki.Api.Featuers.Test
         public IActionResult Test()
         {
             return new JsonResult("tes2");
+        }
+
+        [HttpGet("init")]
+        public async Task<IActionResult> Init()
+        {
+            await init.Init();
+            return Ok();
         }
 
         [HttpGet("version")]

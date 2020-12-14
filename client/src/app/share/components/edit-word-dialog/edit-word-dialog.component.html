@@ -32,8 +32,8 @@
       </div>
   </form>
   <p-footer>
-    <button pButton (click)="onSave()" label="Save"></button>
-    <button *ngIf="isRemoveVisible" pButton (click)="onRemove()" label="Remove"></button>
-    <button pButton (click)="onCancel()" label="Cancel"></button>
+    <button id="save-btn" pButton (click)="onSave()" label="Save"></button>
+    <button id="remove-btn" *ngIf="isRemoveVisible" pButton (click)="onRemove()" label="Remove"></button>
+    <button id="cancel-btn" pButton (click)="onCancel()" label="Cancel"></button>
   </p-footer>
 </p-dialog>

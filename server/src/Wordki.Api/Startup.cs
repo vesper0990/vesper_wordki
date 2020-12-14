@@ -48,10 +48,8 @@ namespace Wordki
                 .AddFluentValidation(f => f.RegisterValidatorsFromAssemblyContaining<Startup>());
         }
 
-        public void Configure(IApplicationBuilder app, IDatabaseInitializer initializer)
+        public void Configure(IApplicationBuilder app)
         {
-            initializer.Init().Wait();
-
             app.UseCors("AllowAll");
             app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseMiddleware<ExceptionHandlerMiddleware>();
@@ -70,7 +68,6 @@ namespace Wordki
                 filterContext.Result = new BadRequestObjectResult(filterContext.ModelState);
             }
         }
-
         public void OnActionExecuted(ActionExecutedContext filterContext)
         {
 

@@ -53,7 +53,9 @@ export class CardsListService {
         return this.store.select(selectDialogCard).pipe(
             map(card => {
                 return card === null || card === undefined ?
-                    {} as EditWord :
+                    {
+                        wordId: 0
+                    } as EditWord :
                     {
                         wordId: card.id,
                         language1: card.language1,

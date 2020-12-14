@@ -3,7 +3,7 @@
     Loading...
   </ng-container>
 </div>
-<div class="button-container">
+<div id="add-card-btn" class="button-container">
   <button class="custom-button" (click)="addCard()">Add new card</button>
 </div>
 
@@ -16,14 +16,15 @@
 <ng-template #groupDetails>
   <ng-container *ngIf="groupDetails$ | async as groupDetails">
     <app-group-description [groupName]="groupDetails.name" [language1]="groupDetails.language1"
-      [language2]="groupDetails.language2" wordsCount="16" repeatsCount="123"></app-group-description>
+      [language2]="groupDetails.language2" [wordsCount]="groupDetails.cardsCount" [repeatsCount]="groupDetails.repeatsCount"
+      [creationDate]="groupDetails.creationDate"></app-group-description>
   </ng-container>
 </ng-template>
 
 <ng-template #words>
   <ng-container *ngIf="cards$ | async as cards">
     <ng-container *ngIf="cards.length !== 0; else nowords">
-      <app-word-row *ngFor="let item of cards" [word]="item" (editWord)="editCard($event)"></app-word-row>
+      <app-word-row *ngFor="let item of cards" [word]="item" (click)="editCard(item)"></app-word-row>
     </ng-container>
   </ng-container>
 </ng-template>

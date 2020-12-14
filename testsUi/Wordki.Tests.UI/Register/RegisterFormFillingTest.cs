@@ -19,7 +19,7 @@ namespace Wordki.Tests.UI.Register
         void WhenUserFillsForm()
         {
             var userNameEl = Driver.FindElement(By.Id("userName")).FindElement(By.CssSelector("input"));
-            userNameEl.SendKeys("test");
+            userNameEl.SendKeys("test1");
 
             var passwordEl = Driver.FindElement(By.Id("password")).FindElement(By.CssSelector("input"));
             passwordEl.SendKeys("password");

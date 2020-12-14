@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Effect, ofType, Actions } from '@ngrx/effects';
 import * as actions from './actions';
 import { GroupDetailsHttpBase } from '../services/group-details-http/group-details-http.service';
-import { mergeMap, map, catchError, tap, concatMap, switchMap, exhaustMap } from 'rxjs/operators';
+import { mergeMap, map, catchError, concatMap, exhaustMap } from 'rxjs/operators';
 import { forkJoin, Observable, of } from 'rxjs';
 import { GroupDetails } from '../models/group-details.model';
 import { Word } from '../models/word.model';
