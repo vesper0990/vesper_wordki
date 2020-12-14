@@ -17,7 +17,6 @@ export class LanguageType {
     readonly type: LanguageTypeEnum;
     readonly label: string;
     readonly flag: string;
-    readonly value: 1;
 
     constructor(type: LanguageTypeEnum, label: string, flag: string) {
         this.type = type;

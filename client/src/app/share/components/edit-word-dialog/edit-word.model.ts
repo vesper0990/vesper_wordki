@@ -1,10 +1,10 @@
 export class EditWord {
-    wordId: number;
-    groupId: number;
-    language1: string;
-    language2: string;
-    example1: string;
-    example2: string;
-    comment: string;
-    isVisible: boolean;
+    constructor(
+        public id: number,
+        public groupId: number,
+        public language1: string,
+        public language2: string,
+        public example1: string,
+        public example2: string,
+        public isVisible: boolean) { }
 }

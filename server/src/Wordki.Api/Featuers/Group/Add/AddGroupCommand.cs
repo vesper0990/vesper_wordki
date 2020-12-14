@@ -8,8 +8,8 @@ namespace Wordki.Api.Featuers.Group.Add
     {
         public long UserId { get; set; }
         public string Name { get; set; }
-        public int Language1 { get; set; }
-        public int Language2 { get; set; }
+        public int LanguageFront { get; set; }
+        public int LanguageBack { get; set; }
         public IEnumerable<Card> Words { get; set; } = new Card[0];
     }
 

@@ -18,7 +18,7 @@ namespace Wordki.Api.Responses
                 IsVisible = card.IsVisible, // todo split is visible on front and back
                 Language = card.Group.GroupLanguage1,
                 NextRepeat = card.Heads.State.NextRepeat,
-                RepeatCounts = card.Repeats.Count(r => r.QuestionSide == QuestionSideEnum.Heads)
+                RepeatCount = card.Repeats.Count(r => r.QuestionSide == QuestionSideEnum.Heads)
             },
             Back = new SideDetailsDto
             {
@@ -28,7 +28,7 @@ namespace Wordki.Api.Responses
                 IsVisible = card.IsVisible, // todo split is visible on front and back
                 Language = card.Group.GroupLanguage2,
                 NextRepeat = card.Tails.State.NextRepeat,
-                RepeatCounts = card.Repeats.Count(r => r.QuestionSide == QuestionSideEnum.Tails)
+                RepeatCount = card.Repeats.Count(r => r.QuestionSide == QuestionSideEnum.Tails)
             }
         };
 
@@ -46,7 +46,7 @@ namespace Wordki.Api.Responses
                 IsVisible = card.IsVisible, // todo split is visible on front and back
                 Language = card.Group.GroupLanguage1,
                 NextRepeat = card.Heads.State.NextRepeat,
-                RepeatCounts = card.Repeats.Count(r => r.QuestionSide == QuestionSideEnum.Heads)
+                RepeatCount = card.Repeats.Count(r => r.QuestionSide == QuestionSideEnum.Heads)
             },
             Back = new SideDetailsDto
             {
@@ -56,7 +56,7 @@ namespace Wordki.Api.Responses
                 IsVisible = card.IsVisible, // todo split is visible on front and back
                 Language = card.Group.GroupLanguage2,
                 NextRepeat = card.Tails.State.NextRepeat,
-                RepeatCounts = card.Repeats.Count(r => r.QuestionSide == QuestionSideEnum.Tails)
+                RepeatCount = card.Repeats.Count(r => r.QuestionSide == QuestionSideEnum.Tails)
             }
         };
 

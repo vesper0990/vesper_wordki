@@ -2,21 +2,21 @@
   <form class="container" [formGroup]="groupForm">
     <div class="row">
       <label for="name">
-        <b>Group name</b>
+        <b>Name</b>
       </label>
       <input class="input" pInputText type="text" formControlName="name">
     </div>
     <div class="row">
       <label for="language1">
-        <b>Language on heads</b>
+        <b>Front</b>
       </label>
-      <app-languages-drop-down class="input" formControlName="language1"></app-languages-drop-down>
+      <app-languages-drop-down class="input" formControlName="languageFront"></app-languages-drop-down>
     </div>
     <div class="row">
       <label for="language2">
-        <b>Langauge on tails</b>
+        <b>Back</b>
       </label>
-      <app-languages-drop-down class="input" formControlName="language2"></app-languages-drop-down>
+      <app-languages-drop-down class="input" formControlName="languageBack"></app-languages-drop-down>
     </div>
   </form>
   <p-footer>

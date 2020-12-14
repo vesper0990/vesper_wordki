@@ -4,8 +4,7 @@ import * as actions from './actions';
 import { GroupDetailsHttpBase } from '../services/group-details-http/group-details-http.service';
 import { mergeMap, map, catchError, concatMap, exhaustMap } from 'rxjs/operators';
 import { forkJoin, Observable, of } from 'rxjs';
-import { GroupDetails } from '../models/group-details.model';
-import { Word } from '../models/word.model';
+import { CardDetails, GroupDetails } from 'src/app/share/models/card-details';
 
 @Injectable()
 export class GroupDetailsEffects {
@@ -20,7 +19,7 @@ export class GroupDetailsEffects {
     @Effect() getWordsEffect = this.actions$.pipe(
         ofType(actions.GroupDetailsTypes.GetWords),
         mergeMap((action: actions.GetWords) => this.groupDetailsProvider.getWords(action.payload.groupId)),
-        map((words: Word[]) => new actions.GetWordsSuccess({ words: words })),
+        map((words: CardDetails[]) => new actions.GetWordsSuccess({ words: words })),
         catchError(error => this.handleError(error))
     );
 

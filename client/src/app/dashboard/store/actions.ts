@@ -1,4 +1,5 @@
 import { Action } from "@ngrx/store";
+import { ExtendedCardDetails } from "src/app/share/models/card-details";
 import { DashbordState } from "./state";
 
 export enum DashboardActionsEnum {
@@ -40,7 +41,7 @@ export class GetLastFailed implements Action {
 
 export class GetLastFailedSuccess implements Action {
     readonly type = DashboardActionsEnum.GET_LAST_FAILED_SUCCESS;
-    constructor(public payload: { card: any }) { }
+    constructor(public payload: { card: ExtendedCardDetails }) { }
 
     public reduce(state: DashbordState, action: GetLastFailedSuccess): DashbordState {
         return {
@@ -75,7 +76,7 @@ export class GetNextRepeat implements Action {
 
 export class GetNextRepeatSuccess implements Action {
     readonly type = DashboardActionsEnum.GET_NEXT_REPEAT_SUCCESS;
-    constructor(public payload: { card: any }) { }
+    constructor(public payload: { card: ExtendedCardDetails }) { }
 
     public reduce(state: DashbordState, action: GetNextRepeatSuccess): DashbordState {
         return {
@@ -100,7 +101,7 @@ export class GetNewstCard implements Action {
 
 export class GetNewstCardSuccess implements Action {
     readonly type = DashboardActionsEnum.GET_NEWST_CARD_SUCCESS;
-    constructor(public payload: { card: any }) { }
+    constructor(public payload: { card: ExtendedCardDetails }) { }
 
     public reduce(state: DashbordState, action: GetNewstCardSuccess): DashbordState {
         return {

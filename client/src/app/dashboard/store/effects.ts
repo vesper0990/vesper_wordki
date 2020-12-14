@@ -34,7 +34,7 @@ export class DashboardEffects {
     public getNewestCard$ = this.actions$.pipe(
         ofType(actions.DashboardActionsEnum.GET_NEWST_CARD),
         exhaustMap(() => this.dataProvider.getLastWords(1)),
-        map(value => new actions.GetNewstCardSuccess({ card: value[0] })),
+        map(value => new actions.GetNewstCardSuccess({ card: value })),
         catchError(error => of(new actions.RequestFailed({ error: error })))
     );
 

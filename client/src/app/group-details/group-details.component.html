@@ -15,8 +15,8 @@
 
 <ng-template #groupDetails>
   <ng-container *ngIf="groupDetails$ | async as groupDetails">
-    <app-group-description [groupName]="groupDetails.name" [language1]="groupDetails.language1"
-      [language2]="groupDetails.language2" [wordsCount]="groupDetails.cardsCount" [repeatsCount]="groupDetails.repeatsCount"
+    <app-group-description [groupName]="groupDetails.name" [language1]="groupDetails.languageFront"
+      [language2]="groupDetails.languageBack" [wordsCount]="groupDetails.cardsCount" [repeatsCount]="groupDetails.repeatsCount"
       [creationDate]="groupDetails.creationDate"></app-group-description>
   </ng-container>
 </ng-template>

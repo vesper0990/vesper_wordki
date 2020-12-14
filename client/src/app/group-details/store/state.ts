@@ -1,16 +1,16 @@
 import { DialogMode } from 'src/app/share/components/edit-group-dialog/mode-dialog';
-import { GroupDetails } from '../models/group-details.model';
-import { Word } from '../models/word.model';
+import { EditWord } from 'src/app/share/components/edit-word-dialog/edit-word.model';
+import { CardDetails, GroupDetails } from 'src/app/share/models/card-details';
 
 export interface GroupDetailsState {
     groupDetails: GroupDetails;
     isGroupDetailsLoading: boolean;
-    words: Word[];
+    words: CardDetails[];
     isWordsLoading: boolean;
 
     dialogVisibility: boolean;
     dialogMode: DialogMode;
-    dialogCard: Word;
+    dialogCard: EditWord;
 }
 
 export const initialState: GroupDetailsState = {

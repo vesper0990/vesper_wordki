@@ -12,6 +12,7 @@ export class EditGroupDialogComponent implements OnInit {
   private _group: EditGroup;
   @Input() set group(value: EditGroup) {
     this._group = value;
+    console.log(this._group);
     this.initForm();
   }
 
@@ -35,8 +36,8 @@ export class EditGroupDialogComponent implements OnInit {
   ngOnInit(): void {
     this.groupForm = this.formBuilder.group({
       name: this.formBuilder.control('', [Validators.required, Validators.minLength(4)]),
-      language1: [''],
-      language2: [''],
+      languageFront: [''],
+      languageBack: [''],
     });
   }
 
@@ -46,18 +47,18 @@ export class EditGroupDialogComponent implements OnInit {
     }
     this.groupForm.patchValue({
       name: this._group.name,
-      language1: this._group.language1,
-      language2: this._group.language2,
+      languageFront: this._group.languageFront,
+      languageBack: this._group.languageBack,
     });
   }
 
   onSave(): void {
-    const newGroup = {
-      ...this._group,
-      name: this.groupForm.get('name').value,
-      language1: this.groupForm.get('language1').value.type,
-      language2: this.groupForm.get('language2').value.type,
-    };
+    const newGroup = new EditGroup(
+      this._group.id,
+      this.groupForm.get('name').value,
+      this.groupForm.get('languageFront').value,
+      this.groupForm.get('languageBack').value
+    );
     this.save.emit(newGroup);
   }
 

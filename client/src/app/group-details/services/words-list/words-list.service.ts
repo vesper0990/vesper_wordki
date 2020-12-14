@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { GroupDetails } from '../../models/group-details.model';
-import { Word } from '../../models/word.model';
 import { AddWord, GetGroupDetails, GetWords, RemoveWordAction, ShowDialog, UpdateWord } from '../../store/actions';
 import { GroupDetailsState } from '../../store/state';
 import { selectDialogCard, selectDialogMode, selectDialogVisibility, selectGroupDetails, selectIsCardsLoading, selectWords } from '../../store/selectors';
-import { ActivatedRoute } from '@angular/router';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { DialogMode } from 'src/app/share/components/edit-group-dialog/mode-dialog';
 import { EditWord } from 'src/app/share/components/edit-word-dialog/edit-word.model';
 import { HideDialog } from 'src/app/groups-list/store/actions';
+import { CardDetails, GroupDetails } from 'src/app/share/models/card-details';
 
 @Injectable()
 export class CardsListService {
@@ -27,7 +25,7 @@ export class CardsListService {
         // });
     }
 
-    getCards(): Observable<Word[]> {
+    getCards(): Observable<CardDetails[]> {
         return this.store.select(selectWords);
     }
 
@@ -50,30 +48,26 @@ export class CardsListService {
     }
 
     getDialogCard(): Observable<EditWord> {
-        return this.store.select(selectDialogCard).pipe(
-            map(card => {
-                return card === null || card === undefined ?
-                    {
-                        wordId: 0
-                    } as EditWord :
-                    {
-                        wordId: card.id,
-                        language1: card.language1,
-                        language2: card.language2,
-                        example1: card.example1,
-                        example2: card.example2,
-                        isVisible: card.isVisible
-                    } as EditWord;
-            })
-        );
+        return this.store.select(selectDialogCard);
     }
 
     openDialogToAdd(): void {
-        this.store.dispatch(new ShowDialog({ mode: 'add' }));
+        this.store.dispatch(new ShowDialog({ mode: 'add', card: new EditWord(0, this.groupId, '', '', '', '', true) }));
     }
 
-    openDialogToEdit(card: Word): void {
-        this.store.dispatch(new ShowDialog({ mode: 'edit', card: card }));
+    openDialogToEdit(card: CardDetails): void {
+        this.store.dispatch(new ShowDialog(
+            {
+                mode: 'edit',
+                card: new EditWord(
+                    card.id,
+                    this.groupId,
+                    card.front.value,
+                    card.front.example,
+                    card.back.value,
+                    card.back.example,
+                    card.front.isVisible)
+            }));
     }
 
     dialogCancel(): void {
@@ -82,7 +76,7 @@ export class CardsListService {
 
     dialogSave(editCard: EditWord): void {
         editCard.groupId = this.groupId;
-        const action = editCard.wordId === 0 ? new AddWord({ editword: editCard }) : new UpdateWord({ editword: editCard });
+        const action = editCard.id === 0 ? new AddWord({ editword: editCard }) : new UpdateWord({ editword: editCard });
         this.store.dispatch(action);
     }
 

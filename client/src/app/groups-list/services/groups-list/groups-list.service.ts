@@ -5,7 +5,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EditGroup } from 'src/app/share/components/edit-group-dialog/edit-group.model';
 import { DialogMode } from 'src/app/share/components/edit-group-dialog/mode-dialog';
-import { Group } from '../../models/group.model';
+import { Group } from 'src/app/share/models/card-details';
+import { LanguageType, LanguageTypeEnum } from 'src/app/share/models/language-type.mode';
 import { AddGroup, GetGroups, HideDialog, RemoveGroup, ShowDialog, UpdateGroup } from '../../store/actions';
 import { getGroupsList, getIsLoading, selectDialogGroup, selectDialogMode, selectDialogVisibility } from '../../store/selectors';
 import { GroupListState } from '../../store/state';
@@ -40,14 +41,9 @@ export class GroupsListService {
     getDialogGroup(): Observable<EditGroup> {
         return this.store.select(selectDialogGroup).pipe(
             map(group => {
-                return group === null || group === undefined ?
-                    {} as EditGroup :
-                    {
-                        name: group.name,
-                        id: group.id,
-                        language1: group.language1,
-                        language2: group.language2,
-                    } as EditGroup;
+                return group === null || group === undefined
+                    ? new EditGroup(0, '', LanguageType.getLanguageType(LanguageTypeEnum.Undefined), LanguageType.getLanguageType(LanguageTypeEnum.Undefined))
+                    : new EditGroup(group.id, group.name, group.languageFront, group.languageBack);
             })
         );
     }
@@ -61,6 +57,7 @@ export class GroupsListService {
     }
 
     dialogSave(group: EditGroup): void {
+        console.log(group);
         if (group.id !== 0 && group.id !== undefined) {
             this.store.dispatch(new UpdateGroup({ group: group }));
         } else {
