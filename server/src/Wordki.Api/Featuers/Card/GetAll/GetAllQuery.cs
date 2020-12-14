@@ -4,18 +4,18 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Wordki.Api.Domain;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
+using Wordki.Api.Responses;
 using Wordki.Utils.HttpContext;
 
 namespace Wordki.Api.Featuers.Card.GetAll
 {
-    public class GetAllQuery : IRequest<IEnumerable<CardDto>>
+    public class GetAllQuery : IRequest<IEnumerable<CardDetailsDto>>
     {
         public long GroupId { get; set; }
     }
 
-    public class GetAllQueryHandler : IRequestHandler<GetAllQuery, IEnumerable<CardDto>>
+    public class GetAllQueryHandler : IRequestHandler<GetAllQuery, IEnumerable<CardDetailsDto>>
     {
         private readonly WordkiDbContext dbContext;
         private readonly IHttpContextProvider contextProvider;
@@ -26,33 +26,17 @@ namespace Wordki.Api.Featuers.Card.GetAll
             this.contextProvider = contextProvider;
         }
 
-        public Task<IEnumerable<CardDto>> Handle(GetAllQuery request, CancellationToken cancellationToken)
+        public Task<IEnumerable<CardDetailsDto>> Handle(GetAllQuery request, CancellationToken cancellationToken)
         {
             var userId = contextProvider.GetUserId();
-            var cards = dbContext.Words.Include(c => c.Group)
+            var cards = dbContext.Words
+                .Include(c => c.Group)
+                .Include(c => c.Repeats)
                 .Where(c => c.Group.Id == request.GroupId && c.Group.User.Id == userId)
-                .AsEnumerable().ToList();
+                .Select(c => c.GetCardDetailsDto())
+                .AsEnumerable();
 
-            return Task.FromResult(cards.Select(c => Map(c)));
+            return Task.FromResult(cards);
         }
-
-        public CardDto Map(Api.Domain.Card card){
-            return new CardDto
-            {
-                Id = card.Id,
-                Comment = card.Comment,
-                Word1 = card.Heads,
-                Word2 = card.Tails
-            };
-        }
-    }
-
-    public class CardDto
-    {
-        public long Id { get; set; }
-        public Side Word1 { get; set; }
-        public Side Word2 { get; set; }
-        public string Comment { get; set; }
-        public int RepeatsCount { get; set; }
     }
 }

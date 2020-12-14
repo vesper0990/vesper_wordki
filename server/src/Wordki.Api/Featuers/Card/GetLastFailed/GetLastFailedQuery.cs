@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using System.Collections.Generic;
+using Wordki.Api.Responses;
 
 namespace Wordki.Api.Featuers.Card.GetLastFailed
 {
-    public class GetLastFailedQuery : IRequest<LastFailedDto>
+    public class GetLastFailedQuery : IRequest<ExtendedCardDetailsDto>
     {
     }
 }

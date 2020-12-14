@@ -1,16 +1,18 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
+using Wordki.Api.Responses;
 using Wordki.Utils.HttpContext;
 using Wordki.Utils.TimeProvider;
 
 namespace Wordki.Api.Featuers.Lesson.GetTodayCards
 {
-    public class GetTodayCardsQueryHandler : IRequestHandler<GetTodayCardsQuery, IEnumerable<TodayCardDto>>
+    public class GetTodayCardsQueryHandler : IRequestHandler<GetTodayCardsQuery, IEnumerable<CardRepeatDto>>
     {
         private readonly WordkiDbContext dbContext;
         private readonly IHttpContextProvider contextProvider;
@@ -26,31 +28,67 @@ namespace Wordki.Api.Featuers.Lesson.GetTodayCards
             this.timeProvider = timeProvider;
         }
 
-        public async Task<IEnumerable<TodayCardDto>> Handle(GetTodayCardsQuery request, CancellationToken cancellationToken)
+        public Task<IEnumerable<CardRepeatDto>> Handle(GetTodayCardsQuery request, CancellationToken cancellationToken)
         {
             var userId = contextProvider.GetUserId();
-            var date = timeProvider.GetDate().AddDays(1);
+            var results = new List<CardRepeatDto>();
 
-            var cards = dbContext.Words
-                .Include(c => c.Group).ThenInclude(g => g.User)
-                .Where(c =>
-                    c.Group.User.Id == userId &&
-                    (c.Tails.State.NextRepeat <= date || c.Heads.State.NextRepeat <= date) &&
-                    c.IsVisible)
-                .Select(c => Map(c));
+            var heads = dbContext.Words.Include(c => c.Group)
+            .Where(c => c.Group.User.Id == userId && c.Heads.State.NextRepeat < timeProvider.GetDate());
 
-            return await Task.FromResult(cards);
+            results.AddRange(heads.Select(item => ConvertIntoRepeatDto(item, false)));
+
+            var tails = dbContext.Words.Include(c => c.Group)
+            .Where(c => c.Group.User.Id == userId && c.Tails.State.NextRepeat < timeProvider.GetDate());
+
+            results.AddRange(tails.Select(item => ConvertIntoRepeatDto(item, true)));
+
+            return Task.FromResult(results.AsEnumerable());
         }
 
-        private TodayCardDto Map(Domain.Card card) =>
-            new TodayCardDto
+        private bool CheckDate(Domain.Side side)
+        {
+            var sideDate = new DateTime(side.State.NextRepeat.Year, side.State.NextRepeat.Month, side.State.NextRepeat.Day);
+            return sideDate.CompareTo(timeProvider.GetDate()) <= 0;
+        }    
+
+        public CardRepeatDto ConvertIntoRepeatDto(Domain.Card card, bool revert = false)
+        => revert 
+        ? new CardRepeatDto
+        {
+            Id = card.Id,
+            Answer = new SideRepeatDto
             {
-                CardId = card.Id,
-                GroupName = card.Group.Name,
-                HeadsLanguage = card.Group.GroupLanguage1,
-                TailsLanguage = card.Group.GroupLanguage2,
-                Heads = card.Heads,
-                Tails = card.Tails
-            };
+                Value = card.Heads.Value,
+                Example = card.Heads.Example,
+                Drawer = card.Heads.State.Drawer.Value,
+                Language =  card.Group.GroupLanguage1
+            },
+            Question = new SideRepeatDto
+            {
+                Value = card.Tails.Value,
+                Example = card.Tails.Example,
+                Drawer = card.Tails.State.Drawer.Value,
+                Language =  card.Group.GroupLanguage2
+            }
+        }
+        : new CardRepeatDto
+        {
+            Id = card.Id,
+            Question = new SideRepeatDto
+            {
+                Value = card.Heads.Value,
+                Example = card.Heads.Example,
+                Drawer = card.Heads.State.Drawer.Value,
+                Language =  card.Group.GroupLanguage1
+            },
+            Answer = new SideRepeatDto
+            {
+                Value = card.Tails.Value,
+                Example = card.Tails.Example,
+                Drawer = card.Tails.State.Drawer.Value,
+                Language =  card.Group.GroupLanguage2
+            }
+        };
     }
 }
