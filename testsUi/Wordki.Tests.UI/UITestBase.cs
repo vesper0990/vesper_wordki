@@ -17,12 +17,6 @@ namespace Wordki.Tests.UI
 
         protected UITestBase()
         {
-
-        }
-
-        [SetUp]
-        protected void SetupUtils()
-        {
             var options = new ChromeOptions();
             // options.AddArguments("headless");
             options.AddArguments("diable-dev-shm-usage",
@@ -31,7 +25,11 @@ namespace Wordki.Tests.UI
               "ignore-certificate-errors",
                "no-sandbox");
             Driver = new ChromeDriver(options);
+        }
 
+        [SetUp]
+        protected void SetupUtils()
+        {
             Server = WireMockFactory.Create("http://localhost:5001");
         }
 
@@ -50,7 +48,8 @@ namespace Wordki.Tests.UI
             Driver.Dispose();
         }
 
-        protected void SetAuthorizationCookie(){
+        protected void SetAuthorizationCookie()
+        {
             Driver.Navigate().GoToUrl($"{AppUrl}");
             Thread.Sleep(200);
             Driver.Manage().Cookies.AddCookie(new Cookie("wordki-usr-tag", "token"));
@@ -73,5 +72,5 @@ namespace Wordki.Tests.UI
             .AddGetEndpoint("/card/all/1", new object[0]);
     }
 
-    
+
 }

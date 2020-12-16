@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Wordki.Tests.UI
@@ -32,22 +33,22 @@ namespace Wordki.Tests.UI
                 new GroupDto{
                     id = 1,
                     name= "Group_test_1",
-                    language1 = 1,
-                    language2 = 2,
+                    languageFront = 1,
+                    languageBack = 2,
                     cardsCount = 1
                 },
                 new GroupDto{
                     id = 2,
                     name= "Group_test_2",
-                    language1 = 1,
-                    language2 = 2,
+                    languageFront = 1,
+                    languageBack = 2,
                     cardsCount = 2
                 },
                 new GroupDto{
                     id = 3,
                     name= "Group_test_3",
-                    language1 = 1,
-                    language2 = 2,
+                    languageFront = 1,
+                    languageBack = 2,
                     cardsCount = 3
                 }
             };
@@ -74,8 +75,38 @@ namespace Wordki.Tests.UI
     {
         public long id { get; set; }
         public string name { get; set; }
-        public int language1 { get; set; }
-        public int language2 { get; set; }
+        public int languageFront { get; set; }
+        public int languageBack { get; set; }
         public int cardsCount { get; set; }
+    }
+
+    public class GroupDetailsDto
+    {
+        public long Id { get; set; }
+        public string Name { get; set; }
+        public int LanguageFront { get; set; }
+        public int LanguageBack { get; set; }
+        public int CardsCount { get; set; }
+        public int RepeatsCount { get; set; }
+        public DateTime CreationDate { get; set; }
+    }
+
+    public class CardDetailsDto
+    {
+        public long Id { get; set; }
+        public SideDetailsDto Front { get; set; }
+        public SideDetailsDto Back { get; set; }
+        public DateTime CreationDate { get; set; }
+    }
+
+    public class SideDetailsDto
+    {
+        public string Value { get; set; }
+        public string Example { get; set; }
+        public int Drawer { get; set; }
+        public int Language { get; set; }
+        public int RepeatCount { get; set; }
+        public bool IsVisible { get; set; }
+        public DateTime NextRepeat { get; set; }
     }
 }

@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:e2e": "ng serve --port=4201 --configuration=e2e",
     "build": "ng build",
     "build:prod": "ng build --c=production",
     "test": "ng test",

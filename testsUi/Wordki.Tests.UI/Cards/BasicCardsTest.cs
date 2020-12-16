@@ -5,11 +5,15 @@ using TestStack.BDDfy;
 namespace Wordki.Tests.UI.Cards
 {
     [TestFixture]
-    public class BasicCardsTest : CardsTestBase
+    internal class BasicCardsTest : CardsTestBase
     {
         void GivenCookies() => SetAuthorizationCookie();
 
-        void AndGivenSetupServer() => SetupDefaultCardEndpoints();
+        void AndGivenSetupServer()
+        {
+            SetupGroupDetailsEndpoint();
+            SetupCardAllEndpoint();
+        }
 
         void WhenUserNavigateToGroup()
         {

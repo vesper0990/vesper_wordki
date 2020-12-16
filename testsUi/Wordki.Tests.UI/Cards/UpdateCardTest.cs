@@ -1,88 +1,60 @@
-using System;
-using System.Threading;
+using FluentAssertions;
 using NUnit.Framework;
-using OpenQA.Selenium;
 using TestStack.BDDfy;
 
 namespace Wordki.Tests.UI.Cards
 {
     [TestFixture]
-    public class UpdateCardTest : CardsTestBase
+    internal class UpdateCardTest : CardsTestBase
     {
 
         void GivenCookies() => SetAuthorizationCookie();
 
         void AndGivenSetupServer()
         {
-            Server.AddGetEndpoint("/group/details/1", new
-            {
-                groupId = 1,
-                language1 = 1,
-                language2 = 2,
-                name = "groupName",
-                creationDate = new DateTime(2020, 1, 1),
-                cardsCount = 1,
-                repeatsCount = 1
-            })
-            .AddGetEndpoint("/card/all/1", new object[]{new
-            {
-                id = 1,
-                word1 = new
-                {
-                    value = "value1",
-                    example = "example1",
-                    drawer = 1,
-                    language = 1,
-                },
-                word2 = new
-                {
-                    value = "value2",
-                    example = "example2",
-                    drawer = 2,
-                    language = 2,
-                },
-            }})
-            .AddPutEndpoint("/card/update", string.Empty, b => true);
+            SetupGroupDetailsEndpoint();
+            SetupCardAllEndpoint();
+            SetupUpdateCardEndpoint();
         }
 
-        void WhenUserNavigateToGroup()
-        {
-            Driver.Navigate().GoToUrl($"{AppUrl}/details/1");
-            Thread.Sleep(500);
-        }
+        void WhenUserNavigateToGroup() => Page.NavigateTo();
 
-        void AndWhenUserClickOnCard()
-        {
-            Driver.FindElement(By.CssSelector("app-word-row")).Click();
-            Thread.Sleep(500);
-        }
+        void AndWhenPageIsLoaded() => Page.WaitUntilDataIsLoaded();
+
+        void AndWhenUserClickOnCard() => Page.ClickOnCard();
 
         void AndWhenUserFillTheForm()
         {
-            var dialog = Driver.FindElement(By.CssSelector("app-edit-word-dialog"));
-
-            dialog.FindElement(By.CssSelector("input[formcontrolname=\"language1\"]")).SendKeys("langauge1");
-            dialog.FindElement(By.CssSelector("input[formcontrolname=\"example1\"]")).SendKeys("example1");
-            dialog.FindElement(By.CssSelector("input[formcontrolname=\"language2\"]")).SendKeys("language2");
-            dialog.FindElement(By.CssSelector("input[formcontrolname=\"example2\"]")).SendKeys("example2");
-            dialog.FindElement(By.CssSelector("p-checkbox")).Click();
+            Page.EditDialog.InsertIntoFrontLanguage("new-front-language", false);
+            Page.EditDialog.InsertIntoFrontExample("new-front-example", false);
+            Page.EditDialog.InsertIntoBackLanguage("new-back-language", false);
+            Page.EditDialog.InsertIntoBackExample("new-back-example", false);
+            Page.EditDialog.SelectCheckBox();
         }
 
-        void AndWhenUserSubmitTheForm()
+        void AndWhenUserSubmitTheForm() => Page.EditDialog.ClickSave();
+
+        void ThenCardsAreExist()
         {
-            var dialog = Driver.FindElement(By.CssSelector("app-edit-word-dialog"));
-            dialog.FindElement(By.Id("save-btn")).Click();
-            Thread.Sleep(200);
+            Page.WaitUntilDialogDisappear();
+            var cards = Page.FindAllCards();
+            cards.Should().HaveCount(2);
         }
 
-        void ThenNewCardShouldAppear()
+        void AndThenCardIsUpdated()
         {
-            var cards = Driver.FindElements(By.CssSelector("app-word-row"));
-            Assert.AreEqual(1, cards.Count);
+            var card = Page.FindCardByIndex(0);
+            var front = Page.FindCardFront(card);
+            Page.GetValue(front).Should().Be("new-front-language");
+            Page.GetExample(front).Should().Be("new-front-example");
+
+            var back = Page.FindCardBack(card);
+            Page.GetValue(back).Should().Be("new-back-language");
+            Page.GetExample(back).Should().Be("new-back-example");
         }
 
         [Test]
-        public void CheckAddingNewCard() => this.BDDfy();
+        public void CheckUpdateingNewCard() => this.BDDfy();
 
     }
 }

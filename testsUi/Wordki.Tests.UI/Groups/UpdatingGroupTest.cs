@@ -17,8 +17,8 @@ namespace Wordki.Tests.UI.Groups
                 new GroupDto{
                     id = 1,
                     name = "group_name",
-                    language1 = 1,
-                    language2 = 2,
+                    languageFront = 1,
+                    languageBack = 2,
                     cardsCount = 1
                 }
             });
@@ -32,7 +32,7 @@ namespace Wordki.Tests.UI.Groups
         }
 
         void AndGivenUserClickEditGroupButton(){
-            Driver.FindElement(By.CssSelector("body > app-root > ng-component > div:nth-child(2) > app-group-row > div > div.edit-button > img")).Click();
+            Driver.FindElement(By.CssSelector("body > app-root > ng-component > div.row.ng-star-inserted > app-group-row > div > div.edit-button > img")).Click();
         }
 
         void WhenUserFillTheForm()
@@ -41,10 +41,10 @@ namespace Wordki.Tests.UI.Groups
 
             dialog.FindElement(By.CssSelector("input[formcontrolname=\"name\"]")).SendKeys("222");
 
-            dialog.FindElement(By.CssSelector("app-languages-drop-down[formcontrolname=\"language1\"]")).Click();
+            dialog.FindElement(By.CssSelector("app-languages-drop-down[formcontrolname=\"languageFront\"]")).Click();
             Driver.FindElement(By.CssSelector("body > div > div > ul > p-dropdownitem:nth-child(2)")).Click();
 
-            dialog.FindElement(By.CssSelector("app-languages-drop-down[formcontrolname=\"language2\"]")).Click();
+            dialog.FindElement(By.CssSelector("app-languages-drop-down[formcontrolname=\"languageBack\"]")).Click();
             Driver.FindElement(By.CssSelector("body > div > div > ul > p-dropdownitem:nth-child(3)")).Click();
 
             dialog.FindElement(By.CssSelector("button[label=\"Save\"]")).Click();
@@ -55,6 +55,6 @@ namespace Wordki.Tests.UI.Groups
             => Assert.AreEqual(1, Driver.FindElements(By.CssSelector("app-group-row")).Count);
         
         [Test]
-        public void Execute() => this.BDDfy();
+        public void TestUpdatingGroup() => this.BDDfy();
     }
 }
