@@ -30,27 +30,6 @@ namespace Wordki.Tests.UI
         public static IEnumerable<GroupDto> CreateRespnse()
         {
             return new GroupDto[]{
-                new GroupDto{
-                    id = 1,
-                    name= "Group_test_1",
-                    languageFront = 1,
-                    languageBack = 2,
-                    cardsCount = 1
-                },
-                new GroupDto{
-                    id = 2,
-                    name= "Group_test_2",
-                    languageFront = 1,
-                    languageBack = 2,
-                    cardsCount = 2
-                },
-                new GroupDto{
-                    id = 3,
-                    name= "Group_test_3",
-                    languageFront = 1,
-                    languageBack = 2,
-                    cardsCount = 3
-                }
             };
         }
     }
@@ -73,11 +52,12 @@ namespace Wordki.Tests.UI
 
     public class GroupDto
     {
-        public long id { get; set; }
-        public string name { get; set; }
-        public int languageFront { get; set; }
-        public int languageBack { get; set; }
-        public int cardsCount { get; set; }
+        public long Id { get; set; }
+        public string Name { get; set; }
+        public int LanguageFront { get; set; }
+        public int LanguageBack { get; set; }
+        public int CardsCount { get; set; }
+        public int RepeatsCount { get; set; }
     }
 
     public class GroupDetailsDto

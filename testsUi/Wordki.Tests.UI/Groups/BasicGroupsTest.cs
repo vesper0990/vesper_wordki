@@ -5,20 +5,14 @@ using TestStack.BDDfy;
 namespace Wordki.Tests.UI.Groups
 {
     [TestFixture]
-    public class BasicGroupsTest : GroupsTestBase
+    internal class BasicGroupsTest : GroupsTestBase
     {
 
         void GivenCookies() => SetAuthorizationCookie();
 
-        void AndGivenSetupServer() => SetupDefaultGroupEndpoints();
+        void AndGivenSetupServer() => SetupGroupsAllEndpoint(2);
 
-        void WhenUserNavigateToGroup()
-        {
-            Driver.Navigate().GoToUrl($"{AppUrl}/groups");
-            Thread.Sleep(500);
-        }
-
-        void ThenTitleIsSet() => Assert.AreEqual("Wordki - Groups", Driver.Title);
+        void WhenUserNavigateToGroup() => Page.NavigateTo();
 
         [Test]
         public void Execute() => this.BDDfy();

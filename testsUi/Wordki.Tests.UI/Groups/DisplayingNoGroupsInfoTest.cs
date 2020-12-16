@@ -1,27 +1,23 @@
-using System.Threading;
+using FluentAssertions;
 using NUnit.Framework;
-using OpenQA.Selenium;
 using TestStack.BDDfy;
 
 namespace Wordki.Tests.UI.Groups
 {
-    public class DisplayingNoGroupsInfoTest : GroupsTestBase
+    internal class DisplayingNoGroupsInfoTest : GroupsTestBase
     {
         void GivenCookies() => SetAuthorizationCookie();
 
-        void AndGivenSetupServer()
-            => Server.AddGetEndpoint("/group/all", new object[0]);
+        void AndGivenSetupServer() => SetupGroupsAllEndpoint(0);
 
+        void WhenUserNavigateToGroup() => Page.NavigateTo();
 
-        void WhenUserNavigateToGroup()
-        {
-            Driver.Navigate().GoToUrl($"{AppUrl}/groups");
-            Thread.Sleep(500);
+        void AndWhenPageIsLoaded() => Page.WaitUntilDataIsLoaded();
+
+        void ThenInfoIsDisplayed(){
+            var info = Page.FindNoGroupInfo();
+            info.Text.Should().Be("You do not have any groups yet.");
         }
-
-        void ThenGroupsAreDisplayed()
-            => StringAssert.Contains("You do not have any groups yet", Driver.FindElement(By.CssSelector("body")).Text);
-
 
         [Test]
         public void Execute() => this.BDDfy();

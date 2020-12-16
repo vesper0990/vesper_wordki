@@ -5,7 +5,6 @@ namespace Wordki.Tests.UI.Cards
 {
     internal class CardsTestBase : UITestBase
     {
-
         protected CardsPage Page { get; }
 
         protected CardsTestBase() : base()
@@ -74,6 +73,8 @@ namespace Wordki.Tests.UI.Cards
         public void SetupAddCardEndpoint() => Server.AddPostEndpoint("/card/add", 1, b => true);
 
         public void SetupUpdateCardEndpoint() => Server.AddPutEndpoint("/card/update", string.Empty, b => true);
+
+        public void SetupRemoveCardEndpoint() => Server.AddDeleteEndpoint("/card/delete/1");
 
     }
 }

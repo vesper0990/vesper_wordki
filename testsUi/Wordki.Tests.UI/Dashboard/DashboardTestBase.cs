@@ -1,9 +1,18 @@
 using System.Threading;
+using Wordki.Tests.UI.PageObjectModels;
 
 namespace Wordki.Tests.UI.Dashboard
 {
-    public class DashboardTestBase : UITestBase
+    class DashboardTestBase : UITestBase
     {
+
+        protected DashboardPage Page { get; }
+
+        protected DashboardTestBase() : base()
+        {
+            Page = new DashboardPage(Driver);
+        }
+
         protected void NavigateToDashboard()
         {
             Driver.Navigate().GoToUrl($"{AppUrl}/dashboard");

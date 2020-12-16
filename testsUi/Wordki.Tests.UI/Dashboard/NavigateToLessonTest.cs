@@ -6,7 +6,7 @@ using TestStack.BDDfy;
 namespace Wordki.Tests.UI.Dashboard
 {
     [TestFixture]
-    public class NavigateToLessonTest : DashboardTestBase
+    class NavigateToLessonTest : DashboardTestBase
     {
 
         void GivenCookieInApp() => SetAuthorizationCookie();

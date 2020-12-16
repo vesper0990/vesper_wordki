@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using FluentAssertions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
@@ -10,7 +9,6 @@ namespace Wordki.Tests.UI.PageObjectModels
 {
     class CardsPage : Page
     {
-
         protected override string Title => "Wordki - Details";
         protected override string Url => $"{ApplicationUrl}/details/1";
         public EditCardElement EditDialog { get; set; }
@@ -52,67 +50,18 @@ namespace Wordki.Tests.UI.PageObjectModels
         internal IWebElement FindCardBack(IWebElement card) => card.FindElement(By.CssSelector(".main-container > .side:nth-of-type(2)"));
         internal string GetValue(IWebElement side) => side.FindElement(By.CssSelector(".word")).Text;
         internal string GetExample(IWebElement side) => side.FindElement(By.CssSelector(".example")).Text;
-
     }
 
-    class EditCardElement
+    class DashboardPage : Page
     {
-        private readonly IWebElement _editDialog;
-        private readonly IWebDriver _driver;
+        protected override string Title => "Wordki - Dashboard";
+        protected override string Url => $"{ApplicationUrl}/dashboard";
 
-        public EditCardElement(IWebDriver driver)
-        {
-            _editDialog = driver.FindElement(By.CssSelector("app-edit-word-dialog"));
-            _driver = driver;
-        }
+        public DashboardPage(IWebDriver driver) : base(driver) { }
 
-
-
-        public void InsertIntoFrontLanguage(string text, bool append) => InsertIntoInput("language1", text, append);
-        public void InsertIntoBackLanguage(string text, bool append) => InsertIntoInput("language2", text, append);
-        public void InsertIntoFrontExample(string text, bool append) => InsertIntoInput("example1", text, append);
-        public void InsertIntoBackExample(string text, bool append) => InsertIntoInput("example2", text, append);
-        public void SelectCheckBox() => _editDialog.FindElement(By.CssSelector("p-checkbox")).Click();
-        internal void ClickSave()
-        {
-            _editDialog.FindElement(By.Id("save-btn")).Click();
-        }
-
-
-        private void InsertIntoInput(string controlName, string text, bool append)
-        {
-            var input = _editDialog.FindElement(By.CssSelector(string.Format("input[formcontrolname=\"{0}\"]", controlName)));
-            if (!append) input.Clear();
-            input.SendKeys(text);
-        }
-
+        internal IWebElement FindTodayRepeat() => Driver.FindElement(By.Id("lesson-card"));
+        internal IWebElement FindHistory() => Driver.FindElement(By.Id("history-card"));
+        internal IWebElement FindGroups() => Driver.FindElement(By.Id("groups-card"));
+        internal IWebElement FindCards() => Driver.FindElement(By.Id("cards-card"));
     }
-
-    abstract class Page
-    {
-        protected const string ApplicationUrl = "http://localhost:4201";
-        protected IWebDriver Driver { get; }
-        protected virtual string Url { get; }
-        protected virtual string Title { get; }
-
-        protected Page(IWebDriver driver)
-        {
-            Driver = driver;
-        }
-
-        public void NavigateTo()
-        {
-            Driver.Navigate().GoToUrl(Url);
-            EnsurePageLoaded();
-        }
-
-        public void EnsurePageLoaded()
-        {
-
-            Driver.Url.Should().Be(Url);
-            Driver.Title.Should().Be(Title);
-        }
-    }
-
-
 }
