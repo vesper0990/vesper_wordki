@@ -35,8 +35,8 @@ namespace Wordki.Tests.UI.PageObjectModels
 
         internal void WaitUntilDialogDisappear()
         {
-            var wait = new WebDriverWait(Driver, TimeSpan.FromMilliseconds(20));
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.CssSelector("app-word-row")));
+            var wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(1));
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.InvisibilityOfElementLocated(By.CssSelector("app-edit-word-dialog")));
         }
 
         internal IReadOnlyCollection<IWebElement> FindAllCards()
