@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Wordki.Api.Domain;
 
 namespace Wordki.Api.Repositories.EntityFrameworkRepositories
