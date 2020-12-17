@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
+using Wordki.Api.Responses;
 using Wordki.Utils.HttpContext;
 
 namespace Wordki.Api.Featuers.Group.GetGroups
@@ -24,21 +25,11 @@ namespace Wordki.Api.Featuers.Group.GetGroups
         {
             var userId = httpContextProvider.GetUserId();
             var groups = dbContext.Groups
-                .Include(g => g.Words)
+                .Include(g => g.Words).ThenInclude(c => c.Repeats)
                 .Include(g => g.User)
                 .Where(g => g.User.Id == userId)
-                .Select(g => Map(g));
+                .Select(g => g.GetGroupDto());
             return await Task.FromResult(groups);
         }
-
-        public static GroupDto Map(Domain.Group group)
-            => new GroupDto
-            {
-                Id = group.Id,
-                Name = group.Name,
-                Language1 = group.GroupLanguage1,
-                Language2 = group.GroupLanguage2,
-                CardsCount = group.Words.Count
-            };
     }
 }

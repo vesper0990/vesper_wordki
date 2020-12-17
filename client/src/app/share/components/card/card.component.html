@@ -1,33 +1,26 @@
 <div class="main-container">
     <div class="group-container">
-        <div class="more" (click)="showAdditionalInfo()"><b>more</b></div>
         <div class="group-info">
             <img *ngIf="displayingFlag" src="assets/flags/{{displayingFlag}}" />
-            <b>{{word?.groupName}}</b>
+            <b>{{card?.groupName}}</b>
         </div>
     </div>
     <div class="content-container" [ngSwitch]="side" (click)="changeSide()">
         <div *ngSwitchCase="'language1'">
             <div class="word">
-                &bull; {{word?.heads?.value}}
+                &bull; {{card?.front.value}}
             </div>
             <div class="example">
-                {{word?.heads?.example}}
+                {{card?.front.example}}
             </div>
         </div>
         <div *ngSwitchCase="'language2'">
             <div class="word">
-                &bull; {{word?.tails?.value}}
+                &bull; {{card?.back.value}}
             </div>
             <div class="example">
-                {{word?.tails?.example}}
+                {{card?.back.example}}
             </div>
-        </div>
-        <div *ngSwitchCase="'additional'">
-            <app-label-value label="Ostatnia powtórka" [value]="word?.lastRepeat | date"></app-label-value>
-            <app-label-value label="Szuflada" [value]="word?.drawer"></app-label-value>
-            <app-label-value label="Powtórki" [value]="word?.repeatsCount"></app-label-value>
-            <app-label-value label="Data dodania" [value]="word?.creationDate | date"></app-label-value>
         </div>
     </div>
 </div>

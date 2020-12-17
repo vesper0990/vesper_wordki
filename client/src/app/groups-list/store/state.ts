@@ -1,5 +1,5 @@
 import { DialogMode } from 'src/app/share/components/edit-group-dialog/mode-dialog';
-import { Group } from '../models/group.model';
+import { Group } from 'src/app/share/models/card-details';
 
 export interface GroupListState {
     groups: Group[];

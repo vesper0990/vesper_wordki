@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { Word } from '../../models/word.model';
+import { CardDetails } from 'src/app/share/models/card-details';
 
 @Component({
   selector: 'app-word-row',
@@ -9,17 +9,16 @@ import { Word } from '../../models/word.model';
 })
 export class WordRowComponent implements OnInit {
 
-  _word: Word;
+  _word: CardDetails;
   @Input()
-  set word(value: Word) {
+  set word(value: CardDetails) {
     this._word = value;
     this.setLastRepeat();
   }
 
   lastRepeat: Date;
-  // background: string = 'linear-gradient(to right, #f00a 0%,  #fff0 1%);';
 
-  @Output() editWord: EventEmitter<Word> = new EventEmitter();
+  @Output() editWord: EventEmitter<CardDetails> = new EventEmitter();
 
   constructor() { }
 
@@ -27,22 +26,18 @@ export class WordRowComponent implements OnInit {
   }
 
   private setLastRepeat(): void {
-    if (!this._word || !this._word.repeats) {
-      return;
-    }
-    if (this._word && this._word.repeats && this._word.repeats.length === 0) {
-      this.lastRepeat = null;
-      return;
-    }
-    this.lastRepeat = this._word.repeats[this._word.repeats.length - 1].date;
+    // if (!this._word || !this._word.repeats) {
+    //   return;
+    // }
+    // if (this._word && this._word.repeats && this._word.repeats.length === 0) {
+    //   this.lastRepeat = null;
+    //   return;
+    // }
+    // this.lastRepeat = this._word.repeats[this._word.repeats.length - 1].date;
   }
 
-  edit(word: Word): void {
+  edit(word: CardDetails): void {
     this.editWord.emit(word);
-  }
-
-  toggle(): void {
-    this._word.isExpanded = !this._word.isExpanded;
   }
 
 }

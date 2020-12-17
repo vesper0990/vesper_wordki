@@ -1,51 +1,60 @@
-using System.Threading;
+using FluentAssertions;
 using NUnit.Framework;
-using OpenQA.Selenium;
 using TestStack.BDDfy;
 
 namespace Wordki.Tests.UI.Groups
 {
     [TestFixture]
-    public class AddingNewGroupTest : GroupsTestBase
+    internal class AddingNewGroupTest : GroupsTestBase
     {
 
         void GivenCookies() => SetAuthorizationCookie();
 
         void AndGivenSetupServer()
         {
-            SetupDefaultGroupEndpoints();
-            Server.AddPostEndpoint("/group/add", "1", body => true);
+            SetupGroupsAllEndpoint(1);
+            SetupAddGroupEndpoint();
         }
 
-        void AndGivenUserNavigateToGroup()
+        void WhenUserNavigateToGroup() => Page.NavigateTo();
+
+        void AndWhenPageIsLoaded() => Page.WaitUntilDataIsLoaded();
+
+        void AndWhenUserClickAddGroupButton() => Page.ClickAddGroupButton();
+
+        void AndWhenAddDialogAppears() => Page.WaitUntilEditDialogAppear();
+
+        void AndWhenUserFillsForm()
         {
-            Driver.Navigate().GoToUrl($"{AppUrl}/groups");
-            Thread.Sleep(500);
+            Page.Dialog.InsertIntoGroupName("new-group", false);
+            Page.Dialog.SelectFrontLanguage();
+            Page.Dialog.SelectBackLanguage();
         }
 
-        void AndGivenUserClickAddGroupButton()
-            => Driver.FindElement(By.Id("add-group-btn")).Click();
+        void AndWhenUserClickSaveButton() => Page.Dialog.ClickSave();
 
-        void WhenUserFillTheForm()
+        void AndWhenAddDialogDisappear() => Page.WaitUntilEditDialogDisappear();
+
+        void ThenNewGroupShouldAppear()
         {
-            var dialog = Driver.FindElement(By.CssSelector("app-edit-group-dialog"));
-
-            dialog.FindElement(By.CssSelector("input[formcontrolname=\"name\"]")).SendKeys("group_name");
-
-            dialog.FindElement(By.CssSelector("app-languages-drop-down[formcontrolname=\"language1\"]")).Click();
-            Driver.FindElement(By.CssSelector("body > div > div > ul > p-dropdownitem:nth-child(2)")).Click();
-
-            dialog.FindElement(By.CssSelector("app-languages-drop-down[formcontrolname=\"language2\"]")).Click();
-            Driver.FindElement(By.CssSelector("body > div > div > ul > p-dropdownitem:nth-child(3)")).Click();
-
-            dialog.FindElement(By.CssSelector("button[label=\"Save\"]")).Click();
-            Thread.Sleep(500);
+            var groups = Page.FindAllGroups();
+            groups.Should().HaveCount(2);
         }
 
-        void ThenNewGroupShouldBeAdded()
-            => Assert.AreEqual(1, Driver.FindElements(By.CssSelector("app-group-row")).Count);
-        
+        void AndThenNewGroupShouldHaveProperValues()
+        {
+            var group = Page.FindGroupByIndex(1);
+            var name = Page.FindNameEl(group);
+            name.Text.Should().Be("new-group");
+
+            var cardsCount = Page.FindCardsCountEl(group);
+            cardsCount.Text.Should().Contain("0");
+
+            var repeatsCount = Page.FindRepeatsCountEl(group);
+            repeatsCount.Text.Should().Contain("0");
+        }
+
         [Test]
-        public void Execute() => this.BDDfy();
+        public void TestAddingNewGroup() => this.BDDfy();
     }
 }

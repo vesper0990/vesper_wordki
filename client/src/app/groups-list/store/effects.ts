@@ -1,12 +1,12 @@
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { GroupsListHttpServiceBase } from '../services/groups-list-http/groups-list-http.service';
 import * as actions from './actions';
-import { map, catchError, exhaustMap, tap, withLatestFrom, concatMap } from 'rxjs/operators';
-import { Group } from '../models/group.model';
+import { map, catchError, exhaustMap, tap, concatMap } from 'rxjs/operators';
 import { forkJoin, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { GroupListState } from './state';
+import { Group } from 'src/app/share/models/card-details';
 
 @Injectable()
 export class GroupListEffects {
@@ -26,10 +26,13 @@ export class GroupListEffects {
     @Effect()
     updateGroupInListEffect = this.actions$.pipe(
         ofType<actions.UpdateGroup>(actions.GroupListTypes.UPDATE_GROUP),
-        tap(action => this.groupProvider.updateGroup(action.payload.group)),
-        concatMap(action => [
-            new actions.UpdateGroupSuccess({ group: action.payload.group }),
-            new actions.HideDialog(),
+        exhaustMap((action: actions.UpdateGroup) => forkJoin([
+            of(action.payload.group),
+            this.groupProvider.updateGroup(action.payload.group)
+        ])),
+        concatMap(data => [
+            new actions.UpdateGroupSuccess({ group: data[0] }),
+            new actions.HideDialog()
         ]),
         catchError((error: any) => this.handleError(error))
     );

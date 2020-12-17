@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Text.Json;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
@@ -13,7 +14,7 @@ namespace Wordki.Tests.UI
             => WireMockServer.Start(new WireMockServerSettings()
             {
                 Urls = new[] { url },
-                StartAdminInterface = true
+                StartAdminInterface = true,
             });
 
 
@@ -29,7 +30,7 @@ namespace Wordki.Tests.UI
             .RespondWith(
                 Response.Create()
                 .AddHeaders()
-                .WithBodyAsJson(response, Encoding.UTF8)
+                .WithBody(SerializeObject(response))
                 .WithStatusCode(200)
             );
 
@@ -49,7 +50,7 @@ namespace Wordki.Tests.UI
             .RespondWith(
                 Response.Create()
                 .AddHeaders()
-                .WithBodyAsJson(response, Encoding.UTF8)
+                .WithBody(SerializeObject(response))
                 .WithStatusCode(200)
             );
 
@@ -69,7 +70,7 @@ namespace Wordki.Tests.UI
             .RespondWith(
                 Response.Create()
                 .AddHeaders()
-                .WithBodyAsJson(response, Encoding.UTF8)
+                .WithBody(SerializeObject(response))
                 .WithStatusCode(200)
             );
 
@@ -113,6 +114,14 @@ namespace Wordki.Tests.UI
                 .WithHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
                 .WithHeader("Content-Type", "application/json; charset=utf-8")
                 .WithHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
+
+        private static string SerializeObject(object obj)
+        => JsonSerializer.Serialize(obj,
+                 new JsonSerializerOptions
+                 {
+                     PropertyNameCaseInsensitive = false,
+                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                 });
 
     }
 }

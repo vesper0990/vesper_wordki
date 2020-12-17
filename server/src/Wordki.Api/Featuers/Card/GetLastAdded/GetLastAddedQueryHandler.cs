@@ -5,11 +5,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
+using Wordki.Api.Responses;
 using Wordki.Utils.HttpContext;
 
 namespace Wordki.Api.Featuers.Card.GetLastAdded
 {
-    public class GetLastAddedQueryHandler : IRequestHandler<GetLastAddedQuery, IEnumerable<LastAddedDto>>
+    public class GetLastAddedQueryHandler : IRequestHandler<GetLastAddedQuery, IEnumerable<ExtendedCardDetailsDto>>
     {
         private readonly WordkiDbContext dbContext;
         private readonly IHttpContextProvider httpContextProvider;
@@ -20,7 +21,7 @@ namespace Wordki.Api.Featuers.Card.GetLastAdded
             this.httpContextProvider = httpContextProvider;
         }
 
-        public async Task<IEnumerable<LastAddedDto>> Handle(GetLastAddedQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ExtendedCardDetailsDto>> Handle(GetLastAddedQuery request, CancellationToken cancellationToken)
         {
             var userId = httpContextProvider.GetUserId();
             var lastAdded = dbContext.Words
@@ -28,14 +29,7 @@ namespace Wordki.Api.Featuers.Card.GetLastAdded
                 .Where(w => w.Group.User.Id == userId)
                 .OrderByDescending(w => w.WordCreationDate)
                 .Take(request.Count)
-                .Select(card => new LastAddedDto
-                {
-                    GroupName = card.Group.Name,
-                    Language1 = card.Group.GroupLanguage1,
-                    Language2 = card.Group.GroupLanguage2,
-                    Heads = card.Heads.ConvertToDto(),
-                    Tails = card.Tails.ConvertToDto()
-                })
+                .Select(card => card.GetExtendedCardDetailsDto())
                 .AsNoTracking();
             return await Task.FromResult(lastAdded);
         }

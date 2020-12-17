@@ -1,87 +1,72 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, } from 'rxjs';
 import { map, delay } from 'rxjs/operators';
-import { GroupDetailsDto } from '../../models/group-details.dto';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { GroupDetails } from '../../models/group-details.model';
 import { GroupDetailsMapper } from '../group-details.mapper/group-details.mapper';
-import { Word } from '../../models/word.model';
-import { WordMapper } from '../word-mapper/word-mapper';
-import { WordDto } from '../../models/word.dto';
 import { AddedGroup } from '../../models/added-group';
-import { RepeatDto } from '../../models/repeat.dto';
 import { EditWord } from 'src/app/share/components/edit-word-dialog/edit-word.model';
+import { CardDetails, GroupDetails } from 'src/app/share/models/card-details';
+import { GroupDetailsDto } from 'src/app/share/models/dtos/group-details-dto';
+import { mapCardDetails, mapGroupDetails } from 'src/app/share/models/mappers';
+import { CardDetailsDto } from 'src/app/share/models/dtos/card-details-dto';
 
 @Injectable()
 export abstract class GroupDetailsHttpBase {
     abstract getGroupDetails(groupId: number): Observable<GroupDetails>;
-    abstract getWords(groupId: number): Observable<Word[]>;
-    // abstract getWordDetails(wordId: number): Observable<>;
+    abstract getWords(groupId: number): Observable<CardDetails[]>;
     abstract updateWord(editword: EditWord): Observable<any>;
     abstract addWord(editword: EditWord): Observable<any>;
     abstract removeWord(groupId: number, wordId: number): Observable<any>;
-    abstract addGroup(group: AddedGroup): Observable<any>;
-    abstract changeGroupVisibility(groupId: number): Observable<any>;
 }
 
 @Injectable()
 export class GroupDetailsHttp extends GroupDetailsHttpBase {
 
-    constructor(private http: HttpClient,
-        private groupMapper: GroupDetailsMapper,
-        private wordMapper: WordMapper) {
+    constructor(private http: HttpClient) {
         super();
     }
 
     getGroupDetails(groupId: number): Observable<GroupDetails> {
         return this.http.get<GroupDetailsDto>(`${environment.apiUrl}/group/details/${groupId}`).pipe(
-            map((dto: GroupDetailsDto) => this.groupMapper.map(dto)));
+            map((dto: GroupDetailsDto) => mapGroupDetails(dto)));
     }
 
-    getWords(groupId: number): Observable<Word[]> {
-        return this.http.get<WordDto[]>(`${environment.apiUrl}/card/all/${groupId}`).pipe(
-            map((dtos: WordDto[]) => {
-                const arr = [];
-                dtos.forEach((dto: WordDto) => arr.push(this.wordMapper.map(dto)));
-                return arr;
-            })
+    getWords(groupId: number): Observable<CardDetails[]> {
+        return this.http.get<CardDetailsDto[]>(`${environment.apiUrl}/card/all/${groupId}`).pipe(
+            map((dtos: CardDetailsDto[]) => dtos.map(item => mapCardDetails(item)))
         );
     }
 
     updateWord(editWord: EditWord): Observable<any> {
         const body = {
-            id: editWord.wordId,
-            groupId: editWord.groupId,
-            heads: {
+            id: editWord.id,
+            front: {
                 value: editWord.language1,
                 example: editWord.example1
             },
-            tails: {
+            back: {
                 value: editWord.language2,
                 example: editWord.example2
             },
-            comment: editWord.comment,
             isVisible: editWord.isVisible
         };
         return this.http.put(`${environment.apiUrl}/card/update`, body);
     }
 
-    addWord(editword: EditWord): Observable<any> {
+    addWord(editWord: EditWord): Observable<any> {
         const body = {
-            groupId: editword.groupId,
-            heads: {
-                value: editword.language1,
-                example: editword.example1
+            groupId: editWord.groupId,
+            front: {
+                value: editWord.language1,
+                example: editWord.example1
             },
-            tails: {
-                value: editword.language2,
-                example: editword.example2
+            back: {
+                value: editWord.language2,
+                example: editWord.example2
             },
-            comment: editword.comment,
-            isVisible: editword.isVisible
+            isVisible: editWord.isVisible
         };
-        console.log(editword, body);
         return this.http.post(`${environment.apiUrl}/card/add`, body);
     }
 
@@ -106,8 +91,7 @@ export class GroupDetailsHttp extends GroupDetailsHttpBase {
 export class GroupDetailsHttpMock extends GroupDetailsHttpBase {
 
 
-    constructor(private groupMapper: GroupDetailsMapper,
-        private wordMapper: WordMapper) {
+    constructor() {
         super();
     }
 
@@ -115,28 +99,26 @@ export class GroupDetailsHttpMock extends GroupDetailsHttpBase {
         const groupDetailsDto: GroupDetailsDto = {
             id: groupId,
             name: `group ${groupId}`,
-            language1: 1,
-            language2: 2,
+            languageFront: 1,
+            languageBack: 2,
             cardsCount: 1,
             creationDate: "2020/01/01",
             repeatsCount: 3,
         };
-        return of<GroupDetailsDto>(groupDetailsDto).pipe(map((dto: GroupDetailsDto) => this.groupMapper.map(dto)), delay(500));
+        return of<GroupDetailsDto>(groupDetailsDto).pipe(
+            map((dto: GroupDetailsDto) => mapGroupDetails(dto)),
+            delay(500)
+        );
     }
 
-    getWords(groupId: number): Observable<Word[]> {
+    getWords(groupId: number): Observable<CardDetails[]> {
 
-        const arr: WordDto[] = [];
+        const arr: CardDetailsDto[] = [];
 
         for (let i = 1; i < 10; i++) {
-            const repeats: RepeatDto[] = [];
             for (let j = 0; j < 5; j++) {
                 const now = new Date();
                 now.setDate(now.getDate() - 3);
-                repeats.push({
-                    result: 1,
-                    date: now.toString()
-                });
             }
 
             // arr.push({
@@ -151,12 +133,7 @@ export class GroupDetailsHttpMock extends GroupDetailsHttpBase {
             //     repeats: repeats
             // });
         }
-        return of(arr).pipe(
-            map((dtos: WordDto[]) => {
-                const arr2 = [];
-                dtos.forEach((dto: WordDto) => arr2.push(this.wordMapper.map(dto)));
-                return arr2;
-            }),
+        return of([]).pipe(
             delay(500)
         );
     }

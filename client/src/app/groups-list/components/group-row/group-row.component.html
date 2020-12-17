@@ -3,8 +3,8 @@
         <b>{{ group?.name }}</b>
     </div>
     <div class="flags-container">
-        <img src="assets/flags/{{group?.language1.flag}}" /><br>
-        <img src="assets/flags/{{group?.language2.flag}}" />
+        <img src="assets/flags/{{group?.languageFront.flag}}" /><br>
+        <img src="assets/flags/{{group?.languageBack.flag}}" />
     </div>
     <div class="info-container">
         <app-label-value label="Słowa" [value]="group?.cardsCount"></app-label-value>

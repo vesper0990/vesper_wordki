@@ -21,8 +21,8 @@ namespace Wordki.Api.Featuers.Group.Update
             ValidateRequest(request);
             var group = await dbContext.Groups.SingleOrDefaultAsync(g => g.Id == request.Id);
             group.Name = request.Name;
-            group.GroupLanguage1 = request.Language1;
-            group.GroupLanguage2 = request.Language2;
+            group.GroupLanguage1 = request.LanguageFront;
+            group.GroupLanguage2 = request.LanguageBack;
 
             dbContext.Groups.Update(group);
             await dbContext.SaveChangesAsync();

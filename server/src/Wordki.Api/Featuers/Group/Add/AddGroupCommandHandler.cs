@@ -31,8 +31,8 @@ namespace Wordki.Api.Featuers.Group.Add
             var newGroup = new Domain.Group
             {
                 Name = request.Name,
-                GroupLanguage1 = request.Language1,
-                GroupLanguage2 = request.Language2,
+                GroupLanguage1 = request.LanguageFront,
+                GroupLanguage2 = request.LanguageBack,
                 User = user,
                 GroupCreationDate = dateTimeProvider.GetTime()
             };

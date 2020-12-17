@@ -1,60 +1,88 @@
-using System.Threading;
+using FluentAssertions;
 using NUnit.Framework;
-using OpenQA.Selenium;
 using TestStack.BDDfy;
 
 namespace Wordki.Tests.UI.Groups
 {
     [TestFixture]
-    public class UpdatingGroupTest : GroupsTestBase
+    internal class UpdatingGroupTest : GroupsTestBase
     {
-
         void GivenCookies() => SetAuthorizationCookie();
 
         void AndGivenSetupServer()
         {
-            Server.AddGetEndpoint("/group/all", new []{
-                new GroupDto{
-                    id = 1,
-                    name = "group_name",
-                    language1 = 1,
-                    language2 = 2,
-                    cardsCount = 1
-                }
-            });
-            Server.AddPutEndpoint("/group/update", new {}, body => true);
+            SetupGroupsAllEndpoint(1);
+            SetupUpdateGroupEndpoint();
         }
 
-        void AndGivenUserNavigateToGroup()
+        void WhenUserNavigateToGroup() => Page.NavigateTo();
+
+        void AndWhenPageIsLoaded() => Page.WaitUntilDataIsLoaded();
+
+        void AndWhenUserClickEditGroupButton() => Page.ClickEditGroupButton(0);
+
+        void AndWhenEditDialogAppears() => Page.WaitUntilEditDialogAppear();
+
+        void AndWhenUserFillsForm()
         {
-            Driver.Navigate().GoToUrl($"{AppUrl}/groups");
-            Thread.Sleep(500);
+            Page.Dialog.InsertIntoGroupName("-test", true);
+            Page.Dialog.SelectFrontLanguage();
+            Page.Dialog.SelectBackLanguage();
         }
 
-        void AndGivenUserClickEditGroupButton(){
-            Driver.FindElement(By.CssSelector("body > app-root > ng-component > div:nth-child(2) > app-group-row > div > div.edit-button > img")).Click();
-        }
+        void AndWhenUserClickSaveButton() => Page.Dialog.ClickSave();
 
-        void WhenUserFillTheForm()
+        void AndWhenAddDialogDisappear() => Page.WaitUntilEditDialogDisappear();
+
+        void ThenGroupShouldBeUpdated()
         {
-            var dialog = Driver.FindElement(By.CssSelector("app-edit-group-dialog"));
+            var groups = Page.FindAllGroups();
+            groups.Should().HaveCount(1);
 
-            dialog.FindElement(By.CssSelector("input[formcontrolname=\"name\"]")).SendKeys("222");
+            var group = Page.FindGroupByIndex(0);
+            var name = Page.FindNameEl(group);
+            name.Text.Should().Be("group-1-test");
 
-            dialog.FindElement(By.CssSelector("app-languages-drop-down[formcontrolname=\"language1\"]")).Click();
-            Driver.FindElement(By.CssSelector("body > div > div > ul > p-dropdownitem:nth-child(2)")).Click();
+            var cardsCount = Page.FindCardsCountEl(group);
+            cardsCount.Text.Should().Contain("1");
 
-            dialog.FindElement(By.CssSelector("app-languages-drop-down[formcontrolname=\"language2\"]")).Click();
-            Driver.FindElement(By.CssSelector("body > div > div > ul > p-dropdownitem:nth-child(3)")).Click();
-
-            dialog.FindElement(By.CssSelector("button[label=\"Save\"]")).Click();
-            Thread.Sleep(500);
+            var repeatsCount = Page.FindRepeatsCountEl(group);
+            repeatsCount.Text.Should().Contain("1");
         }
 
-        void ThenNewGroupShouldBeAdded()
-            => Assert.AreEqual(1, Driver.FindElements(By.CssSelector("app-group-row")).Count);
-        
         [Test]
-        public void Execute() => this.BDDfy();
+        public void TestUpdatingGroup() => this.BDDfy();
+    }
+
+    internal class RemovingGroupTest : GroupsTestBase
+    {
+void GivenCookies() => SetAuthorizationCookie();
+
+        void AndGivenSetupServer()
+        {
+            SetupGroupsAllEndpoint(2);
+            SetupRemoveGroupEndpoint();
+        }
+
+        void WhenUserNavigateToGroup() => Page.NavigateTo();
+
+        void AndWhenPageIsLoaded() => Page.WaitUntilDataIsLoaded();
+
+        void AndWhenUserClickEditGroupButton() => Page.ClickEditGroupButton(0);
+
+        void AndWhenEditDialogAppears() => Page.WaitUntilEditDialogAppear();
+
+        void AndWhenUserClickRemoveButton() => Page.Dialog.ClickRemoved();
+
+        void AndWhenAddDialogDisappear() => Page.WaitUntilEditDialogDisappear();
+
+        void ThenGroupShouldBeUpdated()
+        {
+            var groups = Page.FindAllGroups();
+            groups.Should().HaveCount(1);
+        }
+
+        [Test]
+        public void TestUpdatingGroup() => this.BDDfy();
     }
 }

@@ -1,9 +1,9 @@
-import { RepeatWord } from '../models/repeat-word.model';
+import { ExtendedCardDetails } from 'src/app/share/models/card-details';
 
 export interface DashbordState {
-    lastFailed: RepeatWord;
-    nextRepeat: RepeatWord;
-    newestCard: RepeatWord;
+    lastFailed: ExtendedCardDetails;
+    nextRepeat: ExtendedCardDetails;
+    newestCard: ExtendedCardDetails;
     cardToRepeat: number;
     lastRepeat: Date;
     groupsCount: number;

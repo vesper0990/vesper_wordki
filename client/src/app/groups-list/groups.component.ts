@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Group } from './models/group.model';
 import { Observable } from 'rxjs';
 import { EditGroup } from '../share/components/edit-group-dialog/edit-group.model';
 import { GroupsListService } from './services/groups-list/groups-list.service';
 import { DialogMode } from '../share/components/edit-group-dialog/mode-dialog';
 import { Title } from '@angular/platform-browser';
+import { Group } from '../share/models/card-details';
 
 @Component({
   templateUrl: './groups.component.html',

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 import { map} from 'rxjs/operators';
-import { RepeatWord } from './models/repeat-word.model';
+import { ExtendedCardDetails } from '../share/models/card-details';
 import { DashboardService } from './services/dashboard/dashboard.service';
 
 @Component({
@@ -11,9 +11,9 @@ import { DashboardService } from './services/dashboard/dashboard.service';
 })
 export class DashboardComponent implements OnInit {
 
-  lastFailed$: Observable<RepeatWord>;
-  nextRepeat$: Observable<RepeatWord>;
-  newestCard$: Observable<RepeatWord>;
+  lastFailed$: Observable<ExtendedCardDetails>;
+  nextRepeat$: Observable<ExtendedCardDetails>;
+  newestCard$: Observable<ExtendedCardDetails>;
 
   cardToRepeat$: Observable<number>;
   isCardToRepeatReady$: Observable<boolean>;

@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { RepeatWord } from '../../models/repeat-word.model';
+import { ExtendedCardDetails } from 'src/app/share/models/card-details';
 import * as action from '../../store/actions';
 import * as selector from '../../store/selectors';
 import { DashbordState } from '../../store/state';
@@ -24,15 +23,15 @@ export class DashboardService {
         this.store.dispatch(new action.GetCardsCount());
     }
 
-    getLastFailed(): Observable<RepeatWord> {
+    getLastFailed(): Observable<ExtendedCardDetails> {
         return this.store.select(selector.selectLastFailed);
     }
 
-    getNextRepeat(): Observable<RepeatWord> {
+    getNextRepeat(): Observable<ExtendedCardDetails> {
         return this.store.select(selector.selectNextRepeat);
     }
 
-    getNewestCard(): Observable<RepeatWord> {
+    getNewestCard(): Observable<ExtendedCardDetails> {
         return this.store.select(selector.selectNewestCard);
     }
 

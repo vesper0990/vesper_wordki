@@ -10,7 +10,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class EditWordDialogComponent {
 
   private _word: EditWord;
-  @Input()  set word(value: EditWord) {
+  @Input() set word(value: EditWord) {
     this._word = value;
     this.initForm();
   }
@@ -41,6 +41,9 @@ export class EditWordDialogComponent {
   constructor(private formBuilder: FormBuilder) { }
 
   private initForm(): void {
+    if (this._word === null) {
+      return;
+    }
     this.wordForm.patchValue({
       language1: this._word.language1,
       language2: this._word.language2,
@@ -51,15 +54,15 @@ export class EditWordDialogComponent {
   }
 
   onSave(): void {
-    const newWord = {
-      ...this._word,
-      language1: this.wordForm.get('language1').value,
-      language2: this.wordForm.get('language2').value,
-      example1: this.wordForm.get('example1').value,
-      example2: this.wordForm.get('example2').value,
-      isVisible: this.wordForm.get('isVisible').value,
-    };
-    console.log('onsave', newWord);
+    const newWord = new EditWord(
+      this._word.id,
+      this._word.groupId,
+      this.wordForm.get('language1').value,
+      this.wordForm.get('language2').value,
+      this.wordForm.get('example1').value,
+      this.wordForm.get('example2').value,
+      this.wordForm.get('isVisible').value,
+    );
     this.save.emit(newWord);
   }
 
@@ -68,7 +71,7 @@ export class EditWordDialogComponent {
   }
 
   onRemove(): void {
-    this.remove.emit(this._word.wordId);
+    this.remove.emit(this._word.id);
   }
 
   private setTitle(value: 'edit' | 'add'): void {

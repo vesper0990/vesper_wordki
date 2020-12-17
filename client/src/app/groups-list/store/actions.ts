@@ -1,9 +1,9 @@
 import { Action } from '@ngrx/store';
-import { Group } from '../models/group.model';
 import { EditGroup } from 'src/app/share/components/edit-group-dialog/edit-group.model';
 import { LanguageType } from 'src/app/share/models/language-type.mode';
 import { GroupListState } from './state';
 import { DialogMode } from 'src/app/share/components/edit-group-dialog/mode-dialog';
+import { Group } from 'src/app/share/models/card-details';
 
 export enum GroupListTypes {
     SHOW_DIALOG = '[GROUP_LIST_STATE] SHOW_DIALOG',
@@ -63,12 +63,12 @@ export class UpdateGroupSuccess implements Action {
     static reduce(state: GroupListState, action: UpdateGroupSuccess): GroupListState {
         const groups = [];
         state.groups.forEach((item: Group) => {
-            groups.push(item.id === action.payload.group.id ? <Group>{
-                ...item,
-                name: action.payload.group.name,
-                language1: LanguageType.getLanguageType(action.payload.group.language1 as any),
-                language2: LanguageType.getLanguageType(action.payload.group.language2 as any),
-            } : item);
+            groups.push(item.id === action.payload.group.id
+                ? new Group(
+                    action.payload.group.id, action.payload.group.name,
+                    action.payload.group.languageFront, action.payload.group.languageBack,
+                    item.cardsCount, item.repeatsCount)
+                : item);
         });
         return { ...state, groups: groups };
     }
@@ -92,10 +92,9 @@ export class AddGroupSuccess implements Action {
         const newGroup = new Group(
             action.payload.groupId,
             action.payload.group.name,
-            action.payload.group.language1,
-            action.payload.group.language2,
-            0, 0, 0, 0
-        );
+            action.payload.group.languageFront,
+            action.payload.group.languageBack,
+            0, 0);
         const groups = [];
         state.groups.forEach((item: Group) => {
             groups.push(item);

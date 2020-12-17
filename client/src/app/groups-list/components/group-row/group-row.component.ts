@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Group } from '../../models/group.model';
+import { Group } from 'src/app/share/models/card-details';
 
 @Component({
   selector: 'app-group-row',
@@ -17,7 +17,7 @@ export class GroupRowComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.wordsValue = this.group.visibleWordsCount + '/' + this.group.cardsCount;
+    this.wordsValue = this.group.cardsCount.toString();
   }
 
   editGroup(group: Group): void {

@@ -4,11 +4,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
+using Wordki.Api.Responses;
 using Wordki.Utils.HttpContext;
 
 namespace Wordki.Api.Featuers.Card.GetLastFailed
 {
-    public class GetLastFailedQueryHandler : IRequestHandler<GetLastFailedQuery, LastFailedDto>
+    public class GetLastFailedQueryHandler : IRequestHandler<GetLastFailedQuery, ExtendedCardDetailsDto>
     {
         private readonly WordkiDbContext dbContext;
         private readonly IHttpContextProvider httpContextProvider;
@@ -18,7 +19,7 @@ namespace Wordki.Api.Featuers.Card.GetLastFailed
             this.dbContext = dbContext;
             this.httpContextProvider = httpContextProvider;
         }
-        public async Task<LastFailedDto> Handle(GetLastFailedQuery request, CancellationToken cancellationToken)
+        public async Task<ExtendedCardDetailsDto> Handle(GetLastFailedQuery request, CancellationToken cancellationToken)
         {
             var userId = httpContextProvider.GetUserId();
             var result = await dbContext.Repeats
@@ -29,22 +30,7 @@ namespace Wordki.Api.Featuers.Card.GetLastFailed
             .FirstOrDefaultAsync();
 
             var card = result?.Word;
-            return card != null ? new LastFailedDto
-            {
-                GroupName = card.Group.Name,
-                Heads = new Dto.SideDto{
-                    Value = card.Heads.Value,
-                    Example = card.Heads.Example,
-                    Drawer = card.Heads.State.Drawer.Value,
-                    Language = card.Group.GroupLanguage1,
-                },
-                Tails = new Dto.SideDto{
-                    Value = card.Tails.Value,
-                    Example = card.Tails.Example,
-                    Drawer = card.Tails.State.Drawer.Value,
-                    Language = card.Group.GroupLanguage2,
-                },
-            } : null;
+            return card != null ? card.GetExtendedCardDetailsDto() : null;
         }
     }
 }

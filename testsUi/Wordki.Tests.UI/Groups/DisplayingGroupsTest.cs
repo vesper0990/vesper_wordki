@@ -1,27 +1,24 @@
-using System.Threading;
+using FluentAssertions;
 using NUnit.Framework;
-using OpenQA.Selenium;
 using TestStack.BDDfy;
 
 namespace Wordki.Tests.UI.Groups
 {
-    public class DisplayingGroupsTest : GroupsTestBase
+    internal class DisplayingGroupsTest : GroupsTestBase
     {
         void GivenCookies() => SetAuthorizationCookie();
 
-        void AndGivenSetupServer()
-            => Server.AddGetEndpoint("/group/all", ResponseBuilder.CreateRespnse());
+        void AndGivenSetupServer() => SetupGroupsAllEndpoint(2);
 
+        void WhenUserNavigateToGroup() => Page.NavigateTo();
 
-        void WhenUserNavigateToGroup()
-        {
-            Driver.Navigate().GoToUrl($"{AppUrl}/groups");
-            Thread.Sleep(500);
-        }
+        void AndWhenPageIsLoaded() => Page.WaitUntilDataIsLoaded();
 
         void ThenGroupsAreDisplayed()
-            => Assert.AreEqual(3, Driver.FindElements(By.CssSelector("app-group-row")).Count);
-
+        {
+            var groups = Page.FindAllGroups();
+            groups.Should().HaveCount(2);
+        }
 
         [Test]
         public void Execute() => this.BDDfy();

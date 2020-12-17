@@ -1,10 +1,8 @@
 import { Action } from '@ngrx/store';
-import { GroupDetails } from '../models/group-details.model';
 import { EditWord } from 'src/app/share/components/edit-word-dialog/edit-word.model';
 import { GroupDetailsState } from './state';
-import { GroupListState } from 'src/app/groups-list/store/state';
 import { DialogMode } from 'src/app/share/components/edit-group-dialog/mode-dialog';
-import { Word } from '../models/word.model';
+import { CardDetails, GroupDetails, SideDetails } from 'src/app/share/models/card-details';
 
 export enum GroupDetailsTypes {
     SHOW_DIALOG = '[GROUP_LIST_STATE] SHOW_DIALOG',
@@ -67,7 +65,7 @@ export class GetWords implements Action {
 
 export class GetWordsSuccess implements Action {
     readonly type = GroupDetailsTypes.GetWordsSuccess;
-    constructor(public payload: { words: Word[] }) { }
+    constructor(public payload: { words: CardDetails[] }) { }
     static reduce(state: GroupDetailsState, action: GetWordsSuccess): GroupDetailsState {
         return {
             ...state,
@@ -94,16 +92,27 @@ export class UpdateWordSuccess implements Action {
     static reduce(state: GroupDetailsState, action: UpdateWordSuccess): GroupDetailsState {
         const arr = [];
         const updatedWord = action.payload.editWord;
-        state.words.forEach((item: Word) => {
-            if (item.id === updatedWord.wordId) {
-                const newItem = {
-                    ...item,
-                    language1: updatedWord.language1,
-                    language2: updatedWord.language2,
-                    example1: updatedWord.example1,
-                    example2: updatedWord.example2,
-                    isVisible: updatedWord.isVisible
-                } as Word;
+        state.words.forEach((item: CardDetails) => {
+            if (item.id === updatedWord.id) {
+                const newItem = new CardDetails(updatedWord.id,
+                    new SideDetails(
+                        updatedWord.language1,
+                        updatedWord.example1,
+                        item.front.drawer,
+                        item.front.language,
+                        item.front.repeatsCount,
+                        item.front.isVisible,
+                        item.front.nextRepeat
+                    ),
+                    new SideDetails(
+                        updatedWord.language2,
+                        updatedWord.example2,
+                        item.back.drawer,
+                        item.back.language,
+                        item.back.repeatsCount,
+                        item.back.isVisible,
+                        item.back.nextRepeat
+                    ))
                 arr.push(newItem);
             } else {
                 arr.push(item);
@@ -125,7 +134,7 @@ export class AddWord implements Action {
 
 export class AddWordSuccess implements Action {
     readonly type = GroupDetailsTypes.AddWordSuccess;
-    constructor(public payload: { word: Word }) { }
+    constructor(public payload: { word: any }) { }
 
     static reduce(state: GroupDetailsState, action: AddWordSuccess): GroupDetailsState {
         const words = state.words;
@@ -156,7 +165,7 @@ export class RemoveWordSuccess implements Action {
 
 export class ShowDialog implements Action {
     readonly type = GroupDetailsTypes.SHOW_DIALOG;
-    constructor(public payload: { mode: DialogMode, card?: Word }) { }
+    constructor(public payload: { mode: DialogMode, card: EditWord }) { }
     static reduce(state: GroupDetailsState, action: ShowDialog): GroupDetailsState {
         return {
             ...state,

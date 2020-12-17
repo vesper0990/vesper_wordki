@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { GroupDto } from '../../models/group-dto.model';
-import { Group } from '../../models/group.model';
 import { map, delay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { EditGroup } from 'src/app/share/components/edit-group-dialog/edit-group.model';
-import { mapToGroup } from '../mappers/mappers';
+import { Group } from 'src/app/share/models/card-details';
+import { GroupDto } from 'src/app/share/models/dtos/group-dto';
+import { mapGroup } from 'src/app/share/models/mappers';
 
 @Injectable()
 export abstract class GroupsListHttpServiceBase {
@@ -24,22 +24,28 @@ export class GroupsListHttpService extends GroupsListHttpServiceBase {
     }
 
     updateGroup(group: EditGroup): Observable<any> {
-        return this.client.put(`${environment.apiUrl}/group/update`, group);
+        const body = {
+            id: group.id,
+            name: group.name,
+            languageFront: group.languageFront.type,
+            languageBack: group.languageBack.type,
+        }
+        return this.client.put(`${environment.apiUrl}/group/update`, body);
     }
 
-    addGroup(editGroup: EditGroup): Observable<number> {
-        return this.client.post<number>(`${environment.apiUrl}/group/add`, editGroup);
+    addGroup(group: EditGroup): Observable<number> {
+        const body = {
+            name: group.name,
+            languageFront: group.languageFront.type,
+            languageBack: group.languageBack.type,
+        }
+        return this.client.post<number>(`${environment.apiUrl}/group/add`, body);
     }
 
     getGroups(): Observable<Group[]> {
         return this.client.get<GroupDto[]>(`${environment.apiUrl}/group/all`).pipe(
-            map((dtos: GroupDto[]) => {
-                const result = [];
-                dtos.forEach((dto: GroupDto) => {
-                    result.push(mapToGroup(dto));
-                });
-                return result;
-            }));
+            map((dtos: GroupDto[]) => dtos.map(item => mapGroup(item)))
+        );
     }
 
     removeGroup(groupId: number): Observable<any> {
@@ -64,22 +70,16 @@ export class GroupsListHttpMockService extends GroupsListHttpServiceBase {
             groups.push({
                 id: i,
                 name: `group ${i}`,
-                language1: 1,
-                language2: 2,
+                languageFront: 1,
+                languageBack: 2,
                 cardsCount: 30 % i,
                 repeatsCount: 30 % i,
-                visibleWordsCount: 30 % i,
-                averageDrawer: 5 % i,
             });
         }
-        return of<GroupDto[]>(groups)
-            .pipe(map((dtos: GroupDto[]) => {
-                const result = [];
-                dtos.forEach((dto: GroupDto) => {
-                    result.push(mapToGroup(dto));
-                });
-                return result;
-            })).pipe(delay(500));
+        return of<GroupDto[]>(groups).pipe(
+            delay(500),
+            map((dtos: GroupDto[]) => dtos.map(item => mapGroup(item)))
+        );
     }
 
     updateGroup(group: EditGroup): Observable<any> {

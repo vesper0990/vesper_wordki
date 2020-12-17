@@ -3,7 +3,7 @@
   <button class="custom-button">Add existing group</button>
 </div>
 <ng-container *ngIf="isLoading$ | async; else groups">
-  <app-progress-horizontal></app-progress-horizontal>
+  <app-progress-horizontal id="progress-bar"></app-progress-horizontal>
 </ng-container>
 <ng-template #groups>
   <ng-container *ngIf="groups$ | async as groups">
@@ -16,7 +16,9 @@
   </ng-container>
 </ng-template>
 <ng-template #nowords>
-  <b>You do not have any groups yet.</b>
+  <div id="no-groups-info">
+    <b>You do not have any groups yet.</b>
+  </div>
 </ng-template>
 
 <app-edit-group-dialog [isVisible]="dialogVisibility$ | async" [mode]="dialogMode$ | async"

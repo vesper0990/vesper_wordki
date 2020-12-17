@@ -17,7 +17,7 @@ describe('CardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CardComponent);
     component = fixture.componentInstance;
-    component.word = {
+    component.card = {
       language1: LanguageType.getLanguageType(LanguageTypeEnum.English),
       language2: LanguageType.getLanguageType(LanguageTypeEnum.English),
     } as CardModel;

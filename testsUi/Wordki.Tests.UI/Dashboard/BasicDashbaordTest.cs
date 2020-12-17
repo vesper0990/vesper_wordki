@@ -5,7 +5,7 @@ using TestStack.BDDfy;
 namespace Wordki.Tests.UI.Dashboard
 {
     [TestFixture]
-    public class BasicDashbaordTest : DashboardTestBase
+    class BasicDashbaordTest : DashboardTestBase
     {
         void GivenCookieInApp() => SetAuthorizationCookie();
 

@@ -21,7 +21,7 @@
       </p-header>
       <ng-container *ngIf="newestCard$ | async as word; else loading">
         <ng-container *ngIf="word.groupLanguage1 !== null; else nowords">
-          <app-card [word]="word"></app-card>
+          <app-card [card]="word"></app-card>
         </ng-container>
       </ng-container>
     </p-card>
@@ -35,7 +35,7 @@
       </p-header>
       <ng-container *ngIf="nextRepeat$ | async as word; else loading">
         <ng-container *ngIf="word.groupLanguage1 !== null; else nowords">
-          <app-card [word]="word"></app-card>
+          <app-card [card]="word"></app-card>
         </ng-container>
       </ng-container>
     </p-card>
@@ -49,7 +49,7 @@
       </p-header>
       <ng-container *ngIf="lastFailed$ | async as word; else loading">
         <ng-container *ngIf="word.groupLanguage1 !== null; else nowords">
-          <app-card [word]="word"></app-card>
+          <app-card [card]="word"></app-card>
         </ng-container>
       </ng-container>
     </p-card>

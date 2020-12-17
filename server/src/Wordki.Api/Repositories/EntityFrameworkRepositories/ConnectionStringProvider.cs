@@ -22,9 +22,6 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
 
     public class HerokuConnectionStringProvider : IConnectionStringProvider
     {
-
-        
-
         private readonly string PostgressTag = "DATABASE_URL";
         private readonly ILogger<IConnectionStringProvider> logger;
 

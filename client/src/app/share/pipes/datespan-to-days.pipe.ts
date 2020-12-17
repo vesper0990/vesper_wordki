@@ -8,18 +8,21 @@ import { Never } from '../utils/date-util';
 export class DateSpanToDaysPipe implements PipeTransform {
 
     transform(value: Date, ...args: any[]): string {
+        if (value === null || value === undefined) {
+            return '';
+        }
         if (value === Never) {
-            return 'nigdy';
+            return 'never';
         }
         const now = new Date().getTime();
         const then = value.getTime();
         const span = Math.floor((now - then) / 1000 / 3600 / 24);
         if (span === 0) {
-            return 'dzisiaj';
+            return 'today';
         } else if (span === 1) {
-            return 'wczoraj';
+            return 'yesterday';
         } else {
-            return `${span} dni temu`;
+            return `${span} days ago`;
         }
     }
 }

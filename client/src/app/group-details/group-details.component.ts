@@ -4,8 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { DialogMode } from '../share/components/edit-group-dialog/mode-dialog';
 import { EditWord } from '../share/components/edit-word-dialog/edit-word.model';
-import { GroupDetails } from './models/group-details.model';
-import { Word } from './models/word.model';
+import { CardDetails, GroupDetails } from '../share/models/card-details';
 import { CardsListService } from './services/words-list/words-list.service';
 
 @Component({
@@ -14,7 +13,7 @@ import { CardsListService } from './services/words-list/words-list.service';
 })
 export class GroupDetailsComponent implements OnInit, OnDestroy {
 
-  cards$: Observable<Word[]>;
+  cards$: Observable<CardDetails[]>;
   isCardsLoading$: Observable<boolean>;
   groupDetails$: Observable<GroupDetails>;
   isGroupDetailsLoading$: Observable<boolean>;
@@ -47,7 +46,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.service.openDialogToAdd();
   }
 
-  editCard(card: Word): void {
+  editCard(card: CardDetails): void {
     this.service.openDialogToEdit(card);
   }
 
