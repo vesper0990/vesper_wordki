@@ -23,16 +23,12 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
     public class HerokuConnectionStringProvider : IConnectionStringProvider
     {
         private readonly string PostgressTag = "DATABASE_URL";
-        private readonly ILogger<IConnectionStringProvider> logger;
-
+        private readonly ILogger<HerokuConnectionStringProvider> logger;
         public string ConnectionString { get; }
 
-        public HerokuConnectionStringProvider(ILogger<IConnectionStringProvider> logger){
-            this.logger = logger;
-        }
-
-        public HerokuConnectionStringProvider(IConfiguration configuration)
+        public HerokuConnectionStringProvider(IConfiguration configuration, ILogger<HerokuConnectionStringProvider> logger)
         {
+            this.logger = logger;
             var value = configuration.GetValue<string>(PostgressTag);
             logger.LogInformation(value);
             value = value.Remove(0, "postgres://".Length);
