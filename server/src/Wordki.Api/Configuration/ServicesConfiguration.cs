@@ -28,7 +28,7 @@ public static class ServicesConfiguration
 
     private static IServiceCollection AddIConnectionStringProvider(this IServiceCollection services, IConfiguration configuration)
     {
-        const string envTag = "ENVIRONMENT";
+        const string envTag = "ASPNETCORE_ENVIRONMENT";
         var envrionment = configuration.GetValue<string>(envTag);
         if (string.IsNullOrEmpty(envrionment))
         {
