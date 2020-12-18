@@ -10,30 +10,33 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Logging;
 
 namespace Wordki
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
+        private readonly ILogger<Startup> logger;
+        private readonly IConfiguration configuration;
 
-        public Startup(IWebHostEnvironment hostingEnvironment)
+        public Startup(IWebHostEnvironment hostingEnvironment, ILogger<Startup> logger)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(hostingEnvironment.ContentRootPath)
                 .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", true, true)
                 .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            configuration = builder.Build();
+            this.logger = logger;
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .OptionConfig(Configuration)
-                .JwtConfig(Configuration)
+                .OptionConfig(configuration)
+                .JwtConfig(configuration)
                 .CorsConfig()
-                .LoggingConfig(Configuration)
-                .ServicesConfig(Configuration)
+                .LoggingConfig(configuration)
+                .ServicesConfig(configuration)
                 .AddDbContext<WordkiDbContext>()
                 .AddMediatR(typeof(Startup).Assembly)
                 .AddMvc(o =>

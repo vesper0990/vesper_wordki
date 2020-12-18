@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
 using Wordki.Api.Services;
 using Wordki.Infrastructure.Framework.ExceptionMiddleware;
@@ -27,7 +28,15 @@ public static class ServicesConfiguration
 
     private static IServiceCollection AddIConnectionStringProvider(this IServiceCollection services, IConfiguration configuration)
     {
-        return "Production".Equals(configuration.GetValue<string>("ENVIRONMENT"))
+        const string envTag = "ASPNETCORE_ENVIRONMENT";
+        var envrionment = configuration.GetValue<string>(envTag);
+        if (string.IsNullOrEmpty(envrionment))
+        {
+            Log.Error($"There is no {envTag} in configuration");
+            throw new System.Exception($"There is no {envTag} in configuration");
+        }
+
+        return envrionment.Equals("Production")
             ? services.AddSingleton<IConnectionStringProvider, HerokuConnectionStringProvider>()
             : services.AddSingleton<IConnectionStringProvider, SimpleConnectionStringProvider>();
     }
