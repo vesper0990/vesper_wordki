@@ -10,6 +10,7 @@ export interface LessonState {
     lessonStep: LessonStep;
     stepBeforePause: LessonStep;
     lessonId: number;
+    comparisonResult: 'wrong' | 'correct' | 'none';
 }
 
 export const initialLessonsState: LessonState = {
@@ -18,5 +19,6 @@ export const initialLessonsState: LessonState = {
     lessonSettings: null,
     lessonStep: LessonStep.BEFORE_START,
     stepBeforePause: null,
-    lessonId: 0
+    lessonId: 0,
+    comparisonResult: 'none'
 };

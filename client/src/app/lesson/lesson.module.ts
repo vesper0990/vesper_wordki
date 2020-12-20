@@ -29,11 +29,13 @@ import { SummaryComponent } from './components/summary/summary.component';
 import { FiszkaSideComponent } from './components/fiszka-side/fiszka-side.component';
 import { FiszkaService } from './components/fiszka/services/fiszka/fiszka.service';
 import { SummaryService } from './components/summary/services/summary/summary.service';
+import { InsertService } from './components/insert/service/insert/insert.service';
+import { InsertComponent } from './components/insert/insert.component';
 
 @NgModule({
   declarations: [
     FiszkaComponent,
-    // InsertComponent,
+    InsertComponent,
     StoperComponent,
     SummaryComponent,
     FiszkaSideComponent,
@@ -60,7 +62,8 @@ import { SummaryService } from './components/summary/services/summary/summary.se
     WordMapper,
     SummaryGuardService,
     FiszkaService,
-    SummaryService
+    SummaryService,
+    InsertService
   ]
 })
 export class LessonModule {

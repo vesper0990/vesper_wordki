@@ -9,6 +9,9 @@ export function reducer(state = initialLessonsState, action: actions.LessonActio
         case actions.LessonActionEnum.GET_WORDS_FAILES: return actions.GetWordsFailed.reduce(state);
         case actions.LessonActionEnum.START_LESSON: return actions.StartLesson.reduce(state);
         case actions.LessonActionEnum.CHECK_CARD: return actions.CheckCard.reduce(state);
+        case actions.LessonActionEnum.COMPARE: return actions.Compare.reduce(state);
+        case actions.LessonActionEnum.COMPARISON_CORRECT: return actions.ComparisonCorrect.reduce(state);
+        case actions.LessonActionEnum.COMPARISON_WRONG: return actions.ComparisonWrong.reduce(state);
         case actions.LessonActionEnum.ANWSER_CORRECT: return actions.AnswerCorrect.reduce(state);
         case actions.LessonActionEnum.ANSWER_WRONG: return actions.AnswerWrong.reduce(state);
         case actions.LessonActionEnum.FINISH_LESSON: return actions.FinishLesson.reduce(state, action);

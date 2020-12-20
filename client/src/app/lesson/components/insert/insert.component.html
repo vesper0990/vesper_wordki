@@ -1,5 +1,29 @@
-<div *ngIf="word">
-    <span *ngIf="questionVisibility">{{word.language1}}</span>
-    -- <input #answerElement [(ngModel)]="answer" [attr.disabled]="answerIsEnable ? null : ''">
-    <p>{{result}}</p>
-</div>
+<ng-container *ngIf="lessonStep$ | async as lessonStep">
+  <div class="card" [ngClass]="{'blur': lessonStep.restartBtn}">
+    <ng-container *ngIf="currentCard$ | async as currentWord">
+      <app-fiszka-side [isTextVisible]="lessonStep.question" [value]="currentWord.question.value"
+        [example]="currentWord.question.example"></app-fiszka-side>
+      <hr>
+      <input #answerElement [ngClass]="{'correct': isCorrect, 'wrong': isWrong}" [(ngModel)]="value"
+        [disabled]="!lessonStep.checkBtn" />
+      <app-fiszka-side [isTextVisible]="lessonStep.answer && isWrong"
+        [value]="currentWord.answer.value" [example]="currentWord.answer.example"></app-fiszka-side>
+    </ng-container>
+  </div>
+  <div class="buttons-container">
+    <p-button *ngIf="lessonStep.startBtn" class="ui-button-warring" (click)="startLesson()" label="Start">
+    </p-button>
+    <p-button *ngIf="lessonStep.checkBtn" class="ui-button-warring" (click)="check()" label="Check">
+    </p-button>
+    <p-button *ngIf="lessonStep.answareBtn" class="ui-button-warring" (click)="correct()" label="Znam">
+    </p-button>
+    <p-button *ngIf="lessonStep.answareBtn" class="ui-button-warring" (click)="wrong()" label="Nie znam">
+    </p-button>
+  </div>
+  <p-button *ngIf="lessonStep.pauseBtn" class="ui-button-warring" (click)="pause()" label="Pause">
+  </p-button>
+  <p-button *ngIf="lessonStep.pauseBtn" class="ui-button-warring" (click)="finishLesson()" label="Finish">
+  </p-button>
+  <p-button *ngIf="lessonStep.restartBtn" class="ui-button-warring" (click)="restart()" label="Koniec przerwy">
+  </p-button>
+</ng-container>

@@ -23,6 +23,11 @@ export enum LessonActionEnum {
 
     START_LESSON = '[LESSON_STATE] START_LESSON',
     CHECK_CARD = '[LESSON_STATE] CHECK_CARD',
+
+    COMPARE = '[LESSON_STATE] COMPARE',
+    COMPARISON_CORRECT = '[LESSON_STATE] COMPARISON_CORRECT',
+    COMPARISON_WRONG = '[LESSON_STATE] COMPARISON_WRONG',
+
     ANWSER_CORRECT = '[LESSON_STATE] ANSWER_CORRECT',
     ANSWER_WRONG = '[LESSON_STATE] ANSWER_WRONG',
     FINISH_LESSON = '[LESSON_STATE] FINISH_LESSON',
@@ -110,7 +115,42 @@ export class CheckCard implements Action {
     static reduce(state: LessonState): LessonState {
         return {
             ...state,
-            lessonStep: LessonStep.ANSWARE
+            lessonStep: LessonStep.ANSWER
+        };
+    }
+}
+
+export class Compare implements Action {
+    readonly type = LessonActionEnum.COMPARE;
+    constructor(public payload: { value: string }) { }
+
+    static reduce(state: LessonState): LessonState {
+        return {
+            ...state
+        };
+    }
+}
+
+export class ComparisonCorrect implements Action{
+    readonly type = LessonActionEnum.COMPARISON_CORRECT;
+    constructor() { }
+
+    static reduce(state: LessonState): LessonState {
+        return {
+            ...state,
+            comparisonResult: 'correct'
+        };
+    }
+}
+
+export class ComparisonWrong implements Action{
+    readonly type = LessonActionEnum.COMPARISON_WRONG;
+    constructor() { }
+
+    static reduce(state: LessonState): LessonState {
+        return {
+            ...state,
+            comparisonResult: 'wrong'
         };
     }
 }
@@ -129,7 +169,8 @@ export class AnswerCorrect implements Action {
             result: {
                 ...state.result,
                 correct: state.result.correct + 1
-            }
+            },
+            comparisonResult: 'none'
         };
     }
 }
@@ -150,7 +191,8 @@ export class AnswerWrong implements Action {
             result: {
                 ...state.result,
                 wrong: state.result.wrong + 1
-            }
+            },
+            comparisonResult: 'none'
         };
     }
 }
@@ -176,11 +218,13 @@ export class PauseLesson implements Action {
 
     static reduce(state: LessonState): LessonState {
         const stepBeforePause = state.lessonStep;
-        const step = LessonStep.PAUSE;
-        step.answare = stepBeforePause.answare;
+        const step = {
+            ...LessonStep.PAUSE,
+            answer: stepBeforePause.answer
+        };
         return {
             ...state,
-            lessonStep: LessonStep.PAUSE,
+            lessonStep: step,
             stepBeforePause: stepBeforePause
         };
     }
@@ -281,6 +325,9 @@ export type LessonActionType =
     GetWordsSuccess |
     GetWordsFailed |
     StartLesson |
+    Compare |
+    ComparisonCorrect |
+    ComparisonWrong |
     CheckCard |
     AnswerCorrect |
     AnswerWrong |

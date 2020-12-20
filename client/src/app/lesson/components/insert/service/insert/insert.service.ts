@@ -1,18 +1,17 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { LessonStep } from 'src/app/lesson/models/lesson-state';
-import { LessonCardDto } from 'src/app/lesson/models/word-repeat.dto';
-import { StoperService } from 'src/app/lesson/services/stoper/stoper.service';
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { Store } from "@ngrx/store";
+import { Subscription, Observable } from "rxjs";
+import { tap } from "rxjs/operators";
+import { LessonStep } from "src/app/lesson/models/lesson-state";
+import { LessonCardDto } from "src/app/lesson/models/word-repeat.dto";
+import { StoperService } from "src/app/lesson/services/stoper/stoper.service";
+import { selectLessonStep, selectCurrentCard, selectComparisonResult } from "src/app/lesson/store/selectors";
 import * as actions from 'src/app/lesson/store/actions';
-import { selectCurrentCard, selectLessonStep, } from 'src/app/lesson/store/selectors';
-import { LessonState } from 'src/app/lesson/store/state';
+import { LessonState } from "src/app/lesson/store/state";
 
 @Injectable()
-export class FiszkaService {
-
+export class InsertService {
     private lessonStepSub: Subscription;
     private lessonStep: LessonStep;
 
@@ -36,6 +35,10 @@ export class FiszkaService {
 
     getLessonStep(): Observable<LessonStep> {
         return this.store.select(selectLessonStep);
+    }
+
+    getComparisonResult(): Observable<string> {
+        return this.store.select(selectComparisonResult);
     }
 
     startLesson(): void {
@@ -66,11 +69,11 @@ export class FiszkaService {
         this.store.dispatch(new actions.AnswerWrong());
     }
 
-    check(): void {
+    check(value: string): void {
         if (this.lessonStep !== LessonStep.QUESTION) {
             return;
         }
-        this.store.dispatch(new actions.CheckCard());
+        this.store.dispatch(new actions.Compare({ value: value }));
     }
 
     loadWords(): void {
@@ -87,4 +90,5 @@ export class FiszkaService {
         this.stoper.start();
         this.store.dispatch(new actions.RestartLesson());
     }
+
 }
