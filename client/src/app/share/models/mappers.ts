@@ -1,5 +1,7 @@
-import { CardDetails, Drawer, ExtendedCardDetails, Group, GroupDetails, SideDetails } from "./card-details";
+import { RepeatDto } from "src/app/group-details/models/repeat.dto";
+import { CardDetails, CardRepeat, Drawer, ExtendedCardDetails, Group, GroupDetails, SideDetails, SideRepeat } from "./card-details";
 import { CardDetailsDto } from "./dtos/card-details-dto";
+import { CardRepeatDto } from "./dtos/card-repeat-dto";
 import { ExtendedCardDetailsDto } from "./dtos/extended-card-details-dto";
 import { GroupDetailsDto } from "./dtos/group-details-dto";
 import { GroupDto } from "./dtos/group-dto";
@@ -63,7 +65,7 @@ export function mapGroup(dto: GroupDto): Group {
         dto.repeatsCount);
 }
 
-export function mapGroupDetails(dto: GroupDetailsDto): GroupDetails{
+export function mapGroupDetails(dto: GroupDetailsDto): GroupDetails {
     return new GroupDetails(
         dto.id,
         dto.name,
@@ -72,5 +74,23 @@ export function mapGroupDetails(dto: GroupDetailsDto): GroupDetails{
         dto.cardsCount,
         dto.repeatsCount,
         new Date(dto.creationDate)
+    )
+}
+
+export function mapCardRepeat(dto: CardRepeatDto): CardRepeat {
+    return new CardRepeat(
+        dto.id,
+        new SideRepeat(
+            dto.question.value,
+            dto.question.example,
+            new Drawer(dto.question.drawer),
+            LanguageType.getLanguageType(dto.question.language)
+        ),
+        new SideRepeat(
+            dto.answer.value,
+            dto.answer.example,
+            new Drawer(dto.answer.drawer),
+            LanguageType.getLanguageType(dto.answer.language)
+        )
     )
 }

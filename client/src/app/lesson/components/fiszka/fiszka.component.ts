@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
+import { CardRepeat } from 'src/app/share/models/card-details';
 import { LessonStep } from '../../models/lesson-state';
 import { LessonCardDto } from '../../models/word-repeat.dto';
 import { FiszkaService } from './services/fiszka/fiszka.service';
@@ -15,7 +16,7 @@ export class FiszkaComponent implements OnInit, OnDestroy {
   private readonly arrowRight = 'ArrowRight';
   private readonly enter = 'Enter';
 
-  currentCard$: Observable<LessonCardDto>;
+  currentCard$: Observable<CardRepeat>;
   lessonStep$: Observable<LessonStep>;
 
   constructor(private readonly service: FiszkaService,

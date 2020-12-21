@@ -6,6 +6,8 @@ import { environment } from 'src/environments/environment';
 import { LessonCardDto, WordRepeatDto } from '../../models/word-repeat.dto';
 import { delay, map, tap } from 'rxjs/operators';
 import { WordMapper } from '../word-mapper/word-mapper';
+import { CardRepeat } from 'src/app/share/models/card-details';
+import { mapCardRepeat } from 'src/app/share/models/mappers';
 
 @Injectable()
 export abstract class LessonHttpBaseService {
@@ -15,10 +17,11 @@ export abstract class LessonHttpBaseService {
     abstract getWordForLesson(count: number, offect: number, question: number, answer: number): Observable<WordRepeat[]>;
     abstract getWordsFromGroup(groupId: number): Observable<WordRepeat[]>;
     abstract sendWord(wordId: number, result: number): Observable<any>;
-    abstract getTodayWords(): Observable<LessonCardDto[]>;
+    abstract getTodayWords(): Observable<CardRepeat[]>;
     abstract correct(lessonId: number, wordId: number, questionSide: string): Observable<any>;
     abstract wrong(lessonId: number, wordId: number, questionSide: string): Observable<any>;
-    abstract finish(lessonId: number): Observable<any>;
+    abstract accept(lessonId: number, wordId: number, questionSide: string): Observable<any>;
+    abstract finish(lessonId: number, span: number): Observable<any>;
 }
 
 @Injectable()
@@ -49,6 +52,16 @@ export class LessonHttpService extends LessonHttpBaseService {
             cardId: cardId,
             questionSide: 'Heads',
             repeatReuslt: 'Wrong'
+        };
+        return this.http.post(`${environment.apiUrl}/lesson/answer`, body);
+    }
+
+    accept(cardId: number, lessonId: number, questionSide: string): Observable<any> {
+        const body = {
+            lessonId: lessonId,
+            cardId: cardId,
+            questionSide: 'Heads',
+            repeatReuslt: 'Accepted'
         };
         return this.http.post(`${environment.apiUrl}/lesson/answer`, body);
     }
@@ -85,13 +98,16 @@ export class LessonHttpService extends LessonHttpBaseService {
         );
     }
 
-    getTodayWords(): Observable<LessonCardDto[]> {
-        return this.http.get<LessonCardDto[]>(`${environment.apiUrl}/card/allRepeats`);
+    getTodayWords(): Observable<CardRepeat[]> {
+        return this.http.get<LessonCardDto[]>(`${environment.apiUrl}/card/allRepeats`).pipe(
+            map(dtos => dtos.map(dto => mapCardRepeat(dto)))
+        );
     }
 
-    finish(lessonId: number): Observable<any> {
+    finish(lessonId: number, span: number): Observable<any> {
         const body = {
-            lessonId: lessonId
+            lessonId: lessonId,
+            span: span
         };
         return this.http.put<any>(`${environment.apiUrl}/lesson/finish`, body);
     }
@@ -99,6 +115,12 @@ export class LessonHttpService extends LessonHttpBaseService {
 
 @Injectable()
 export class LessonHttpMockService extends LessonHttpBaseService {
+
+    constructor(private mapper: WordMapper) {
+        super();
+    }
+
+    static index = 1;
     finish(lessonId: number): Observable<any> {
         return of({});
     }
@@ -120,10 +142,11 @@ export class LessonHttpMockService extends LessonHttpBaseService {
         );
     }
 
-    static index = 1;
-
-    constructor(private mapper: WordMapper) {
-        super();
+    accept(cardId: number): Observable<any> {
+        return of({}).pipe(
+            delay(2000),
+            tap(() => console.log('http wrong ' + cardId))
+        );
     }
 
     getNextWord(count: number, offset: number): Observable<WordRepeat[]> {
@@ -164,7 +187,7 @@ export class LessonHttpMockService extends LessonHttpBaseService {
         }));
     }
 
-    getTodayWords(): Observable<LessonCardDto[]> {
+    getTodayWords(): Observable<CardRepeat[]> {
         return of([]);
     }
 

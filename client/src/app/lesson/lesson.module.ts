@@ -17,7 +17,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ShareModule } from '../share/share.module';
 import { StoperComponent } from './components/stoper/stoper.component';
-import { StoperService } from './services/stoper/stoper.service';
 import { WordComparerService } from './services/word-comparer/word-comparer.service';
 import { UserModule } from '../user/user.module';
 import { AuthorizationModule } from '../authorization/authorization.module';
@@ -31,6 +30,7 @@ import { FiszkaService } from './components/fiszka/services/fiszka/fiszka.servic
 import { SummaryService } from './components/summary/services/summary/summary.service';
 import { InsertService } from './components/insert/service/insert/insert.service';
 import { InsertComponent } from './components/insert/insert.component';
+import { StoperService } from './services/stoper/stoper2.service';
 
 @NgModule({
   declarations: [
@@ -58,12 +58,12 @@ import { InsertComponent } from './components/insert/insert.component';
     Store,
     { provide: LessonHttpBaseService, useClass: environment.mockServer ? LessonHttpService : LessonHttpMockService },
     WordComparerService,
-    StoperService,
     WordMapper,
     SummaryGuardService,
     FiszkaService,
     SummaryService,
-    InsertService
+    InsertService,
+    StoperService
   ]
 })
 export class LessonModule {

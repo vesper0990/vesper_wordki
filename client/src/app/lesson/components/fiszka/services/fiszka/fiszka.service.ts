@@ -4,11 +4,11 @@ import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { LessonStep } from 'src/app/lesson/models/lesson-state';
-import { LessonCardDto } from 'src/app/lesson/models/word-repeat.dto';
-import { StoperService } from 'src/app/lesson/services/stoper/stoper.service';
+import { StoperService } from 'src/app/lesson/services/stoper/stoper2.service';
 import * as actions from 'src/app/lesson/store/actions';
 import { selectCurrentCard, selectLessonStep, } from 'src/app/lesson/store/selectors';
 import { LessonState } from 'src/app/lesson/store/state';
+import { CardRepeat } from 'src/app/share/models/card-details';
 
 @Injectable()
 export class FiszkaService {
@@ -30,7 +30,7 @@ export class FiszkaService {
         this.lessonStepSub.unsubscribe();
     }
 
-    getCurrentCard(): Observable<LessonCardDto> {
+    getCurrentCard(): Observable<CardRepeat> {
         return this.store.select(selectCurrentCard);
     }
 
@@ -39,13 +39,13 @@ export class FiszkaService {
     }
 
     startLesson(): void {
-        this.stoper.start();
+        this.stoper.restart();
         this.store.dispatch(new actions.StartLesson());
     }
 
     finishLesson(): void {
         this.stoper.stop();
-        const totalTime = this.stoper.getTime();
+        const totalTime = this.stoper.getWholeTime();
         this.store.dispatch(new actions.FinishLesson({ totalTime: totalTime }));
         this.router.navigate(['/lesson/summary']);
     }
@@ -84,7 +84,7 @@ export class FiszkaService {
     }
 
     restart(): void {
-        this.stoper.start();
+        this.stoper.restart();
         this.store.dispatch(new actions.RestartLesson());
     }
 }

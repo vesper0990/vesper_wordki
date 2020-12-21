@@ -60,10 +60,22 @@ export class LessonEffects {
     @Effect({
         dispatch: false,
     })
+    answerAccepted$ = this.actions$.pipe(
+        ofType<actions.UpdateCardAccepted>(actions.LessonActionEnum.UPDATE_CARD_ACCEPTED),
+        withLatestFrom(
+            this.store$.select(selectCurrentCard),
+            this.store$.select(selectLessonId),
+        ),
+        concatMap(([action, currentWord, lessonId]) => this.wordProvider.accept(currentWord.id, lessonId, ''))
+    );
+
+    @Effect({
+        dispatch: false,
+    })
     finishLesson$ = this.actions$.pipe(
-        ofType(actions.LessonActionEnum.FINISH_LESSON),
+        ofType<actions.FinishLesson>(actions.LessonActionEnum.FINISH_LESSON),
         withLatestFrom(this.store$.select(selectLessonId)),
-        concatMap(([action, lessonId]) => this.wordProvider.finish(lessonId))
+        concatMap(([action, lessonId]) => this.wordProvider.finish(lessonId, action.payload.totalTime))
     );
 
     @Effect()

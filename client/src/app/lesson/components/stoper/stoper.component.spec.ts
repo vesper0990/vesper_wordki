@@ -1,16 +1,14 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StoperComponent } from './stoper.component';
 import { StoperService } from '../../services/stoper/stoper2.service';
 import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
 
 describe('StoperComponent', () => {
   let component: StoperComponent;
   let fixture: ComponentFixture<StoperComponent>;
   let stoperServiceMock: jasmine.SpyObj<StoperService>;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [StoperComponent],
       providers: [
@@ -19,11 +17,11 @@ describe('StoperComponent', () => {
       ]
     })
       .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
-    stoperServiceMock = TestBed.get(StoperService);
-    stoperServiceMock.getObservable.and.returnValue(of());
+    stoperServiceMock = TestBed.inject(StoperService) as jasmine.SpyObj<StoperService>;
+    // stoperServiceMock.getObservable.and.returnValue(of());
     fixture = TestBed.createComponent(StoperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

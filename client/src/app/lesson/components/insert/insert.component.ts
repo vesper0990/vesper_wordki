@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy, HostListener, ViewChild, ElementRef } fro
 import { Title } from '@angular/platform-browser';
 import { Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { CardRepeat } from 'src/app/share/models/card-details';
 import { LessonStateEnum, LessonStep } from '../../models/lesson-state';
-import { LessonCardDto } from '../../models/word-repeat.dto';
 import { InsertService } from './service/insert/insert.service';
 
 @Component({
@@ -16,11 +16,19 @@ export class InsertComponent implements OnInit, OnDestroy {
     private readonly enter = 'Enter';
     private comparisonResultSub: Subscription;
 
-    currentCard$: Observable<LessonCardDto>;
+    @ViewChild('answerElement') inputElement: ElementRef;
+    currentCard$: Observable<CardRepeat>;
     lessonStep$: Observable<LessonStep>;
+    isPause$: Observable<boolean>;
+    remainingCardsCount$: Observable<number>;
+    correct$: Observable<number>;
+    wrong$: Observable<number>;
+    accepted$: Observable<number>;
+    total$: Observable<number>;
+    time$: Observable<number>;
+
     comparisonResult: string;
     value: string;
-    @ViewChild('answerElement') inputElement: ElementRef;
     isCorrect: boolean;
     isWrong: boolean;
     isReadyToCheck: boolean;
@@ -49,6 +57,15 @@ export class InsertComponent implements OnInit, OnDestroy {
                 this.isReadyToCheck = value === 'none';
             }
         );
+        this.isPause$ = this.service.getLessonStep().pipe(
+            map(value => value?.restartBtn ?? false)
+        );
+        this.correct$ = this.service.getCorrect();
+        this.wrong$ = this.service.getWrong();
+        this.accepted$ = this.service.getAccepted();
+        this.total$ = this.service.getTotal();
+        this.remainingCardsCount$ = this.service.getRemainingCardsCount();
+        this.time$ = this.service.getTime();
 
         this.service.init();
     }
@@ -91,7 +108,11 @@ export class InsertComponent implements OnInit, OnDestroy {
     }
 
     correct(): void {
-        this.service.correct();
+        if (this.isWrong) {
+            this.service.accept();
+        } else {
+            this.service.correct();
+        }
     }
 
     wrong(): void {

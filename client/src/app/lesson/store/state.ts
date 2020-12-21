@@ -1,10 +1,10 @@
+import { CardRepeat } from 'src/app/share/models/card-details';
 import { LessonResult } from '../models/lesson-result';
 import { LessonSettings } from '../models/lesson-settings';
 import { LessonStep } from '../models/lesson-state';
-import { LessonCardDto } from '../models/word-repeat.dto';
 
 export interface LessonState {
-    words: LessonCardDto[];
+    words: CardRepeat[];
     result: LessonResult;
     lessonSettings: LessonSettings;
     lessonStep: LessonStep;
