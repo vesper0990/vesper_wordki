@@ -1,15 +1,7 @@
 <div class="main-container">
-  <div class="timer" *ngIf="lessonStep$ | async as lessonStep">
-    <p>Time: {{time$ | async}}</p>
-    <button *ngIf="lessonStep.startBtn" (click)="startLesson()">Start Lesson</button>
-    <button *ngIf="lessonStep.pauseBtn" (click)="finishLesson()">Finish Lesson</button>
-    <button *ngIf="lessonStep.pauseBtn" (click)="pause()">Pause</button>
-    <button *ngIf="lessonStep.restartBtn" (click)="restart()">Restart</button>
-    <p>Remaining cards: {{remainingCardsCount$ | async}}</p>
-    <p>Correct: {{correct$ | async}}</p>
-    <p>Accepted: {{accepted$ | async}}</p>
-    <p>Wrong: {{wrong$ | async}}</p>
-    <p>Total: {{total$ | async}}</p>
+  <div class="timer">
+    <app-stoper></app-stoper>
+    <app-results withAccepted="true"></app-results>
   </div>
   <div class="fiszka">
     <div [ngClass]="{'blur': isPause$ | async}">

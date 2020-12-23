@@ -10,7 +10,6 @@ import {
 import { environment } from 'src/environments/environment';
 import { StoreModule, Store } from '@ngrx/store';
 import { reducer } from './store/reducer';
-// import { InsertComponent } from './components/insert/insert.component';
 import { EffectsModule } from '@ngrx/effects';
 import { LessonEffects } from './store/effects';
 import { HttpClientModule } from '@angular/common/http';
@@ -30,7 +29,10 @@ import { FiszkaService } from './components/fiszka/services/fiszka/fiszka.servic
 import { SummaryService } from './components/summary/services/summary/summary.service';
 import { InsertService } from './components/insert/service/insert/insert.service';
 import { InsertComponent } from './components/insert/insert.component';
-import { StoperService } from './services/stoper/stoper2.service';
+import { TimerService } from './services/stoper/stoper2.service';
+import { StoperService } from './components/stoper/services/stoper/stoper.service';
+import { ResultsComponent } from './components/results/results.component';
+import { ResultsService } from './components/results/services/results/results.service';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,7 @@ import { StoperService } from './services/stoper/stoper2.service';
     StoperComponent,
     SummaryComponent,
     FiszkaSideComponent,
+    ResultsComponent,
   ],
   imports: [
     FormsModule,
@@ -63,7 +66,9 @@ import { StoperService } from './services/stoper/stoper2.service';
     FiszkaService,
     SummaryService,
     InsertService,
-    StoperService
+    TimerService,
+    StoperService,
+    ResultsService
   ]
 })
 export class LessonModule {

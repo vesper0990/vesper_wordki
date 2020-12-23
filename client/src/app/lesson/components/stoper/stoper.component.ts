@@ -1,47 +1,43 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { StoperService } from '../../services/stoper/stoper2.service';
-import { Subscription } from 'rxjs';
-// import { LessonState } from '../../store/reducer';
-import { Store } from '@ngrx/store';
-// import { StartLessonAction } from '../../store/actions';
+import { Observable } from 'rxjs';
+import { LessonStep } from '../../models/lesson-state';
+import { StoperService } from './services/stoper/stoper.service';
 
 @Component({
   selector: 'app-stoper',
   templateUrl: './stoper.component.html',
   styleUrls: ['./stoper.component.scss']
 })
-export class StoperComponent {
+export class StoperComponent implements OnInit, OnDestroy {
 
-  private stoperSubscription: Subscription;
+  lessonStep$: Observable<LessonStep>;
+  time$: Observable<number>;
 
-  isRunning: boolean;
+  constructor(private readonly service: StoperService) { }
 
-  // constructor(private stoperService: StoperService,
-  //   private lessonStore: Store<LessonState>) { }
+  ngOnInit(): void {
+    this.service.init();
+    this.lessonStep$ = this.service.getLessonStep();
+    this.time$ = this.service.getTime();
+  }
 
-  // ngOnInit(): void {
-  //   this.stoperSubscription = this.stoperService.getObservable().subscribe((value: boolean) => this.handleIsRunning(value));
-  // }
+  ngOnDestroy(): void {
+    this.service.finalize();
+  }
 
-  // ngOnDestroy(): void {
-  //   this.stoperSubscription.unsubscribe();
-  // }
+  clickStart(): void {
+    this.service.start();
+  }
 
-  // start(): void {
-  //   if (this.stoperService.getWholeTime() > 0) {
-  //     this.stoperService.resume();
-  //   } else {
-  //     this.stoperService.restart();
-  //     this.lessonStore.dispatch(new StartLessonAction());
-  //   }
-  // }
+  clickPause(): void {
+    this.service.pause();
+  }
 
-  // stop(): void {
-  //   this.stoperService.stop();
-  //   this.lessonStore.dispatch(new StartLessonAction());
-  // }
+  clickResume(): void {
+    this.service.resume();
+  }
 
-  // private handleIsRunning(value: boolean): void {
-  //   this.isRunning = value;
-  // }
+  clickFinish(): void {
+    this.service.finish();
+  }
 }

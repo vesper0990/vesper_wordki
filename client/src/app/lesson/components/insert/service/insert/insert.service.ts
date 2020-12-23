@@ -8,7 +8,7 @@ import * as selectors from 'src/app/lesson/store/selectors';
 import * as actions from 'src/app/lesson/store/actions';
 import { LessonState } from 'src/app/lesson/store/state';
 import { CardRepeat } from 'src/app/share/models/card-details';
-import { StoperService } from 'src/app/lesson/services/stoper/stoper2.service';
+import { TimerService } from 'src/app/lesson/services/stoper/stoper2.service';
 
 @Injectable()
 export class InsertService {
@@ -17,16 +17,18 @@ export class InsertService {
 
     constructor(private readonly store: Store<LessonState>,
         private readonly router: Router,
-        private readonly stoper: StoperService) { }
+        private readonly stoper: TimerService) { }
 
     init(): void {
         this.lessonStepSub = this.store.select(selectors.selectLessonStep).pipe(
             tap(value => this.lessonStep = value)
         ).subscribe();
+        this.stoper.init();
     }
 
     unsubsccribe(): void {
         this.lessonStepSub.unsubscribe();
+        this.stoper.stop();
     }
 
     getCurrentCard(): Observable<CardRepeat> {

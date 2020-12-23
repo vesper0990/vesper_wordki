@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable()
-export class StoperService {
+export class TimerService {
 
     private isRunningSubject: BehaviorSubject<boolean>;
     private timeSubject: BehaviorSubject<number>;
@@ -19,6 +19,13 @@ export class StoperService {
         this.isRunningSubject = new BehaviorSubject(false);
         this.timeSubject = new BehaviorSubject(0);
     }
+
+    init(): void {
+        this._counter = 0;
+        this.timeSubject.next(this._counter);
+        this.isRunningSubject.next(false);
+    }
+    // todo create finalize method
 
     private setIsRunning(value: boolean): void {
         this.isRunningSubject.next(value);
@@ -38,7 +45,7 @@ export class StoperService {
         this.startInterval();
     }
 
-    restart(): void {
+    restart(): void { // todo split to start and resume
         this.counter = 0;
         this.startTime = new Date().getTime();
         this.setIsRunning(true);
