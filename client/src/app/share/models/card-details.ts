@@ -34,7 +34,7 @@ export class CardRepeat {
     constructor(
         public id: number,
         public question: SideRepeat,
-        public anwser: SideRepeat
+        public answer: SideRepeat
     ) { }
 }
 

@@ -30,14 +30,16 @@ namespace Wordki.Api.Featuers.Card.GetAllRepeat
             var results = new List<CardRepeatDto>();
 
             var heads = dbContext.Words.Include(c => c.Group)
-            .Where(c => c.Group.User.Id == userId && c.Heads.State.NextRepeat < timeProvider.GetDate());
+            .Where(c => c.Group.User.Id == userId && c.Heads.State.NextRepeat < timeProvider.GetDate())
+            .Select(item => ConvertIntoRepeatDto(item, false)).ToList();
 
-            results.AddRange(heads.Select(item => ConvertIntoRepeatDto(item, false)));
+            results.AddRange(heads);
 
             var tails = dbContext.Words.Include(c => c.Group)
-            .Where(c => c.Group.User.Id == userId && c.Tails.State.NextRepeat < timeProvider.GetDate());
+            .Where(c => c.Group.User.Id == userId && c.Tails.State.NextRepeat < timeProvider.GetDate())
+            .Select(item => ConvertIntoRepeatDto(item, true));
 
-            results.AddRange(tails.Select(item => ConvertIntoRepeatDto(item, true)));
+            results.AddRange(tails);
 
             return Task.FromResult(results.AsEnumerable());
         }
@@ -48,7 +50,7 @@ namespace Wordki.Api.Featuers.Card.GetAllRepeat
             return sideDate.CompareTo(timeProvider.GetDate()) <= 0;
         }    
 
-        public CardRepeatDto ConvertIntoRepeatDto(Domain.Card card, bool revert = false)
+        public static CardRepeatDto ConvertIntoRepeatDto(Domain.Card card, bool revert = false)
         => revert 
         ? new CardRepeatDto
         {

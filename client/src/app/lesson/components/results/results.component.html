@@ -1,0 +1,26 @@
+<div class="main-container">
+  <ng-container *ngTemplateOutlet="item; context:{label: 'Remaining cards:', value: remainingCardsCount$ | async} ">
+  </ng-container>
+  <ng-container *ngTemplateOutlet="item; context:{label: 'Correct:', value: correct$ | async} ">
+  </ng-container>
+  <ng-container *ngIf="withAccepted">
+      <ng-container *ngTemplateOutlet="item; context:{label: 'Accepted:', value: accepted$ | async} ">
+      </ng-container>
+  </ng-container>
+  <ng-container *ngTemplateOutlet="item; context:{label: 'Wrong:', value: wrong$ | async} ">
+  </ng-container>
+  <ng-container *ngTemplateOutlet="item; context:{label: 'Total:', value: total$ | async} ">
+</ng-container>
+</div>
+
+
+<ng-template #item let-value="value" let-label="label">
+  <div class="item">
+    <div class="label">
+      {{label}}
+    </div>
+    <div class="value">
+      {{value}}
+    </div>
+  </div>
+</ng-template>

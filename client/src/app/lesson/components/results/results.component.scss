@@ -1,0 +1,32 @@
+.main-container{
+    display: flex;
+    flex-direction: column;
+
+    .item{
+
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        padding: 10px 0 ;
+
+        .label{
+            flex-basis: 0;
+            flex-grow: 1;
+            font-family: Montserrat;
+            font-size: 15px;
+            text-align: right;
+            margin-right: 1px;
+        }
+
+        .value{
+            flex-basis: 0;
+            flex-grow: 1;
+            font-family: Comfortaa;
+            text-align: left;
+            font-size: 30px;
+            margin-left: 1px;            
+        }
+
+    }
+
+}

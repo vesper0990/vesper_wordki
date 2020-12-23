@@ -1,124 +1,133 @@
-// import { Component, OnInit, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
-// import { LessonStateEnum, LessonStep } from '../../models/lesson-state';
-// import { WordRepeat } from '../../models/word-repeat';
-// import { Store } from '@ngrx/store';
-// import { LessonState } from '../../store/reducer';
-// import { getLessonStateEnum, selectCurrentCard } from '../../store/selectors';
-// import { Subscription } from 'rxjs';
-// import { CheckAnswerAction, AnswerAction, SetLastAnswerAction } from '../../store/actions';
-// import { WordComparerService } from '../../services/word-comparer/word-comparer.service';
+import { Component, OnInit, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { Observable, Subscription } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { CardRepeat } from 'src/app/share/models/card-details';
+import { LessonStateEnum, LessonStep } from '../../models/lesson-state';
+import { InsertService } from './service/insert/insert.service';
 
-// @Component({
-//   selector: 'app-insert',
-//   templateUrl: './insert.component.html',
-//   styleUrls: ['./insert.component.scss']
-// })
-// export class InsertComponent implements OnInit, OnDestroy {
+@Component({
+    templateUrl: './insert.component.html',
+    styleUrls: ['./insert.component.scss']
+})
+export class InsertComponent implements OnInit, OnDestroy {
+    private readonly arrowLeft = 'ArrowLeft';
+    private readonly arrowRight = 'ArrowRight';
+    private readonly enter = 'Enter';
+    private comparisonResultSub: Subscription;
 
-//   private readonly arrowLeft = 'ArrowLeft';
-//   private readonly arrowRight = 'ArrowRight';
-//   private readonly enter = 'Enter';
+    @ViewChild('answerElement') inputElement: ElementRef;
+    currentCard$: Observable<CardRepeat>;
+    lessonStep$: Observable<LessonStep>;
+    isPause$: Observable<boolean>;
+    remainingCardsCount$: Observable<number>;
+    correct$: Observable<number>;
+    wrong$: Observable<number>;
+    accepted$: Observable<number>;
+    total$: Observable<number>;
+    time$: Observable<number>;
 
-//   private lessonStateSub: Subscription;
-//   private wordSub: Subscription;
+    comparisonResult: string;
+    value: string;
+    isCorrect: boolean;
+    isWrong: boolean;
+    isReadyToCheck: boolean;
 
-//   @ViewChild('answerElement', { static: false }) inputElement: ElementRef;
+    constructor(private readonly service: InsertService,
+        private readonly titleService: Title) { }
 
-//   lessonStep: LessonStep;
-//   word: WordRepeat;
+    ngOnInit(): void {
+        this.titleService.setTitle('Wordki - Lesson');
+        this.service.loadWords();
+        this.currentCard$ = this.service.getCurrentCard();
+        this.lessonStep$ = this.service.getLessonStep().pipe(
+            tap(lessonStep => {
+                if (lessonStep.step === LessonStateEnum.QUESTION) {
+                    setTimeout(() => {
+                        this.inputElement.nativeElement.focus();
+                    }, 0);
+                    this.value = '';
+                }
+            })
+        );
+        this.comparisonResultSub = this.service.getComparisonResult().subscribe(
+            value => {
+                this.isCorrect = value === 'correct';
+                this.isWrong = value === 'wrong';
+                this.isReadyToCheck = value === 'none';
+            }
+        );
+        this.isPause$ = this.service.getLessonStep().pipe(
+            map(value => value?.restartBtn ?? false)
+        );
+        this.correct$ = this.service.getCorrect();
+        this.wrong$ = this.service.getWrong();
+        this.accepted$ = this.service.getAccepted();
+        this.total$ = this.service.getTotal();
+        this.remainingCardsCount$ = this.service.getRemainingCardsCount();
+        this.time$ = this.service.getTime();
 
-//   questionVisibility: boolean;
-//   answer: string;
-//   answerIsEnable: boolean;
+        this.service.init();
+    }
 
-//   result: string;
-//   isCorrect: boolean;
+    ngOnDestroy(): void {
+        this.service.unsubsccribe();
+        this.comparisonResultSub.unsubscribe();
+    }
 
-//   constructor(private lessonStore: Store<LessonState>,
-//     private wordComparer: WordComparerService) { }
+    @HostListener('window:keyup', ['$event'])
+    keyEvent(event: KeyboardEvent): void {
+        switch (event.key) {
+            case this.arrowRight:
+                this.correct();
+                break;
+            case this.arrowLeft:
+                this.wrong();
+                break;
+            case this.enter:
+                if (this.isReadyToCheck) {
+                    console.log('check');
+                    this.check();
+                } else if (this.isCorrect) {
+                    console.log('correct');
+                    this.correct();
+                } else if (this.isWrong) {
+                    console.log('wrong');
+                    this.wrong();
+                }
+                break;
+        }
+    }
 
-//   ngOnInit(): void {
-//     this.answerIsEnable = false;
-//     this.questionVisibility = false;
-//     this.answer = '';
-//     this.lessonStateSub = this.lessonStore.select(getLessonStateEnum)
-//       .subscribe((storeValue: LessonStep) => this.handleLessonStep(storeValue));
+    startLesson(): void {
+        this.service.startLesson();
+    }
 
-//     this.wordSub = this.lessonStore.select(selectCurrentCard)
-//       .subscribe((storeValue: WordRepeat) => this.handleFirstWord(storeValue));
+    check(): void {
+        this.service.check(this.value);
+    }
 
-//   }
+    correct(): void {
+        if (this.isWrong) {
+            this.service.accept();
+        } else {
+            this.service.correct();
+        }
+    }
 
-//   ngOnDestroy(): void {
-//     this.lessonStateSub.unsubscribe();
-//     this.wordSub.unsubscribe();
-//   }
+    wrong(): void {
+        this.service.wrong();
+    }
 
-//   @HostListener('window:keyup', ['$event'])
-//   keyEvent(event: KeyboardEvent): void {
-//     if (this.lessonStep.state === 0) {
-//       return;
-//     }
-//     switch (event.key) {
-//       case this.arrowRight:
-//         this.handleArrowRight();
-//         break;
-//       case this.arrowLeft:
-//         this.handleArrowLeft();
-//         break;
-//       case this.enter:
-//         this.handleEnter();
-//         break;
-//     }
-//   }
+    finishLesson(): void {
+        this.service.finishLesson();
+    }
 
-//   private handleArrowRight(): void {
-//     this.lessonStore.dispatch(
-//       this.lessonStep.state === LessonStateEnum.WordDisplay
-//         ? new CheckAnswerAction()
-//         : new AnswerAction({ wordId: this.word.id, result: this.isCorrect ? 1 : 0 })
-//     );
-//   }
+    pause(): void {
+        this.service.pause();
+    }
 
-//   private handleArrowLeft(): void {
-//     this.lessonStore.dispatch(
-//       this.lessonStep.state === LessonStateEnum.WordDisplay
-//         ? new CheckAnswerAction()
-//         : new AnswerAction({ wordId: this.word.id, result: -1 })
-//     );
-//   }
-
-//   private handleEnter(): void {
-//     if (this.lessonStep.state === LessonStateEnum.WordDisplay) {
-//       this.lessonStore.dispatch(new CheckAnswerAction());
-//     } else if (this.lessonStep.state === LessonStateEnum.AnswerDisplay) {
-//       this.lessonStore.dispatch(new AnswerAction({ wordId: this.word.id, result: this.isCorrect ? 1 : -1 }));
-//     }
-//   }
-
-//   private handleLessonStep(lessonStep: LessonStep): void {
-//     this.lessonStep = lessonStep;
-//     this.questionVisibility = this.lessonStep.questionVisibility;
-//     this.answerIsEnable = this.lessonStep.answerIsEnable;
-//     switch (this.lessonStep.state) {
-//       case LessonStateEnum.WordDisplay: {
-//         this.answer = '';
-//         this.result = '';
-//         setTimeout(() => this.inputElement.nativeElement.focus(), 0);
-//         break;
-//       }
-//       case LessonStateEnum.AnswerDisplay: {
-//         this.isCorrect = this.wordComparer.isCorrect(this.word.language2, this.answer);
-//         this.lessonStore.dispatch(new SetLastAnswerAction({ isCorrect: this.isCorrect }));
-//         this.result = this.isCorrect ? 'dobrze' : 'zle';
-//         break;
-//       }
-//     }
-//   }
-
-//   private handleFirstWord(wordRepeat: WordRepeat): void {
-//     this.word = wordRepeat;
-//     (this.word);
-//   }
-
-// }
+    restart(): void {
+        this.service.restart();
+    }
+}

@@ -1,0 +1,59 @@
+.blur {
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
+}
+
+.main-container{
+  display: flex;
+  
+  .timer{
+    width: 20%;
+    // background-color: green;
+  }
+
+  .fiszka{
+    width: 60%;
+  }
+
+  .additional-info{
+    width: 20%;
+    // background-color: green;
+  }
+
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: center;
+
+  p-button {
+    margin: 20px;
+  }
+}
+
+input {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  background-color: #e4e4e4;
+  padding: 13px 15px 7px 15px;
+  font-size: 30px;
+  font-family: Montserrat;
+  text-align: center;
+
+  &:focus {
+    outline: none;
+    background-color: #e0e0e0;
+  }
+}
+
+.correct {
+  border: 2px solid green;
+}
+
+.wrong {
+  border: 2px solid red;
+}

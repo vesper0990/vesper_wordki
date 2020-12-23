@@ -1,8 +1,7 @@
 import { Action } from '@ngrx/store';
+import { CardRepeat } from 'src/app/share/models/card-details';
 import { LessonResult } from '../models/lesson-result';
 import { LessonStep } from '../models/lesson-state';
-import { WordRepeat } from '../models/word-repeat';
-import { LessonCardDto } from '../models/word-repeat.dto';
 import { initialLessonsState, LessonState } from './state';
 
 export enum LessonActionEnum {
@@ -14,17 +13,21 @@ export enum LessonActionEnum {
     GET_WORDS_FAILES = '[LESSON_STATE] GET_WORDS_FAILED',
 
     UPDATE_CARD_CORRECT = '[LESSON_STATE] UPDATE_CARD_CORRECT',
-    UPDATE_CARD_CORRECT_SUCCESS = '[LESSON_STATE] UPDATE_CARD_CORRECT_SUCCESS',
-    UPDATE_CARD_CORRECT_FAILED = '[LESSON_STATE] UPDATE_CARD_CORRECT_FAILED',
 
     UPDATE_CARD_WRONG = '[LESSON_STATE] UPDATE_CARD_WRONG',
-    UPDATE_CARD_WRONG_SUCCESS = '[LESSON_STATE] UPDATE_CARD_WRONG_SUCCESS',
-    UPDATE_CARD_WRONG_FAILED = '[LESSON_STATE] UPDATE_CARD_WRONG_FAILED',
+
+    UPDATE_CARD_ACCEPTED = '[LESSON_STATE] UPDATE_CARD_ACCEPTED',
 
     START_LESSON = '[LESSON_STATE] START_LESSON',
     CHECK_CARD = '[LESSON_STATE] CHECK_CARD',
+
+    COMPARE = '[LESSON_STATE] COMPARE',
+    COMPARISON_CORRECT = '[LESSON_STATE] COMPARISON_CORRECT',
+    COMPARISON_WRONG = '[LESSON_STATE] COMPARISON_WRONG',
+
     ANWSER_CORRECT = '[LESSON_STATE] ANSWER_CORRECT',
     ANSWER_WRONG = '[LESSON_STATE] ANSWER_WRONG',
+    ANSWER_ACCEPTED = '[LESSON_STATE] ANSWER_ACCEPTED',
     FINISH_LESSON = '[LESSON_STATE] FINISH_LESSON',
     PAUSE_LESSON = '[LESSON_STATE] PAUSE_LESSON',
     RESTART_LESSON = '[LESSON_STATE] RESTART_LESSON',
@@ -66,7 +69,7 @@ export class GetWords implements Action {
 
 export class GetWordsSuccess implements Action {
     readonly type = LessonActionEnum.GET_WORDS_SUCCESS;
-    constructor(public payload: { cards: LessonCardDto[] }) { }
+    constructor(public payload: { cards: CardRepeat[] }) { }
 
     static reduce(state: LessonState, action: GetWordsSuccess): LessonState {
         return {
@@ -94,7 +97,6 @@ export class StartLesson implements Action {
 
     static reduce(state: LessonState): LessonState {
         const result = new LessonResult();
-        result.startTime = new Date();
         return {
             ...state,
             result: result,
@@ -110,7 +112,42 @@ export class CheckCard implements Action {
     static reduce(state: LessonState): LessonState {
         return {
             ...state,
-            lessonStep: LessonStep.ANSWARE
+            lessonStep: LessonStep.ANSWER
+        };
+    }
+}
+
+export class Compare implements Action {
+    readonly type = LessonActionEnum.COMPARE;
+    constructor(public payload: { value: string }) { }
+
+    static reduce(state: LessonState): LessonState {
+        return {
+            ...state
+        };
+    }
+}
+
+export class ComparisonCorrect implements Action {
+    readonly type = LessonActionEnum.COMPARISON_CORRECT;
+    constructor() { }
+
+    static reduce(state: LessonState): LessonState {
+        return {
+            ...state,
+            comparisonResult: 'correct'
+        };
+    }
+}
+
+export class ComparisonWrong implements Action {
+    readonly type = LessonActionEnum.COMPARISON_WRONG;
+    constructor() { }
+
+    static reduce(state: LessonState): LessonState {
+        return {
+            ...state,
+            comparisonResult: 'wrong'
         };
     }
 }
@@ -129,7 +166,8 @@ export class AnswerCorrect implements Action {
             result: {
                 ...state.result,
                 correct: state.result.correct + 1
-            }
+            },
+            comparisonResult: 'none'
         };
     }
 }
@@ -150,7 +188,28 @@ export class AnswerWrong implements Action {
             result: {
                 ...state.result,
                 wrong: state.result.wrong + 1
-            }
+            },
+            comparisonResult: 'none'
+        };
+    }
+}
+
+export class AnswerAccepted implements Action {
+    readonly type = LessonActionEnum.ANSWER_ACCEPTED;
+    constructor() { }
+
+    static reduce(state: LessonState): LessonState {
+        const cards = state.words.slice(1, state.words.length);
+        const step = cards.length !== 0 ? LessonStep.QUESTION : LessonStep.AFTER_FINISH;
+        return {
+            ...state,
+            lessonStep: step,
+            words: cards,
+            result: {
+                ...state.result,
+                accepted: state.result.accepted + 1
+            },
+            comparisonResult: 'none'
         };
     }
 }
@@ -176,11 +235,13 @@ export class PauseLesson implements Action {
 
     static reduce(state: LessonState): LessonState {
         const stepBeforePause = state.lessonStep;
-        const step = LessonStep.PAUSE;
-        step.answare = stepBeforePause.answare;
+        const step = {
+            ...LessonStep.PAUSE,
+            answer: stepBeforePause.answer
+        };
         return {
             ...state,
-            lessonStep: LessonStep.PAUSE,
+            lessonStep: step,
             stepBeforePause: stepBeforePause
         };
     }
@@ -210,28 +271,6 @@ export class UpdateCardCorrect implements Action {
     }
 }
 
-export class UpdateCardCorrectSuccess implements Action {
-    readonly type = LessonActionEnum.UPDATE_CARD_CORRECT_SUCCESS;
-    constructor() { }
-
-    static reduce(state: LessonState): LessonState {
-        return {
-            ...state
-        };
-    }
-}
-
-export class UpdateCardCorrectFailed implements Action {
-    readonly type = LessonActionEnum.UPDATE_CARD_CORRECT_FAILED;
-    constructor() { }
-
-    static reduce(state: LessonState): LessonState {
-        return {
-            ...state
-        };
-    }
-}
-
 export class UpdateCardWrong implements Action {
     readonly type = LessonActionEnum.UPDATE_CARD_WRONG;
     constructor() { }
@@ -243,19 +282,8 @@ export class UpdateCardWrong implements Action {
     }
 }
 
-export class UpdateCardWrongSuccess implements Action {
-    readonly type = LessonActionEnum.UPDATE_CARD_WRONG_SUCCESS;
-    constructor() { }
-
-    static reduce(state: LessonState): LessonState {
-        return {
-            ...state
-        };
-    }
-}
-
-export class UpdateCardWrongFailed implements Action {
-    readonly type = LessonActionEnum.UPDATE_CARD_WRONG_FAILED;
+export class UpdateCardAccepted implements Action {
+    readonly type = LessonActionEnum.UPDATE_CARD_ACCEPTED;
     constructor() { }
 
     static reduce(state: LessonState): LessonState {
@@ -281,16 +309,17 @@ export type LessonActionType =
     GetWordsSuccess |
     GetWordsFailed |
     StartLesson |
+    Compare |
+    ComparisonCorrect |
+    ComparisonWrong |
     CheckCard |
     AnswerCorrect |
     AnswerWrong |
+    AnswerAccepted |
     FinishLesson |
     PauseLesson |
     RestartLesson |
     UpdateCardCorrect |
-    UpdateCardCorrectSuccess |
-    UpdateCardCorrectFailed |
     UpdateCardWrong |
-    UpdateCardWrongSuccess |
-    UpdateCardWrongFailed |
+    UpdateCardAccepted |
     Finish;

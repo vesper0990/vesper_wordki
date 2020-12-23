@@ -9,17 +9,18 @@ export function reducer(state = initialLessonsState, action: actions.LessonActio
         case actions.LessonActionEnum.GET_WORDS_FAILES: return actions.GetWordsFailed.reduce(state);
         case actions.LessonActionEnum.START_LESSON: return actions.StartLesson.reduce(state);
         case actions.LessonActionEnum.CHECK_CARD: return actions.CheckCard.reduce(state);
+        case actions.LessonActionEnum.COMPARE: return actions.Compare.reduce(state);
+        case actions.LessonActionEnum.COMPARISON_CORRECT: return actions.ComparisonCorrect.reduce(state);
+        case actions.LessonActionEnum.COMPARISON_WRONG: return actions.ComparisonWrong.reduce(state);
         case actions.LessonActionEnum.ANWSER_CORRECT: return actions.AnswerCorrect.reduce(state);
         case actions.LessonActionEnum.ANSWER_WRONG: return actions.AnswerWrong.reduce(state);
+        case actions.LessonActionEnum.ANSWER_ACCEPTED: return actions.AnswerAccepted.reduce(state);
         case actions.LessonActionEnum.FINISH_LESSON: return actions.FinishLesson.reduce(state, action);
         case actions.LessonActionEnum.PAUSE_LESSON: return actions.PauseLesson.reduce(state);
         case actions.LessonActionEnum.RESTART_LESSON: return actions.RestartLesson.reduce(state);
         case actions.LessonActionEnum.UPDATE_CARD_CORRECT: return actions.UpdateCardCorrect.reduce(state);
-        case actions.LessonActionEnum.UPDATE_CARD_CORRECT_SUCCESS: return actions.UpdateCardCorrectSuccess.reduce(state);
-        case actions.LessonActionEnum.UPDATE_CARD_CORRECT_FAILED: return actions.UpdateCardCorrectFailed.reduce(state);
         case actions.LessonActionEnum.UPDATE_CARD_WRONG: return actions.UpdateCardWrong.reduce(state);
-        case actions.LessonActionEnum.UPDATE_CARD_WRONG_SUCCESS: return actions.UpdateCardWrongSuccess.reduce(state);
-        case actions.LessonActionEnum.UPDATE_CARD_WRONG_FAILED: return actions.UpdateCardWrongFailed.reduce(state);
+        case actions.LessonActionEnum.UPDATE_CARD_ACCEPTED: return actions.UpdateCardAccepted.reduce(state);
         case actions.LessonActionEnum.FINISH: return actions.Finish.reduce();
         default: return state;
     }

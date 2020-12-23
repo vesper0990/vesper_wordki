@@ -1,7 +1,11 @@
-<ng-container *ngIf="isRunning; else isNotRunning">
-    <button (click)="stop()">Stop</button>
-</ng-container>
-
-<ng-template #isNotRunning>
-    <button (click)="start()">Start</button>
-</ng-template>
+<div class="main-container" *ngIf="lessonStep$ | async as lessonStep">
+  <div id="time">
+    <span>Time </span>{{time$ | async | secToTime }}
+  </div>
+  <div id="buttons">
+    <button *ngIf="lessonStep.startBtn" (click)="clickStart()">Start Lesson</button>
+    <button *ngIf="lessonStep.pauseBtn" (click)="clickFinish()">Finish Lesson</button>
+    <button *ngIf="lessonStep.pauseBtn" (click)="clickPause()">Pause</button>
+    <button *ngIf="lessonStep.restartBtn" (click)="clickResume()">Restart</button>
+  </div>
+</div>

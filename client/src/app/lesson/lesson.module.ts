@@ -10,14 +10,12 @@ import {
 import { environment } from 'src/environments/environment';
 import { StoreModule, Store } from '@ngrx/store';
 import { reducer } from './store/reducer';
-// import { InsertComponent } from './components/insert/insert.component';
 import { EffectsModule } from '@ngrx/effects';
 import { LessonEffects } from './store/effects';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ShareModule } from '../share/share.module';
 import { StoperComponent } from './components/stoper/stoper.component';
-import { StoperService } from './services/stoper/stoper.service';
 import { WordComparerService } from './services/word-comparer/word-comparer.service';
 import { UserModule } from '../user/user.module';
 import { AuthorizationModule } from '../authorization/authorization.module';
@@ -29,14 +27,21 @@ import { SummaryComponent } from './components/summary/summary.component';
 import { FiszkaSideComponent } from './components/fiszka-side/fiszka-side.component';
 import { FiszkaService } from './components/fiszka/services/fiszka/fiszka.service';
 import { SummaryService } from './components/summary/services/summary/summary.service';
+import { InsertService } from './components/insert/service/insert/insert.service';
+import { InsertComponent } from './components/insert/insert.component';
+import { TimerService } from './services/stoper/stoper2.service';
+import { StoperService } from './components/stoper/services/stoper/stoper.service';
+import { ResultsComponent } from './components/results/results.component';
+import { ResultsService } from './components/results/services/results/results.service';
 
 @NgModule({
   declarations: [
     FiszkaComponent,
-    // InsertComponent,
+    InsertComponent,
     StoperComponent,
     SummaryComponent,
     FiszkaSideComponent,
+    ResultsComponent,
   ],
   imports: [
     FormsModule,
@@ -56,11 +61,14 @@ import { SummaryService } from './components/summary/services/summary/summary.se
     Store,
     { provide: LessonHttpBaseService, useClass: environment.mockServer ? LessonHttpService : LessonHttpMockService },
     WordComparerService,
-    StoperService,
     WordMapper,
     SummaryGuardService,
     FiszkaService,
-    SummaryService
+    SummaryService,
+    InsertService,
+    TimerService,
+    StoperService,
+    ResultsService
   ]
 })
 export class LessonModule {

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ErrorComponent } from './components/error/error.component';
 import { NubmerToTimePipe } from './pipes/number-to-time.pipe';
+import { SecToTimePipe } from './pipes/sec-tp-time.pipe';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LanguagesDropDownComponent } from './components/languages-drop-down/languages-drop-down.component';
 import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
@@ -39,6 +40,7 @@ import { PaginatorComponent } from './components/paginator/paginator.component';
     ButtonComponent,
     InfoCardComponent,
     PaginatorComponent,
+    SecToTimePipe,
   ],
   exports: [
     NubmerToTimePipe,
@@ -53,7 +55,8 @@ import { PaginatorComponent } from './components/paginator/paginator.component';
     CardComponent,
     ButtonComponent,
     InfoCardComponent,
-    PaginatorComponent
+    PaginatorComponent,
+    SecToTimePipe,
   ],
   imports: [
     CommonModule,
