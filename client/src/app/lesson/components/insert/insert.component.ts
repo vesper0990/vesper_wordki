@@ -20,12 +20,6 @@ export class InsertComponent implements OnInit, OnDestroy {
     currentCard$: Observable<CardRepeat>;
     lessonStep$: Observable<LessonStep>;
     isPause$: Observable<boolean>;
-    remainingCardsCount$: Observable<number>;
-    correct$: Observable<number>;
-    wrong$: Observable<number>;
-    accepted$: Observable<number>;
-    total$: Observable<number>;
-    time$: Observable<number>;
 
     comparisonResult: string;
     value: string;
@@ -60,12 +54,6 @@ export class InsertComponent implements OnInit, OnDestroy {
         this.isPause$ = this.service.getLessonStep().pipe(
             map(value => value?.restartBtn ?? false)
         );
-        this.correct$ = this.service.getCorrect();
-        this.wrong$ = this.service.getWrong();
-        this.accepted$ = this.service.getAccepted();
-        this.total$ = this.service.getTotal();
-        this.remainingCardsCount$ = this.service.getRemainingCardsCount();
-        this.time$ = this.service.getTime();
 
         this.service.init();
     }

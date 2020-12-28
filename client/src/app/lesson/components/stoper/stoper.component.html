@@ -4,7 +4,7 @@
   </div>
   <div id="buttons">
     <button *ngIf="lessonStep.startBtn" (click)="clickStart()">Start Lesson</button>
-    <button *ngIf="lessonStep.pauseBtn" (click)="clickFinish()">Finish Lesson</button>
+    <button *ngIf="lessonStep.finishBtn" (click)="clickFinish()">Finish Lesson</button>
     <button *ngIf="lessonStep.pauseBtn" (click)="clickPause()">Pause</button>
     <button *ngIf="lessonStep.restartBtn" (click)="clickResume()">Restart</button>
   </div>
