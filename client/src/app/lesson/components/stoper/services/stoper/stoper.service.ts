@@ -11,10 +11,9 @@ import * as actions from '../../../../store/actions';
 @Injectable()
 export class StoperService {
 
-
     constructor(private readonly timer: TimerService,
         private readonly store: Store<LessonState>,
-    private readonly router: Router) { }
+        private readonly router: Router) { }
 
     init(): void {
         this.timer.init();

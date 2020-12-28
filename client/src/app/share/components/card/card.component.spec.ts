@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { LanguageType, LanguageTypeEnum } from '../../models/language-type.mode';
+import { Drawer, ExtendedCardDetails, SideDetails } from '../../models/card-details';
+import { LanguageType } from '../../models/language-type.mode';
 import { CardComponent } from './card.component';
-import { CardModel } from './card.model';
 
 describe('CardComponent', () => {
   let component: CardComponent;
@@ -9,18 +9,15 @@ describe('CardComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ CardComponent ]
+      declarations: [CardComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CardComponent);
     component = fixture.componentInstance;
-    component.card = {
-      language1: LanguageType.getLanguageType(LanguageTypeEnum.English),
-      language2: LanguageType.getLanguageType(LanguageTypeEnum.English),
-    } as CardModel;
+    component.card = createCardMock();
     fixture.detectChanges();
   });
 
@@ -28,3 +25,11 @@ describe('CardComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+function createCardMock(): ExtendedCardDetails {
+  return new ExtendedCardDetails(
+    1, 'group-name',
+    new SideDetails('front-value', 'front-example', new Drawer(1), LanguageType.getLanguageType(1), 1, true, new Date),
+    new SideDetails('back-value', 'back-example', new Drawer(1), LanguageType.getLanguageType(1), 1, true, new Date),
+  );
+}

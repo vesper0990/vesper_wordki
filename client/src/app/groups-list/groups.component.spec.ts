@@ -8,7 +8,7 @@ import { GroupsListService } from './services/groups-list/groups-list.service';
 import { of } from 'rxjs';
 import { EditGroup } from '../share/components/edit-group-dialog/edit-group.model';
 import { selectAllDebugElements, selectDebugElement } from '../test/utils';
-import { Group } from './models/group.model';
+import { Group } from '../share/models/card-details';
 
 describe('GroupsComponent', () => {
   let component: GroupsComponent;

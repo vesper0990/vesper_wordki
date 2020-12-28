@@ -1,7 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MockComponent } from 'ng-mocks';
-import { ButtonComponent } from 'src/app/share/components/button/button.component';
 import { createProvider } from 'src/app/test/helpers.spec';
 import { inputValueToInputElementByAttribute, selectNativeElement, selectNativeElementById } from 'src/app/test/utils';
 import { RegisterFormComponent } from './register-form.component';
@@ -20,10 +18,9 @@ describe('RegisterFormComponent', () => {
       ],
       declarations: [
         RegisterFormComponent,
-        MockComponent(ButtonComponent)
       ],
       providers: [
-        createProvider(RegisterService) 
+        createProvider(RegisterService)
       ]
     }).compileComponents();
 

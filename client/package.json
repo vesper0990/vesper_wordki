@@ -8,6 +8,7 @@
     "build": "ng build",
     "build:prod": "ng build --c=production",
     "test": "ng test",
+    "test:debug": "ng test --watch=true --browsers=ChromeDebug --codeCoverage=true",
     "test-headless": "ng test --watch=false --browsers=ChromeHeadlessLauncher --codeCoverage=true",
     "lint": "ng lint",
     "e2e": "ng e2e"

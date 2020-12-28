@@ -12,6 +12,7 @@ import { DateSpanToDaysPipe } from '../share/pipes/datespan-to-days.pipe';
 import { CardComponent } from '../share/components/card/card.component';
 import { selectNativeElementById } from '../test/utils';
 import { InfoCardComponent } from '../share/components/info-card/info-card.component';
+import { ExtendedCardDetails } from '../share/models/card-details';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -60,19 +61,20 @@ describe('DashboardComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    it('should show spinner', () => {
-      const spinners = fixture.debugElement.queryAll(By.css('app-progress-spinner'));
-      expect(spinners.length).toBe(3);
-    });
+    // todo elements were removed
+    // it('should show spinner', () => { 
+    //   const spinners = fixture.debugElement.queryAll(By.css('app-progress-spinner'));
+    //   expect(spinners.length).toBe(3);
+    // });
   });
 
   describe('after loaded', () => {
 
     beforeEach(() => {
       service = TestBed.inject(DashboardService) as jasmine.SpyObj<DashboardService>;
-      service.getLastFailed.and.returnValue(of({ groupName: 'test' } as RepeatWord));
-      service.getNewestCard.and.returnValue(of({ groupName: 'test' } as RepeatWord));
-      service.getNextRepeat.and.returnValue(of({ groupName: 'test' } as RepeatWord));
+      service.getLastFailed.and.returnValue(of({ groupName: 'test' } as ExtendedCardDetails));
+      service.getNewestCard.and.returnValue(of({ groupName: 'test' } as ExtendedCardDetails));
+      service.getNextRepeat.and.returnValue(of({ groupName: 'test' } as ExtendedCardDetails));
       service.getCardToRepeat.and.returnValue(of(1));
       service.getLastRepeat.and.returnValue(of(new Date(2020, 1, 1)));
       service.getCardsCount.and.returnValue(of(1));

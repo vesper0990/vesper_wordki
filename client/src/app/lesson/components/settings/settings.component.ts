@@ -6,7 +6,7 @@ import { SettingsService } from './services/settings/settings.service';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss']
+  styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent implements OnInit {
 
@@ -18,21 +18,4 @@ export class SettingsComponent implements OnInit {
   ngOnInit(): void {
     this.currentCard$ = this.service.getCurrentCard();
   }
-
-  clickEdit(): void {
-    this.dialogVisiblity = true;
-  }
-
-  onEditSave(): void {
-    this.dialogVisiblity = false;
-  }
-
-  onEditCance(): void {
-    this.dialogVisiblity = false;
-  }
-
-  onEditRemove(): void {
-    this.dialogVisiblity = false;
-  }
-
 }

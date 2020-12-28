@@ -2,9 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GroupRowComponent } from './group-row.component';
 import { MockComponent } from 'ng-mocks';
 import { LabelValueComponent } from 'src/app/share/components/label-value/label-value.component';
-import { Group } from '../../models/group.model';
 import { selectNativeElementByClass } from 'src/app/test/utils';
 import { LanguageType, LanguageTypeEnum } from 'src/app/share/models/language-type.mode';
+import { Group } from 'src/app/share/models/card-details';
 
 describe('GroupRowComponent', () => {
   let component: GroupRowComponent;
@@ -24,8 +24,8 @@ describe('GroupRowComponent', () => {
     component = fixture.componentInstance;
 
     component.group = {
-      language1: LanguageType.getLanguageType(LanguageTypeEnum.English),
-      language2: LanguageType.getLanguageType(LanguageTypeEnum.Polish),
+      languageFront: LanguageType.getLanguageType(LanguageTypeEnum.English),
+      languageBack: LanguageType.getLanguageType(LanguageTypeEnum.Polish),
     } as Group;
     fixture.detectChanges();
   });
