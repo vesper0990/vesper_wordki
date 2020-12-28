@@ -1,19 +1,22 @@
-FROM node:latest as node
+FROM node:alpine as build
+
+ENV environment dev
+
+RUN mkdir -p /usr/src/app && chown node:node /usr/src/app
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
+COPY package.json package-lock.json ./
 RUN npm install
-
 COPY . .
 
-RUN npm run build
+RUN npm run build:prod
 
-# Stage 2
-FROM nginx:latest
+FROM nginx:alpine as e2e-release
 
-COPY --from=node /usr/src/app/dist/wordki /usr/share/nginx/html
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=build /usr/src/app/dist/wordki /usr/share/nginx/html
+COPY ./nginx.conf /etc/nginx/nginx.conf
 
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-
-CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
+CMD sed -i -e 's/$PORT/80/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'

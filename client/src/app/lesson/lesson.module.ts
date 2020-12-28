@@ -20,7 +20,6 @@ import { WordComparerService } from './services/word-comparer/word-comparer.serv
 import { UserModule } from '../user/user.module';
 import { AuthorizationModule } from '../authorization/authorization.module';
 import { WordMapper } from './services/word-mapper/word-mapper';
-import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { SummaryGuardService } from './services/summary-guard/summage-guard';
 import { SummaryComponent } from './components/summary/summary.component';
@@ -33,6 +32,9 @@ import { TimerService } from './services/stoper/stoper2.service';
 import { StoperService } from './components/stoper/services/stoper/stoper.service';
 import { ResultsComponent } from './components/results/results.component';
 import { ResultsService } from './components/results/services/results/results.service';
+import { SettingsComponent } from './components/settings/settings.component';
+import { SettingsService } from './components/settings/services/settings/settings.service';
+import { ControllerComponent } from './components/controller/controller.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,8 @@ import { ResultsService } from './components/results/services/results/results.se
     SummaryComponent,
     FiszkaSideComponent,
     ResultsComponent,
+    SettingsComponent,
+    ControllerComponent,
   ],
   imports: [
     FormsModule,
@@ -52,7 +56,6 @@ import { ResultsService } from './components/results/services/results/results.se
     ShareModule,
     UserModule,
     AuthorizationModule,
-    ButtonModule,
     CheckboxModule,
     StoreModule.forFeature('lessonState', reducer),
     EffectsModule.forFeature([LessonEffects]),
@@ -68,7 +71,8 @@ import { ResultsService } from './components/results/services/results/results.se
     InsertService,
     TimerService,
     StoperService,
-    ResultsService
+    ResultsService,
+    SettingsService
   ]
 })
 export class LessonModule {

@@ -16,7 +16,6 @@ import { reducer } from './store/reducer';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { WordMapper } from './services/word-mapper/word-mapper';
-import { InputTextModule } from 'primeng/inputtext';
 import { AddGroupComponent } from './pages/add-group/add-group.component';
 import { ShareModule } from '../share/share.module';
 import { GroupDescriptionComponent } from './components/group-description/group-description.component';
@@ -33,7 +32,6 @@ import { CardsListService } from './services/words-list/words-list.service';
     CommonModule,
     ReactiveFormsModule,
     GroupsDetailsRoutingModule,
-    InputTextModule,
     ShareModule,
     StoreModule.forFeature('groupDetailsStore', reducer),
     EffectsModule.forFeature([GroupDetailsEffects]),

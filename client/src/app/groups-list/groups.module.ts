@@ -7,7 +7,6 @@ import { GroupsListHttpServiceBase, GroupsListHttpService, GroupsListHttpMockSer
 import { environment } from 'src/environments/environment';
 import { ShareModule } from '../share/share.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { StoreModule, Store } from '@ngrx/store';
@@ -26,7 +25,6 @@ import { GroupsListService } from './services/groups-list/groups-list.service';
     ReactiveFormsModule,
     GroupsRoutingModule,
     ShareModule,
-    InputTextModule,
     CardModule,
     ProgressSpinnerModule,
     StoreModule.forFeature('groupListStore', reducer),

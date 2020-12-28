@@ -1,0 +1,17 @@
+<div class="main-container" *ngIf="currentCard$ | async as currentCard">
+  <ng-container *ngTemplateOutlet="item; context:{label: 'Group:', value: currentCard.groupName} ">
+  </ng-container>
+  <ng-container *ngTemplateOutlet="item; context:{label: 'Drawer:', value: currentCard.question.drawer.value} ">
+  </ng-container>
+</div>
+
+<ng-template #item let-value="value" let-label="label">
+  <div class="item">
+    <div class="label">
+      {{label}}
+    </div>
+    <div class="value">
+      {{value}}
+    </div>
+  </div>
+</ng-template>

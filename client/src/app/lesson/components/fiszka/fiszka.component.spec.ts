@@ -3,7 +3,6 @@ import { FiszkaComponent } from './fiszka.component';
 import { createProvider } from 'src/app/test/helpers.spec';
 import { FiszkaService } from './services/fiszka/fiszka.service';
 import { MockComponent } from 'ng-mocks';
-import { Button } from 'primeng/button';
 
 describe('FiszkaComponent', () => {
   let component: FiszkaComponent;
@@ -13,7 +12,6 @@ describe('FiszkaComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         FiszkaComponent,
-        MockComponent(Button)
       ],
       providers: [
         createProvider(FiszkaService)
