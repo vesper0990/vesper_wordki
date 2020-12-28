@@ -15,18 +15,11 @@
           <app-fiszka-side [isTextVisible]="lessonStep.answer && isWrong" [value]="currentWord.answer.value"
             [example]="currentWord.answer.example"></app-fiszka-side>
         </ng-container>
-        <div class="buttons-container">
-          <p-button *ngIf="lessonStep.checkBtn" class="ui-button-warring" (click)="check()" label="Check">
-          </p-button>
-          <p-button *ngIf="lessonStep.answareBtn" class="ui-button-warring" (click)="wrong()" label="&lt; Nie znam">
-          </p-button>
-          <p-button *ngIf="lessonStep.answareBtn" class="ui-button-warring" (click)="correct()" label="Znam &gt;">
-          </p-button>
-        </div>
+        <app-controller [lessonStep]="lessonStep" (correct)="correct()" (wrong)="wrong()" (check)="check()"></app-controller>
       </ng-container>
     </div>
   </div>
   <div class="additional-info">
-
+    <app-settings></app-settings>
   </div>
 </div>

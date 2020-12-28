@@ -33,6 +33,9 @@ import { TimerService } from './services/stoper/stoper2.service';
 import { StoperService } from './components/stoper/services/stoper/stoper.service';
 import { ResultsComponent } from './components/results/results.component';
 import { ResultsService } from './components/results/services/results/results.service';
+import { SettingsComponent } from './components/settings/settings.component';
+import { SettingsService } from './components/settings/services/settings/settings.service';
+import { ControllerComponent } from './components/controller/controller.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +45,8 @@ import { ResultsService } from './components/results/services/results/results.se
     SummaryComponent,
     FiszkaSideComponent,
     ResultsComponent,
+    SettingsComponent,
+    ControllerComponent,
   ],
   imports: [
     FormsModule,
@@ -68,7 +73,8 @@ import { ResultsService } from './components/results/services/results/results.se
     InsertService,
     TimerService,
     StoperService,
-    ResultsService
+    ResultsService,
+    SettingsService
   ]
 })
 export class LessonModule {

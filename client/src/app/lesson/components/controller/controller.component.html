@@ -1,0 +1,11 @@
+<div class="main-container">
+    <button *ngIf="lessonStep.checkBtn" class="ui-button-warring" (click)="clickCheck()">
+        Check
+    </button>
+    <button *ngIf="lessonStep.answareBtn" class="ui-button-warring" (click)="clickWrong()">
+        &lt; Wrong
+    </button>
+    <button *ngIf="lessonStep.answareBtn" class="ui-button-warring" (click)="clickCorrect()">
+        Correct &gt;
+    </button>
+</div>
