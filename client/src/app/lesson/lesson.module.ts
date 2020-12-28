@@ -20,7 +20,6 @@ import { WordComparerService } from './services/word-comparer/word-comparer.serv
 import { UserModule } from '../user/user.module';
 import { AuthorizationModule } from '../authorization/authorization.module';
 import { WordMapper } from './services/word-mapper/word-mapper';
-import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { SummaryGuardService } from './services/summary-guard/summage-guard';
 import { SummaryComponent } from './components/summary/summary.component';
@@ -57,7 +56,6 @@ import { ControllerComponent } from './components/controller/controller.componen
     ShareModule,
     UserModule,
     AuthorizationModule,
-    ButtonModule,
     CheckboxModule,
     StoreModule.forFeature('lessonState', reducer),
     EffectsModule.forFeature([LessonEffects]),

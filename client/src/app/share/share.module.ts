@@ -15,12 +15,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { DialogModule } from 'primeng/dialog';
 import { CheckboxModule } from 'primeng/checkbox';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
 import { EditGroupDialogComponent } from './components/edit-group-dialog/edit-group-dialog.component';
 import { LabelValueComponent } from './components/label-value/label-value.component';
 import { CardComponent } from './components/card/card.component';
-import { ButtonComponent } from './components/button/button.component';
 import { InfoCardComponent } from './components/info-card/info-card.component';
 import { PaginatorComponent } from './components/paginator/paginator.component';
 
@@ -37,7 +34,6 @@ import { PaginatorComponent } from './components/paginator/paginator.component';
     EditGroupDialogComponent,
     LabelValueComponent,
     CardComponent,
-    ButtonComponent,
     InfoCardComponent,
     PaginatorComponent,
     SecToTimePipe,
@@ -53,7 +49,6 @@ import { PaginatorComponent } from './components/paginator/paginator.component';
     EditGroupDialogComponent,
     LabelValueComponent,
     CardComponent,
-    ButtonComponent,
     InfoCardComponent,
     PaginatorComponent,
     SecToTimePipe,
@@ -67,8 +62,6 @@ import { PaginatorComponent } from './components/paginator/paginator.component';
     ProgressBarModule,
     DialogModule,
     CheckboxModule,
-    InputTextModule,
-    ButtonModule
   ]
 })
 export class ShareModule { }

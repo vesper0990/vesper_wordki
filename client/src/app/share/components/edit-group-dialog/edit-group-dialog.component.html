@@ -4,7 +4,7 @@
       <label for="name">
         <b>Name</b>
       </label>
-      <input class="input" pInputText type="text" formControlName="name">
+      <input class="input" type="text" formControlName="name">
     </div>
     <div class="row">
       <label for="language1">
@@ -20,8 +20,8 @@
     </div>
   </form>
   <p-footer>
-    <button pButton (click)="onSave()" label="Save"></button>
-    <button *ngIf="isRemoveVisible" pButton (click)="onRemove()" label="Remove"></button>
-    <button pButton (click)="onCancel()" label="Cancel"></button>
+    <button (click)="onSave()" label="Save"></button>
+    <button *ngIf="isRemoveVisible" (click)="onRemove()" label="Remove"></button>
+    <button (click)="onCancel()" label="Cancel"></button>
   </p-footer>
 </p-dialog>

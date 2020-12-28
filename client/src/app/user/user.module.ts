@@ -13,13 +13,10 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { RegisterFormComponent } from './components/register-form/register-form.component';
 import { LogoutComponent } from './pages/logout/logout.component';
 import { LoginComponent } from './pages/login/login.component';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
 import { ShareModule } from '../share/share.module';
 import { HttpErrorInterceptor } from '../share/services/http-error.interceptor';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import { BrowserModule } from '@angular/platform-browser';
 import { LoginService } from './components/login-form/services/login/login.service';
 import { RegisterService } from './components/register-form/services/register/register.service';
 
@@ -39,8 +36,6 @@ import { RegisterService } from './components/register-form/services/register/re
     ReactiveFormsModule,
     UserRoutingModule,
     AuthorizationModule,
-    ButtonModule,
-    InputTextModule,
     ToastModule,
   ],
   providers: [
