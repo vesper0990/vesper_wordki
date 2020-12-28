@@ -5,8 +5,6 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { ShareModule } from '../share/share.module';
 import { DashboardHttpServiceBase, DashboardHttpService, DashboardHttpMockService } from './services/dashbaord-http/dashboard-http.service';
 import { environment } from 'src/environments/environment';
-import { CardModule } from 'primeng/card';
-import { CarouselModule } from 'primeng/carousel';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { DashboardEffects } from './store/effects';
@@ -21,8 +19,6 @@ import { DashboardService } from './services/dashboard/dashboard.service';
     CommonModule,
     DashboardRoutingModule,
     ShareModule,
-    CardModule,
-    CarouselModule,
     StoreModule.forFeature('dashboardStore', dashboardReducer),
     EffectsModule.forFeature([DashboardEffects]),
   ],

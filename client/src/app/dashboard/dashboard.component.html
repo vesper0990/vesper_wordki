@@ -11,7 +11,7 @@
   <app-info-card id="cards-card" title="Cards" [label]="cardsCount$ | async" clickable="true"
     [isLoading]="!(isCardsCountReady$ | async)" (click)="cards()"></app-info-card>
 </div>
-<div class="cards-container">
+<!-- <div class="cards-container">
   <div class="card-element">
     <p-card styleClass="card">
       <p-header>
@@ -54,7 +54,7 @@
       </ng-container>
     </p-card>
   </div>
-</div>
+</div> -->
 
 <ng-template #loading>
   <app-progress-spinner></app-progress-spinner>
