@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output, HostListener } from '@angular/core';
 import { EditWord } from './edit-word.model';
 import { FormBuilder, Validators } from '@angular/forms';
 
@@ -51,6 +51,16 @@ export class EditWordDialogComponent {
       example2: this._word.example2,
       isVisible: this._word.isVisible,
     });
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent): void {
+    if (!this.isVisible) {
+      return;
+    }
+    if (event.key === 'Escape') {
+      this.onCancel();
+    }
   }
 
   onSave(): void {
