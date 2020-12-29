@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using TestStack.BDDfy;
+using Wordki.Api.Featuers.Group.Add;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
 
 namespace Wordki.Tests.E2E.Feature.Group.Add
@@ -31,24 +32,31 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
 
         void AndGivenRequest()
         {
-            var words = new List<object>();
+            var words = new List<Wordki.Api.Featuers.Group.Add.Card>();
             for (int i = 0; i < 2; i++)
             {
-                words.Add(new
+                words.Add(new Wordki.Api.Featuers.Group.Add.Card
                 {
-                    cardSide1 = new { value = "word1", example = "example1" },
-                    cardSide2 = new { value = "word2", example = "example2" },
-                    comment = "comment",
-                    isVisible = true
+                    CardSide1 = new Api.Domain.Side
+                    {
+                        Value = "front-value",
+                        Example = "front-example"
+                    },
+                    CardSide2 = new Api.Domain.Side
+                    {
+                        Value = "back-value",
+                        Example = "back-example"
+                    },
+                    IsVisible = true
                 });
             }
-            var jsonObj = new
+            var jsonObj = new AddGroupCommand
             {
-                userId = 1,
-                name = "groupName",
-                language1 = 1,
-                language2 = 2,
-                words = words
+                UserId = 1,
+                Name = "groupName",
+                LanguageFront = 1,
+                LanguageBack = 2,
+                Words = words
             };
             var jsonString = JsonSerializer.Serialize(jsonObj);
             Request.Content = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -80,7 +88,7 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
                 Assert.AreEqual(group.Name, "groupName");
                 Assert.AreEqual(group.GroupLanguage1, 1);
                 Assert.AreEqual(group.GroupLanguage2, 2);
-                Assert.AreEqual(group.GroupCreationDate, Utils.Now);
+                Assert.AreEqual(group.GroupCreationDate, Utils.Time);
 
                 Assert.AreEqual(2, group.Words.Count);
 
@@ -89,13 +97,12 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
                     Assert.IsNotNull(word);
                     Assert.Greater(word.Id, 0);
                     Assert.AreEqual(group.Id, word.Group.Id);
-                    Assert.AreEqual("word1", word.Heads.Value);
-                    Assert.AreEqual("word2", word.Tails.Value);
-                    Assert.AreEqual("comment", word.Comment);
-                    Assert.AreEqual("example1", word.Heads.Example);
-                    Assert.AreEqual("example2", word.Tails.Example);
+                    Assert.AreEqual("front-value", word.Heads.Value);
+                    Assert.AreEqual("back-value", word.Tails.Value);
+                    Assert.AreEqual("front-example", word.Heads.Example);
+                    Assert.AreEqual("back-example", word.Tails.Example);
                     Assert.AreEqual(true, word.IsVisible);
-                    Assert.AreEqual(Utils.Now, word.WordCreationDate);
+                    Assert.AreEqual(Utils.Time, word.WordCreationDate);
                 };
             }
         }

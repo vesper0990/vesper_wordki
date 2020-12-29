@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using TestStack.BDDfy;
+using Wordki.Api.Featuers.User.Register;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
 
 namespace Wordki.Tests.E2E.Feature.User.Register
@@ -14,6 +15,8 @@ namespace Wordki.Tests.E2E.Feature.User.Register
     public class UserCanBeRegistrated : TestBase
     {
 
+        private string GivenPassword => "password";
+
         public UserCanBeRegistrated()
         {
             Request = new HttpRequestMessage(HttpMethod.Post, "/user/register");
@@ -21,11 +24,11 @@ namespace Wordki.Tests.E2E.Feature.User.Register
 
         void GivenRequest()
         {
-            var content = new
+            var content = new RegisterCommand
             {
-                userName = "user",
-                password = "pass",
-                passwordRepeat = "pass",
+                UserName = "user",
+                Password = GivenPassword,
+                PasswordConfirmation = GivenPassword,
             };
             Request.Content = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
         }
@@ -50,7 +53,7 @@ namespace Wordki.Tests.E2E.Feature.User.Register
                 var user = await dbContext.Users.SingleAsync();
                 Assert.AreEqual("user", user.Name);
                 Assert.Greater(user.Id, 0);
-                Assert.AreEqual(Host.EncrypterMock.Object.Md5Hash("pass"), user.Password);
+                Assert.AreEqual(Host.EncrypterMock.Object.Md5Hash(GivenPassword), user.Password);
                 Assert.IsNull(user.LastLoginDate);
                 Assert.AreEqual(Host.Time2ProviderMock.Object.GetTime(), user.CreationDate);
             }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
-using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -40,9 +39,9 @@ namespace Wordki.Tests.E2E.Feature.Card.Add
             var content = new
             {
                 groupId = 1,
-                heads = new { value = "word1", example="example1" },
-                tails = new { value = "word2", example="example2" },
-                IsVisible = true
+                front = new { value = "word1", example="example1" },
+                back = new { value = "word2", example="example2" },
+                isVisible = true
             };
             Request.Content = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
         }
@@ -76,7 +75,7 @@ namespace Wordki.Tests.E2E.Feature.Card.Add
                 Assert.AreEqual(0, word.Heads.State.Drawer.Value);
                 Assert.AreEqual(0, word.Tails.State.Drawer.Value);
                 Assert.AreEqual(true, word.IsVisible);
-                Assert.AreEqual(new DateTime(0), word.WordCreationDate);
+                Assert.AreEqual(Utils.Now, word.WordCreationDate);
             }
         }
 

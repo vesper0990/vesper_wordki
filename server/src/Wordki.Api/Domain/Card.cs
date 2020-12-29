@@ -69,4 +69,10 @@ namespace Wordki.Api.Domain
                 NextRepeat = new DateTime(0)
             };
     }
+
+    public class NewCard
+    {
+        public long Id { get; set; }
+        
+    }
 }

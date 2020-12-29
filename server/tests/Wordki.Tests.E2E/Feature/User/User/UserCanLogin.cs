@@ -8,15 +8,19 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using TestStack.BDDfy;
+using Wordki.Api.Featuers.User.Login;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
 
 namespace Wordki.Tests.E2E.Feature.User.User
 {
     public class UserCanLogin : TestBase
     {
+
+        private string GivenPassword => "password";
+
         public UserCanLogin()
         {
-            Request = new HttpRequestMessage(HttpMethod.Post, "/user/login");
+            Request = new HttpRequestMessage(HttpMethod.Put, "/user/login");
         }
 
         async Task GivenUserInDatabase()
@@ -26,7 +30,7 @@ namespace Wordki.Tests.E2E.Feature.User.User
                 var user = Builder<Api.Domain.User>.CreateNew()
                     .With(u => u.Id = 1)
                     .With(u => u.Name = "user")
-                    .With(u => u.Password = Host.EncrypterMock.Object.Md5Hash("pass"))
+                    .With(u => u.Password = Host.EncrypterMock.Object.Md5Hash(GivenPassword))
                     .With(u => u.LastLoginDate = new DateTime(2020, 1, 1))
                     .With(u => u.CreationDate = new DateTime(2020, 1, 1))
                     .Build();
@@ -38,10 +42,10 @@ namespace Wordki.Tests.E2E.Feature.User.User
 
         void AndGivenRequest()
         {
-            var content = new
+            var content = new LoginCommnad
             {
-                userName = "user",
-                password = "pass",
+                UserName = "user",
+                Password = GivenPassword,
             };
             Request.Content = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
         }
@@ -56,7 +60,7 @@ namespace Wordki.Tests.E2E.Feature.User.User
         async Task AndThenResponseIsEmpty()
         {
             var responseContent = await Response.Content.ReadAsStringAsync();
-            Assert.AreEqual(string.Empty, responseContent);
+            Assert.IsNotEmpty(responseContent);
         }
 
         async Task AndThenUserAdded()
