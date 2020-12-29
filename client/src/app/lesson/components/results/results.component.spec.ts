@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { createProvider } from 'src/app/test/helpers.spec';
 import { ResultsComponent } from './results.component';
+import { ResultsService } from './services/results/results.service';
 
 describe('ResultsComponent', () => {
   let component: ResultsComponent;
@@ -8,7 +9,10 @@ describe('ResultsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ResultsComponent ]
+      declarations: [ResultsComponent],
+      providers: [
+        createProvider(ResultsService)
+      ]
     })
     .compileComponents();
   });

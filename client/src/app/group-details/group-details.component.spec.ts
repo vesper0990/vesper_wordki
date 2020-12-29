@@ -8,9 +8,9 @@ import { createProvider } from '../test/helpers.spec';
 import { selectAllDebugElements, selectDebugElement, selectNativeElementById } from '../test/utils';
 import { of } from 'rxjs';
 import { Word } from './models/word.model';
-import { ActivatedRoute } from '@angular/router';
-import { Title } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { CardDetails, SideDetails } from '../share/models/card-details';
+import { createCardDetails } from '../test/builders.spec';
 
 describe('GroupDetailsComponent', () => {
   let component: GroupDetailsComponent;
@@ -96,8 +96,9 @@ describe('GroupDetailsComponent', () => {
     });
 
     describe('with cards', () => {
+
       beforeEach(() => {
-        service.getCards.and.returnValue(of([{} as Word, {} as Word]));
+        service.getCards.and.returnValue(of(cardsMock));
 
         fixture.detectChanges();
       });
@@ -109,14 +110,16 @@ describe('GroupDetailsComponent', () => {
       });
 
       it('should edit card', () => {
-        const expectedValue = { language1: 'test' } as Word;
+        const expectedValue = cardsMock[0];
         const cardRow = selectDebugElement(fixture, 'app-word-row');
 
-        cardRow.componentInstance.editWord.emit(expectedValue);
+        cardRow.nativeElement.click();
         expect(service.openDialogToEdit).toHaveBeenCalledWith(expectedValue);
       });
 
     });
   });
 });
+
+const cardsMock = [createCardDetails(), createCardDetails()];
 

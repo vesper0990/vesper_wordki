@@ -77,7 +77,8 @@ namespace Wordki.Tests.E2E.Feature.Card.GetLastAdded
             Assert.AreEqual(expectedJson, message);
         }
 
-        [Test]
+        // [Test]
+// todo endpoint is not used
         public void Execute()
         {
             this.BDDfy();

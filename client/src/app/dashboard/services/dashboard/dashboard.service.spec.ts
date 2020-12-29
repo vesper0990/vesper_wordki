@@ -5,7 +5,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { Router } from '@angular/router';
 import * as actions from '../../store/actions';
 import * as selectors from '../../store/selectors';
-import { RepeatWord } from '../../models/repeat-word.model';
+import { ExtendedCardDetails } from 'src/app/share/models/card-details';
 
 describe('DashboardService', () => {
 
@@ -128,8 +128,8 @@ describe('DashboardService', () => {
 });
 
 
-const lastFailed = { groupName: 'test' } as RepeatWord;
+const lastFailed = { groupName: 'test' } as ExtendedCardDetails;
 
-const nextRepeat = { groupName: 'test' } as RepeatWord;
+const nextRepeat = { groupName: 'test' } as ExtendedCardDetails;
 
-const newestCard = { groupName: 'test' } as RepeatWord;
+const newestCard = { groupName: 'test' } as ExtendedCardDetails;

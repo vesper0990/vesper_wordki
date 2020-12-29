@@ -22,7 +22,7 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['ChromeHeadlessLauncher'],
+    browsers: ['ChromeHeadlessLauncher', 'ChromeDebug'],
     singleRun: false,
     browserDisconnectTimeout: 10000,
     browserDisconnectTolerance: 3,
@@ -31,6 +31,9 @@ module.exports = function (config) {
       ChromeHeadlessLauncher:{
         base: 'ChromeHeadless',
         flags: ['--no-sandbox']
+      },
+      ChromeDebug:{
+        base: 'Chrome'
       },
     }
   });

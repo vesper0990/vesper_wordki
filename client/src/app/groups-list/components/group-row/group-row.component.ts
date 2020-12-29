@@ -12,12 +12,12 @@ export class GroupRowComponent implements OnInit {
   @Output() lessonStart: EventEmitter<Group> = new EventEmitter();
   @Output() edit: EventEmitter<Group> = new EventEmitter();
 
-  wordsValue: string;
+  wordsValue: number;
 
   constructor() { }
 
   ngOnInit() {
-    this.wordsValue = this.group.cardsCount.toString();
+    this.wordsValue = this.group.cardsCount;
   }
 
   editGroup(group: Group): void {

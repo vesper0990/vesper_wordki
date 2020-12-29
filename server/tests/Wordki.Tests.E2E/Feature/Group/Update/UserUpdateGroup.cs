@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using TestStack.BDDfy;
 using Wordki.Api.Domain;
+using Wordki.Api.Featuers.Group.Update;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
 
 namespace Wordki.Tests.E2E.Feature.Group.Add
@@ -59,12 +60,12 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
 
         void AndGivenRequest()
         {
-            var content = new
+            var content = new UpdateGroupCommand
             {
-                id = 1,
-                name = "group2",
-                language1 = 2,
-                language2 = 1
+                Id = 1,
+                Name = "group2",
+                LanguageFront = 2,
+                LanguageBack = 1
             };
             Request.Content = new StringContent(JsonSerializer.Serialize(content), Encoding.UTF8, "application/json");
         }

@@ -3,8 +3,6 @@ import { LoginFormComponent } from '../login-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginService } from '../services/login/login.service';
 import * as mocks from './login-form.component.mock.spec';
-import { MockComponent } from 'ng-mocks';
-import { ButtonComponent } from 'src/app/share/components/button/button.component';
 import { inputValueToInputElementByAttribute, selectNativeElement, selectNativeElementById } from 'src/app/test/utils';
 import { createProvider } from 'src/app/test/helpers.spec';
 
@@ -21,7 +19,6 @@ describe('LoginFormComponent', () => {
       ],
       declarations: [
         LoginFormComponent,
-        MockComponent(ButtonComponent)
       ],
       providers: [
         createProvider(LoginService)

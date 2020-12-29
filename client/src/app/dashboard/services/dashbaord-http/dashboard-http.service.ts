@@ -127,6 +127,6 @@ export class DashboardHttpMockService extends DashboardHttpServiceBase {
                 nextRepeat: new Date().toUTCString(),
                 repeatsCount: 6
             } as SideDetailsDto
-        } as ExtendedCardDetailsDto
+        } as ExtendedCardDetailsDto;
     }
 }

@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using TestStack.BDDfy;
+using Wordki.Api.Featuers.Group.Add;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
 
 namespace Wordki.Tests.E2E.Feature.Group.Add
@@ -30,12 +31,12 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
 
         void AndGivenRequest()
         {
-            var jsonObj = new
+            var jsonObj = new AddGroupCommand
             {
-                userId = 1,
-                name = "groupName",
-                language1 = 1,
-                language2 = 2,
+                UserId = 1,
+                Name = "groupName",
+                LanguageFront = 1,
+                LanguageBack = 2,
             };
             var jsonString = JsonSerializer.Serialize(jsonObj);
             Request.Content = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -66,7 +67,7 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
                 Assert.AreEqual(group.Name, "groupName");
                 Assert.AreEqual(group.GroupLanguage1, 1);
                 Assert.AreEqual(group.GroupLanguage2, 2);
-                Assert.AreEqual(group.GroupCreationDate, Utils.Now);
+                Assert.AreEqual(group.GroupCreationDate, Utils.Time);
 
                 var wordsCount = await dbContext.Words.CountAsync();
                 Assert.AreEqual(0, wordsCount);

@@ -19,7 +19,6 @@ export class PaginatorComponent implements OnInit {
     this._currentPage = val;
     this.isFirst = val === 1;
     this.isLast = val === this._pagesCount;
-    console.log(this.isFirst, this.isLast);
     this.recalculateItems();
   }
 

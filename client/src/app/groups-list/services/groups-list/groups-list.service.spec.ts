@@ -5,9 +5,9 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { GroupsListService } from './groups-list.service';
 import * as actions from '../../store/actions';
 import * as selectors from '../../store/selectors';
-import { Group } from '../../models/group.model';
 import { EditGroup } from 'src/app/share/components/edit-group-dialog/edit-group.model';
 import { LanguageType, LanguageTypeEnum } from 'src/app/share/models/language-type.mode';
+import { Group } from 'src/app/share/models/card-details';
 
 describe('GroupsListService', () => {
 
@@ -116,12 +116,7 @@ describe('GroupsListService', () => {
         store.refreshState();
 
         service.getDialogGroup().subscribe(value => expect(value).toEqual(
-            {
-                id: expectedValue.id,
-                name: expectedValue.name,
-                language1: expectedValue.language1,
-                language2: expectedValue.language2,
-            } as EditGroup
+            new EditGroup(expectedValue.id, expectedValue.name, expectedValue.languageFront, expectedValue.languageBack)
         )).unsubscribe();
     });
 
@@ -149,7 +144,5 @@ function createTestGroup(): Group {
         LanguageType.getLanguageType(LanguageTypeEnum.English),
         LanguageType.getLanguageType(LanguageTypeEnum.English),
         1,
-        2,
-        3,
-        4);
+        2);
 }
