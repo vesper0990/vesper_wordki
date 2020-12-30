@@ -11,9 +11,6 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: CmdLine@2
-  inputs:
-    script: 'echo $(System.DefaultWorkingDirectory) | echo $(Common.TestResultsDirectory)'
 - task: DockerCompose@0
   displayName: Build
   inputs:
@@ -32,10 +29,10 @@ steps:
     dockerComposeCommand: up
 - task: CmdLine@2
   inputs:
-    script: 'ls -R $(System.DefaultWorkingDirectory) | grep ":$" | sed -e ''s/:$//'' -e ''s/[^-][^\/]*\//--/g'' -e ''s/^/   /'' -e ''s/-/|/'''
+    script: 'docker cp wordki-client/ci/build:/dist/testresult/ ./dist/testresult/'
 - task: CmdLine@2
   inputs:
-    script: 'ls -R $(Common.TestResultsDirectory) | grep ":$" | sed -e ''s/:$//'' -e ''s/[^-][^\/]*\//--/g'' -e ''s/^/   /'' -e ''s/-/|/'''
+    script: 'ls -R $(System.DefaultWorkingDirectory) | grep ":$" | sed -e ''s/:$//'' -e ''s/[^-][^\/]*\//--/g'' -e ''s/^/   /'' -e ''s/-/|/'''
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'JUnit'
