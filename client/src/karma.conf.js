@@ -1,7 +1,6 @@
 const path = require('path');
-const rootTestArtPath = process.env.TEST_RESULTS_DIR ? path.join(process.env.TEST_RESULTS_DIR, 'cmdtests') : '../dist/tests';
+const rootTestArtPath = process.env.TEST_RESULTS_DIR ? process.env.TEST_RESULTS_DIR : '../dist/tests';
 const testResultsPath = path.join(rootTestArtPath, 'results');
-const testCoveragePath = path.join(rootTestArtPath, 'coverage');
 
 module.exports = function (config) {
   config.set({
@@ -21,11 +20,11 @@ module.exports = function (config) {
     client: {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
-    coverageIstanbulReporter: {
-      dir: testCoveragePath,
-      reports: ['html', 'lcovonly'],
-      fixWebpackSourcePaths: true
-    },
+    // coverageIstanbulReporter: {
+    //   dir: testCoveragePath,
+    //   reports: ['html', 'lcovonly'],
+    //   fixWebpackSourcePaths: true
+    // },
     reporters: ['progress', 'kjhtml', 'junit'],
     junitReporter: {
       outputDir: testResultsPath

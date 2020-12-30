@@ -9,6 +9,6 @@ services:
       target: build
     command: sh -c "npm run test-headless"
     environment:
-      - TEST_RESULTS_DIR=/test-artifacts
+      - TEST_RESULTS_DIR=$SYSTEM_DEFAULTWORKINGDIRECTORY
     volumes:
-      - $COMMON_TESTRESULTSDIRECTORY:/test-artifacts
+      - $SYSTEM_DEFAULTWORKINGDIRECTORY:/
