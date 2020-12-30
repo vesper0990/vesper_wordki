@@ -27,6 +27,12 @@ steps:
     dockerComposeFile: 'client/build/docker/docker-compose.test.yml'
     action: 'Run a Docker Compose command'
     dockerComposeCommand: up
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/TEST-*.xml'
+    searchFolder: '$(Common.TestResultsDirectory)/cmdtests/results'
+    testRunTitle: 'Unit tests'
 - task: DockerCompose@0
   displayName: Release
   inputs:
