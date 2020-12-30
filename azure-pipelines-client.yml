@@ -27,18 +27,6 @@ steps:
     dockerComposeFile: 'client/build/docker/docker-compose.test.yml'
     action: 'Run a Docker Compose command'
     dockerComposeCommand: up
-- task: CmdLine@2
-  inputs:
-    script: 'docker cp wordki-client/ci/build:/dist/testresult/ ./dist/testresult/'
-- task: CmdLine@2
-  inputs:
-    script: 'ls -R $(System.DefaultWorkingDirectory) | grep ":$" | sed -e ''s/:$//'' -e ''s/[^-][^\/]*\//--/g'' -e ''s/^/   /'' -e ''s/-/|/'''
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: '**/TEST-*.xml'
-    searchFolder: '$(System.DefaultWorkingDirectory)'
-    testRunTitle: 'Unit tests'
 - task: DockerCompose@0
   displayName: Release
   inputs:
