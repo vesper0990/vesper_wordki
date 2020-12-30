@@ -31,7 +31,7 @@ steps:
   inputs:
     testResultsFormat: 'JUnit'
     testResultsFiles: '**/TEST-*.xml'
-    searchFolder: '$(Common.TestResultsDirectory)/cmdtests/results'
+    searchFolder: '$(System.DefaultWorkingDirectory)/cmdtests/results'
     testRunTitle: 'Unit tests'
 - task: DockerCompose@0
   displayName: Release
