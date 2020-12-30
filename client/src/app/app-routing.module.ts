@@ -15,6 +15,11 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
   {
+    path: 'creator',
+    loadChildren: () => import('./group-creator/group-creator.module').then(m => m.GroupCreatorModule),
+    canActivate: [AuthGuardService]
+  },
+  {
     path: 'details',
     loadChildren: () => import('./group-details/group-details.module').then(m => m.GroupDetailsModule),
     canActivate: [AuthGuardService]

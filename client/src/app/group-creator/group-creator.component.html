@@ -1,0 +1,12 @@
+<textarea [(ngModel)]="fileContent"></textarea>
+
+<button (click)="generate()">Generate</button>
+<br>
+<p>File format:</p>
+
+<div *ngFor="let item of elementsOrder">
+  {{item.label}} |
+</div>
+
+<p-dropdown appendTo="body" [options]="elements" [(ngModel)]="dropDownValue" optionLabel="label">
+</p-dropdown> <button (click)="addElement()">Add element</button>

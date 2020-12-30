@@ -1,7 +1,5 @@
 FROM node:alpine as build
 
-ENV environment dev
-
 RUN mkdir -p /usr/src/app && chown node:node /usr/src/app
 WORKDIR /usr/src/app
 
@@ -13,7 +11,10 @@ COPY . .
 
 RUN npm run build:prod
 
-FROM nginx:alpine as e2e-release
+FROM build as unittests
+ENTRYPOINT ["npm", "run", "test-headless"]
+
+FROM nginx:alpine as runtime
 
 RUN rm -rf /usr/share/nginx/html/*
 COPY --from=build /usr/src/app/dist/wordki /usr/share/nginx/html

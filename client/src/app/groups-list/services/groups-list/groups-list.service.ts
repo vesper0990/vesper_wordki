@@ -14,6 +14,7 @@ import { GroupListState } from '../../store/state';
 @Injectable()
 export class GroupsListService {
 
+
     constructor(private readonly store: Store<GroupListState>,
         private readonly router: Router) { }
 
@@ -42,7 +43,9 @@ export class GroupsListService {
         return this.store.select(selectDialogGroup).pipe(
             map(group => {
                 return group === null || group === undefined
-                    ? new EditGroup(0, '', LanguageType.getLanguageType(LanguageTypeEnum.Undefined), LanguageType.getLanguageType(LanguageTypeEnum.Undefined))
+                    ? new EditGroup(0, '',
+                        LanguageType.getLanguageType(LanguageTypeEnum.Undefined),
+                        LanguageType.getLanguageType(LanguageTypeEnum.Undefined))
                     : new EditGroup(group.id, group.name, group.languageFront, group.languageBack);
             })
         );
@@ -56,8 +59,11 @@ export class GroupsListService {
         this.store.dispatch(new ShowDialog({ mode: 'edit', group: group }));
     }
 
+    addGroupFromFile() {
+        this.router.navigate(['creator']);
+    }
+
     dialogSave(group: EditGroup): void {
-        console.log(group);
         if (group.id !== 0 && group.id !== undefined) {
             this.store.dispatch(new UpdateGroup({ group: group }));
         } else {

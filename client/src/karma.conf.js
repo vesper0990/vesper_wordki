@@ -1,5 +1,8 @@
 module.exports = function (config) {
   config.set({
+    proxies: {
+      '/assets/': '/base/src/assets/'
+    },
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
@@ -27,12 +30,12 @@ module.exports = function (config) {
     browserDisconnectTimeout: 10000,
     browserDisconnectTolerance: 3,
     browserNoActivityTimeout: 60000,
-    customLaunchers:{
-      ChromeHeadlessLauncher:{
+    customLaunchers: {
+      ChromeHeadlessLauncher: {
         base: 'ChromeHeadless',
         flags: ['--no-sandbox']
       },
-      ChromeDebug:{
+      ChromeDebug: {
         base: 'Chrome'
       },
     }

@@ -11,6 +11,20 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+- task: DockerCompose@0
+  displayName: Build
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryEndpoint: 'docker-hub-connection'
+    dockerComposeFile: 'client/build/docker/docker-compose.build.yml'
+    action: 'Run a Docker Compose command'
+- task: DockerCompose@0
+  displayName: Run Tests
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryEndpoint: 'docker-hub-connection'
+    dockerComposeFile: 'client/build/docker/docker-compose.test.yml'
+    action: 'Run a Docker Compose command'
 - task: Docker@2
   displayName: Login to Docker Hub
   inputs:
