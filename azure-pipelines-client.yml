@@ -13,7 +13,7 @@ pool:
 steps:
 - task: CmdLine@2
   inputs:
-    script: 'echo $(System.DefaultWorkingDirectory)'
+    script: 'echo $(System.DefaultWorkingDirectory) | echo $(Common.TestResultsDirectory)'
 - task: DockerCompose@0
   displayName: Build
   inputs:
@@ -37,7 +37,7 @@ steps:
   inputs:
     testResultsFormat: 'JUnit'
     testResultsFiles: '**/TEST-*.xml'
-    searchFolder: '$(System.DefaultWorkingDirectory)/cmdtests/results'
+    searchFolder: '$(Common.TestResultsDirectory)/cmdtests/results'
     testRunTitle: 'Unit tests'
 - task: DockerCompose@0
   displayName: Release
