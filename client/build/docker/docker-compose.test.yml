@@ -11,4 +11,4 @@ services:
     environment:
       - TEST_RESULTS_DIR=/test-artifacts
     volumes:
-      - $SYSTEM_DEFAULTWORKINGDIRECTORY:/test-artifacts
+      - $COMMON_TESTRESULTSDIRECTORY:/test-artifacts
