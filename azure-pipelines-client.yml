@@ -11,6 +11,9 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+- task: CmdLine@2
+  inputs:
+    script: 'echo $(System.DefaultWorkingDirectory)'
 - task: DockerCompose@0
   displayName: Build
   inputs:
