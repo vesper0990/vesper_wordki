@@ -27,7 +27,9 @@ steps:
     dockerComposeFile: 'client/build/docker/docker-compose.test.yml'
     action: 'Run a Docker Compose command'
     dockerComposeCommand: up
-
+- task: CmdLine@2
+  inputs:
+    script: 'ls -R | grep ":$" | sed -e ''s/:$//'' -e ''s/[^-][^\/]*\//--/g'' -e ''s/^/   /'' -e ''s/-/|/'''
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'JUnit'
