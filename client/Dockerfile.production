@@ -11,10 +11,7 @@ COPY . .
 
 RUN npm run build:prod
 
-FROM build as unittests
-ENTRYPOINT ["npm", "run", "test-headless"]
-
-FROM nginx:alpine as runtime
+FROM nginx:alpine as release
 
 RUN rm -rf /usr/share/nginx/html/*
 COPY --from=build /usr/src/app/dist/wordki /usr/share/nginx/html

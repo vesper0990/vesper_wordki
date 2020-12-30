@@ -5,5 +5,5 @@ services:
     image: wordki-client/ci/build
     build:
       context: ../../
-      dockerfile: ./Dockerfile
+      dockerfile: ./Dockerfile.production
       target: build
