@@ -2,38 +2,38 @@
   <form class="container" [formGroup]="wordForm">
     <div class="row">
       <label for="name">
-        <b>Front word</b>
+        Front word
       </label>
       <input class="input" type="text" formControlName="language1">
     </div>
     <div class="row">
       <label for="name">
-        <b>Front example</b>
+        Front example
       </label>
       <input class="input" type="text" formControlName="example1">
     </div>
     <div class="row">
-        <label for="name">
-          <b>Back word</b>
-        </label>
-        <input class="input" type="text" formControlName="language2">
-      </div>
-      <div class="row">
-        <label for="name">
-          <b>Back example</b>
-        </label>
-        <input class="input" type="text" formControlName="example2">
-      </div>
-      <div class="row">
-        <label for="name">
-          <b>Append to lesson</b>
-        </label>
-        <p-checkbox class="input" [formControl]="wordForm.controls['isVisible']" binary="true"></p-checkbox>
-      </div>
+      <label for="name">
+        Back word
+      </label>
+      <input class="input" type="text" formControlName="language2">
+    </div>
+    <div class="row">
+      <label for="name">
+        Back example
+      </label>
+      <input class="input" type="text" formControlName="example2">
+    </div>
+    <div class="row">
+      <label for="name">
+        Append to lesson
+      </label>
+      <p-checkbox class="input" [formControl]="wordForm.controls['isVisible']" binary="true"></p-checkbox>
+    </div>
   </form>
   <p-footer>
-    <button id="save-btn"  (click)="onSave()" label="Save"></button>
-    <button id="remove-btn" *ngIf="isRemoveVisible" (click)="onRemove()" label="Remove"></button>
-    <button id="cancel-btn" (click)="onCancel()" label="Cancel"></button>
+    <button id="save-btn" (click)="onSave()">Save</button>
+    <button id="remove-btn" *ngIf="isRemoveVisible" (click)="onRemove()">Remove</button>
+    <button id="cancel-btn" (click)="onCancel()">Cancel</button>
   </p-footer>
 </p-dialog>

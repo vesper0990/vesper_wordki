@@ -1,5 +1,8 @@
 module.exports = function (config) {
   config.set({
+    proxies: {
+      '/assets/': '/base/src/assets/'
+    },
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
@@ -7,13 +10,13 @@ module.exports = function (config) {
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
-      require('@angular-devkit/build-angular/plugins/karma')
+      require('@angular-devkit/build-angular/plugins/karma'),
     ],
     client: {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     coverageIstanbulReporter: {
-      dir: require('path').join(__dirname, '../coverage'),
+      dir: './coverage',
       reports: ['html', 'lcovonly'],
       fixWebpackSourcePaths: true
     },
@@ -27,12 +30,12 @@ module.exports = function (config) {
     browserDisconnectTimeout: 10000,
     browserDisconnectTolerance: 3,
     browserNoActivityTimeout: 60000,
-    customLaunchers:{
-      ChromeHeadlessLauncher:{
+    customLaunchers: {
+      ChromeHeadlessLauncher: {
         base: 'ChromeHeadless',
         flags: ['--no-sandbox']
       },
-      ChromeDebug:{
+      ChromeDebug: {
         base: 'Chrome'
       },
     }

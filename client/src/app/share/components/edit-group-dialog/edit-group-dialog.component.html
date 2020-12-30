@@ -2,26 +2,26 @@
   <form class="container" [formGroup]="groupForm">
     <div class="row">
       <label for="name">
-        <b>Name</b>
+        Name
       </label>
       <input class="input" type="text" formControlName="name">
     </div>
     <div class="row">
       <label for="language1">
-        <b>Front</b>
+        Front
       </label>
       <app-languages-drop-down class="input" formControlName="languageFront"></app-languages-drop-down>
     </div>
     <div class="row">
       <label for="language2">
-        <b>Back</b>
+        Back
       </label>
       <app-languages-drop-down class="input" formControlName="languageBack"></app-languages-drop-down>
     </div>
   </form>
   <p-footer>
-    <button (click)="onSave()" label="Save"></button>
-    <button *ngIf="isRemoveVisible" (click)="onRemove()" label="Remove"></button>
-    <button (click)="onCancel()" label="Cancel"></button>
+    <button (click)="onSave()">Save</button>
+    <button *ngIf="isRemoveVisible" (click)="onRemove()">Remove</button>
+    <button (click)="onCancel()">Cancel</button>
   </p-footer>
 </p-dialog>

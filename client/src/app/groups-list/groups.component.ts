@@ -54,6 +54,10 @@ export class GroupsComponent implements OnInit {
     this.service.openDialogToAdd();
   }
 
+  addGroupFromFile(): void {
+    this.service.addGroupFromFile();
+  }
+
   showDetails(group: Group): void {
     this.service.showDetails(group.id);
   }

@@ -1,0 +1,9 @@
+version: '3'
+services:
+  wordki-client.ci.build:
+    container_name: wordki-client.ci.build
+    image: wordki-client/ci/build
+    build:
+      context: ../../
+      dockerfile: ./Dockerfile.production
+      target: build

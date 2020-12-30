@@ -1,0 +1,9 @@
+version: '3'
+services:
+  wordki-client.ci.test:
+    container_name: wordki-client.ci.release
+    image: vesper0990/wordki:${BUILD_BUILDID}
+    build:
+      context: ../../
+      dockerfile: ./Dockerfile.production
+      target: release

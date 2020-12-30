@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, HostListener } from '@angular/core';
 import { EditGroup } from './edit-group.model';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
@@ -50,6 +50,16 @@ export class EditGroupDialogComponent implements OnInit {
       languageFront: this._group.languageFront,
       languageBack: this._group.languageBack,
     });
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent): void {
+    if (!this.isVisible) {
+      return;
+    }
+    if (event.key === 'Escape') {
+      this.onCancel();
+    }
   }
 
   onSave(): void {
