@@ -8,7 +8,3 @@ services:
       dockerfile: ./Dockerfile.production
       target: build
     command: sh -c "npm run test-headless"
-    environment:
-      - TEST_RESULTS_DIR=$SYSTEM_DEFAULTWORKINGDIRECTORY
-    volumes:
-      - $SYSTEM_DEFAULTWORKINGDIRECTORY:/

@@ -1,7 +1,3 @@
-const path = require('path');
-const rootTestArtPath = process.env.TEST_RESULTS_DIR ? process.env.TEST_RESULTS_DIR : '../dist/tests';
-const testResultsPath = path.join(rootTestArtPath, 'results');
-
 module.exports = function (config) {
   config.set({
     proxies: {
@@ -27,7 +23,7 @@ module.exports = function (config) {
     // },
     reporters: ['progress', 'kjhtml', 'junit'],
     junitReporter: {
-      outputDir: testResultsPath
+      outputDir: './dist/testresult/'
     },
     port: 9876,
     colors: true,
