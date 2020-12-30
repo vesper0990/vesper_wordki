@@ -18,6 +18,7 @@ steps:
     dockerRegistryEndpoint: 'docker-hub-connection'
     dockerComposeFile: 'client/build/docker/docker-compose.build.yml'
     action: 'Run a Docker Compose command'
+    dockerComposeCommand: up
 - task: DockerCompose@0
   displayName: Run Tests
   inputs:
@@ -25,6 +26,7 @@ steps:
     dockerRegistryEndpoint: 'docker-hub-connection'
     dockerComposeFile: 'client/build/docker/docker-compose.test.yml'
     action: 'Run a Docker Compose command'
+    dockerComposeCommand: up
 - task: Docker@2
   displayName: Login to Docker Hub
   inputs:
