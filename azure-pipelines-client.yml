@@ -27,6 +27,7 @@ steps:
     dockerComposeFile: 'client/build/docker/docker-compose.test.yml'
     action: 'Run a Docker Compose command'
     dockerComposeCommand: up
+
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'JUnit'
