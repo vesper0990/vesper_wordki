@@ -48,8 +48,7 @@ steps:
   inputs:
     script: |
       docker ps -a
-      docker cp wordki.ci.e2etests:/src/test $(System.DefaultWorkingDirectory)/test
-      ls $(System.DefaultWorkingDirectory)/test
+      docker cp wordki.ci.e2etests:/src/test/results $(System.DefaultWorkingDirectory)/test/results
       ls $(System.DefaultWorkingDirectory)/test/results
 - task: PublishTestResults@2
   displayName: Publish test results
