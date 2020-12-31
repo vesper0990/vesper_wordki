@@ -30,11 +30,12 @@ steps:
 - task: CmdLine@2
   displayName: Copy test results
   inputs:
-    script: '|
-    docker ps -a
-    docker cp wordki-client.ci.test:/usr/src/app/dist/test $(System.DefaultWorkingDirectory)/test'
+    script: |
+      docker ps -a
+      docker cp wordki-client.ci.test:/usr/src/app/dist/test $(System.DefaultWorkingDirectory)/test
+      ls $(System.DefaultWorkingDirectory)/test
 - task: PublishTestResults@2
-  displayName: Publish code coverage
+  displayName: Publish test results
   inputs:
     testResultsFormat: 'JUnit'
     searchFolder: $(System.DefaultWorkingDirectory)/test/results
