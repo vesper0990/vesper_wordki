@@ -49,6 +49,7 @@ steps:
     script: |
       docker ps -a
       docker cp wordki.ci.e2etests:/src/test $(System.DefaultWorkingDirectory)/test
+      ls $(System.DefaultWorkingDirectory)/test/results -al
       ls -R $(System.DefaultWorkingDirectory)/test | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
 - task: PublishTestResults@2
   displayName: Publish test results
