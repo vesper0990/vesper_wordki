@@ -25,4 +25,24 @@ namespace Wordki.Tests.UI.Register
             this.BDDfy();
         }
     }
+
+    public class TestTest : RegisterTestBase
+    {
+        void WhenUserNavigateToRegister()
+        {
+            Driver.Navigate().GoToUrl("https://www.google.pl/");
+            Thread.Sleep(200);
+        }
+
+        void ThenTitleShouldBeSet()
+        {
+            Assert.AreEqual("Google", Driver.Title);
+        }
+
+        [Test]
+        public void ExecuteTest()
+        {
+            this.BDDfy();
+        }
+    }
 }
