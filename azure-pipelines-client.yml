@@ -34,12 +34,13 @@ steps:
       docker ps -a
       docker cp wordki-client.ci.test:/usr/src/app/dist/test $(System.DefaultWorkingDirectory)/test
       ls $(System.DefaultWorkingDirectory)/test
+      ls $(System.DefaultWorkingDirectory)/test/results
 - task: PublishTestResults@2
   displayName: Publish test results
   inputs:
     testResultsFormat: 'JUnit'
     searchFolder: $(System.DefaultWorkingDirectory)/test/results
-    testResultsFiles: '**/TEST-*.xml'
+    testResultsFiles: 'TESTS-*.xml'
 - task: PublishCodeCoverageResults@1
   displayName: Publish code coverage
   inputs:
