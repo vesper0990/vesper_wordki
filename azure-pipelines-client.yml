@@ -48,9 +48,9 @@ steps:
   inputs:
     script: |
       docker ps -a
-      docker cp wordki.ci.e2etests:/src/test $(System.DefaultWorkingDirectory)/test
-      ls $(System.DefaultWorkingDirectory)/test/results -al
-      ls -R $(System.DefaultWorkingDirectory)/test | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+      docker cp wordki.ci.e2etests:/src/TESTS-ui-e2e.xml $(System.DefaultWorkingDirectory)/test/results
+      docker cp wordki.ci.e2etests:/src/ $(System.DefaultWorkingDirectory)/temp
+      tree $(System.DefaultWorkingDirectory)
 - task: PublishTestResults@2
   displayName: Publish test results
   inputs:
