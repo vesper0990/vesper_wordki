@@ -27,6 +27,23 @@ steps:
     dockerComposeFile: 'client/build/docker/docker-compose.test.yml'
     action: 'Run a Docker Compose command'
     dockerComposeCommand: up
+- task: CmdLine@2
+  displayName: Copy test results
+  inputs:
+    script: '|
+    docker ps -a
+    docker cp wordki-client.ci.test:/usr/src/app/dist/test $(System.DefaultWorkingDirectory)/test'
+- task: PublishTestResults@2
+  displayName: Publish code coverage
+  inputs:
+    testResultsFormat: 'JUnit'
+    searchFolder: $(System.DefaultWorkingDirectory)/test/results
+    testResultsFiles: '**/TEST-*.xml'
+- task: PublishCodeCoverageResults@1
+  displayName: Publish code coverage
+  inputs:
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/test/coverage/cobertura-coverage.xml'
 - task: DockerCompose@0
   displayName: Release
   inputs:
