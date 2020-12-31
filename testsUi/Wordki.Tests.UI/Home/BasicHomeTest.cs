@@ -70,7 +70,7 @@ namespace Wordki.Tests.UI.Home
         //     Assert.AreEqual("Wordki - dashboard", Driver.Title);
         // }
 
-        [Test]
+        //[Test]
         public void ExecuteTest()
         {
             this.BDDfy();

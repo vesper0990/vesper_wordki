@@ -19,7 +19,7 @@ namespace Wordki.Tests.UI.Register
             Assert.AreEqual("Wordki - Register", Driver.Title);
         }
 
-        [Test]
+        //[Test]
         public void ExecuteTest()
         {
             this.BDDfy();

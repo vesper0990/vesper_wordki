@@ -31,7 +31,7 @@ namespace Wordki.Tests.UI.Cards
             cards.Should().HaveCount(1);
         }
 
-        [Test]
+        //[Test]
         public void TestRemovingCard() => this.BDDfy();
     }
 }

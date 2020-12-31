@@ -44,7 +44,7 @@ namespace Wordki.Tests.UI.Cards
             cards.Should().HaveCount(2); // todo
         }
 
-        [Test]
+        //[Test]
         public void CheckAddingNewCard() => this.BDDfy();
     }
 }

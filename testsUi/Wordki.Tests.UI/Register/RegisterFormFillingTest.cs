@@ -39,7 +39,7 @@ namespace Wordki.Tests.UI.Register
             Assert.AreEqual($"{AppUrl}/dashboard", Driver.Url);
         }
 
-        [Test]
+        //[Test]
         public void ExecuteTest()
         {
             this.BDDfy();

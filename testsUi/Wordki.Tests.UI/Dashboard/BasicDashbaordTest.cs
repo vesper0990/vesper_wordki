@@ -36,7 +36,7 @@ namespace Wordki.Tests.UI.Dashboard
             StringAssert.Contains("1", element.Text);
         }
 
-        [Test]
+        //[Test]
         public void CheckPageAppearance() => this.BDDfy();
     }
 }

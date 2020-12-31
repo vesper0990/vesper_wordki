@@ -26,7 +26,7 @@ namespace Wordki.Tests.UI.Dashboard
 
         void ThenAppNavigateToLesson() => Assert.AreEqual($"{AppUrl}/groups", Driver.Url);
 
-        [Test]
+        //[Test]
         public void CheckNavigationToGroups() => this.BDDfy();
     }
 }

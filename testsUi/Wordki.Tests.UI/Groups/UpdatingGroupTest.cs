@@ -50,7 +50,7 @@ namespace Wordki.Tests.UI.Groups
             repeatsCount.Text.Should().Contain("1");
         }
 
-        [Test]
+        //[Test]
         public void TestUpdatingGroup() => this.BDDfy();
     }
 
@@ -82,7 +82,7 @@ void GivenCookies() => SetAuthorizationCookie();
             groups.Should().HaveCount(1);
         }
 
-        [Test]
+        //[Test]
         public void TestUpdatingGroup() => this.BDDfy();
     }
 }

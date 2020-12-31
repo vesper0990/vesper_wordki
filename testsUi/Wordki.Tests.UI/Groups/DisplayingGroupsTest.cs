@@ -20,7 +20,7 @@ namespace Wordki.Tests.UI.Groups
             groups.Should().HaveCount(2);
         }
 
-        [Test]
+        //[Test]
         public void Execute() => this.BDDfy();
     }
 }
