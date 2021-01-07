@@ -37,6 +37,7 @@ steps:
       ls $(System.DefaultWorkingDirectory)/test/results
 - task: DockerCompose@0
   displayName: Run UI Tests 
+  enabled: false
   inputs:
     containerregistrytype: 'Container Registry'
     dockerRegistryEndpoint: 'docker-hub-connection'
@@ -45,6 +46,7 @@ steps:
     dockerComposeCommand: up --build --abort-on-container-exit
 - task: CmdLine@2
   displayName: Copy ui test results
+  enabled: false
   inputs:
     script: |
       docker ps -a
