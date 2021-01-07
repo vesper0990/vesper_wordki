@@ -2,4 +2,4 @@
 
 export BUILD_BUILDID="local"
 
-docker-compose -f ../server/build/docker/docker-compose.E2E.yml up --build
+docker-compose -f ../server/build/docker/docker-compose.test.yml up --build
