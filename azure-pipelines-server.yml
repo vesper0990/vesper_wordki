@@ -28,13 +28,17 @@ steps:
     dockerComposeCommand: up
 - task: CmdLine@2
   displayName: Copy test results
-  enabled: false
   inputs:
     script: |
       docker ps -a
-      docker cp wordki-client.ci.test:/usr/src/app/dist/test $(System.DefaultWorkingDirectory)/test
+      docker cp wordki-server.ci.e2e:/server/tests/Wordki.Tests.E2E/TestResults $(System.DefaultWorkingDirectory)/test
       ls $(System.DefaultWorkingDirectory)/test
-      ls $(System.DefaultWorkingDirectory)/test/results
+- task: PublishTestResults@2
+  displayName: Publish test results
+  inputs:
+    testResultsFormat: 'JUnit'
+    searchFolder: $(System.DefaultWorkingDirectory)/test
+    testResultsFiles: '*.xml'
 - task: DockerCompose@0
   displayName: Release
   inputs:
