@@ -38,4 +38,4 @@ WORKDIR /app
 
 COPY --from=pre-release /app .
 ENV ASPNETCORE_ENVIRONMENT=Production
-CMD dotnet Wordki.Api.dll
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet Wordki.Api.dll
