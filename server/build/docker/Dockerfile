@@ -37,5 +37,5 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS release
 WORKDIR /app
 
 COPY --from=pre-release /app .
-
+ENV ASPNETCORE_ENVIRONMENT=Production
 CMD dotnet Wordki.Api.dll
