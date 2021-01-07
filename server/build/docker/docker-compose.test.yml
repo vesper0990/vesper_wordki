@@ -17,7 +17,7 @@ services:
       - WAIT_HOSTS_TIMEOUT=60
       - WAIT_BEFORE_HOSTS=10
       - WAIT_SLEEP_INTERVAL=5
-    command: sh -c "/wait && dotnet test"
+    command: sh -c "/wait && dotnet test --test-adapter-path:. --logger:"junit""
   wordki-postgres:
     image: postgres:alpine
     restart: always

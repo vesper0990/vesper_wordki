@@ -8,4 +8,4 @@ services:
       dockerfile: ./build/docker/Dockerfile
       target: release
     environment:
-      - ASPNETCORE_URLS=http://*:$PORT
+      - MY_CUSTOM_ENV=MY_CUSTOM_VALUE
