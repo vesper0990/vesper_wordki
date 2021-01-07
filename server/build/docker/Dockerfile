@@ -32,6 +32,18 @@ RUN dotnet publish "./src/Wordki.Api/Wordki.Api.csproj" -c Release -o /app
 # Run app
 ##########################################################
 
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS local
+
+WORKDIR /app
+
+COPY --from=pre-release /app .
+ENTRYPOINT dotnet Wordki.Api.dll
+
+
+##########################################################
+# Run app
+##########################################################
+
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS release
 
 WORKDIR /app
