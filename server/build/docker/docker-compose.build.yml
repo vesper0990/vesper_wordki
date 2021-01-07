@@ -1,8 +1,8 @@
 version: "3.5"
 services:
-  wordki-client.ci.build:
-    container_name: wordki-client.ci.build
-    image: wordki-client/ci/build:${BUILD_BUILDID}
+  wordki-server.ci.build:
+    container_name: wordki-server.ci.build
+    image: vesper0990/wordki-server:${BUILD_BUILDID}
     build:
       context: ../../
       dockerfile: ./build/docker/Dockerfile

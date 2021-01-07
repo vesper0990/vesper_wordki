@@ -1,13 +1,13 @@
-version: '3'
+version: "3.5"
 services:
-  wordki-client.ci.test:
-    container_name: wordki-client.ci.release
-    image: vesper0990/wordki:${BUILD_BUILDID}
+  wordki-client:
+    container_name: wordki-client
+    image: vesper0990/wordki-client:${BUILD_BUILDID}
     build:
       context: ../../
-      dockerfile: ./Dockerfile.production
+      dockerfile: ./build/docker/Dockerfile
       target: release
     ports:
-     - 80:80
+      - 80:80
     environment:
-     - PORT=80
+      - PORT=80

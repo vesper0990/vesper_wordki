@@ -1,11 +1,11 @@
-version: "3.7"
+version: "3.5"
 services:
   wordki-client.ci.e2etests:
     container_name: wordki-client.ci.e2etests
-    image: wordki-client/ci/build
+    image: wordki-client/ci/build:${BUILD_BUILDID}
     build:
       context: ../../
-      dockerfile: ./Dockerfile.production
+      dockerfile: ./build/docker/Dockerfile
       target: e2e
     ports:
       - 4201:81

@@ -1,0 +1,12 @@
+version: "3.5"
+services:
+  wordki-server.ci:
+    container_name: wordki-server.ci
+    image: vesper0990/wordki-server:${BUILD_BUILDID}
+    build:
+      context: ../../
+      dockerfile: ./build/docker/Dockerfile
+      target: release
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://*:$PORT
