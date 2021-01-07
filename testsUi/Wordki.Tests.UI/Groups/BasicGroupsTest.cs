@@ -14,7 +14,7 @@ namespace Wordki.Tests.UI.Groups
 
         void WhenUserNavigateToGroup() => Page.NavigateTo();
 
-        [Test]
+        //[Test]
         public void Execute() => this.BDDfy();
     }
 }

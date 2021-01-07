@@ -11,14 +11,13 @@ namespace Wordki.Tests.UI
     {
         protected const string AppUrl = "http://localhost:4201";
 
-
         protected IWebDriver Driver { get; private set; }
         protected WireMockServer Server { get; private set; }
 
         protected UITestBase()
         {
             var options = new ChromeOptions();
-            // options.AddArguments("headless");
+            options.AddArguments("headless");
             options.AddArguments("diable-dev-shm-usage",
              "disable-gpu",
               "disable-infobars",

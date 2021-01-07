@@ -53,7 +53,7 @@ namespace Wordki.Tests.UI.Cards
             Page.GetExample(back).Should().Be("new-back-example");
         }
 
-        [Test]
+        //[Test]
         public void CheckUpdateingNewCard() => this.BDDfy();
 
     }

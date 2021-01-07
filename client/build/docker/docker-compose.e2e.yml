@@ -1,0 +1,20 @@
+version: "3.5"
+services:
+  wordki-client.ci.e2etests:
+    container_name: wordki-client.ci.e2etests
+    image: wordki-client/ci/build:${BUILD_BUILDID}
+    build:
+      context: ../../
+      dockerfile: ./build/docker/Dockerfile
+      target: e2e
+    ports:
+      - 4201:81
+  wordki.ui.test:
+    container_name: wordki.ci.e2etests
+    image: wordki.ci.e2etests
+    build:
+      context: ../../../testsUi/Wordki.Tests.UI
+      dockerfile: Dockerfile
+    network_mode: host
+    depends_on:
+      - wordki-client.ci.e2etests

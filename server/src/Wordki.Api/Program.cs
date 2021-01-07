@@ -11,6 +11,7 @@ namespace Wordki
         public static void Main(string[] args)
         {
             var configuration = new ConfigurationBuilder()
+            .AddJsonFile($"appsettings.json")
             .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json")
             .Build();
 

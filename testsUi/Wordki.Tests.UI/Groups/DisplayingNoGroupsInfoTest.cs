@@ -19,7 +19,7 @@ namespace Wordki.Tests.UI.Groups
             info.Text.Should().Be("You do not have any groups yet.");
         }
 
-        [Test]
+        //[Test]
         public void Execute() => this.BDDfy();
     }
 }
