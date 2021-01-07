@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  mockServer: true,
+  mockServer: false,
   apiUrl: 'http://wordki-server.herokuapp.com'
 };

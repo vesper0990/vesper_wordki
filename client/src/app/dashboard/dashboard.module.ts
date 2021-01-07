@@ -23,7 +23,7 @@ import { DashboardService } from './services/dashboard/dashboard.service';
     EffectsModule.forFeature([DashboardEffects]),
   ],
   providers: [
-    { provide: DashboardHttpServiceBase, useClass: environment.mockServer ? DashboardHttpService : DashboardHttpMockService },
+    { provide: DashboardHttpServiceBase, useClass: environment.mockServer ? DashboardHttpMockService : DashboardHttpService },
     DashboardService
   ]
 })

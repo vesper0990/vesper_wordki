@@ -39,7 +39,7 @@ import { RegisterService } from './components/register-form/services/register/re
     ToastModule,
   ],
   providers: [
-    { provide: UserProviderBase, useClass: environment.mockServer ? UserProvider : UserProviderMock },
+    { provide: UserProviderBase, useClass: environment.mockServer ? UserProviderMock : UserProvider },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
     MessageService,
