@@ -37,7 +37,7 @@ import { CardsListService } from './services/words-list/words-list.service';
     EffectsModule.forFeature([GroupDetailsEffects]),
   ],
   providers: [
-    { provide: GroupDetailsHttpBase, useClass: environment.mockServer ? GroupDetailsHttp : GroupDetailsHttpMock },
+    { provide: GroupDetailsHttpBase, useClass: environment.mockServer ? GroupDetailsHttpMock : GroupDetailsHttp },
     GroupDetailsMapper,
     WordMapper,
     CardsListService

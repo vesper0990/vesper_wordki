@@ -62,7 +62,7 @@ import { ControllerComponent } from './components/controller/controller.componen
   ],
   providers: [
     Store,
-    { provide: LessonHttpBaseService, useClass: environment.mockServer ? LessonHttpService : LessonHttpMockService },
+    { provide: LessonHttpBaseService, useClass: environment.mockServer ? LessonHttpMockService : LessonHttpService },
     WordComparerService,
     WordMapper,
     SummaryGuardService,

@@ -59,7 +59,7 @@ CMD sed -i -e 's/$PORT/'81'/g' /etc/nginx/nginx.conf && nginx -g 'daemon off;'
 
 FROM build as pre-release
 
-RUN npm run build:e2e
+RUN npm run build:prod
 
 
 #####################################################

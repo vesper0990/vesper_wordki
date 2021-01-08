@@ -32,7 +32,7 @@ import { GroupsListService } from './services/groups-list/groups-list.service';
   ],
   providers: [
     Store,
-    { provide: GroupsListHttpServiceBase, useClass: environment.mockServer ? GroupsListHttpService : GroupsListHttpMockService },
+    { provide: GroupsListHttpServiceBase, useClass: environment.mockServer ? GroupsListHttpMockService : GroupsListHttpService },
     GroupsListService
   ]
 })
