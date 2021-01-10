@@ -1,4 +1,4 @@
-import { ObservableMock } from './utils';
+import { ObservableMock } from './utils.spec';
 import { Params } from '@angular/router';
 
 export class ActivatedRouteMock {

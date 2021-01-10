@@ -16,16 +16,14 @@ import { reducer } from './store/reducer';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { WordMapper } from './services/word-mapper/word-mapper';
-import { AddGroupComponent } from './pages/add-group/add-group.component';
 import { ShareModule } from '../share/share.module';
 import { GroupDescriptionComponent } from './components/group-description/group-description.component';
-import { CardsListService } from './services/words-list/words-list.service';
+import { CardsListService } from './services/cards-list/cards-list.service';
 
 @NgModule({
   declarations: [
     GroupDetailsComponent,
     WordRowComponent,
-    AddGroupComponent,
     GroupDescriptionComponent
   ],
   imports: [

@@ -10,7 +10,7 @@ import { By } from '@angular/platform-browser';
 import { RepeatWord } from './models/repeat-word.model';
 import { DateSpanToDaysPipe } from '../share/pipes/datespan-to-days.pipe';
 import { CardComponent } from '../share/components/card/card.component';
-import { selectNativeElementById } from '../test/utils';
+import { selectNativeElementById } from '../test/utils.spec';
 import { InfoCardComponent } from '../share/components/info-card/info-card.component';
 import { ExtendedCardDetails } from '../share/models/card-details';
 

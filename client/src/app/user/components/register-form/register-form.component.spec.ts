@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { createProvider } from 'src/app/test/helpers.spec';
-import { inputValueToInputElementByAttribute, selectNativeElement, selectNativeElementById } from 'src/app/test/utils';
+import { inputValueToInputElementByAttribute, selectNativeElement, selectNativeElementById } from 'src/app/test/utils.spec';
 import { RegisterFormComponent } from './register-form.component';
-import { notSameValidator, RegisterService } from './services/register/register.service';
+import { RegisterService } from './services/register/register.service';
+import { notSameValidator } from './services/notSame/notSame.validator';
 
 describe('RegisterFormComponent', () => {
   let component: RegisterFormComponent;

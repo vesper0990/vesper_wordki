@@ -2,10 +2,11 @@ import { TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { UserService } from 'src/app/authorization/services/user.service/user.service';
-import { getAllMethods } from 'src/app/test/helpers.spec';
-import { UserProvider, UserProviderBase } from 'src/app/user/services/user.provider/user.provider';
+import { createProvider, getAllMethods } from 'src/app/test/helpers.spec';
+import { UserProvider } from 'src/app/user/services/user.provider/user.provider';
+import { UserProviderBase } from 'src/app/user/services/user.provider/user.provider.base';
 import { RegisterService } from './register.service';
 
 describe('RegisterService', () => {
@@ -23,7 +24,7 @@ describe('RegisterService', () => {
             ],
             providers: [
                 RegisterService,
-                { provide: UserService, useValue: jasmine.createSpyObj(['refresh']) },
+                createProvider(UserService),
                 { provide: UserProviderBase, useValue: jasmine.createSpyObj(getAllMethods(UserProvider)) },
             ]
         });
@@ -62,6 +63,12 @@ describe('RegisterService', () => {
 
             expect(userHttp.register).toHaveBeenCalledTimes(0);
         });
+
+        it('should retrun errors', () => {
+            service.getErrors().subscribe(value => expect(value).toBeTruthy());
+        });
+
+
     });
 
 
@@ -93,6 +100,41 @@ describe('RegisterService', () => {
             expect(userService.refresh).toHaveBeenCalledWith(testToken);
             expect(userHttp.register).toHaveBeenCalledWith(patchedValued);
             expect(routerSpy.calls.first().args[0]).toContain('/dashboard');
+        });
+
+        it('should add error when error appear after request', () => {
+            const form = service.getForm();
+            const patchedValued = {
+                userName: 'testUserName',
+                password: 'testPassword',
+                passwordConfirmation: 'testPassword'
+            };
+            form.patchValue(patchedValued);
+            form.markAllAsTouched();
+
+            userHttp.register.and.returnValue(throwError(new Error('test')));
+            service.sendRegisterRequest();
+
+            service.getErrors().subscribe(value => expect(value.length).toBe(1));
+
+        });
+
+        it('should navigate to error when login failed', () => {
+            const form = service.getForm();
+            const patchedValued = {
+                userName: 'testUserName',
+                password: 'testPassword',
+                passwordConfirmation: 'testPassword'
+            };
+            form.patchValue(patchedValued);
+            form.markAllAsTouched();
+            const routerSpy = spyOn(router, 'navigate').and.stub();
+
+            userHttp.login.and.returnValue(throwError(new Error('test')));
+            service.sendRegisterRequest();
+
+            expect(routerSpy.calls.first().args[0]).toContain('/error');
+
         });
 
     });

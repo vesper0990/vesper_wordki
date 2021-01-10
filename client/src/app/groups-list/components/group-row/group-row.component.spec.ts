@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GroupRowComponent } from './group-row.component';
 import { MockComponent } from 'ng-mocks';
 import { LabelValueComponent } from 'src/app/share/components/label-value/label-value.component';
-import { selectNativeElementByClass } from 'src/app/test/utils';
+import { selectNativeElementByClass } from 'src/app/test/utils.spec';
 import { LanguageType, LanguageTypeEnum } from 'src/app/share/models/language-type.mode';
 import { Group } from 'src/app/share/models/card-details';
 

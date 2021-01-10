@@ -1,7 +1,5 @@
-using System.Threading;
 using FluentAssertions;
 using NUnit.Framework;
-using OpenQA.Selenium;
 using TestStack.BDDfy;
 
 namespace Wordki.Tests.UI.Cards
@@ -24,7 +22,7 @@ namespace Wordki.Tests.UI.Cards
         void AndWhenPageIsLoaded() => Page.WaitUntilDataIsLoaded();
 
         void AndWhenUserClickAddNewCardButton() => Page.ClickAddCardButton();
-        
+
 
         void AndWhenUserFillTheForm()
         {
@@ -44,7 +42,7 @@ namespace Wordki.Tests.UI.Cards
             cards.Should().HaveCount(2); // todo
         }
 
-        //[Test]
+        [Test]
         public void CheckAddingNewCard() => this.BDDfy();
     }
 }

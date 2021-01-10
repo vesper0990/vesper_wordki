@@ -14,12 +14,13 @@ namespace Wordki.Tests.UI.Groups
 
         void AndWhenPageIsLoaded() => Page.WaitUntilDataIsLoaded();
 
-        void ThenInfoIsDisplayed(){
+        void ThenInfoIsDisplayed()
+        {
             var info = Page.FindNoGroupInfo();
             info.Text.Should().Be("You do not have any groups yet.");
         }
 
-        //[Test]
+        [Test]
         public void Execute() => this.BDDfy();
     }
 }

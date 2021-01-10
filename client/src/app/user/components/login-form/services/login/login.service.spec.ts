@@ -2,11 +2,12 @@ import { TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { UserService } from 'src/app/authorization/services/user.service/user.service';
 import { getAllMethods } from 'src/app/test/helpers.spec';
-import { UserProvider, UserProviderBase } from 'src/app/user/services/user.provider/user.provider';
-import { LoginService } from '../login.service';
+import { UserProvider } from 'src/app/user/services/user.provider/user.provider';
+import { UserProviderBase } from 'src/app/user/services/user.provider/user.provider.base';
+import { LoginService } from './login.service';
 
 describe('LoginService', () => {
 
@@ -61,6 +62,10 @@ describe('LoginService', () => {
 
             expect(userHttp.login).toHaveBeenCalledTimes(0);
         });
+
+        it('should retrun errors', () => {
+            service.getErrors().subscribe(value => expect(value).toBeTruthy());
+        });
     });
 
 
@@ -90,6 +95,22 @@ describe('LoginService', () => {
             expect(userService.refresh).toHaveBeenCalledWith(testToken);
             expect(userHttp.login).toHaveBeenCalledWith(patchedValued);
             expect(routerSpy.calls.first().args[0]).toContain('/dashboard');
+        });
+
+        it('should add error when error appear after request', () => {
+            const form = service.getForm();
+            const patchedValued = {
+                userName: 'testUserName',
+                password: 'testPassword',
+            };
+            form.patchValue(patchedValued);
+            form.markAllAsTouched();
+
+            userHttp.login.and.returnValue(throwError(new Error('test')));
+            service.sendLoginRequest();
+
+            service.getErrors().subscribe(value => expect(value.length).toBe(1));
+
         });
 
     });

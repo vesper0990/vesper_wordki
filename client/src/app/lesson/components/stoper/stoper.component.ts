@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { LessonStep } from '../../models/lesson-state';
 import { StoperService } from './services/stoper/stoper.service';
 

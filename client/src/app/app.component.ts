@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserService } from './authorization/services/user.service/user.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -9,23 +9,16 @@ import { Subscription } from 'rxjs';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-  private userServiceSub: Subscription;
-
-  isLogin: boolean;
+  isLogin$: Observable<boolean>;
 
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.userServiceSub = this.userService.subscribe().subscribe((userExists: boolean) => {
-      this.isLogin = userExists;
-      if (userExists) {
-      }
-    });
+    this.isLogin$ = this.userService.subscribe();
     this.login();
   }
 
   ngOnDestroy(): void {
-    this.userServiceSub.unsubscribe();
   }
 
   private login(): void {

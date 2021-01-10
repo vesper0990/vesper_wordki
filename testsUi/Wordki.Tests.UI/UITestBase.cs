@@ -9,7 +9,7 @@ namespace Wordki.Tests.UI
 {
     public abstract class UITestBase : IDisposable
     {
-        protected const string AppUrl = "http://localhost:4201";
+        protected const string AppUrl = "http://wordki-client.ci.e2etests:81";
 
         protected IWebDriver Driver { get; private set; }
         protected WireMockServer Server { get; private set; }
@@ -29,7 +29,7 @@ namespace Wordki.Tests.UI
         [SetUp]
         protected void SetupUtils()
         {
-            Server = WireMockFactory.Create("http://localhost:5001");
+            Server = WireMockFactory.Create("http://+:5001");
         }
 
         [TearDown]

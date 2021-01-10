@@ -50,13 +50,13 @@ namespace Wordki.Tests.UI.Groups
             repeatsCount.Text.Should().Contain("1");
         }
 
-        //[Test]
+        [Test]
         public void TestUpdatingGroup() => this.BDDfy();
     }
 
     internal class RemovingGroupTest : GroupsTestBase
     {
-void GivenCookies() => SetAuthorizationCookie();
+        void GivenCookies() => SetAuthorizationCookie();
 
         void AndGivenSetupServer()
         {
@@ -82,7 +82,7 @@ void GivenCookies() => SetAuthorizationCookie();
             groups.Should().HaveCount(1);
         }
 
-        //[Test]
+        [Test]
         public void TestUpdatingGroup() => this.BDDfy();
     }
 }

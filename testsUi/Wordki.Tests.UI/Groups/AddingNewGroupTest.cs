@@ -54,7 +54,7 @@ namespace Wordki.Tests.UI.Groups
             repeatsCount.Text.Should().Contain("0");
         }
 
-        //[Test]
+        [Test]
         public void TestAddingNewGroup() => this.BDDfy();
     }
 }

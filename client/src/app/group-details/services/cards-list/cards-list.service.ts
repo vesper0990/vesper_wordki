@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AddWord, GetGroupDetails, GetWords, RemoveWordAction, ShowDialog, UpdateWord } from '../../store/actions';
+import { AddWord, GetGroupDetails, GetWords, HideDialog, RemoveWordAction, ShowDialog, UpdateWord } from '../../store/actions';
 import { GroupDetailsState } from '../../store/state';
 import { selectDialogCard, selectDialogMode, selectDialogVisibility, selectGroupDetails, selectIsCardsLoading, selectWords } from '../../store/selectors';
-import { map, tap } from 'rxjs/operators';
 import { DialogMode } from 'src/app/share/components/edit-group-dialog/mode-dialog';
 import { EditWord } from 'src/app/share/components/edit-word-dialog/edit-word.model';
-import { HideDialog } from 'src/app/groups-list/store/actions';
 import { CardDetails, GroupDetails } from 'src/app/share/models/card-details';
 
 @Injectable()
@@ -16,14 +14,6 @@ export class CardsListService {
     groupId: number;
 
     constructor(private readonly store: Store<GroupDetailsState>) { }
-
-    init(): void {
-
-        // this.actRoute.params.subscribe(params => {
-        //     console.log(params);
-        //     this.handleRouteParam(params['id']);
-        // });
-    }
 
     getCards(): Observable<CardDetails[]> {
         return this.store.select(selectWords);
@@ -38,9 +28,7 @@ export class CardsListService {
     }
 
     isDialogVisible(): Observable<boolean> {
-        return this.store.select(selectDialogVisibility).pipe(
-            tap(value => console.log(value))
-        );
+        return this.store.select(selectDialogVisibility);
     }
 
     getDialogMode(): Observable<DialogMode> {
