@@ -6,9 +6,9 @@ export function createExtendedCardDetails(): ExtendedCardDetails {
         1,
         'group-name',
         new SideDetails('front-value', 'front-example', new Drawer(1), LanguageType.getLanguageType(1),
-            1, true, new Date()),
+            1, true, new Date(2020, 1, 15)),
         new SideDetails('front-value', 'front-example', new Drawer(1), LanguageType.getLanguageType(1),
-            1, true, new Date())
+            1, true, new Date(2020, 1, 15))
     );
 }
 
@@ -16,8 +16,8 @@ export function createCardDetails(): CardDetails {
     return new CardDetails(
         1,
         new SideDetails('front-value', 'front-example', new Drawer(1), LanguageType.getLanguageType(1),
-            1, true, new Date()),
+            1, true, new Date(2020, 1, 15)),
         new SideDetails('front-value', 'front-example', new Drawer(1), LanguageType.getLanguageType(1),
-            1, true, new Date())
+            1, true, new Date(2020, 1, 15))
     );
 }

@@ -19,14 +19,15 @@ namespace Wordki.Tests.UI.Dashboard
 
         void AndGivenUserNavigateToDashboard() => NavigateToDashboard();
 
-        void WhenUserClickInLessonCard() {
+        void WhenUserClickInLessonCard()
+        {
             Driver.FindElement(By.Id("groups-card")).Click();
             Thread.Sleep(500);
-        } 
+        }
 
         void ThenAppNavigateToLesson() => Assert.AreEqual($"{AppUrl}/groups", Driver.Url);
 
-        //[Test]
+        [Test]
         public void CheckNavigationToGroups() => this.BDDfy();
     }
 }

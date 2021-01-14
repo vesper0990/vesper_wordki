@@ -1,33 +1,33 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ErrorComponent } from './share/components/error/error.component';
-import { AuthGuardService } from './authorization/services/auth-guard/auth-guard';
+import { LoginGuardService } from './authorization/services/auth-guard/login-guard';
 
 const routes: Routes = [
   {
     path: 'dashboard',
     loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
-    canActivate: [AuthGuardService]
+    canActivate: [LoginGuardService]
   },
   {
     path: 'groups',
     loadChildren: () => import('./groups-list/groups.module').then(m => m.GroupsModule),
-    canActivate: [AuthGuardService]
+    canActivate: [LoginGuardService]
   },
   {
     path: 'creator',
     loadChildren: () => import('./group-creator/group-creator.module').then(m => m.GroupCreatorModule),
-    canActivate: [AuthGuardService]
+    canActivate: [LoginGuardService]
   },
   {
     path: 'details',
     loadChildren: () => import('./group-details/group-details.module').then(m => m.GroupDetailsModule),
-    canActivate: [AuthGuardService]
+    canActivate: [LoginGuardService]
   },
   {
     path: 'lesson',
     loadChildren: () => import('./lesson/lesson.module').then(m => m.LessonModule),
-    canActivate: [AuthGuardService]
+    canActivate: [LoginGuardService]
   },
   {
     path: 'user',

@@ -9,7 +9,8 @@ namespace Wordki.Tests.UI.Register
     public class RegisterFormFillingTest : RegisterTestBase
     {
 
-        void GivenSetupServerEndpoints(){
+        void GivenSetupServerEndpoints()
+        {
             SetupDefaultDashboardEndpoints();
             SetupRegisterEndpoints();
         }
@@ -39,7 +40,7 @@ namespace Wordki.Tests.UI.Register
             Assert.AreEqual($"{AppUrl}/dashboard", Driver.Url);
         }
 
-        //[Test]
+        [Test]
         public void ExecuteTest()
         {
             this.BDDfy();

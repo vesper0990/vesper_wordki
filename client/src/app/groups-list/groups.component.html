@@ -1,6 +1,6 @@
 <div class="button-container">
   <button id="add-group-btn" class="custom-button" (click)="addGroup()">Add new group</button>
-  <button class="custom-button" (click)="addGroupFromFile()">Add group from file</button>
+  <button id="add-group-file-btn" class="custom-button" (click)="addGroupFromFile()">Add group from file</button>
   <button class="custom-button">Add existing group</button>
 </div>
 <ng-container *ngIf="isLoading$ | async; else groups">

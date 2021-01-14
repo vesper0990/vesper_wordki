@@ -8,7 +8,7 @@ import * as selectors from 'src/app/lesson/store/selectors';
 import * as actions from 'src/app/lesson/store/actions';
 import { LessonState } from 'src/app/lesson/store/state';
 import { CardRepeat } from 'src/app/share/models/card-details';
-import { TimerService } from 'src/app/lesson/services/stoper/stoper2.service';
+import { TimerService } from 'src/app/lesson/services/timer/timer.service';
 
 @Injectable()
 export class InsertService {

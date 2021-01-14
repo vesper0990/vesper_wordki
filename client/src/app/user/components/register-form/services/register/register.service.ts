@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { UserService } from 'src/app/authorization/services/user.service/user.service';
 import { LoginContract } from 'src/app/user/services/user.provider/login.contract';
 import { RegisterContract } from 'src/app/user/services/user.provider/register.contract';
-import { UserProviderBase } from 'src/app/user/services/user.provider/user.provider';
+import { UserProviderBase } from 'src/app/user/services/user.provider/user.provider.base';
 import { mapErrorCodeToMessage } from '../error-handler/error-handler';
+import { notSameValidator } from '../notSame/notSame.validator';
 
 @Injectable()
 export class RegisterService {
@@ -74,24 +75,9 @@ export class RegisterService {
                 this.router.navigate(['/dashboard']);
             }),
             catchError(() => {
-                this.form.enable();
+                this.router.navigate(['/error']);
                 return of(0);
             })
         ).subscribe();
     }
-}
-
-export function notSameValidator(comparableControlName: string): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-        const parent = control.parent;
-        if (parent === undefined) {
-            return null;
-        }
-        const comparableControl = control.parent.get(comparableControlName);
-        if (comparableControl === undefined) {
-            return null;
-        }
-        const isSame = comparableControl.value === control.value;
-        return isSame ? null : { 'notSame': { value: control.value } };
-    };
 }

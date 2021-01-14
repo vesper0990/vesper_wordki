@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { DialogMode } from '../share/components/edit-group-dialog/mode-dialog';
 import { EditWord } from '../share/components/edit-word-dialog/edit-word.model';
 import { CardDetails, GroupDetails } from '../share/models/card-details';
-import { CardsListService } from './services/words-list/words-list.service';
+import { CardsListService } from './services/cards-list/cards-list.service';
 
 @Component({
   templateUrl: './group-details.component.html',

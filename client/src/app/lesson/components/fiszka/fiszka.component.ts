@@ -20,7 +20,7 @@ export class FiszkaComponent implements OnInit, OnDestroy {
   lessonStep$: Observable<LessonStep>;
 
   constructor(private readonly service: FiszkaService,
-  private readonly titleService: Title) { }
+    private readonly titleService: Title) { }
 
   ngOnInit(): void {
     this.titleService.setTitle('Wordki - Lesson');
@@ -50,10 +50,6 @@ export class FiszkaComponent implements OnInit, OnDestroy {
     }
   }
 
-  startLesson(): void {
-    this.service.startLesson();
-  }
-
   check(): void {
     this.service.check();
   }
@@ -64,17 +60,5 @@ export class FiszkaComponent implements OnInit, OnDestroy {
 
   wrong(): void {
     this.service.wrong();
-  }
-
-  finishLesson(): void {
-    this.service.finishLesson();
-  }
-
-  pause(): void {
-    this.service.pause();
-  }
-
-  restart(): void {
-    this.service.restart();
   }
 }

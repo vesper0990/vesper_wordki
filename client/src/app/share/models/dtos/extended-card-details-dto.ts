@@ -1,4 +1,4 @@
-import { CardDetailsDto } from "./card-details-dto";
+import { CardDetailsDto } from './card-details-dto';
 
 
 export interface ExtendedCardDetailsDto extends CardDetailsDto {

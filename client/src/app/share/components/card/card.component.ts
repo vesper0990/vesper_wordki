@@ -1,7 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ExtendedCardDetails } from '../../models/card-details';
-import { ExtendedCardDetailsDto } from '../../models/dtos/extended-card-details-dto';
-import { CardModel } from './card.model';
 
 @Component({
   selector: 'app-card',
@@ -25,8 +23,8 @@ export class CardComponent implements OnInit {
 
   private updateSide(): void {
     this.displayingFlag = this.side === 'language1'
-        ? this.card.front.language.flag
-        : this.card.back.language.flag;
+      ? this.card.front.language.flag
+      : this.card.back.language.flag;
   }
 
   public changeSide(): void {

@@ -19,7 +19,7 @@ namespace Wordki.Tests.UI.Login
             Assert.AreEqual("Wordki - Login", Driver.Title);
         }
 
-        //[Test]
+        [Test]
         public void ExecuteTest()
         {
             this.BDDfy();

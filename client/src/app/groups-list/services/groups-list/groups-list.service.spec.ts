@@ -120,6 +120,16 @@ describe('GroupsListService', () => {
         )).unsubscribe();
     });
 
+    it('should return dialog group from store as new', () => {
+        store.overrideSelector(selectors.selectDialogGroup, null);
+        store.refreshState();
+
+        service.getDialogGroup().subscribe(value => expect(value).toEqual(
+            new EditGroup(0, '',
+                LanguageType.getLanguageType(LanguageTypeEnum.Undefined), LanguageType.getLanguageType(LanguageTypeEnum.Undefined))
+        )).unsubscribe();
+    });
+
 
     it('should return isloading from store', () => {
         const expectedValue = true;
@@ -135,6 +145,22 @@ describe('GroupsListService', () => {
         store.refreshState();
 
         service.getList().subscribe(value => expect(value).toEqual(expectedValue)).unsubscribe();
+    });
+
+    it('should navigate to creator', () => {
+        const spy = spyOn(router, 'navigate').and.stub();
+
+        service.addGroupFromFile();
+
+        expect(spy.calls.first().args[0]).toContain('creator');
+    });
+
+    it('should navigate to details', () => {
+        const spy = spyOn(router, 'navigate').and.stub();
+
+        service.showDetails(1);
+        expect(spy.calls.first().args[0]).toContain('/details');
+        expect(spy.calls.first().args[0]).toContain(1);
     });
 });
 

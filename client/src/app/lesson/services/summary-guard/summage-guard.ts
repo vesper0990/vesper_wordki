@@ -16,7 +16,7 @@ export class SummaryGuardService implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
         return this.store.select(selectLessonResult).pipe(
             map(value => {
-                return value === null ? this.router.parseUrl('/dashboard') : true
+                return value === null ? this.router.parseUrl('/dashboard') : true;
             })
         );
     }

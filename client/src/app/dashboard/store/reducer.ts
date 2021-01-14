@@ -1,5 +1,5 @@
-import { DashboardActionsEnum, DashboardActionsType } from "./actions";
-import { DashbordState, initialState as initialDashboardState } from "./state";
+import { DashboardActionsEnum, DashboardActionsType } from './actions';
+import { DashbordState, initialState as initialDashboardState } from './state';
 
 export function dashboardReducer(state = initialDashboardState, action: DashboardActionsType): DashbordState {
     switch (action.type) {

@@ -13,7 +13,6 @@ export class WordRowComponent implements OnInit {
   @Input()
   set word(value: CardDetails) {
     this._word = value;
-    this.setLastRepeat();
   }
 
   lastRepeat: Date;
@@ -24,20 +23,4 @@ export class WordRowComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  private setLastRepeat(): void {
-    // if (!this._word || !this._word.repeats) {
-    //   return;
-    // }
-    // if (this._word && this._word.repeats && this._word.repeats.length === 0) {
-    //   this.lastRepeat = null;
-    //   return;
-    // }
-    // this.lastRepeat = this._word.repeats[this._word.repeats.length - 1].date;
-  }
-
-  edit(word: CardDetails): void {
-    this.editWord.emit(word);
-  }
-
 }

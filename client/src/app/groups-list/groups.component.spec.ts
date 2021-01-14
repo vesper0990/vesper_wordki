@@ -7,8 +7,9 @@ import { EditGroupDialogComponent } from '../share/components/edit-group-dialog/
 import { GroupsListService } from './services/groups-list/groups-list.service';
 import { of } from 'rxjs';
 import { EditGroup } from '../share/components/edit-group-dialog/edit-group.model';
-import { selectAllDebugElements, selectDebugElement } from '../test/utils';
+import { selectAllDebugElements, selectDebugElement, selectDebugElementById } from '../test/utils.spec';
 import { Group } from '../share/models/card-details';
+import { createProvider } from '../test/helpers.spec';
 
 describe('GroupsComponent', () => {
   let component: GroupsComponent;
@@ -23,15 +24,13 @@ describe('GroupsComponent', () => {
         MockComponent(ProgressHorizontalComponent),
         MockComponent(EditGroupDialogComponent)],
       providers: [
-        {
-          provide: GroupsListService,
-          useValue: jasmine.createSpyObj(['dialogRemove', 'dialogCancel', 'dialogSave', 'openDialogToEdit', 'getDialogMode',
-            'openDialogToAdd', 'getDialogGroup', 'isDialogVisible', 'isLoading', 'getList', 'openGroup', 'loadGroups'])
-        }
+        createProvider(GroupsListService)
       ]
     })
       .compileComponents();
   });
+
+
 
   describe('before loaded', () => {
     beforeEach(() => {
@@ -71,7 +70,22 @@ describe('GroupsComponent', () => {
       fixture.detectChanges();
     });
 
+    it('should call onEditSave', () => {
+      const group = { id: 1 } as EditGroup;
+      component.onEditSave(group);
+      expect(service.dialogSave).toHaveBeenCalledWith(group);
+    });
 
+    it('should call onEditCancel', () => {
+      component.onEditCancel();
+      expect(service.dialogCancel).toHaveBeenCalled();
+    });
+
+    it('should call onEditRemove', () => {
+      const id = 1;
+      component.onEditRemove(id);
+      expect(service.dialogRemove).toHaveBeenCalledWith(id);
+    });
 
     describe('with any groups', () => {
       beforeEach(() => {
@@ -107,6 +121,14 @@ describe('GroupsComponent', () => {
         addGroupButton.nativeElement.click();
         expect(service.openDialogToAdd).toHaveBeenCalledTimes(1);
       });
+
+      it('should display button to add group from file', () => {
+        const addGroupButton = selectDebugElementById(fixture, 'add-group-file-btn');
+        expect(addGroupButton).toBeTruthy();
+
+        addGroupButton.nativeElement.click();
+        expect(service.addGroupFromFile).toHaveBeenCalledTimes(1);
+      });
     });
 
 
@@ -117,7 +139,7 @@ describe('GroupsComponent', () => {
         service.getDialogMode.and.returnValue(of('add'));
         service.getDialogGroup.and.returnValue(of({} as EditGroup));
         service.isDialogVisible.and.returnValue(of(false));
-        service.getList.and.returnValue(of([{ name: 'test' } as Group]));
+        service.getList.and.returnValue(of([{ id: 1, name: 'test' } as Group]));
         service.isLoading.and.returnValue(of(false));
 
         fixture = TestBed.createComponent(GroupsComponent);
@@ -154,6 +176,13 @@ describe('GroupsComponent', () => {
 
         groupRow.componentInstance.edit.emit(expectedValue);
         expect(service.openDialogToEdit).toHaveBeenCalledWith(expectedValue);
+      });
+
+      it('should show details', () => {
+        const groupRow = selectDebugElement(fixture, 'app-group-row');
+        groupRow.nativeElement.click();
+
+        expect(service.showDetails).toHaveBeenCalledWith(1);
       });
     });
   });

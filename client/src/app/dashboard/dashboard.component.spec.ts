@@ -7,10 +7,9 @@ import { DashboardService } from './services/dashboard/dashboard.service';
 import { Header } from 'primeng/api';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
-import { RepeatWord } from './models/repeat-word.model';
 import { DateSpanToDaysPipe } from '../share/pipes/datespan-to-days.pipe';
 import { CardComponent } from '../share/components/card/card.component';
-import { selectNativeElementById } from '../test/utils';
+import { selectNativeElementById } from '../test/utils.spec';
 import { InfoCardComponent } from '../share/components/info-card/info-card.component';
 import { ExtendedCardDetails } from '../share/models/card-details';
 
@@ -60,12 +59,6 @@ describe('DashboardComponent', () => {
     it('should create', () => {
       expect(component).toBeTruthy();
     });
-
-    // todo elements were removed
-    // it('should show spinner', () => { 
-    //   const spinners = fixture.debugElement.queryAll(By.css('app-progress-spinner'));
-    //   expect(spinners.length).toBe(3);
-    // });
   });
 
   describe('after loaded', () => {

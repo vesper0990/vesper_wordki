@@ -3,14 +3,13 @@ import { GroupDetailsComponent } from './group-details.component';
 import { MockComponent } from 'ng-mocks';
 import { WordRowComponent } from './components/word-row/word-row.component';
 import { EditWordDialogComponent } from '../share/components/edit-word-dialog/edit-word-dialog.component';
-import { CardsListService } from './services/words-list/words-list.service';
+import { CardsListService } from './services/cards-list/cards-list.service';
 import { createProvider } from '../test/helpers.spec';
-import { selectAllDebugElements, selectDebugElement, selectNativeElementById } from '../test/utils';
+import { selectAllDebugElements, selectDebugElement, selectNativeElementById } from '../test/utils.spec';
 import { of } from 'rxjs';
-import { Word } from './models/word.model';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CardDetails, SideDetails } from '../share/models/card-details';
 import { createCardDetails } from '../test/builders.spec';
+import { EditWord } from '../share/components/edit-word-dialog/edit-word.model';
 
 describe('GroupDetailsComponent', () => {
   let component: GroupDetailsComponent;
@@ -40,7 +39,25 @@ describe('GroupDetailsComponent', () => {
     component = fixture.componentInstance;
   });
 
+  it('should save card', () => {
+    const editCard = { id: 1 } as EditWord;
+    component.onEditSave(editCard);
 
+    expect(service.dialogSave).toHaveBeenCalledWith(editCard);
+  });
+
+  it('should remove card', () => {
+    const id = 1;
+    component.onEditRemove(id);
+
+    expect(service.dialogRemove).toHaveBeenCalledWith(id);
+  });
+
+  it('should cancel dialog', () => {
+    component.onEditCancel();
+
+    expect(service.dialogCancel).toHaveBeenCalled();
+  });
 
   describe('before loaded', () => {
     beforeEach(() => {
@@ -74,8 +91,6 @@ describe('GroupDetailsComponent', () => {
       expect(container.innerHTML).toContain('Loading');
     });
   });
-
-
 
   describe('after loaded', () => {
 

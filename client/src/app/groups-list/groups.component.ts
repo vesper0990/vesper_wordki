@@ -62,7 +62,7 @@ export class GroupsComponent implements OnInit {
     this.service.showDetails(group.id);
   }
 
-  currentPageChanged($event: number): void {
-    console.log('currentpage', $event);
-  }
+  // currentPageChanged($event: number): void {
+  //   console.log('currentpage', $event);
+  // }
 }

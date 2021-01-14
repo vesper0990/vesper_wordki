@@ -4,7 +4,9 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TokenInterceptorService } from '../authorization/services/token.interceptor/token-interceptor.service';
 import { CookieService } from 'ngx-cookie-service';
-import { UserProvider, UserProviderBase, UserProviderMock } from './services/user.provider/user.provider';
+import { UserProvider } from './services/user.provider/user.provider';
+import { UserProviderBase } from './services/user.provider/user.provider.base';
+import { UserProviderMock } from './services/user.provider/user.provider.mock';
 import { environment } from 'src/environments/environment';
 import { UserRoutingModule } from './user-routing.module';
 import { AuthorizationModule } from '../authorization/authorization.module';
@@ -14,11 +16,11 @@ import { RegisterFormComponent } from './components/register-form/register-form.
 import { LogoutComponent } from './pages/logout/logout.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ShareModule } from '../share/share.module';
-import { HttpErrorInterceptor } from '../share/services/http-error.interceptor';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { LoginService } from './components/login-form/services/login/login.service';
 import { RegisterService } from './components/register-form/services/register/register.service';
+import { HttpErrorInterceptor } from '../share/services/http-error/http-error.interceptor';
 
 @NgModule({
   declarations: [

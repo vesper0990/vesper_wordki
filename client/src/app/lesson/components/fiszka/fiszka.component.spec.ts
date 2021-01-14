@@ -2,11 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FiszkaComponent } from './fiszka.component';
 import { createProvider } from 'src/app/test/helpers.spec';
 import { FiszkaService } from './services/fiszka/fiszka.service';
-import { MockComponent } from 'ng-mocks';
 
 describe('FiszkaComponent', () => {
   let component: FiszkaComponent;
   let fixture: ComponentFixture<FiszkaComponent>;
+  let service: FiszkaService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -21,6 +21,7 @@ describe('FiszkaComponent', () => {
   });
 
   beforeEach(() => {
+    service = TestBed.inject(FiszkaService);
     fixture = TestBed.createComponent(FiszkaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -28,5 +29,20 @@ describe('FiszkaComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should check on enter', () => {
+    component.keyEvent({ key: 'Enter' } as KeyboardEvent);
+    expect(service.check).toHaveBeenCalledTimes(1);
+  });
+
+  it('should correct on arrow right', () => {
+    component.keyEvent({ key: 'ArrowRight' } as KeyboardEvent);
+    expect(service.correct).toHaveBeenCalledTimes(1);
+  });
+
+  it('should wrong on arrow left', () => {
+    component.keyEvent({ key: 'ArrowLeft' } as KeyboardEvent);
+    expect(service.wrong).toHaveBeenCalledTimes(1);
   });
 });

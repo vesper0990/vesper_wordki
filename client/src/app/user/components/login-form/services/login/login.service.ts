@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { UserService } from 'src/app/authorization/services/user.service/user.service';
 import { LoginContract } from 'src/app/user/services/user.provider/login.contract';
-import { UserProviderBase } from 'src/app/user/services/user.provider/user.provider';
+import { UserProviderBase } from "src/app/user/services/user.provider/user.provider.base";
 import { mapErrorCodeToMessage } from '../error-handler/error-handler';
 
 @Injectable()

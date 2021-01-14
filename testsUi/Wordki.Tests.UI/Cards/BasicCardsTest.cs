@@ -23,7 +23,7 @@ namespace Wordki.Tests.UI.Cards
 
         void ThenTitleIsSet() => Assert.AreEqual("Wordki - Details", Driver.Title);
 
-        //[Test]
+        [Test]
         public void CheckPageAppearance() => this.BDDfy();
     }
 }

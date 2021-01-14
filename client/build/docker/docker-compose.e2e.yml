@@ -7,14 +7,15 @@ services:
       context: ../../
       dockerfile: ./build/docker/Dockerfile
       target: e2e
-    ports:
-      - 4201:81
-  wordki.ui.test:
+    expose:
+      - 81
+  wordki.ci.e2etests:
     container_name: wordki.ci.e2etests
     image: wordki.ci.e2etests
     build:
       context: ../../../testsUi/Wordki.Tests.UI
       dockerfile: Dockerfile
-    network_mode: host
+    expose:
+      - 5001
     depends_on:
       - wordki-client.ci.e2etests

@@ -23,4 +23,22 @@ describe('ControllerComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should call clickCorrect', () => {
+    spyOn(component.correct, 'emit');
+    component.clickCorrect();
+    expect(component.correct.emit).toHaveBeenCalledTimes(1);
+  });
+
+  it('should call clickWrong', () => {
+    spyOn(component.wrong, 'emit');
+    component.clickWrong();
+    expect(component.wrong.emit).toHaveBeenCalledTimes(1);
+  });
+
+  it('should call clickCheck', () => {
+    spyOn(component.check, 'emit');
+    component.clickCheck();
+    expect(component.check.emit).toHaveBeenCalledTimes(1);
+  });
 });

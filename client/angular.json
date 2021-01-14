@@ -37,7 +37,7 @@
             "scripts": []
           },
           "configurations": {
-            "e2e":{
+            "e2e": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -98,6 +98,9 @@
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
+          "codeCoverageExclude": [
+            "**.mock.ts"
+          ],
           "options": {
             "main": "src/test.ts",
             "polyfills": "src/polyfills.ts",

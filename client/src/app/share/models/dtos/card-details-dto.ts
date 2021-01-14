@@ -1,4 +1,4 @@
-import { SideDetailsDto } from "./side-details-dto";
+import { SideDetailsDto } from './side-details-dto';
 
 export interface CardDetailsDto {
     id: number;
@@ -6,5 +6,3 @@ export interface CardDetailsDto {
     back: SideDetailsDto;
     creationDate: string;
 }
-
-

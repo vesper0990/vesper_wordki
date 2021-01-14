@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { LessonStep } from 'src/app/lesson/models/lesson-state';
-import { TimerService } from 'src/app/lesson/services/stoper/stoper2.service';
+import { TimerService } from 'src/app/lesson/services/timer/timer.service';
 import { selectLessonStep } from 'src/app/lesson/store/selectors';
 import { LessonState } from 'src/app/lesson/store/state';
 import * as actions from '../../../../store/actions';

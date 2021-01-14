@@ -10,9 +10,8 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpErrorInterceptor } from './share/services/http-error.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { SettingsService } from './share/utils/settings-service';
+import { HttpErrorInterceptor } from './share/services/http-error/http-error.interceptor';
 
 @NgModule({
   declarations: [
@@ -33,9 +32,7 @@ import { SettingsService } from './share/utils/settings-service';
     })
   ],
   providers: [
-    // SettingsService,
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
-    // { provide: APP_INITIALIZER, useFactory: appInitializerFactory, deps: [SettingsService], multi: true }
   ],
   bootstrap: [AppComponent]
 })
@@ -45,6 +42,3 @@ export class AppModule {
   }
 }
 
-export function appInitializerFactory(settingsService: SettingsService) {
-  return async () => await settingsService.load();
-}

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LessonHttpBaseService } from '../services/lesson-http/lesson-http.service';
+import { LessonHttpBaseService } from "../services/lesson-http/lesson-http.service.base";
 import { Store } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { LessonState } from './state';

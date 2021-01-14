@@ -1,11 +1,10 @@
-import { RepeatDto } from "src/app/group-details/models/repeat.dto";
-import { CardDetails, CardRepeat, Drawer, ExtendedCardDetails, Group, GroupDetails, SideDetails, SideRepeat } from "./card-details";
-import { CardDetailsDto } from "./dtos/card-details-dto";
-import { CardRepeatDto } from "./dtos/card-repeat-dto";
-import { ExtendedCardDetailsDto } from "./dtos/extended-card-details-dto";
-import { GroupDetailsDto } from "./dtos/group-details-dto";
-import { GroupDto } from "./dtos/group-dto";
-import { LanguageType, LanguageTypeEnum } from "./language-type.mode";
+import { CardDetails, CardRepeat, Drawer, ExtendedCardDetails, Group, GroupDetails, SideDetails, SideRepeat } from './card-details';
+import { CardDetailsDto } from './dtos/card-details-dto';
+import { CardRepeatDto } from './dtos/card-repeat-dto';
+import { ExtendedCardDetailsDto } from './dtos/extended-card-details-dto';
+import { GroupDetailsDto } from './dtos/group-details-dto';
+import { GroupDto } from './dtos/group-dto';
+import { LanguageType, LanguageTypeEnum } from './language-type.mode';
 
 export function mapExtendedCardDetails(dto: ExtendedCardDetailsDto): ExtendedCardDetails {
     return new ExtendedCardDetails(
@@ -29,7 +28,7 @@ export function mapExtendedCardDetails(dto: ExtendedCardDetailsDto): ExtendedCar
             dto.back.isVisible,
             new Date(dto.back.nextRepeat)
         ),
-    )
+    );
 }
 
 export function mapCardDetails(dto: CardDetailsDto): CardDetails {
@@ -53,7 +52,7 @@ export function mapCardDetails(dto: CardDetailsDto): CardDetails {
             dto.back.isVisible,
             new Date(dto.back.nextRepeat)
         ),
-    )
+    );
 }
 
 export function mapGroup(dto: GroupDto): Group {
@@ -74,7 +73,7 @@ export function mapGroupDetails(dto: GroupDetailsDto): GroupDetails {
         dto.cardsCount,
         dto.repeatsCount,
         new Date(dto.creationDate)
-    )
+    );
 }
 
 export function mapCardRepeat(dto: CardRepeatDto): CardRepeat {
@@ -92,5 +91,5 @@ export function mapCardRepeat(dto: CardRepeatDto): CardRepeat {
             new Drawer(dto.answer.drawer),
             LanguageType.getLanguageType(dto.answer.language)
         )
-    )
+    );
 }
