@@ -5,7 +5,7 @@ namespace Wordki.Tests.UI.PageObjectModels
 {
     abstract class Page
     {
-        protected const string ApplicationUrl = "http://localhost:4201";
+        protected const string ApplicationUrl = "http://wordki-client.ci.e2etests:81";
         protected IWebDriver Driver { get; }
         protected virtual string Url { get; }
         protected virtual string Title { get; }
