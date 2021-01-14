@@ -9,14 +9,14 @@ namespace Wordki.Tests.UI
 {
     public abstract class UITestBase : IDisposable
     {
-        protected const string AppUrl = "http://wordki-client.ci.e2etests:81";
-        // protected const string AppUrl = "http://localhost:4201";
-
+        protected string AppUrl = "http://localhost:4201";
         protected IWebDriver Driver { get; private set; }
         protected WireMockServer Server { get; private set; }
 
         protected UITestBase()
         {
+            AppUrl = Environment.GetEnvironmentVariable("ClientUrl");
+
             var options = new ChromeOptions();
             options.AddArguments("headless");
             options.AddArguments("diable-dev-shm-usage",
