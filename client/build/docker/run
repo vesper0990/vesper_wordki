@@ -1,5 +1,0 @@
-#!/bin/sh
-
-export BUILD_BUILDID="local"
-
-docker-compose -f docker-compose.e2e.yml up --build

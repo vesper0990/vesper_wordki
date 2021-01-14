@@ -3,7 +3,6 @@ import { DashbordState, initialState as initialDashboardState } from './state';
 
 export function dashboardReducer(state = initialDashboardState, action: DashboardActionsType): DashbordState {
     switch (action.type) {
-        case DashboardActionsEnum.REQUEST_FAILED: return action.reduce(state);
         case DashboardActionsEnum.GET_LAST_FAILED: return action.reduce(state);
         case DashboardActionsEnum.GET_LAST_FAILED_SUCCESS: return action.reduce(state, action);
         case DashboardActionsEnum.GET_NEXT_REPEAT: return action.reduce(state);

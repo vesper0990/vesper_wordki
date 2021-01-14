@@ -95,10 +95,6 @@ class GetCardsCountSuccessContext {
     };
 }
 
-class RequestFailedContext {
-    action = new actions.RequestFailed({ error: 'error' });
-    result = createCustomState();
-}
 
 class OthersContext {
     action = { type: 'test' } as any;
@@ -122,7 +118,6 @@ describe('Dashboard reduce', () => {
         new GetGroupsCountSuccessContext(),
         new GetCardsCountContext(),
         new GetCardsCountSuccessContext(),
-        new RequestFailedContext(),
         new OthersContext()
     ].forEach(item => {
         it('should return proper value ' + item.action.type, () => {

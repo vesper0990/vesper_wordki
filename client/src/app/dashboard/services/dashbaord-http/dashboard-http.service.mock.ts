@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 import { Never } from 'src/app/share/utils/date-util';
 import { ExtendedCardDetails } from 'src/app/share/models/card-details';
@@ -18,7 +18,7 @@ export class DashboardHttpMockService extends DashboardHttpServiceBase {
         return of(4);
     }
     getWordsCount(): Observable<number> {
-        return of(87);
+        return of(40);
     }
     getTodayRepeatCount(): Observable<number> {
         return of(40);

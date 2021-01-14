@@ -12,6 +12,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpErrorInterceptor } from './share/services/http-error/http-error.interceptor';
+import { RootEffects } from './store/effects';
+import { rootReducer } from './store/reducer';
 
 @NgModule({
   declarations: [
@@ -24,8 +26,8 @@ import { HttpErrorInterceptor } from './share/services/http-error/http-error.int
     UserModule,
     ShareModule,
     NavigationModule,
-    StoreModule.forRoot({}),
-    EffectsModule.forRoot([]),
+    StoreModule.forRoot(rootReducer),
+    EffectsModule.forRoot([RootEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,

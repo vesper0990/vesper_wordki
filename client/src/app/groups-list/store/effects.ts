@@ -2,25 +2,23 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { GroupsListHttpServiceBase } from '../services/groups-list-http/groups-list-http.service.base';
 import * as actions from './actions';
 import { map, catchError, exhaustMap, tap, concatMap } from 'rxjs/operators';
-import { forkJoin, Observable, of } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { GroupListState } from './state';
 import { Group } from 'src/app/share/models/card-details';
+import { RequestFailed } from 'src/app/store/actions';
 
 @Injectable()
 export class GroupListEffects {
 
-    constructor(private actions$: Actions,
-        private store: Store<GroupListState>,
-        private groupProvider: GroupsListHttpServiceBase) { }
+    constructor(private readonly actions$: Actions,
+        private readonly groupProvider: GroupsListHttpServiceBase) { }
 
     @Effect()
     getGroupListEffect = this.actions$.pipe(
         ofType<actions.GetGroups>(actions.GroupListTypes.GET_GROUPS),
         exhaustMap(() => this.groupProvider.getGroups()),
         map((groups: Group[]) => new actions.GetGroupsSuccess({ groups: groups })),
-        catchError(error => this.handleError(error))
+        catchError(error => of(new RequestFailed({ error: error })))
     );
 
     @Effect()
@@ -34,7 +32,7 @@ export class GroupListEffects {
             new actions.UpdateGroupSuccess({ group: data[0] }),
             new actions.HideDialog()
         ]),
-        catchError((error: any) => this.handleError(error))
+        catchError(error => of(new RequestFailed({ error: error })))
     );
 
     @Effect()
@@ -48,7 +46,7 @@ export class GroupListEffects {
             new actions.AddGroupSuccess({ group: data[0], groupId: data[1] }),
             new actions.HideDialog()
         ]),
-        catchError((error: any) => this.handleError(error))
+        catchError(error => of(new RequestFailed({ error: error })))
     );
 
     @Effect()
@@ -59,11 +57,6 @@ export class GroupListEffects {
             new actions.RemoveGroupSuccess({ groupId: action.payload.groupId }),
             new actions.HideDialog()
         ]),
-        catchError((error: any) => this.handleError(error))
+        catchError(error => of(new RequestFailed({ error: error })))
     );
-
-    private handleError(error: any): Observable<any> {
-        console.log(error);
-        throw error;
-    }
 }
