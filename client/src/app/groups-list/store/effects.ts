@@ -1,5 +1,5 @@
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { GroupsListHttpServiceBase } from '../services/groups-list-http/groups-list-http.service';
+import { GroupsListHttpServiceBase } from '../services/groups-list-http/groups-list-http.service.base';
 import * as actions from './actions';
 import { map, catchError, exhaustMap, tap, concatMap } from 'rxjs/operators';
 import { forkJoin, Observable, of } from 'rxjs';

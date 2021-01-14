@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { LessonStep } from 'src/app/lesson/models/lesson-state';
-import { TimerService } from 'src/app/lesson/services/stoper/stoper2.service';
+import { TimerService } from 'src/app/lesson/services/timer/timer.service';
 import * as actions from 'src/app/lesson/store/actions';
 import { selectCurrentCard, selectLessonStep, } from 'src/app/lesson/store/selectors';
 import { LessonState } from 'src/app/lesson/store/state';

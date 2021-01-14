@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { LessonRoutingModule } from './lesson-routing.module';
 import { FiszkaComponent } from './components/fiszka/fiszka.component';
 import {
-  LessonHttpBaseService,
-  LessonHttpService,
-  LessonHttpMockService
+  LessonHttpService
 } from './services/lesson-http/lesson-http.service';
+import { LessonHttpBaseService } from './services/lesson-http/lesson-http.service.base';
+import { LessonHttpMockService } from './services/lesson-http/lesson-http.service.mock';
 import { environment } from 'src/environments/environment';
 import { StoreModule, Store } from '@ngrx/store';
 import { reducer } from './store/reducer';
@@ -19,7 +19,6 @@ import { StoperComponent } from './components/stoper/stoper.component';
 import { WordComparerService } from './services/word-comparer/word-comparer.service';
 import { UserModule } from '../user/user.module';
 import { AuthorizationModule } from '../authorization/authorization.module';
-import { WordMapper } from './services/word-mapper/word-mapper';
 import { CheckboxModule } from 'primeng/checkbox';
 import { SummaryGuardService } from './services/summary-guard/summage-guard';
 import { SummaryComponent } from './components/summary/summary.component';
@@ -28,7 +27,7 @@ import { FiszkaService } from './components/fiszka/services/fiszka/fiszka.servic
 import { SummaryService } from './components/summary/services/summary/summary.service';
 import { InsertService } from './components/insert/service/insert/insert.service';
 import { InsertComponent } from './components/insert/insert.component';
-import { TimerService } from './services/stoper/stoper2.service';
+import { TimerService } from './services/timer/timer.service';
 import { StoperService } from './components/stoper/services/stoper/stoper.service';
 import { ResultsComponent } from './components/results/results.component';
 import { ResultsService } from './components/results/services/results/results.service';
@@ -64,7 +63,6 @@ import { ControllerComponent } from './components/controller/controller.componen
     Store,
     { provide: LessonHttpBaseService, useClass: environment.mockServer ? LessonHttpMockService : LessonHttpService },
     WordComparerService,
-    WordMapper,
     SummaryGuardService,
     FiszkaService,
     SummaryService,

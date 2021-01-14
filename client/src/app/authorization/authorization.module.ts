@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthGuardService } from './services/auth-guard/auth-guard';
+import { LoginGuardService } from './services/auth-guard/login-guard';
 import { LogoutGuardService } from './services/auth-guard/logout-guard';
 
 @NgModule({
@@ -9,7 +9,7 @@ import { LogoutGuardService } from './services/auth-guard/logout-guard';
     CommonModule
   ],
   providers: [
-    AuthGuardService,
+    LoginGuardService,
     LogoutGuardService
   ]
 })

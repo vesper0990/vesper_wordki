@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { LessonStep } from 'src/app/lesson/models/lesson-state';
-import { TimerService } from 'src/app/lesson/services/stoper/stoper2.service';
+import { TimerService } from 'src/app/lesson/services/timer/timer.service';
 import {
     AnswerCorrect, AnswerWrong,
     CheckCard, CreateNewLesson,
@@ -13,7 +13,8 @@ import {
     UpdateCardWrong
 } from 'src/app/lesson/store/actions';
 import { selectCurrentCard, selectLessonStep, } from 'src/app/lesson/store/selectors';
-import { CardRepeat } from 'src/app/share/models/card-details';
+import { CardRepeat, Drawer, SideRepeat } from 'src/app/share/models/card-details';
+import { LanguageType, LanguageTypeEnum } from 'src/app/share/models/language-type.mode';
 import { createProvider } from 'src/app/test/helpers.spec';
 import { FiszkaService } from './fiszka.service';
 
@@ -47,7 +48,8 @@ describe('FiszkaService', () => {
     });
 
     it('should return currectCard', () => {
-        const card = { id: 1 } as CardRepeat;
+        const card = new CardRepeat(1,
+            new SideRepeat('value', 'example', new Drawer(1), LanguageType.getLanguageType(LanguageTypeEnum.Polish)), null);
         store.overrideSelector(selectCurrentCard, card);
         service.getCurrentCard().subscribe(value => expect(value).toBe(card));
     });

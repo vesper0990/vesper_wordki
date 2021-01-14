@@ -112,7 +112,7 @@ export class UpdateWordSuccess implements Action {
                         item.back.repeatsCount,
                         item.back.isVisible,
                         item.back.nextRepeat
-                    ))
+                    ));
                 arr.push(newItem);
             } else {
                 arr.push(item);
@@ -132,17 +132,17 @@ export class AddWord implements Action {
     }
 }
 
-export class AddWordSuccess implements Action {
-    readonly type = GroupDetailsTypes.AddWordSuccess;
-    constructor(public payload: { word: any }) { }
+// export class AddWordSuccess implements Action {
+//     readonly type = GroupDetailsTypes.AddWordSuccess;
+//     constructor(public payload: { word: any }) { }
 
-    static reduce(state: GroupDetailsState, action: AddWordSuccess): GroupDetailsState {
-        const words = state.words;
-        action.payload.word.group = state.groupDetails;
-        words.push(action.payload.word);
-        return { ...state, words: words };
-    }
-}
+//     static reduce(state: GroupDetailsState, action: AddWordSuccess): GroupDetailsState {
+//         const words = state.words;
+//         action.payload.word.group = state.groupDetails;
+//         words.push(action.payload.word);
+//         return { ...state, words: words };
+//     }
+// }
 
 export class RemoveWordAction implements Action {
     readonly type = GroupDetailsTypes.RemoveWord;
@@ -196,7 +196,6 @@ export type GroupDetailsActions = GetGroupDetails |
     UpdateWord |
     UpdateWordSuccess |
     AddWord |
-    AddWordSuccess |
     RemoveWordAction |
     RemoveWordSuccess |
     ShowDialog |

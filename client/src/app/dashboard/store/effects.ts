@@ -3,7 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { catchError, exhaustMap, map, switchMap, tap } from 'rxjs/operators';
-import { DashboardHttpServiceBase } from '../services/dashbaord-http/dashboard-http.service';
+import { DashboardHttpServiceBase } from '../services/dashbaord-http/dashboard-http.service.base';
 import * as actions from './actions';
 import { DashbordState } from './state';
 
@@ -17,7 +17,7 @@ export class DashboardEffects {
     @Effect()
     public getLastFailed$ = this.actions$.pipe(
         ofType<actions.GetLastFailed>(actions.DashboardActionsEnum.GET_LAST_FAILED),
-        exhaustMap(() => this.dataProvider.getLastFailed()),
+        switchMap(() => this.dataProvider.getLastFailed()),
         map(value => new actions.GetLastFailedSuccess({ card: value })),
         catchError(error => of(new actions.RequestFailed({ error: error })))
     );

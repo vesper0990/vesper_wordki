@@ -6,6 +6,7 @@ import { createCardDetails } from 'src/app/test/builders.spec';
 import { GroupDetails } from 'src/app/share/models/card-details';
 import { EditWord } from 'src/app/share/components/edit-word-dialog/edit-word.model';
 import { AddWord, GetGroupDetails, GetWords, HideDialog, RemoveWordAction, ShowDialog, UpdateWord } from '../../store/actions';
+import { LanguageType, LanguageTypeEnum } from 'src/app/share/models/language-type.mode';
 
 describe('CardsListService', () => {
 
@@ -42,7 +43,8 @@ describe('CardsListService', () => {
     });
 
     it('should return groupDetails from store', () => {
-        const result = {} as GroupDetails;
+        const result = new GroupDetails(1, 'name', LanguageType.getLanguageType(LanguageTypeEnum.English),
+            LanguageType.getLanguageType(LanguageTypeEnum.Polish), 1, 1, new Date());
         store.overrideSelector(selectGroupDetails, result);
 
         service.getGroupDetails().subscribe(value => expect(value).toBe(result));

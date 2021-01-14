@@ -1,64 +1,51 @@
-// import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Store } from '@ngrx/store';
+import { FormsModule } from '@angular/forms';
+import { WordComparerService } from '../../services/word-comparer/word-comparer.service';
+import { InsertComponent } from './insert.component';
+import { MockDeclaration } from 'ng-mocks';
+import { StoperComponent } from '../stoper/stoper.component';
+import { ResultsComponent } from '../results/results.component';
+import { FiszkaComponent } from '../fiszka/fiszka.component';
+import { SettingsComponent } from '../settings/settings.component';
+import { createProvider } from 'src/app/test/helpers.spec';
+import { InsertService } from './service/insert/insert.service';
+import { of } from 'rxjs';
+import { LessonStep } from '../../models/lesson-state';
 
-// import { LessonStep, LessonStateEnum } from '../../models/lesson-state';
-// import { WordRepeat } from '../../models/word-repeat';
-// import { ObservableMock } from 'src/app/test/utils';
-// import { FiszkaComponent } from '../fiszka/fiszka.component';
-// import { Store } from '@ngrx/store';
-// import { FormsModule } from '@angular/forms';
-// import { WordComparerService } from '../../services/word-comparer/word-comparer.service';
+describe('InsertComponent', () => {
+    let fixture: ComponentFixture<InsertComponent>;
+    let component: InsertComponent;
+    let service: jasmine.SpyObj<InsertService>;
 
-// class BeforeLessonContext {
-//   givenState = LessonStep.getLessonStep(LessonStateEnum.BEFORE_START);
-//   givenWord = <WordRepeat>{};
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                FormsModule
+            ],
+            declarations: [
+                InsertComponent,
+                MockDeclaration(StoperComponent),
+                MockDeclaration(ResultsComponent),
+                MockDeclaration(FiszkaComponent),
+                MockDeclaration(SettingsComponent)
+            ],
+            providers: [
+                createProvider(InsertService)
+            ]
+        }).compileComponents();
+        service = TestBed.inject(InsertService) as jasmine.SpyObj<InsertService>;
+    });
 
-//   expectedQuestionVisibility = false;
-//   expectedAnswerVisibility = false;
-// }
+    beforeEach(() => {
+        service.getLessonStep.and.returnValue(of(LessonStep.BEFORE_START));
+        service.getComparisonResult.and.returnValue(of('none'));
+        fixture = TestBed.createComponent(InsertComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-// class WordDisplayContext {
-//   givenState = LessonStep.getLessonStep(LessonStateEnum.QUESTION);
-//   givenWord = <WordRepeat>{};
-
-//   expectedQuestionVisibility = true;
-//   expectedAnswerVisibility = false;
-// }
-
-// class AnswerDisplayContext {
-//   givenState = LessonStep.getLessonStep(LessonStateEnum.ANSWARE);
-//   givenWord = <WordRepeat>{};
-
-//   expectedQuestionVisibility = true;
-//   expectedAnswerVisibility = true;
-// }
-
-// describe('InsertComponent', () => {
-//   const lessonStepObservable = new ObservableMock<LessonStep>();
-//   const wordRepeatObservable = new ObservableMock<WordRepeat>();
-
-//   beforeEach(async(() => {
-//     TestBed.configureTestingModule({
-//       imports: [
-//         FormsModule
-//       ],
-//       declarations: [InsertComponent,
-//       ],
-//       providers: [
-//         { provide: Store, useValue: jasmine.createSpyObj('store', ['select', 'dispatch']) },
-//         { provide: WordComparerService, useValue: jasmine.createSpyObj('wordComparer', ['isCorrect']) }
-//       ]
-//     })
-//       .compileComponents();
-//   }));
-
-//   beforeEach(() => {
-//     storeMock = TestBed.get(Store);
-//     fixture = TestBed.createComponent(InsertComponent);
-//     component = fixture.componentInstance;
-//     fixture.detectChanges();
-//   });
-
-//   it('should create', () => {
-//     expect(component).toBeTruthy();
-//   });
-// });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
+});

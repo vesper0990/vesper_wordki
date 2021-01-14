@@ -3,7 +3,7 @@ import { StoperComponent } from './stoper.component';
 import { createProvider } from 'src/app/test/helpers.spec';
 import { StoperService } from './services/stoper/stoper.service';
 import { MockPipe } from 'ng-mocks';
-import { SecToTimePipe } from 'src/app/share/pipes/sec-tp-time.pipe';
+import { SecToTimePipe } from 'src/app/share/pipes/sec-to-time.pipe';
 import { of } from 'rxjs';
 import { selectAllDebugElements } from 'src/app/test/utils.spec';
 import { LessonStep } from '../../models/lesson-state';

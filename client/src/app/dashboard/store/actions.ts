@@ -1,13 +1,13 @@
-import { Action } from "@ngrx/store";
-import { ExtendedCardDetails } from "src/app/share/models/card-details";
-import { DashbordState } from "./state";
+import { Action } from '@ngrx/store';
+import { ExtendedCardDetails } from 'src/app/share/models/card-details';
+import { DashbordState } from './state';
 
 export enum DashboardActionsEnum {
     REQUEST_FAILED = '[DASHBOARD] REQUEST_FAILED',
 
     GET_LAST_FAILED = '[DASHBOARD] GET_LAST_FAILED',
     GET_LAST_FAILED_SUCCESS = '[DASHBOARD] GET_LAST_FAILED_SUCCESS',
-    
+
     GET_NEXT_REPEAT = '[DASHBOARD] GET_NEXT_REPEAT',
     GET_NEXT_REPEAT_SUCCESS = '[DASHBOARD] GET_NEXT_REPEAT_SUCCESS',
 

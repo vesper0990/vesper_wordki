@@ -29,6 +29,7 @@
     "@ngrx/effects": "^10.0.0",
     "@ngrx/store": "^10.0.0",
     "@ngrx/store-devtools": "^10.0.0",
+    "karma-sabarivka-reporter": "^3.2.5",
     "ngx-cookie-service": "10.1.1",
     "primeicons": "^4.0.0",
     "primeng": "^10.0.2",

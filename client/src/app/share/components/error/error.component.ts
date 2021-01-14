@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { ErrorService } from './error-service';
+import { ErrorService } from './services/error/error-service';
 
 @Component({
   templateUrl: './error.component.html',
@@ -12,7 +12,7 @@ export class ErrorComponent implements OnInit, OnDestroy {
   errorObject: any;
 
   constructor(private errorService: ErrorService,
-  private readonly titleService: Title) {
+    private readonly titleService: Title) {
   }
 
   ngOnInit() {

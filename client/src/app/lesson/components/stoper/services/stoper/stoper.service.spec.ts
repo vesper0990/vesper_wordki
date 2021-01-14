@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 import { LessonStateEnum, LessonStep } from 'src/app/lesson/models/lesson-state';
-import { TimerService } from 'src/app/lesson/services/stoper/stoper2.service';
+import { TimerService } from 'src/app/lesson/services/timer/timer.service';
 import { FinishLesson, PauseLesson, RestartLesson, StartLesson } from 'src/app/lesson/store/actions';
 import { selectLessonStep } from 'src/app/lesson/store/selectors';
 import { createProvider } from 'src/app/test/helpers.spec';
