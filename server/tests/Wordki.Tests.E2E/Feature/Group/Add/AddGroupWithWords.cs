@@ -37,17 +37,16 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
             {
                 words.Add(new Wordki.Api.Featuers.Group.Add.Card
                 {
-                    Front = new Api.Domain.Side
+                    Front = new Side
                     {
                         Value = "front-value",
                         Example = "front-example"
                     },
-                    Back = new Api.Domain.Side
+                    Back = new Side
                     {
                         Value = "back-value",
                         Example = "back-example"
-                    },
-                    IsVisible = true
+                    }
                 });
             }
             var jsonObj = new AddGroupCommand
