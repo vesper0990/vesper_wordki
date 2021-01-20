@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { ParseNewCards, SaveNewGroup, SetFileContent } from './store/actions';
+import { selectCanGenerate, selectCanSave } from './store/selectors';
+import { GroupCreatorState } from './store/state';
 
 @Component({
   selector: 'app-group-creator',
@@ -7,58 +12,25 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 })
 export class GroupCreatorComponent implements OnInit {
 
-  fileContent: string;
+  canSave$: Observable<boolean>;
+  canGenerate$: Observable<boolean>;
 
-  elements = [{
-    label: 'Front word',
-    value: 0
-  },
-  {
-    label: 'Front example',
-    value: 1
-  },
-  {
-    label: 'Back word',
-    value: 2
-  },
-  {
-    label: 'Back example',
-    value: 3
-  }];
-
-  dropDownValue = this.elements[0];
-
-  elementsOrder = [];
-
-  constructor() { }
+  constructor(private readonly store: Store<GroupCreatorState>) { }
 
   ngOnInit(): void {
-    this.fileContent = '';
+    this.canSave$ = this.store.select(selectCanSave);
+    this.canGenerate$ = this.store.select(selectCanGenerate);
+  }
+
+  fileContentChanged(event: string): void {
+    this.store.dispatch(new SetFileContent({ fileContent: event }));
   }
 
   generate(): void {
+    this.store.dispatch(new ParseNewCards());
   }
 
-  addElement(): void {
-    const index = this.elements.findIndex(item => item.value === this.dropDownValue.value);
-    this.elementsOrder.push(this.dropDownValue);
-    this.elements.splice(index, 1);
-    this.dropDownValue = this.elements[0];
-    this.elements = Array.from(this.elements);
+  save(): void {
+    this.store.dispatch(new SaveNewGroup());
   }
-
-}
-
-export enum RowElementEnum {
-  Const = 'Constant value',
-  Separator = 'Separator',
-  FrontValue = 'Front word',
-  FrontExample = 'Front example',
-  BackValue = 'Back value',
-  BackExample = 'Back example'
-}
-
-export class RowItem {
-  label: string;
-  value: RowElementEnum;
 }

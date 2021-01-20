@@ -33,7 +33,6 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
         {
             var jsonObj = new AddGroupCommand
             {
-                UserId = 1,
                 Name = "groupName",
                 LanguageFront = 1,
                 LanguageBack = 2,

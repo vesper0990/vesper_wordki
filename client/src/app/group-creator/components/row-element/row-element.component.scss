@@ -1,0 +1,26 @@
+.main-container {
+  display: flex;
+  background-color: rgb(165, 115, 142);
+  border-radius: 10px;
+  padding: 10px 10px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgb(160, 92, 128);
+  }
+
+  #label {
+    font-family: Comfortaa;
+    color: white;
+    font-weight: 700;
+  }
+}
+
+.disabled {
+  background-color: rgb(161, 161, 161);
+  cursor: default;
+
+  &:hover {
+    background-color: rgb(161, 161, 161);
+  }
+}

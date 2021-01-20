@@ -1,12 +1,14 @@
-<textarea [(ngModel)]="fileContent"></textarea>
-
-<button (click)="generate()">Generate</button>
-<br>
-<p>File format:</p>
-
-<div *ngFor="let item of elementsOrder">
-  {{item.label}} |
+<div class="main-container">
+  <app-row-selector></app-row-selector>
+  <div id="buttons">
+    <button [disabled]="!(canGenerate$ | async)" (click)="generate()">Generate</button>
+    <button [disabled]="!(canSave$ | async)" (click)="save()">Save</button>
+  </div>
+  <div id="textarea-container">
+    <textarea #text (input)="fileContentChanged(text.value)"></textarea>
+  </div>
+  <div>
+    <app-group-details></app-group-details>
+    <app-parsed-card></app-parsed-card>
+  </div>
 </div>
-
-<p-dropdown appendTo="body" [options]="elements" [(ngModel)]="dropDownValue" optionLabel="label">
-</p-dropdown> <button (click)="addElement()">Add element</button>

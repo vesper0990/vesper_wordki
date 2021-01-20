@@ -1,0 +1,20 @@
+<form class="container" [formGroup]="detailsForm">
+  <div class="row">
+    <label for="name">
+      Name
+    </label>
+    <input class="input" type="text" formControlName="name">
+  </div>
+  <div class="row">
+    <label for="languageFront">
+      Front
+    </label>
+    <app-languages-drop-down class="input" formControlName="languageFront"></app-languages-drop-down>
+  </div>
+  <div class="row">
+    <label for="languageBack">
+      Back
+    </label>
+    <app-languages-drop-down class="input" formControlName="languageBack"></app-languages-drop-down>
+  </div>
+</form>

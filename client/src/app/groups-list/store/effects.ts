@@ -1,7 +1,7 @@
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { GroupsListHttpServiceBase } from '../services/groups-list-http/groups-list-http.service.base';
 import * as actions from './actions';
-import { map, catchError, exhaustMap, tap, concatMap } from 'rxjs/operators';
+import { map, catchError, exhaustMap, concatMap, switchMap } from 'rxjs/operators';
 import { forkJoin, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Group } from 'src/app/share/models/card-details';
@@ -24,12 +24,13 @@ export class GroupListEffects {
     @Effect()
     updateGroupInListEffect = this.actions$.pipe(
         ofType<actions.UpdateGroup>(actions.GroupListTypes.UPDATE_GROUP),
-        exhaustMap((action: actions.UpdateGroup) => forkJoin([
-            of(action.payload.group),
-            this.groupProvider.updateGroup(action.payload.group)
-        ])),
-        concatMap(data => [
-            new actions.UpdateGroupSuccess({ group: data[0] }),
+        switchMap((action: actions.UpdateGroup) =>
+            this.groupProvider.updateGroup(action.payload.group).pipe(
+                map(() => action.payload.group)
+            )
+        ),
+        concatMap(group => [
+            new actions.UpdateGroupSuccess({ group: group }),
             new actions.HideDialog()
         ]),
         catchError(error => of(new RequestFailed({ error: error })))
@@ -52,9 +53,13 @@ export class GroupListEffects {
     @Effect()
     removeGroupEffect = this.actions$.pipe(
         ofType<actions.RemoveGroup>(actions.GroupListTypes.REMOVE_GROUP),
-        tap(action => this.groupProvider.removeGroup(action.payload.groupId)),
-        concatMap(action => [
-            new actions.RemoveGroupSuccess({ groupId: action.payload.groupId }),
+        switchMap(action =>
+            this.groupProvider.removeGroup(action.payload.groupId).pipe(
+                map(() => action.payload.groupId)
+            )
+        ),
+        concatMap(groupId => [
+            new actions.RemoveGroupSuccess({ groupId: groupId }),
             new actions.HideDialog()
         ]),
         catchError(error => of(new RequestFailed({ error: error })))

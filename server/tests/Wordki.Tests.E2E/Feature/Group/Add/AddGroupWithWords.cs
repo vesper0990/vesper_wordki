@@ -37,12 +37,12 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
             {
                 words.Add(new Wordki.Api.Featuers.Group.Add.Card
                 {
-                    CardSide1 = new Api.Domain.Side
+                    Front = new Api.Domain.Side
                     {
                         Value = "front-value",
                         Example = "front-example"
                     },
-                    CardSide2 = new Api.Domain.Side
+                    Back = new Api.Domain.Side
                     {
                         Value = "back-value",
                         Example = "back-example"
@@ -52,11 +52,10 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
             }
             var jsonObj = new AddGroupCommand
             {
-                UserId = 1,
                 Name = "groupName",
                 LanguageFront = 1,
                 LanguageBack = 2,
-                Words = words
+                Cards = words
             };
             var jsonString = JsonSerializer.Serialize(jsonObj);
             Request.Content = new StringContent(jsonString, Encoding.UTF8, "application/json");
