@@ -15,9 +15,7 @@ namespace Wordki.Tests.UI
 
         protected UITestBase()
         {
-            AppUrl = "http://wordki-client.ci.e2etests:81";
-            Console.WriteLine(AppUrl);
-            Console.WriteLine($"env: ${Environment.GetEnvironmentVariable("ClientUrl")}");
+            AppUrl = Environment.GetEnvironmentVariable("ClientUrl");
 
             var options = new ChromeOptions();
             options.AddArguments("headless");
