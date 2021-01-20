@@ -1,4 +1,4 @@
-import { LanguageType } from "./language-type.mode";
+import { LanguageType } from './language-type.mode';
 
 export class CardDetails {
     constructor(

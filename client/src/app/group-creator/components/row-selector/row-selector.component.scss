@@ -1,0 +1,16 @@
+#row-elements {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.row-elements-line {
+  display: flex;
+  justify-content: center;
+  height: 50px;
+  align-items: center;
+
+  app-row-element {
+    margin: 0px 5px
+  }
+}

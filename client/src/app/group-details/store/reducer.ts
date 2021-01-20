@@ -10,11 +10,10 @@ export function reducer(state = initialState, action: actions.GroupDetailsAction
         case actions.GroupDetailsTypes.GetWordsSuccess: return actions.GetWordsSuccess.reduce(state, action);
         case actions.GroupDetailsTypes.UpdateWord: return actions.UpdateWord.reduce(state);
         case actions.GroupDetailsTypes.UpdateWordSuccess: return actions.UpdateWordSuccess.reduce(state, action);
-        // case actions.GroupDetailsTypes.AddWordSuccess: return actions.AddWordSuccess.reduce(state, action);
         case actions.GroupDetailsTypes.RemoveWord: return actions.RemoveWordAction.reduce(state);
         case actions.GroupDetailsTypes.RemoveWordSuccess: return actions.RemoveWordSuccess.reduce(state, action);
-        case actions.GroupDetailsTypes.SHOW_DIALOG: return actions.ShowDialog.reduce(state, action);
-        case actions.GroupDetailsTypes.HIDE_DIALOG: return actions.HideDialog.reduce(state);
+        case actions.GroupDetailsTypes.ShowDialog: return actions.ShowDialog.reduce(state, action);
+        case actions.GroupDetailsTypes.HideDialog: return actions.HideDialog.reduce(state);
         default: return state;
     }
 }

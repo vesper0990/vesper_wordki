@@ -1,11 +1,12 @@
 import { Action } from '@ngrx/store';
 import { EditGroup } from 'src/app/share/components/edit-group-dialog/edit-group.model';
-import { LanguageType } from 'src/app/share/models/language-type.mode';
 import { GroupListState } from './state';
 import { DialogMode } from 'src/app/share/components/edit-group-dialog/mode-dialog';
 import { Group } from 'src/app/share/models/card-details';
 
 export enum GroupListTypes {
+
+
     SHOW_DIALOG = '[GROUP_LIST_STATE] SHOW_DIALOG',
     HIDE_DIALOG = '[GROUP_LIST_STATE] HIDE_DIALOG',
 
@@ -159,5 +160,4 @@ export type GroupListActions = GetGroups |
     RemoveGroup |
     RemoveGroupSuccess |
     ShowDialog |
-    HideDialog
-    ;
+    HideDialog;

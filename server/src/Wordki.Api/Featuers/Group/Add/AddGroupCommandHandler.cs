@@ -36,16 +36,16 @@ namespace Wordki.Api.Featuers.Group.Add
                 User = user,
                 GroupCreationDate = dateTimeProvider.GetTime()
             };
-            foreach (var word in request.Words)
+            foreach (var card in request.Cards)
             {
                 newGroup.Words.Add(
                     new Domain.Card
                     {
-                        Heads = word.CardSide1,
-                        Tails = word.CardSide2,
-                        Comment = word.Comment,
+                        Heads = Domain.Side.New(card.Front.Value, card.Front.Example),
+                        Tails = Domain.Side.New(card.Back.Value, card.Back.Example),
+                        Comment = string.Empty,
                         Group = newGroup,
-                        IsVisible = word.IsVisible,
+                        IsVisible = true,
                         WordCreationDate = dateTimeProvider.GetTime(),
                     });
             }

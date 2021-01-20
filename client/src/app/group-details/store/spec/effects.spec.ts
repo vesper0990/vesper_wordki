@@ -7,11 +7,13 @@ import * as actions from '../actions';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { GroupDetailsEffects } from '../effects';
 import { GroupDetailsHttpBase } from '../../services/group-details-http/group-details-http.service.base';
-import { getAllMethods } from 'src/app/test/helpers.spec';
+import { createProvider, getAllMethods } from 'src/app/test/helpers.spec';
 import { GroupDetailsHttp } from '../../services/group-details-http/group-details-http.service';
 import { of, ReplaySubject, throwError } from 'rxjs';
 import { EditWord } from 'src/app/share/components/edit-word-dialog/edit-word.model';
 import { catchError } from 'rxjs/operators';
+import { ErrorService } from 'src/app/share/components/error/services/error/error-service';
+import { RequestFailed } from 'src/app/store/actions';
 
 const mockInitState: GroupDetailsState = {
     groupDetails:
@@ -40,23 +42,23 @@ describe('GroupDetails Store', () => {
     let httpService: jasmine.SpyObj<GroupDetailsHttpBase>;
     let effects: GroupDetailsEffects;
     let actions$: ReplaySubject<any>;
+    let errorService: jasmine.SpyObj<ErrorService>;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [
                 { provide: GroupDetailsHttpBase, useValue: jasmine.createSpyObj(getAllMethods(GroupDetailsHttp)) },
                 GroupDetailsEffects,
-                provideMockActions(() => actions$)
+                provideMockActions(() => actions$),
+                createProvider(ErrorService)
             ]
         });
         httpService = TestBed.inject(GroupDetailsHttpBase) as jasmine.SpyObj<GroupDetailsHttpBase>;
         effects = TestBed.inject(GroupDetailsEffects);
-    });
-
-    beforeEach(() => {
+        errorService = TestBed.inject(ErrorService) as jasmine.SpyObj<ErrorService>;
         actions$ = new ReplaySubject(1);
-
     });
+
 
     it('should create', () => {
         expect(effects).toBeTruthy();
@@ -87,10 +89,9 @@ describe('GroupDetails Store', () => {
 
         actions$.next(new actions.GetGroupDetails({ groupId: id }));
 
-        effects.getGroupDetailsEffect.pipe(catchError(error => {
-            expect(error).toEqual(errorExpected);
-            return of();
-        })).subscribe();
+        effects.getGroupDetailsEffect.subscribe(value => {
+            expect(value).toEqual(new RequestFailed({ error: errorExpected }));
+        });
     });
 
     it('should GetWords', () => {
@@ -111,10 +112,9 @@ describe('GroupDetails Store', () => {
 
         actions$.next(new actions.GetWords({ groupId: id }));
 
-        effects.getWordsEffect.pipe(catchError(error => {
-            expect(error).toEqual(errorExpected);
-            return of();
-        })).subscribe();
+        effects.getWordsEffect.subscribe(value => {
+            expect(value).toEqual(new RequestFailed({ error: errorExpected }));
+        });
     });
 
     it('should UpdateWord', () => {
@@ -141,10 +141,9 @@ describe('GroupDetails Store', () => {
 
         actions$.next(new actions.UpdateWord({ editword: editWord }));
 
-        effects.updateWordEffect.pipe(catchError(error => {
-            expect(error).toEqual(errorExpected);
-            return of();
-        })).subscribe();
+        effects.updateWordEffect.subscribe(value => {
+            expect(value).toEqual(new RequestFailed({ error: errorExpected }));
+        });
     });
 
     it('should AddWord', () => {
@@ -171,13 +170,12 @@ describe('GroupDetails Store', () => {
 
         actions$.next(new actions.AddWord({ editword: editWord }));
 
-        effects.addWordEffect.pipe(catchError(error => {
-            expect(error).toEqual(errorExpected);
-            return of();
-        })).subscribe();
+        effects.addWordEffect.subscribe(value => {
+            expect(value).toEqual(new RequestFailed({ error: errorExpected }));
+        });
     });
 
-    it('should AddWord', () => {
+    it('should RemoveWord', () => {
         let index = 0;
         httpService.removeWord.withArgs(1, 1).and.returnValue(of({}));
         actions$.next(new actions.RemoveWordAction({ wordId: 1, groupId: 1 }));
@@ -193,16 +191,14 @@ describe('GroupDetails Store', () => {
         expect(httpService.removeWord).toHaveBeenCalledWith(1, 1);
     });
 
-    it('should addWord when error', () => {
+    it('should RemoveWord when error', () => {
         const errorExpected = {};
         httpService.removeWord.withArgs(1, 1).and.returnValue(throwError(errorExpected));
 
         actions$.next(new actions.RemoveWordAction({ wordId: 1, groupId: 1 }));
 
-        effects.removeWordEffect.pipe(catchError(error => {
-            expect(error).toEqual(errorExpected);
-            return of();
-        })).subscribe();
+        effects.removeWordEffect.subscribe(value => {
+            expect(value).toEqual(new RequestFailed({ error: errorExpected }));
+        });
     });
-
 });

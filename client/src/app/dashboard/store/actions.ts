@@ -3,8 +3,6 @@ import { ExtendedCardDetails } from 'src/app/share/models/card-details';
 import { DashbordState } from './state';
 
 export enum DashboardActionsEnum {
-    REQUEST_FAILED = '[DASHBOARD] REQUEST_FAILED',
-
     GET_LAST_FAILED = '[DASHBOARD] GET_LAST_FAILED',
     GET_LAST_FAILED_SUCCESS = '[DASHBOARD] GET_LAST_FAILED_SUCCESS',
 
@@ -47,17 +45,6 @@ export class GetLastFailedSuccess implements Action {
         return {
             ...state,
             lastFailed: action.payload.card,
-        };
-    }
-}
-
-export class RequestFailed implements Action {
-    readonly type = DashboardActionsEnum.REQUEST_FAILED;
-    constructor(public payload: { error: string }) { }
-
-    public reduce(state: DashbordState): DashbordState {
-        return {
-            ...state,
         };
     }
 }
@@ -208,7 +195,6 @@ export class GetCardsCountSuccess implements Action {
 }
 
 export type DashboardActionsType =
-    RequestFailed |
     GetLastFailed |
     GetLastFailedSuccess |
     GetNextRepeat |

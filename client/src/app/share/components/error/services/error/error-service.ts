@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ErrorService {
+
+    constructor(private readonly router: Router) { }
 
     errorMessage = '';
     error: any = null;
@@ -14,6 +17,7 @@ export class ErrorService {
         }
         this.errorMessage = errorMessage;
         this.error = error;
+        this.router.navigate(['/error']);
     }
 
     clearError(): void {

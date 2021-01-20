@@ -19,3 +19,5 @@ services:
       - 5001
     depends_on:
       - wordki-client.ci.e2etests
+    environment:
+      - ClientUrl=http://wordki-client.ci.e2etests:81

@@ -14,9 +14,9 @@ export class DashboardService {
         private readonly router: Router) { }
 
     init(): void {
-        this.store.dispatch(new action.GetNextRepeat());
-        this.store.dispatch(new action.GetNewstCard());
-        this.store.dispatch(new action.GetLastFailed());
+        // this.store.dispatch(new action.GetNextRepeat());
+        // this.store.dispatch(new action.GetNewstCard());
+        // this.store.dispatch(new action.GetLastFailed());
         this.store.dispatch(new action.GetTodayCardsCount());
         this.store.dispatch(new action.GetLastLessonDate());
         this.store.dispatch(new action.GetGroupsCount());

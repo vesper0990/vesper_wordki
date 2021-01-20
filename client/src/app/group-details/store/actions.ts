@@ -5,8 +5,8 @@ import { DialogMode } from 'src/app/share/components/edit-group-dialog/mode-dial
 import { CardDetails, GroupDetails, SideDetails } from 'src/app/share/models/card-details';
 
 export enum GroupDetailsTypes {
-    SHOW_DIALOG = '[GROUP_LIST_STATE] SHOW_DIALOG',
-    HIDE_DIALOG = '[GROUP_LIST_STATE] HIDE_DIALOG',
+    ShowDialog = '[GROUP_LIST_STATE] SHOW_DIALOG',
+    HideDialog = '[GROUP_LIST_STATE] HIDE_DIALOG',
 
     GetGroupDetails = '[GROUP_DETAILS_STATE] GET_GROUP_DETAILS',
     GetGroupDetailsSuccess = '[GROUP_DETAILS_STATE] GET_GROUP_DETAILS_SUCCESS',
@@ -132,18 +132,6 @@ export class AddWord implements Action {
     }
 }
 
-// export class AddWordSuccess implements Action {
-//     readonly type = GroupDetailsTypes.AddWordSuccess;
-//     constructor(public payload: { word: any }) { }
-
-//     static reduce(state: GroupDetailsState, action: AddWordSuccess): GroupDetailsState {
-//         const words = state.words;
-//         action.payload.word.group = state.groupDetails;
-//         words.push(action.payload.word);
-//         return { ...state, words: words };
-//     }
-// }
-
 export class RemoveWordAction implements Action {
     readonly type = GroupDetailsTypes.RemoveWord;
     constructor(public payload: { groupId: number, wordId: number }) { }
@@ -164,7 +152,7 @@ export class RemoveWordSuccess implements Action {
 }
 
 export class ShowDialog implements Action {
-    readonly type = GroupDetailsTypes.SHOW_DIALOG;
+    readonly type = GroupDetailsTypes.ShowDialog;
     constructor(public payload: { mode: DialogMode, card: EditWord }) { }
     static reduce(state: GroupDetailsState, action: ShowDialog): GroupDetailsState {
         return {
@@ -177,7 +165,7 @@ export class ShowDialog implements Action {
 }
 
 export class HideDialog implements Action {
-    readonly type = GroupDetailsTypes.HIDE_DIALOG;
+    readonly type = GroupDetailsTypes.HideDialog;
     constructor() { }
     static reduce(state: GroupDetailsState): GroupDetailsState {
         return {

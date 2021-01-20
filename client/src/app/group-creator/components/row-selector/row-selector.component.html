@@ -1,0 +1,12 @@
+<div id="row-elements">
+  <div class="row-elements-line">
+    <app-row-element *ngFor="let item of rowElements$ | async; let i = index" [label]="item.label"
+      (click)="removeElement(item,i)">
+    </app-row-element>
+  </div>
+  <div class="row-elements-line">
+    <app-row-element *ngFor="let item of remainingElements" [label]="item.item.label" [isDisabled]="item.isDisabled"
+      (click)="addElement(item)">
+    </app-row-element>
+  </div>
+</div>

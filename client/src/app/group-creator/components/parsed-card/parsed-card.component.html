@@ -1,0 +1,5 @@
+<div id="resutls">
+  <div *ngFor="let item of parsedCards$ | async; let i = index">
+    {{i}} - {{item.frontValue}} - {{item.backValue}}
+  </div>
+</div>

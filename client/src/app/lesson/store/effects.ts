@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LessonHttpBaseService } from "../services/lesson-http/lesson-http.service.base";
+import { LessonHttpBaseService } from '../services/lesson-http/lesson-http.service.base';
 import { Store } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { LessonState } from './state';
@@ -8,6 +8,7 @@ import { of } from 'rxjs';
 import { exhaustMap, map, catchError, withLatestFrom, concatMap, switchMap } from 'rxjs/operators';
 import { shuffleArray } from 'src/app/share/utils/shuffle-array';
 import { selectCurrentCard, selectLessonId } from './selectors';
+import { RequestFailed } from 'src/app/store/actions';
 
 @Injectable()
 export class LessonEffects {
@@ -21,7 +22,7 @@ export class LessonEffects {
         ofType(actions.LessonActionEnum.CREATE_NEW_LESSON),
         switchMap(() => this.wordProvider.createLesson()),
         map(value => new actions.CreateNewLessonSuccess({ lessonId: value })),
-        catchError(error => of(new actions.GetWordsFailed({ error: error })))
+        catchError(error => of(new RequestFailed({ error: error })))
     );
 
 
@@ -30,7 +31,7 @@ export class LessonEffects {
         exhaustMap(() => this.wordProvider.getTodayWords()),
         map(value => shuffleArray(value)),
         map(value => new actions.GetWordsSuccess({ cards: value as any })),
-        catchError(error => of(new actions.GetWordsFailed({ error: error })))
+        catchError(error => of(new RequestFailed({ error: error })))
     );
 
     @Effect({
@@ -42,7 +43,8 @@ export class LessonEffects {
             this.store$.select(selectCurrentCard),
             this.store$.select(selectLessonId),
         ),
-        concatMap(([action, currentWord, lessonId]) => this.wordProvider.correct(currentWord.id, lessonId, ''))
+        concatMap(([action, currentWord, lessonId]) => this.wordProvider.correct(currentWord.id, lessonId, '')),
+        catchError(error => of(new RequestFailed({ error: error })))
     );
 
     @Effect({
@@ -54,7 +56,8 @@ export class LessonEffects {
             this.store$.select(selectCurrentCard),
             this.store$.select(selectLessonId),
         ),
-        concatMap(([action, currentWord, lessonId]) => this.wordProvider.wrong(currentWord.id, lessonId, ''))
+        concatMap(([action, currentWord, lessonId]) => this.wordProvider.wrong(currentWord.id, lessonId, '')),
+        catchError(error => of(new RequestFailed({ error: error })))
     );
 
     @Effect({
@@ -66,7 +69,8 @@ export class LessonEffects {
             this.store$.select(selectCurrentCard),
             this.store$.select(selectLessonId),
         ),
-        concatMap(([action, currentWord, lessonId]) => this.wordProvider.accept(currentWord.id, lessonId, ''))
+        concatMap(([action, currentWord, lessonId]) => this.wordProvider.accept(currentWord.id, lessonId, '')),
+        catchError(error => of(new RequestFailed({ error: error })))
     );
 
     @Effect({
@@ -75,7 +79,8 @@ export class LessonEffects {
     finishLesson$ = this.actions$.pipe(
         ofType<actions.FinishLesson>(actions.LessonActionEnum.FINISH_LESSON),
         withLatestFrom(this.store$.select(selectLessonId)),
-        concatMap(([action, lessonId]) => this.wordProvider.finish(lessonId, action.payload.totalTime))
+        concatMap(([action, lessonId]) => this.wordProvider.finish(lessonId, action.payload.totalTime)),
+        catchError(error => of(new RequestFailed({ error: error })))
     );
 
     @Effect()
