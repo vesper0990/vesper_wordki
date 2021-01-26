@@ -18,7 +18,8 @@ namespace Wordki.Api.Featuers.Card.GetAllRepeat
         private readonly ITimeProvider timeProvider;
         private readonly IHttpContextProvider contextProvider;
 
-        public GetAllRepeatQueryHandler(WordkiDbContext dbContext, ITimeProvider timeProvider, IHttpContextProvider contextProvider){
+        public GetAllRepeatQueryHandler(WordkiDbContext dbContext, ITimeProvider timeProvider, IHttpContextProvider contextProvider)
+        {
             this.dbContext = dbContext;
             this.timeProvider = timeProvider;
             this.contextProvider = contextProvider;
@@ -29,14 +30,14 @@ namespace Wordki.Api.Featuers.Card.GetAllRepeat
             var userId = contextProvider.GetUserId();
             var results = new List<CardRepeatDto>();
 
-            var heads = dbContext.Words.Include(c => c.Group)
-            .Where(c => c.Group.User.Id == userId && c.Heads.State.NextRepeat < timeProvider.GetDate())
+            var heads = dbContext.Cards.Include(c => c.Group)
+            .Where(c => c.Group.Owner.Id == userId && c.Front.State.NextRepeat < timeProvider.GetDate())
             .Select(item => ConvertIntoRepeatDto(item, false)).ToList();
 
             results.AddRange(heads);
 
-            var tails = dbContext.Words.Include(c => c.Group)
-            .Where(c => c.Group.User.Id == userId && c.Tails.State.NextRepeat < timeProvider.GetDate())
+            var tails = dbContext.Cards.Include(c => c.Group)
+            .Where(c => c.Group.Owner.Id == userId && c.Back.State.NextRepeat < timeProvider.GetDate())
             .Select(item => ConvertIntoRepeatDto(item, true));
 
             results.AddRange(tails);
@@ -48,26 +49,26 @@ namespace Wordki.Api.Featuers.Card.GetAllRepeat
         {
             var sideDate = new DateTime(side.State.NextRepeat.Year, side.State.NextRepeat.Month, side.State.NextRepeat.Day);
             return sideDate.CompareTo(timeProvider.GetDate()) <= 0;
-        }    
+        }
 
         public static CardRepeatDto ConvertIntoRepeatDto(Domain.Card card, bool revert = false)
-        => revert 
+        => revert
         ? new CardRepeatDto
         {
             Id = card.Id,
             Answer = new SideRepeatDto
             {
-                Value = card.Heads.Value,
-                Example = card.Heads.Example,
-                Drawer = card.Heads.State.Drawer.Value,
-                Language =  card.Group.GroupLanguage1
+                Value = card.Front.Value,
+                Example = card.Front.Example,
+                Drawer = card.Front.State.Drawer.Value,
+                Language = card.Group.FrontLanguage
             },
             Question = new SideRepeatDto
             {
-                Value = card.Tails.Value,
-                Example = card.Tails.Example,
-                Drawer = card.Tails.State.Drawer.Value,
-                Language =  card.Group.GroupLanguage2
+                Value = card.Back.Value,
+                Example = card.Back.Example,
+                Drawer = card.Back.State.Drawer.Value,
+                Language = card.Group.BackLanguage
             }
         }
         : new CardRepeatDto
@@ -75,17 +76,17 @@ namespace Wordki.Api.Featuers.Card.GetAllRepeat
             Id = card.Id,
             Question = new SideRepeatDto
             {
-                Value = card.Heads.Value,
-                Example = card.Heads.Example,
-                Drawer = card.Heads.State.Drawer.Value,
-                Language =  card.Group.GroupLanguage1
+                Value = card.Front.Value,
+                Example = card.Front.Example,
+                Drawer = card.Front.State.Drawer.Value,
+                Language = card.Group.FrontLanguage
             },
             Answer = new SideRepeatDto
             {
-                Value = card.Tails.Value,
-                Example = card.Tails.Example,
-                Drawer = card.Tails.State.Drawer.Value,
-                Language =  card.Group.GroupLanguage2
+                Value = card.Back.Value,
+                Example = card.Back.Example,
+                Drawer = card.Back.State.Drawer.Value,
+                Language = card.Group.BackLanguage
             }
         };
     }

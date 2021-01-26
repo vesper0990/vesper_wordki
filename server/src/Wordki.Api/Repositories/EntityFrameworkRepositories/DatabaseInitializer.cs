@@ -67,7 +67,7 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
 
             for (var i = 0; i < 6; i++)
             {
-                var newLesson = new Lesson
+                var newLesson = new Domain.Lesson
                 {
                     StartDate = timeProvider.GetTime().AddDays(-i),
                     FinishDate = timeProvider.GetTime().AddDays(-i).AddMinutes(random.Next(20, 30)),
@@ -81,10 +81,10 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
                 var newGroup = new Domain.Group
                 {
                     GroupCreationDate = timeProvider.GetTime().AddDays(-i - 1),
-                    GroupLanguage1 = 1,
-                    GroupLanguage2 = 2,
+                    FrontLanguage = 1,
+                    BackLanguage = 2,
                     Name = $"Test group {i + 1}",
-                    User = user
+                    Owner = user
                 };
                 user.Groups.Add(newGroup);
 
@@ -92,11 +92,10 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
                 {
                     var newCard = new Domain.Card
                     {
-                        WordCreationDate = timeProvider.GetTime().AddDays(-i - 1),
-                        Comment = "Test comment to word",
+                        CreationDate = timeProvider.GetTime().AddDays(-i - 1),
                         Group = newGroup,
                         IsVisible = true,
-                        Heads = new Side
+                        Front = new Side
                         {
                             Value = $"Word {j + 1}",
                             Example = $"Simple sentance where Word {j + 1} is used.",
@@ -106,7 +105,7 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
                                 NextRepeat = timeProvider.GetTime().AddDays(random.Next(-4, 4))
                             }
                         },
-                        Tails = new Side
+                        Back = new Side
                         {
                             Value = $"Słowo {j + 1}",
                             Example = $"Proste zdanie gdzie słowo {j + 1} jest użyte.",
@@ -118,15 +117,15 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
                         },
                     };
 
-                    newGroup.Words.Add(newCard);
+                    newGroup.Cards.Add(newCard);
 
                     for (var k = 0; k < random.Next(1, 7); k++)
                     {
                         var lesson = user.Lessons[random.Next(user.Lessons.Count - 1)];
-                        var newRepeat = new Repeat
+                        var newRepeat = new Domain.Repeat
                         {
                             Lesson = lesson,
-                            DateTime = newCard.WordCreationDate.AddDays(random.Next(-7, 0)),
+                            DateTime = newCard.CreationDate.AddDays(random.Next(-7, 0)),
                             Result = random.Next(-1, 1),
                             QuestionSide = random.Next(0, 1) > 0 ? QuestionSideEnum.Heads : QuestionSideEnum.Tails,
                             Word = newCard

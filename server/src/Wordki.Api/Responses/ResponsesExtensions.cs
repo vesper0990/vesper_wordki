@@ -9,25 +9,25 @@ namespace Wordki.Api.Responses
         => new CardDetailsDto
         {
             Id = card.Id,
-            CreationDate = card.WordCreationDate,
+            CreationDate = card.CreationDate,
             Front = new SideDetailsDto
             {
-                Value = card.Heads.Value,
-                Example = card.Heads.Example,
-                Drawer = card.Heads.State.Drawer.Value,
+                Value = card.Front.Value,
+                Example = card.Front.Example,
+                Drawer = card.Front.State.Drawer.Value,
                 IsVisible = card.IsVisible, // todo split is visible on front and back
-                Language = card.Group.GroupLanguage1,
-                NextRepeat = card.Heads.State.NextRepeat,
+                Language = card.Group.FrontLanguage,
+                NextRepeat = card.Front.State.NextRepeat,
                 RepeatCount = card.Repeats.Count(r => r.QuestionSide == QuestionSideEnum.Heads)
             },
             Back = new SideDetailsDto
             {
-                Value = card.Tails.Value,
-                Example = card.Tails.Example,
-                Drawer = card.Tails.State.Drawer.Value,
+                Value = card.Back.Value,
+                Example = card.Back.Example,
+                Drawer = card.Back.State.Drawer.Value,
                 IsVisible = card.IsVisible, // todo split is visible on front and back
-                Language = card.Group.GroupLanguage2,
-                NextRepeat = card.Tails.State.NextRepeat,
+                Language = card.Group.BackLanguage,
+                NextRepeat = card.Back.State.NextRepeat,
                 RepeatCount = card.Repeats.Count(r => r.QuestionSide == QuestionSideEnum.Tails)
             }
         };
@@ -37,25 +37,25 @@ namespace Wordki.Api.Responses
         {
             Id = card.Id,
             GroupName = card.Group.Name,
-            CreationDate = card.WordCreationDate,
+            CreationDate = card.CreationDate,
             Front = new SideDetailsDto
             {
-                Value = card.Heads.Value,
-                Example = card.Heads.Example,
-                Drawer = card.Heads.State.Drawer.Value,
+                Value = card.Front.Value,
+                Example = card.Front.Example,
+                Drawer = card.Front.State.Drawer.Value,
                 IsVisible = card.IsVisible, // todo split is visible on front and back
-                Language = card.Group.GroupLanguage1,
-                NextRepeat = card.Heads.State.NextRepeat,
+                Language = card.Group.FrontLanguage,
+                NextRepeat = card.Front.State.NextRepeat,
                 RepeatCount = card.Repeats.Count(r => r.QuestionSide == QuestionSideEnum.Heads)
             },
             Back = new SideDetailsDto
             {
-                Value = card.Tails.Value,
-                Example = card.Tails.Example,
-                Drawer = card.Tails.State.Drawer.Value,
+                Value = card.Back.Value,
+                Example = card.Back.Example,
+                Drawer = card.Back.State.Drawer.Value,
                 IsVisible = card.IsVisible, // todo split is visible on front and back
-                Language = card.Group.GroupLanguage2,
-                NextRepeat = card.Tails.State.NextRepeat,
+                Language = card.Group.BackLanguage,
+                NextRepeat = card.Back.State.NextRepeat,
                 RepeatCount = card.Repeats.Count(r => r.QuestionSide == QuestionSideEnum.Tails)
             }
         };
@@ -65,10 +65,10 @@ namespace Wordki.Api.Responses
          {
              Id = group.Id,
              Name = group.Name,
-             LanguageFront = group.GroupLanguage1,
-             LanguageBack = group.GroupLanguage2,
-             CardsCount = group.Words.Count,
-             RepeatsCount = group.Words.Select(c => c.Repeats.Count).Sum()
+             LanguageFront = group.FrontLanguage,
+             LanguageBack = group.BackLanguage,
+             CardsCount = group.Cards.Count,
+             RepeatsCount = group.Cards.Select(c => c.Repeats.Count).Sum()
          };
     }
 }

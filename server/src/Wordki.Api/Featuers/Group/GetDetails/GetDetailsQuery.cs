@@ -30,18 +30,18 @@ namespace Wordki.Api.Featuers.Group.GetDetails
         {
             var userId = contextProvider.GetUserId();
             var group = await dbContext.Groups
-            .Include(g => g.Words).ThenInclude(c => c.Repeats)
-            .FirstOrDefaultAsync(g => g.Id == request.GroupId && g.User.Id == userId);
+            .Include(g => g.Cards).ThenInclude(c => c.Repeats)
+            .FirstOrDefaultAsync(g => g.Id == request.GroupId && g.Owner.Id == userId);
 
             return new GroupDetailsDto
             {
                 Id = group.Id,
-                LanguageFront = group.GroupLanguage1,
-                LanguageBack = group.GroupLanguage2,
+                LanguageFront = group.FrontLanguage,
+                LanguageBack = group.BackLanguage,
                 Name = group.Name,
                 CreationDate = group.GroupCreationDate,
-                CardsCount = group.Words.Count,
-                RepeatsCount = group.Words.Select(c => c.Repeats.Count).Sum()
+                CardsCount = group.Cards.Count,
+                RepeatsCount = group.Cards.Select(c => c.Repeats.Count).Sum()
             };
         }
     }

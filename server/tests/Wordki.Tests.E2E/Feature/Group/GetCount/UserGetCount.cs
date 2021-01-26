@@ -28,7 +28,7 @@ namespace Wordki.Tests.E2E.Feature.Group.GetCount
                 dbContext.Users.Add(user);
 
                 var group = Utils.GetGroup();
-                group.User = user;
+                group.Owner = user;
                 dbContext.Groups.Add(group);
 
                 await dbContext.SaveChangesAsync();

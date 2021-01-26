@@ -59,16 +59,16 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
         {
             using (var dbContext = new WordkiDbContext(ConnectionStringProvider))
             {
-                var group = await dbContext.Groups.Include(g => g.User).SingleAsync();
+                var group = await dbContext.Groups.Include(g => g.Owner).SingleAsync();
                 Assert.IsNotNull(group);
                 Assert.Greater(group.Id, 0);
-                Assert.AreEqual(group.User.Id, 1);
+                Assert.AreEqual(group.Owner.Id, 1);
                 Assert.AreEqual(group.Name, "groupName");
-                Assert.AreEqual(group.GroupLanguage1, 1);
-                Assert.AreEqual(group.GroupLanguage2, 2);
+                Assert.AreEqual(group.FrontLanguage, 1);
+                Assert.AreEqual(group.BackLanguage, 2);
                 Assert.AreEqual(group.GroupCreationDate, Utils.Time);
 
-                var wordsCount = await dbContext.Words.CountAsync();
+                var wordsCount = await dbContext.Cards.CountAsync();
                 Assert.AreEqual(0, wordsCount);
 
             }

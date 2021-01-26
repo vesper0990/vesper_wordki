@@ -25,9 +25,9 @@ namespace Wordki.Api.Featuers.Group.GetGroups
         {
             var userId = httpContextProvider.GetUserId();
             var groups = dbContext.Groups
-                .Include(g => g.Words).ThenInclude(c => c.Repeats)
-                .Include(g => g.User)
-                .Where(g => g.User.Id == userId)
+                .Include(g => g.Cards).ThenInclude(c => c.Repeats)
+                .Include(g => g.Owner)
+                .Where(g => g.Owner.Id == userId)
                 .Select(g => g.GetGroupDto());
             return await Task.FromResult(groups);
         }

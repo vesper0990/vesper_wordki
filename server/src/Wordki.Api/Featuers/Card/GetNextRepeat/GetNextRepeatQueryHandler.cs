@@ -24,13 +24,13 @@ namespace Wordki.Api.Featuers.Card.GetNextRepeat
         {
             var userId = contextProvider.GetUserId();
 
-            var minHeads = await dbContext.Words
-                .Include(w => w.Group).ThenInclude(g => g.User)
-                .Where(c => c.Group.User.Id == userId).OrderBy(w => w.Heads.State.NextRepeat).Take(1).FirstOrDefaultAsync();
+            var minHeads = await dbContext.Cards
+                .Include(w => w.Group).ThenInclude(g => g.Owner)
+                .Where(c => c.Group.Owner.Id == userId).OrderBy(w => w.Front.State.NextRepeat).Take(1).FirstOrDefaultAsync();
 
-            var minTails = await dbContext.Words
-                .Include(w => w.Group).ThenInclude(g => g.User)
-                .Where(c => c.Group.User.Id == userId).OrderBy(w => w.Tails.State.NextRepeat).Take(1).FirstOrDefaultAsync();
+            var minTails = await dbContext.Cards
+                .Include(w => w.Group).ThenInclude(g => g.Owner)
+                .Where(c => c.Group.Owner.Id == userId).OrderBy(w => w.Back.State.NextRepeat).Take(1).FirstOrDefaultAsync();
 
             var card = GetNextRepeat(minHeads, minTails);
             return card == null ? null : card.GetExtendedCardDetailsDto();
@@ -50,7 +50,7 @@ namespace Wordki.Api.Featuers.Card.GetNextRepeat
             {
                 return minHeads;
             }
-            return minHeads.Heads.State.NextRepeat < minTails.Tails.State.NextRepeat ? minHeads : minTails;
+            return minHeads.Front.State.NextRepeat < minTails.Back.State.NextRepeat ? minHeads : minTails;
         }
     }
 }

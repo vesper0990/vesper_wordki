@@ -7,11 +7,13 @@ namespace Wordki.Api.Domain
     public class Card
     {
         public long Id { get; set; }
-        public Side Heads { get; set; }
-        public Side Tails { get; set; }
-        public string Comment { get; set; }
+        public CardLabels Labels { get; set; }
+        // public State Front{ get; set; }
+        // public State Back{ get; set; }
+        public Side Front { get; set; }
+        public Side Back { get; set; }
         public bool IsVisible { get; set; }
-        public DateTime WordCreationDate { get; set; }
+        public DateTime CreationDate { get; set; }
         public Group Group { get; set; }
         public IList<Repeat> Repeats { get; }
 
@@ -61,6 +63,7 @@ namespace Wordki.Api.Domain
     {
         public Drawer Drawer { get; set; }
         public DateTime NextRepeat { get; set; }
+        public bool IsVisible { get; set; }
 
         public static State New() =>
             new State
@@ -70,9 +73,16 @@ namespace Wordki.Api.Domain
             };
     }
 
-    public class NewCard
+    public class CardLabels
     {
         public long Id { get; set; }
-        
+        public Label Front { get; set; }
+        public Label Back { get; set; }
+    }
+
+    public class Label
+    {
+        public string Value { get; set; }
+        public string Example { get; set; }
     }
 }

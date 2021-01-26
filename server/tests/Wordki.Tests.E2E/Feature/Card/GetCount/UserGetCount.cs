@@ -28,13 +28,13 @@ namespace Wordki.Tests.E2E.Feature.Card.GetCount
                 dbContext.Users.Add(user);
 
                 var group = Utils.GetGroup();
-                group.User = user;
+                group.Owner = user;
                 dbContext.Groups.Add(group);
 
                 var card = Utils.GetCard();
                 card.Group = group;
 
-                await dbContext.Words.AddAsync(card);
+                await dbContext.Cards.AddAsync(card);
 
                 await dbContext.SaveChangesAsync();
             }

@@ -1,14 +1,47 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using NUnit.Framework;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
 
 namespace Wordki.Tests.E2E.Feature
 {
+    public class E2eWebApplicationFactory : WebApplicationFactory<Startup>
+    {
+
+        private readonly Lazy<HttpClient> httpClient;
+        private readonly Action<IServiceCollection> initialConfig;
+
+        public HttpClient Client => httpClient.Value;
+
+
+        public E2eWebApplicationFactory(Action<IServiceCollection> initialConfig = null) : base()
+        {
+            httpClient = new Lazy<HttpClient>(CreateClient());
+            this.initialConfig = initialConfig;
+        }
+
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
+        {
+            builder.ConfigureTestServices(services =>
+            {
+                initialConfig?.Invoke(services);
+            });
+
+            base.ConfigureWebHost(builder);
+        }
+
+    }
+
     public class TestBase
     {
+        private E2eWebApplicationFactory factory;
         protected HttpRequestMessage Request { get; set; }
         protected HttpResponseMessage Response { get; set; }
         protected TestServerMock Host { get; set; }
@@ -16,6 +49,7 @@ namespace Wordki.Tests.E2E.Feature
 
         public TestBase()
         {
+            factory = new E2eWebApplicationFactory();
             Host = new TestServerMock();
             var options = Host.Server.Services.GetService(typeof(IOptions<DatabaseConfig>)) as IOptions<DatabaseConfig>;
             ConnectionStringProvider = new SimpleConnectionStringProvider(options);

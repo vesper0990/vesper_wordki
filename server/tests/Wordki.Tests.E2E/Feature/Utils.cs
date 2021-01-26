@@ -67,8 +67,8 @@ namespace Wordki.Tests.E2E.Feature
             return new Api.Domain.Group
             {
                 Id = 1,
-                GroupLanguage1 = 1,
-                GroupLanguage2 = 2,
+                FrontLanguage = 1,
+                BackLanguage = 2,
                 Name = "GroupName",
                 GroupCreationDate = Yesterday
             };
@@ -86,9 +86,9 @@ namespace Wordki.Tests.E2E.Feature
 
             var builder = Builder<Api.Domain.Card>.CreateNew()
                 .With(x => x.Id = generator.Generate())
-                .With(x => x.Heads = GetSide())
-                .With(x => x.Tails = GetSide())
-                .With(x => x.WordCreationDate = Yesterday);
+                .With(x => x.Front = GetSide())
+                .With(x => x.Back = GetSide())
+                .With(x => x.CreationDate = Yesterday);
             return builder.Build();
         }
 

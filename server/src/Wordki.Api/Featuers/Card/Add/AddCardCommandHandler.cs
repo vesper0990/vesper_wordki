@@ -24,7 +24,7 @@ namespace Wordki.Api.Featuers.Card.Add
         public async Task<long> Handle(AddCardCommand request, CancellationToken cancellationToken)
         {
             var group = await dbContext.Groups.SingleOrDefaultAsync(g => g.Id == request.GroupId);
-            if(group == null)
+            if (group == null)
             {
                 throw new Exception();
             }
@@ -33,13 +33,13 @@ namespace Wordki.Api.Featuers.Card.Add
             var newCard = new Domain.Card
             {
                 Group = group,
-                Heads = heads,
-                Tails = tails,
+                Front = heads,
+                Back = tails,
                 IsVisible = request.IsVisible,
-                WordCreationDate = dateTimeProvider.GetDate(),
+                CreationDate = dateTimeProvider.GetDate(),
             };
 
-            await dbContext.Words.AddAsync(newCard);
+            await dbContext.Cards.AddAsync(newCard);
             await dbContext.SaveChangesAsync();
             return newCard.Id;
         }

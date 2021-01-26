@@ -19,7 +19,7 @@ namespace Wordki.Tests.E2E.Feature.Group.Delete
 
         async Task GivenGroupsInDatabase()
         {
-            using(var dbContext = new WordkiDbContext(ConnectionStringProvider))
+            using (var dbContext = new WordkiDbContext(ConnectionStringProvider))
             {
                 var user = Builder<Api.Domain.User>.CreateNew()
                     .With(u => u.Id = 1)
@@ -35,8 +35,8 @@ namespace Wordki.Tests.E2E.Feature.Group.Delete
 
                 var builder = Builder<Api.Domain.Group>.CreateNew()
                     .With(g => g.Id = sequence.Generate())
-                    .With(g => g.GroupLanguage1 = 1)
-                    .With(g => g.GroupLanguage2 = 2)
+                    .With(g => g.FrontLanguage = 1)
+                    .With(g => g.BackLanguage = 2)
                     .With(g => g.Name = "name");
                 var groups = new Api.Domain.Group[] { builder.Build(), builder.Build() };
 

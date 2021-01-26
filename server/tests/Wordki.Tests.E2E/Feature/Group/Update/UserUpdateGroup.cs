@@ -39,8 +39,8 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
                 var group = new Api.Domain.Group
                 {
                     Id = 1,
-                    GroupLanguage1 = 1,
-                    GroupLanguage2 = 2,
+                    FrontLanguage = 1,
+                    BackLanguage = 2,
                     Name = "group",
                     GroupCreationDate = Host.Time2ProviderMock.Object.GetTime()
                 };
@@ -48,12 +48,12 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
 
                 var word = new Api.Domain.Card
                 {
-                    Heads = new Side { Value = "word1" },
-                    Tails = new Side { Value = "word2" },
+                    Front = new Side { Value = "word1" },
+                    Back = new Side { Value = "word2" },
                     IsVisible = true,
-                    WordCreationDate = new DateTime(2020, 01, 01),
+                    CreationDate = new DateTime(2020, 01, 01),
                 };
-                dbContext.Words.Add(word);
+                dbContext.Cards.Add(word);
                 await dbContext.SaveChangesAsync();
             }
         }
@@ -91,8 +91,8 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
                 Assert.IsNotNull(group);
                 Assert.AreEqual(1, group.Id);
                 Assert.AreEqual("group2", group.Name);
-                Assert.AreEqual(2, group.GroupLanguage1);
-                Assert.AreEqual(1, group.GroupLanguage2);
+                Assert.AreEqual(2, group.FrontLanguage);
+                Assert.AreEqual(1, group.BackLanguage);
             }
         }
 

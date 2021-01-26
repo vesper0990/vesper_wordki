@@ -25,18 +25,18 @@ namespace Wordki.Tests.E2E.Feature.Delete
             using (var dbContext = new WordkiDbContext(ConnectionStringProvider))
             {
                 var user = Utils.GetUser();
-               dbContext.Users.Add(user);
+                dbContext.Users.Add(user);
 
-               var group = Utils.GetGroup();
-               group.User = user;
+                var group = Utils.GetGroup();
+                group.Owner = user;
 
-               dbContext.Groups.Add(group);
+                dbContext.Groups.Add(group);
 
-               var word = Utils.GetCard();
-               word.Group = group;
+                var word = Utils.GetCard();
+                word.Group = group;
 
-               dbContext.Words.Add(word);
-               await dbContext.SaveChangesAsync();
+                dbContext.Cards.Add(word);
+                await dbContext.SaveChangesAsync();
             }
         }
 
@@ -57,7 +57,7 @@ namespace Wordki.Tests.E2E.Feature.Delete
         {
             using (var dbContext = new WordkiDbContext(ConnectionStringProvider))
             {
-                var counts = await dbContext.Words.CountAsync();
+                var counts = await dbContext.Cards.CountAsync();
                 Assert.AreEqual(0, counts);
             }
         }

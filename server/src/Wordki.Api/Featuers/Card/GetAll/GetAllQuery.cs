@@ -29,10 +29,10 @@ namespace Wordki.Api.Featuers.Card.GetAll
         public Task<IEnumerable<CardDetailsDto>> Handle(GetAllQuery request, CancellationToken cancellationToken)
         {
             var userId = contextProvider.GetUserId();
-            var cards = dbContext.Words
+            var cards = dbContext.Cards
                 .Include(c => c.Group)
                 .Include(c => c.Repeats)
-                .Where(c => c.Group.Id == request.GroupId && c.Group.User.Id == userId)
+                .Where(c => c.Group.Id == request.GroupId && c.Group.Owner.Id == userId)
                 .Select(c => c.GetCardDetailsDto())
                 .AsEnumerable();
 

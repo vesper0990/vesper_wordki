@@ -24,10 +24,10 @@ namespace Wordki.Api.Featuers.Card.GetLastAdded
         public async Task<IEnumerable<ExtendedCardDetailsDto>> Handle(GetLastAddedQuery request, CancellationToken cancellationToken)
         {
             var userId = httpContextProvider.GetUserId();
-            var lastAdded = dbContext.Words
-                .Include(w => w.Group).ThenInclude(g => g.User)
-                .Where(w => w.Group.User.Id == userId)
-                .OrderByDescending(w => w.WordCreationDate)
+            var lastAdded = dbContext.Cards
+                .Include(w => w.Group).ThenInclude(g => g.Owner)
+                .Where(w => w.Group.Owner.Id == userId)
+                .OrderByDescending(w => w.CreationDate)
                 .Take(request.Count)
                 .Select(card => card.GetExtendedCardDetailsDto())
                 .AsNoTracking();

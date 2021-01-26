@@ -7,15 +7,15 @@ namespace Wordki.Api.Domain
     {
         public long Id { get; set; }
         public string Name { get; set; }
-        public int GroupLanguage1 { get; set; }
-        public int GroupLanguage2 { get; set; }
+        public int FrontLanguage { get; set; }
+        public int BackLanguage { get; set; }
         public DateTime GroupCreationDate { get; set; }
-        public User User { get; set; }
-        public IList<Card> Words { get; set; }
+        public User Owner { get; set; }
+        public IList<Card> Cards { get; set; }
 
         public Group()
         {
-            Words = new List<Card>();
+            Cards = new List<Card>();
         }
     }
 }

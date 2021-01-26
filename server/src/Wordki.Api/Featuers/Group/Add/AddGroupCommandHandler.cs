@@ -31,22 +31,21 @@ namespace Wordki.Api.Featuers.Group.Add
             var newGroup = new Domain.Group
             {
                 Name = request.Name,
-                GroupLanguage1 = request.LanguageFront,
-                GroupLanguage2 = request.LanguageBack,
-                User = user,
+                FrontLanguage = request.LanguageFront,
+                BackLanguage = request.LanguageBack,
+                Owner = user,
                 GroupCreationDate = dateTimeProvider.GetTime()
             };
             foreach (var card in request.Cards)
             {
-                newGroup.Words.Add(
+                newGroup.Cards.Add(
                     new Domain.Card
                     {
-                        Heads = Domain.Side.New(card.Front.Value, card.Front.Example),
-                        Tails = Domain.Side.New(card.Back.Value, card.Back.Example),
-                        Comment = string.Empty,
+                        Front = Domain.Side.New(card.Front.Value, card.Front.Example),
+                        Back = Domain.Side.New(card.Back.Value, card.Back.Example),
                         Group = newGroup,
                         IsVisible = true,
-                        WordCreationDate = dateTimeProvider.GetTime(),
+                        CreationDate = dateTimeProvider.GetTime(),
                     });
             }
 

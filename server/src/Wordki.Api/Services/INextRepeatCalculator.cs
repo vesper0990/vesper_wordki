@@ -21,7 +21,7 @@ namespace Wordki.Api.Services
 
         public DateTime Calculate(Card card, QuestionSideEnum questionSide)
         {
-            var side = questionSide == QuestionSideEnum.Heads ? card.Heads : card.Tails;
+            var side = questionSide == QuestionSideEnum.Heads ? card.Front : card.Back;
             var repeatsCount = card.Repeats.Count(r => r.QuestionSide == questionSide);
             return timeProvider.GetDate().AddDays(GetDay(side.State.Drawer));
         }

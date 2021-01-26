@@ -21,7 +21,7 @@ namespace Wordki.Api.Featuers.Card.GetCount
         public async Task<int> Handle(GetCountQuery request, CancellationToken cancellationToken)
         {
             var userId = contextProvider.GetUserId();
-            return await dbContext.Words.CountAsync(c => c.Group.User.Id == userId);
+            return await dbContext.Cards.CountAsync(c => c.Group.Owner.Id == userId);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Wordki.Api.Featuers.Card.GetCardDetails
 
         public async Task<IEnumerable<CardDetailsDto>> Handle(GetCardDetailsQuery request, CancellationToken cancellationToken)
         {
-            var cards = dbContext.Words
+            var cards = dbContext.Cards
                 .Include(c => c.Group)
                 .Include(c => c.Repeats)
                 .Where(c => c.Id == request.CardId);

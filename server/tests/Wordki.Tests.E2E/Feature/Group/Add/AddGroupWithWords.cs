@@ -78,29 +78,29 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
         {
             using (var dbContext = new WordkiDbContext(ConnectionStringProvider))
             {
-                var user = await dbContext.Users.Include(u => u.Groups).ThenInclude(g => g.Words).SingleAsync();
+                var user = await dbContext.Users.Include(u => u.Groups).ThenInclude(g => g.Cards).SingleAsync();
                 var group = user.Groups.Single();
                 Assert.IsNotNull(group);
                 Assert.Greater(group.Id, 0);
-                Assert.AreEqual(group.User.Id, 1);
+                Assert.AreEqual(group.Owner.Id, 1);
                 Assert.AreEqual(group.Name, "groupName");
-                Assert.AreEqual(group.GroupLanguage1, 1);
-                Assert.AreEqual(group.GroupLanguage2, 2);
+                Assert.AreEqual(group.FrontLanguage, 1);
+                Assert.AreEqual(group.BackLanguage, 2);
                 Assert.AreEqual(group.GroupCreationDate, Utils.Time);
 
-                Assert.AreEqual(2, group.Words.Count);
+                Assert.AreEqual(2, group.Cards.Count);
 
-                foreach (var word in group.Words)
+                foreach (var word in group.Cards)
                 {
                     Assert.IsNotNull(word);
                     Assert.Greater(word.Id, 0);
                     Assert.AreEqual(group.Id, word.Group.Id);
-                    Assert.AreEqual("front-value", word.Heads.Value);
-                    Assert.AreEqual("back-value", word.Tails.Value);
-                    Assert.AreEqual("front-example", word.Heads.Example);
-                    Assert.AreEqual("back-example", word.Tails.Example);
+                    Assert.AreEqual("front-value", word.Front.Value);
+                    Assert.AreEqual("back-value", word.Back.Value);
+                    Assert.AreEqual("front-example", word.Front.Example);
+                    Assert.AreEqual("back-example", word.Back.Example);
                     Assert.AreEqual(true, word.IsVisible);
-                    Assert.AreEqual(Utils.Time, word.WordCreationDate);
+                    Assert.AreEqual(Utils.Time, word.CreationDate);
                 };
             }
         }

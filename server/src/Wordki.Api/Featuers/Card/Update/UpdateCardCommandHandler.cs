@@ -19,20 +19,20 @@ namespace Wordki.Api.Featuers.Card.Update
         public async Task<Unit> Handle(UpdateCardCommand request, CancellationToken cancellationToken)
         {
             ValidateRequest(request);
-            var card = await dbContext.Words.SingleOrDefaultAsync(c => c.Id == request.Id);
-            card.Heads.Value = request.Front.Value;
-            card.Heads.Example = request.Front.Example;
-            card.Tails.Value = request.Back.Value;
-            card.Tails.Example = request.Back.Example;
+            var card = await dbContext.Cards.SingleOrDefaultAsync(c => c.Id == request.Id);
+            card.Front.Value = request.Front.Value;
+            card.Front.Example = request.Front.Example;
+            card.Back.Value = request.Back.Value;
+            card.Back.Example = request.Back.Example;
             card.IsVisible = request.IsVisible;
-            dbContext.Words.Update(card);
+            dbContext.Cards.Update(card);
             await dbContext.SaveChangesAsync();
             return Unit.Value;
         }
 
         private void ValidateRequest(UpdateCardCommand request)
         {
-            if(request.Id == 0)
+            if (request.Id == 0)
             {
                 throw new Exception();
             }

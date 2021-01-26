@@ -28,14 +28,14 @@ namespace Wordki.Tests.E2E.Feature.Card.Update
                 dbContext.Users.Add(user);
 
                 var group = Utils.GetGroup();
-                group.User = user;
+                group.Owner = user;
 
                 dbContext.Groups.Add(group);
 
                 var word = Utils.GetCard();
                 word.Group = group;
 
-                dbContext.Words.Add(word);
+                dbContext.Cards.Add(word);
                 await dbContext.SaveChangesAsync();
             }
         }
@@ -69,16 +69,16 @@ namespace Wordki.Tests.E2E.Feature.Card.Update
         {
             using (var dbContext = new WordkiDbContext(ConnectionStringProvider))
             {
-                var word = await dbContext.Words.Include(w => w.Group).SingleOrDefaultAsync();
+                var word = await dbContext.Cards.Include(w => w.Group).SingleOrDefaultAsync();
                 Assert.IsNotNull(word);
                 Assert.AreEqual(1, word.Id);
                 Assert.AreEqual(1, word.Group.Id);
-                Assert.AreEqual("heads123", word.Heads.Value);
-                Assert.AreEqual("example123", word.Heads.Example);
-                Assert.AreEqual(2, word.Heads.State.Drawer.Value);
-                Assert.AreEqual("tails123", word.Tails.Value);
-                Assert.AreEqual("example456", word.Tails.Example);
-                Assert.AreEqual(2, word.Tails.State.Drawer.Value);
+                Assert.AreEqual("heads123", word.Front.Value);
+                Assert.AreEqual("example123", word.Front.Example);
+                Assert.AreEqual(2, word.Front.State.Drawer.Value);
+                Assert.AreEqual("tails123", word.Back.Value);
+                Assert.AreEqual("example456", word.Back.Example);
+                Assert.AreEqual(2, word.Back.State.Drawer.Value);
                 Assert.AreEqual(false, word.IsVisible);
             }
         }

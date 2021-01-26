@@ -19,19 +19,19 @@ namespace Wordki.Api.Featuers.Card.Delete
         public async Task<Unit> Handle(DeleteCardComamnd request, CancellationToken cancellationToken)
         {
             ValidateReqest(request);
-            var card = await dbContext.Words.SingleOrDefaultAsync(c => c.Id == request.Id);
-            if(card == null)
+            var card = await dbContext.Cards.SingleOrDefaultAsync(c => c.Id == request.Id);
+            if (card == null)
             {
                 throw new Exception();
             }
-            dbContext.Words.Remove(card);
+            dbContext.Cards.Remove(card);
             await dbContext.SaveChangesAsync();
             return Unit.Value;
         }
 
         private void ValidateReqest(DeleteCardComamnd request)
         {
-            if(request.Id == 0)
+            if (request.Id == 0)
             {
                 throw new Exception();
             }

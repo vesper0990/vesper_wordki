@@ -16,7 +16,7 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
 
         public DbSet<User> Users { get; set; }
         public DbSet<Group> Groups { get; set; }
-        public DbSet<Card> Words { get; set; }
+        public DbSet<Card> Cards { get; set; }
         public DbSet<Repeat> Repeats { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
 
@@ -42,21 +42,21 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
             modelBuilder.Entity<User>(user =>
             {
                 user.HasKey(u => u.Id);
-                user.HasMany(u => u.Groups).WithOne(g => g.User);
+                user.HasMany(u => u.Groups).WithOne(g => g.Owner);
                 user.HasMany(u => u.Lessons).WithOne(l => l.User);
             });
 
             modelBuilder.Entity<Group>(group =>
             {
                 group.HasKey(g => g.Id);
-                group.HasMany(g => g.Words).WithOne(w => w.Group).OnDelete(DeleteBehavior.Cascade);
+                group.HasMany(g => g.Cards).WithOne(w => w.Group).OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Card>(card =>
             {
                 card.HasKey(w => w.Id);
                 card.HasMany(w => w.Repeats).WithOne(r => r.Word).OnDelete(DeleteBehavior.Cascade);
-                card.OwnsOne(c => c.Tails, tails =>
+                card.OwnsOne(c => c.Back, tails =>
                 {
                     tails.OwnsOne(t => t.State, state =>
                     {
@@ -70,7 +70,7 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
                         .HasColumnName("Tails_NextRepeat");
                     });
                 });
-                card.OwnsOne(c => c.Heads, tails =>
+                card.OwnsOne(c => c.Front, tails =>
                 {
                     tails.OwnsOne(t => t.State, state =>
                     {
@@ -98,4 +98,5 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
             });
         }
     }
+
 }

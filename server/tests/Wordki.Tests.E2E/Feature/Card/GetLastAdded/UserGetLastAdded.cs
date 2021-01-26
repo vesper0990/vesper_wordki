@@ -25,7 +25,7 @@ namespace Wordki.Tests.E2E.Feature.Card.GetLastAdded
                 dbContext.Users.Add(user);
 
                 var group = Utils.GetGroup();
-                group.User = user;
+                group.Owner = user;
                 dbContext.Groups.Add(group);
 
                 for (int i = 1; i < 4; i++)
@@ -33,8 +33,8 @@ namespace Wordki.Tests.E2E.Feature.Card.GetLastAdded
                     var word = Utils.GetCard();
                     word.Group = group;
                     word.Id = i;
-                    word.WordCreationDate = word.WordCreationDate.AddDays(i);
-                    dbContext.Words.Add(word);
+                    word.CreationDate = word.CreationDate.AddDays(i);
+                    dbContext.Cards.Add(word);
                 }
 
                 await dbContext.SaveChangesAsync();
@@ -78,7 +78,7 @@ namespace Wordki.Tests.E2E.Feature.Card.GetLastAdded
         }
 
         // [Test]
-// todo endpoint is not used
+        // todo endpoint is not used
         public void Execute()
         {
             this.BDDfy();
