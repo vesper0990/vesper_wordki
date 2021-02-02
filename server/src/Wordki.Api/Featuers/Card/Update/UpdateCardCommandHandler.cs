@@ -24,7 +24,6 @@ namespace Wordki.Api.Featuers.Card.Update
             card.Front.Example = request.Front.Example;
             card.Back.Value = request.Back.Value;
             card.Back.Example = request.Back.Example;
-            card.IsVisible = request.IsVisible;
             dbContext.Cards.Update(card);
             await dbContext.SaveChangesAsync();
             return Unit.Value;

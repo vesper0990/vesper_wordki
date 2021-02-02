@@ -74,8 +74,8 @@ export class FiszkaService {
     }
 
     loadWords(): void {
-        this.store.dispatch(new actions.CreateNewLesson());
-        this.store.dispatch(new actions.GetWords());
+        // this.store.dispatch(new actions.CreateNewLesson());
+        // this.store.dispatch(new actions.GetWords());
     }
 
     pause(): void {

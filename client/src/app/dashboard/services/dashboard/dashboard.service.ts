@@ -52,7 +52,7 @@ export class DashboardService {
     }
 
     lesson() {
-        this.router.navigate(['/lesson/fiszki']);
+        this.router.navigate(['/lesson/settings']);
     }
 
     cards() {

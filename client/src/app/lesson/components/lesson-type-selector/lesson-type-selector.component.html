@@ -1,0 +1,7 @@
+<div class="main-container">
+  <ng-container *ngFor="let item of options">
+    <app-lesson-option [isDisabled]="item.isDisabled" [isSelected]="item.isSelected" (click)="selectLessonType(item)">
+      {{item.label}}
+    </app-lesson-option>
+  </ng-container>
+</div>

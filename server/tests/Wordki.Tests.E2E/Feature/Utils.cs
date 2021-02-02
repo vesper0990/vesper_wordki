@@ -70,7 +70,7 @@ namespace Wordki.Tests.E2E.Feature
                 FrontLanguage = 1,
                 BackLanguage = 2,
                 Name = "GroupName",
-                GroupCreationDate = Yesterday
+                CreationDate = Yesterday
             };
         }
 

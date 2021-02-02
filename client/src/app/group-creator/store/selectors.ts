@@ -10,7 +10,7 @@ export const selectParseModel = createSelector(selectGroupCreatorState, (state: 
 export const selectParsedCard = createSelector(selectGroupCreatorState, (state: GroupCreatorState) => state.newCards);
 export const selectGroupDetails = createSelector(selectGroupCreatorState, (state: GroupCreatorState) => state.groupDetails);
 export const selectNewGroupModel = createSelector(selectGroupCreatorState, (state: GroupCreatorState) => {
-    return {};
+    return { groupDetails: state.groupDetails, cards: state.newCards };
 });
 export const selectCanGenerate = createSelector(selectGroupCreatorState, (state: GroupCreatorState) => {
     return state.fileContent !== '' &&

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using Wordki.Api.Featuers.Card.Add;
 using Wordki.Api.Featuers.Card.Delete;
@@ -9,6 +10,7 @@ using Wordki.Api.Featuers.Card.GetCardDetails;
 using Wordki.Api.Featuers.Card.GetCount;
 using Wordki.Api.Featuers.Card.GetLastAdded;
 using Wordki.Api.Featuers.Card.GetLastFailed;
+using Wordki.Api.Featuers.Card.GetNewRepeats;
 using Wordki.Api.Featuers.Card.GetNextRepeat;
 using Wordki.Api.Featuers.Card.Update;
 
@@ -40,7 +42,24 @@ namespace Wordki.Api.Featuers.Card
         public async Task<IActionResult> GetCardDetails([FromRoute] GetCardDetailsQuery query) => await HandlerQuery(query);
 
         [HttpGet("allRepeats")]
-        public async Task<IActionResult> GetCardsToRepeat() => await HandlerQuery(new GetAllRepeatQuery());
+        public async Task<IActionResult> GetCardsToRepeat()
+            => await HandlerQuery(new GetAllRepeatQuery() { Count = int.MaxValue });
+
+        [HttpGet("repeats/{count}")]
+        public async Task<IActionResult> GetCardsToRepeat(int count)
+            => await HandlerQuery(new GetAllRepeatQuery() { Count = count });
+
+        [HttpGet("repeats/{count}/new")]
+        public async Task<IActionResult> GetNewCardsToRepeat(int count)
+            => await HandlerQuery(new GetNewRepeatsQuery() { Count = count });
+
+
+        [HttpGet("repeats")]
+        public Task<IActionResult> GetCards([FromQuery] LessonSettings settings)
+        {
+            Console.WriteLine(settings);
+            return Task.FromResult<IActionResult>(null);
+        }
 
         [HttpPut("update")]
         public async Task<IActionResult> Update([FromBody] UpdateCardCommand command) => await HandleCommand(command);
@@ -51,7 +70,14 @@ namespace Wordki.Api.Featuers.Card
         [HttpDelete("delete/{cardId}")]
         public async Task<IActionResult> Delete([FromRoute] long cardId) => await HandleCommand(new DeleteCardComamnd { Id = cardId });
 
-        
-        
+
+
+    }
+
+    public class LessonSettings
+    {
+        public int Count { get; set; }
+        public int Source { get; set; }
+        public int[] Languages { get; set; }
     }
 }

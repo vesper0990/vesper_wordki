@@ -73,3 +73,24 @@ export class GroupDetails {
 export class Drawer {
     constructor(public value: number) { }
 }
+
+export enum LessonTypeEnum {
+    Default,
+    Dictation,
+    Cards
+}
+
+export class LessonType {
+
+    public static DEFAULT = new LessonType(LessonTypeEnum.Default, '');
+    public static DICTATION = new LessonType(LessonTypeEnum.Dictation, 'Dictation');
+    public static CARDS = new LessonType(LessonTypeEnum.Cards, 'Cards');
+
+    private static all = [LessonType.DICTATION, LessonType.CARDS];
+
+    constructor(public readonly type: LessonTypeEnum, public readonly label: string) { }
+
+    static getAll(): LessonType[] {
+        return this.all;
+    }
+}

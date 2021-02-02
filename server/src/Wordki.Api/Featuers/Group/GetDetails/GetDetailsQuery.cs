@@ -39,7 +39,7 @@ namespace Wordki.Api.Featuers.Group.GetDetails
                 LanguageFront = group.FrontLanguage,
                 LanguageBack = group.BackLanguage,
                 Name = group.Name,
-                CreationDate = group.GroupCreationDate,
+                CreationDate = group.CreationDate,
                 CardsCount = group.Cards.Count,
                 RepeatsCount = group.Cards.Select(c => c.Repeats.Count).Sum()
             };

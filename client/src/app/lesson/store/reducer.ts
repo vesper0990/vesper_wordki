@@ -4,9 +4,7 @@ import { initialLessonsState, LessonState } from './state';
 export function reducer(state = initialLessonsState, action: actions.LessonActionType): LessonState {
     switch (action.type) {
         case actions.LessonActionEnum.CREATE_NEW_LESSON_SUCCESS: return actions.CreateNewLessonSuccess.reduce(state, action);
-        case actions.LessonActionEnum.GET_WORDS: return actions.GetWords.reduce(state);
         case actions.LessonActionEnum.GET_WORDS_SUCCESS: return actions.GetWordsSuccess.reduce(state, action);
-        case actions.LessonActionEnum.GET_WORDS_FAILES: return actions.GetWordsFailed.reduce(state);
         case actions.LessonActionEnum.START_LESSON: return actions.StartLesson.reduce(state);
         case actions.LessonActionEnum.CHECK_CARD: return actions.CheckCard.reduce(state);
         case actions.LessonActionEnum.COMPARE: return actions.Compare.reduce(state);
@@ -22,6 +20,13 @@ export function reducer(state = initialLessonsState, action: actions.LessonActio
         case actions.LessonActionEnum.UPDATE_CARD_WRONG: return actions.UpdateCardWrong.reduce(state);
         case actions.LessonActionEnum.UPDATE_CARD_ACCEPTED: return actions.UpdateCardAccepted.reduce(state);
         case actions.LessonActionEnum.FINISH: return actions.Finish.reduce();
+        case actions.LessonActionEnum.GET_LESSON_OPTIONS_SUCCESS: return actions.GetLessonOptionsSuccess.reduce(state, action);
+        case actions.LessonActionEnum.SET_LESSON_TYPE: return actions.SetLessonType.reduce(state, action);
+        case actions.LessonActionEnum.SET_LESSON_SOURCE: return actions.SetLessonSource.reduce(state, action);
+        case actions.LessonActionEnum.SET_LESSON_SIZE: return actions.SetLessonSize.reduce(state, action);
+        case actions.LessonActionEnum.SET_LESSON_LANGUAGE: return actions.SetLessonLanguage.reduce(state, action);
+        case actions.LessonActionEnum.UNSET_LESSON_LANGUAGE: return actions.UnsetLessonLanguage.reduce(state, action);
+        case actions.LessonActionEnum.SET_LESSON_ALL_LANGUAGES: return actions.SetLessonAllLanguages.reduce(state);
         default: return state;
     }
 }

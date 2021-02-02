@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay, tap } from 'rxjs/operators';
 import { CardRepeat } from 'src/app/share/models/card-details';
+import { LessonOptions } from '../../models/lesson-options';
 import { LessonHttpBaseService } from './lesson-http.service.base';
 
 
@@ -43,5 +44,18 @@ export class LessonHttpMockService extends LessonHttpBaseService {
 
     getTodayWords(): Observable<CardRepeat[]> {
         return of([]);
+    }
+
+
+    getTodayWordsWithParams(contract: any): Observable<CardRepeat[]> {
+        return of([]);
+    }
+
+    getCountCards(count: number): Observable<CardRepeat[]> {
+        return of([]);
+    }
+
+    getLessonOptions(): Observable<LessonOptions> {
+        return of({} as LessonOptions);
     }
 }

@@ -1,0 +1,10 @@
+<div class="main-container">
+  <app-lesson-option (click)="selectAll()">
+    All
+  </app-lesson-option>
+  <ng-container *ngFor="let item of options$ | async">
+    <app-lesson-option (click)="selectItem(item.label, item.isSelected)" [isSelected]="item.isSelected">
+      {{item.label}}
+    </app-lesson-option>
+  </ng-container>
+</div>

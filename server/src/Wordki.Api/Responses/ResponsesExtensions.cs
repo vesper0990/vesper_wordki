@@ -15,7 +15,7 @@ namespace Wordki.Api.Responses
                 Value = card.Front.Value,
                 Example = card.Front.Example,
                 Drawer = card.Front.State.Drawer.Value,
-                IsVisible = card.IsVisible, // todo split is visible on front and back
+                IsVisible = card.Front.State.IsVisible,
                 Language = card.Group.FrontLanguage,
                 NextRepeat = card.Front.State.NextRepeat,
                 RepeatCount = card.Repeats.Count(r => r.QuestionSide == QuestionSideEnum.Heads)
@@ -25,7 +25,7 @@ namespace Wordki.Api.Responses
                 Value = card.Back.Value,
                 Example = card.Back.Example,
                 Drawer = card.Back.State.Drawer.Value,
-                IsVisible = card.IsVisible, // todo split is visible on front and back
+                IsVisible = card.Back.State.IsVisible,
                 Language = card.Group.BackLanguage,
                 NextRepeat = card.Back.State.NextRepeat,
                 RepeatCount = card.Repeats.Count(r => r.QuestionSide == QuestionSideEnum.Tails)
@@ -43,7 +43,7 @@ namespace Wordki.Api.Responses
                 Value = card.Front.Value,
                 Example = card.Front.Example,
                 Drawer = card.Front.State.Drawer.Value,
-                IsVisible = card.IsVisible, // todo split is visible on front and back
+                IsVisible = card.Front.State.IsVisible,
                 Language = card.Group.FrontLanguage,
                 NextRepeat = card.Front.State.NextRepeat,
                 RepeatCount = card.Repeats.Count(r => r.QuestionSide == QuestionSideEnum.Heads)
@@ -53,7 +53,7 @@ namespace Wordki.Api.Responses
                 Value = card.Back.Value,
                 Example = card.Back.Example,
                 Drawer = card.Back.State.Drawer.Value,
-                IsVisible = card.IsVisible, // todo split is visible on front and back
+                IsVisible = card.Back.State.IsVisible,
                 Language = card.Group.BackLanguage,
                 NextRepeat = card.Back.State.NextRepeat,
                 RepeatCount = card.Repeats.Count(r => r.QuestionSide == QuestionSideEnum.Tails)

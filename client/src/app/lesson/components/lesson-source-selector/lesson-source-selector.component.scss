@@ -1,0 +1,12 @@
+.main-container {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  justify-content: space-around;
+  width: 100%;
+
+  app-lesson-option {
+    width: 15%;
+  }
+}

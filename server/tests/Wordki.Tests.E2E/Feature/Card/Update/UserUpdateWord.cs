@@ -79,7 +79,6 @@ namespace Wordki.Tests.E2E.Feature.Card.Update
                 Assert.AreEqual("tails123", word.Back.Value);
                 Assert.AreEqual("example456", word.Back.Example);
                 Assert.AreEqual(2, word.Back.State.Drawer.Value);
-                Assert.AreEqual(false, word.IsVisible);
             }
         }
 
@@ -88,6 +87,5 @@ namespace Wordki.Tests.E2E.Feature.Card.Update
         {
             this.BDDfy();
         }
-
     }
 }

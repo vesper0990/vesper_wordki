@@ -1,12 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-using Wordki.Api.Domain;
+﻿using System.Threading.Tasks;
 using Wordki.Api.Services;
 using Wordki.Utils.TimeProvider;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Wordki.Api.Framework.Options;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using System;
+using Wordki.Api.Domain;
 
 namespace Wordki.Api.Repositories.EntityFrameworkRepositories
 {
@@ -21,6 +21,7 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
         private readonly WordkiDbContext dbContext;
         private readonly ITimeProvider timeProvider;
         private readonly IEncrypter encrypter;
+        private readonly IOptions<General> options1;
         private readonly ILogger<IDatabaseInitializer> logger;
         private readonly General options;
 
@@ -34,6 +35,7 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
             this.dbContext = dbContext;
             this.timeProvider = timeProvider;
             this.encrypter = encrypter;
+            options1 = options;
             this.logger = logger;
             this.options = options.Value;
         }
@@ -80,7 +82,7 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
             {
                 var newGroup = new Domain.Group
                 {
-                    GroupCreationDate = timeProvider.GetTime().AddDays(-i - 1),
+                    CreationDate = timeProvider.GetTime().AddDays(-i - 1),
                     FrontLanguage = 1,
                     BackLanguage = 2,
                     Name = $"Test group {i + 1}",
@@ -94,7 +96,6 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
                     {
                         CreationDate = timeProvider.GetTime().AddDays(-i - 1),
                         Group = newGroup,
-                        IsVisible = true,
                         Front = new Side
                         {
                             Value = $"Word {j + 1}",
@@ -102,7 +103,8 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
                             State = new State
                             {
                                 Drawer = Drawer.Create(random.Next(0, 4)),
-                                NextRepeat = timeProvider.GetTime().AddDays(random.Next(-4, 4))
+                                NextRepeat = timeProvider.GetTime().AddDays(random.Next(-4, 4)),
+                                IsVisible = false,
                             }
                         },
                         Back = new Side
@@ -112,7 +114,8 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
                             State = new State
                             {
                                 Drawer = Drawer.Create(random.Next(0, 4)),
-                                NextRepeat = timeProvider.GetTime().AddDays(random.Next(-4, 4))
+                                NextRepeat = timeProvider.GetTime().AddDays(random.Next(-4, 4)),
+                                IsVisible = false,
                             }
                         },
                     };

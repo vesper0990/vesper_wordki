@@ -34,7 +34,7 @@ namespace Wordki.Api.Featuers.Group.Add
                 FrontLanguage = request.LanguageFront,
                 BackLanguage = request.LanguageBack,
                 Owner = user,
-                GroupCreationDate = dateTimeProvider.GetTime()
+                CreationDate = dateTimeProvider.GetTime()
             };
             foreach (var card in request.Cards)
             {
@@ -44,7 +44,6 @@ namespace Wordki.Api.Featuers.Group.Add
                         Front = Domain.Side.New(card.Front.Value, card.Front.Example),
                         Back = Domain.Side.New(card.Back.Value, card.Back.Example),
                         Group = newGroup,
-                        IsVisible = true,
                         CreationDate = dateTimeProvider.GetTime(),
                     });
             }

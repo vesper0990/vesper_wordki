@@ -66,7 +66,7 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
                 Assert.AreEqual(group.Name, "groupName");
                 Assert.AreEqual(group.FrontLanguage, 1);
                 Assert.AreEqual(group.BackLanguage, 2);
-                Assert.AreEqual(group.GroupCreationDate, Utils.Time);
+                Assert.AreEqual(group.CreationDate, Utils.Time);
 
                 var wordsCount = await dbContext.Cards.CountAsync();
                 Assert.AreEqual(0, wordsCount);

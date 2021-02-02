@@ -1,9 +1,9 @@
-import { LanguageType } from 'src/app/share/models/language-type.mode';
-import { LessonMode } from './lesson-mode';
+import { LessonType } from 'src/app/share/models/card-details';
+import { LessonSource } from './lesson-source';
 
 export class LessonSettings {
-    questionLanguage: LanguageType;
-    answerLanguage: LanguageType;
-    mode: LessonMode;
-    allWords: boolean;
+    lessonType: LessonType = LessonType.DEFAULT;
+    lessonSource: LessonSource = LessonSource.DEFAULT;
+    lessonSize = 0;
+    lessonLanguages: number[] = [];
 }

@@ -74,7 +74,6 @@ namespace Wordki.Tests.E2E.Feature.Card.Add
                 Assert.AreEqual("example2", word.Back.Example);
                 Assert.AreEqual(0, word.Front.State.Drawer.Value);
                 Assert.AreEqual(0, word.Back.State.Drawer.Value);
-                Assert.AreEqual(true, word.IsVisible);
                 Assert.AreEqual(Utils.Now, word.CreationDate);
             }
         }

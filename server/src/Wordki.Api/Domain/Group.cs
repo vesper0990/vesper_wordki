@@ -9,7 +9,7 @@ namespace Wordki.Api.Domain
         public string Name { get; set; }
         public int FrontLanguage { get; set; }
         public int BackLanguage { get; set; }
-        public DateTime GroupCreationDate { get; set; }
+        public DateTime CreationDate { get; set; }
         public User Owner { get; set; }
         public IList<Card> Cards { get; set; }
 

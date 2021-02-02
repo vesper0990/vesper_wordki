@@ -42,7 +42,7 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
                     FrontLanguage = 1,
                     BackLanguage = 2,
                     Name = "group",
-                    GroupCreationDate = Host.Time2ProviderMock.Object.GetTime()
+                    CreationDate = Host.Time2ProviderMock.Object.GetTime()
                 };
                 dbContext.Groups.Add(group);
 
@@ -50,7 +50,6 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
                 {
                     Front = new Side { Value = "word1" },
                     Back = new Side { Value = "word2" },
-                    IsVisible = true,
                     CreationDate = new DateTime(2020, 01, 01),
                 };
                 dbContext.Cards.Add(word);

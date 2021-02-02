@@ -4,7 +4,6 @@ using MongoDB.Driver;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Wordki.Api.Domain;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
 using Wordki.Utils.TimeProvider;
 
@@ -35,7 +34,6 @@ namespace Wordki.Api.Featuers.Card.Add
                 Group = group,
                 Front = heads,
                 Back = tails,
-                IsVisible = request.IsVisible,
                 CreationDate = dateTimeProvider.GetDate(),
             };
 

@@ -86,7 +86,7 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
                 Assert.AreEqual(group.Name, "groupName");
                 Assert.AreEqual(group.FrontLanguage, 1);
                 Assert.AreEqual(group.BackLanguage, 2);
-                Assert.AreEqual(group.GroupCreationDate, Utils.Time);
+                Assert.AreEqual(group.CreationDate, Utils.Time);
 
                 Assert.AreEqual(2, group.Cards.Count);
 
@@ -99,7 +99,6 @@ namespace Wordki.Tests.E2E.Feature.Group.Add
                     Assert.AreEqual("back-value", word.Back.Value);
                     Assert.AreEqual("front-example", word.Front.Example);
                     Assert.AreEqual("back-example", word.Back.Example);
-                    Assert.AreEqual(true, word.IsVisible);
                     Assert.AreEqual(Utils.Time, word.CreationDate);
                 };
             }

@@ -1,0 +1,19 @@
+<div class="main-container">
+  <ng-container *ngFor="let item of options">
+    <app-lesson-option [isDisabled]="item.isDisabled" [isSelected]="item.isSelected" (click)="selectLessonSource(item)">
+      {{item.label}}
+    </app-lesson-option>
+  </ng-container>
+</div>
+<div class="main-container">
+  <button [disabled]="isCountSelectorDisabled$ | async" (click)="changeRange(-10)">-10</button>
+  <button [disabled]="isCountSelectorDisabled$ | async" (click)="changeRange(-5)">-5</button>
+  <button [disabled]="isCountSelectorDisabled$ | async" (click)="changeRange(-1)">-1</button>
+  <div>
+    {{range}}<br>
+    <input style="width: 500px;" type="range" min="1" [max]="maxValue$ | async" [(ngModel)]="range" (blur)="blur()">
+  </div>
+  <button [disabled]="isCountSelectorDisabled$ | async" (click)="changeRange(1)">+1</button>
+  <button [disabled]="isCountSelectorDisabled$ | async" (click)="changeRange(5)">+5</button>
+  <button [disabled]="isCountSelectorDisabled$ | async" (click)="changeRange(10)">+10</button>
+</div>

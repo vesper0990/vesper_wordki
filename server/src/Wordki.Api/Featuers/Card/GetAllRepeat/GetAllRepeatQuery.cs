@@ -4,5 +4,8 @@ using Wordki.Api.Responses;
 
 namespace Wordki.Api.Featuers.Card.GetAllRepeat
 {
-    public class GetAllRepeatQuery : IRequest<IEnumerable<CardRepeatDto>> { }
+    public class GetAllRepeatQuery : IRequest<IEnumerable<CardRepeatDto>>
+    {
+        public int Count { get; set; }
+    }
 }
