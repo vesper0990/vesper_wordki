@@ -1,11 +1,10 @@
-﻿using Wordki.Api.Domain;
-using Wordki.Utils.TimeProvider;
+﻿using Wordki.Utils.TimeProvider;
 
 namespace Wordki.Api.Services
 {
     public interface IUserCreator
     {
-        User Create(string userName, string hashedPassword);
+        Domain2.User Create(string userName, string hashedPassword);
     }
     public class UserCreator : IUserCreator
     {
@@ -16,9 +15,9 @@ namespace Wordki.Api.Services
             this.dateTimeProvider = dateTimeProvider;
         }
 
-        public User Create(string userName, string hashedPassword)
+        public Domain2.User Create(string userName, string hashedPassword)
         {
-            var newUser = new User()
+            var newUser = new Domain2.User()
             {
                 Name = userName,
                 Password = hashedPassword,

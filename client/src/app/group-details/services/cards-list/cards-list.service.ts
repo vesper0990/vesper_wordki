@@ -51,8 +51,8 @@ export class CardsListService {
                     card.id,
                     this.groupId,
                     card.front.value,
-                    card.front.example,
                     card.back.value,
+                    card.front.example,
                     card.back.example,
                     card.front.isVisible)
             }));

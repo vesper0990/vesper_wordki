@@ -130,7 +130,7 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
                             Lesson = lesson,
                             DateTime = newCard.CreationDate.AddDays(random.Next(-7, 0)),
                             Result = random.Next(-1, 1),
-                            QuestionSide = random.Next(0, 1) > 0 ? QuestionSideEnum.Heads : QuestionSideEnum.Tails,
+                            QuestionSide = random.Next(0, 1) > 0 ? QuestionSideEnum.Front : QuestionSideEnum.Back,
                             Word = newCard
                         };
                         lesson.Repeats.Add(newRepeat);

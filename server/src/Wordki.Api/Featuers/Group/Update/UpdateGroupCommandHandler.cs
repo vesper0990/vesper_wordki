@@ -1,25 +1,31 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Wordki.Api.Repositories.EntityFrameworkRepositories;
+using Wordki.Api.Domain2;
+using Wordki.Utils.HttpContext;
 
 namespace Wordki.Api.Featuers.Group.Update
 {
     public class UpdateGroupCommandHandler : IRequestHandler<UpdateGroupCommand>
     {
-        private readonly WordkiDbContext dbContext;
+        private readonly WordkiDbContext2 dbContext;
+        private readonly IHttpContextProvider contextProvider;
 
-        public UpdateGroupCommandHandler(WordkiDbContext dbContext)
+        public UpdateGroupCommandHandler(WordkiDbContext2 dbContext,
+        IHttpContextProvider contextProvider)
         {
             this.dbContext = dbContext;
+            this.contextProvider = contextProvider;
         }
 
         public async Task<Unit> Handle(UpdateGroupCommand request, CancellationToken cancellationToken)
         {
-            ValidateRequest(request);
-            var group = await dbContext.Groups.SingleOrDefaultAsync(g => g.Id == request.Id);
+            var userId = contextProvider.GetUserId();
+            var group = await dbContext.Groups.SingleOrDefaultAsync(g =>
+                g.Id == request.Id &&
+                g.Owner.Id == userId);
+
             group.Name = request.Name;
             group.FrontLanguage = request.LanguageFront;
             group.BackLanguage = request.LanguageBack;
@@ -28,14 +34,6 @@ namespace Wordki.Api.Featuers.Group.Update
             await dbContext.SaveChangesAsync();
 
             return Unit.Value;
-        }
-
-        private void ValidateRequest(UpdateGroupCommand request)
-        {
-            if (request.Id == 0)
-            {
-                throw new Exception();
-            }
         }
     }
 }

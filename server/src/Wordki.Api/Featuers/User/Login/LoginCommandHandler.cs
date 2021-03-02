@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
-using Wordki.Api.Repositories.EntityFrameworkRepositories;
+using Wordki.Api.Domain2;
 using Wordki.Api.Services;
 using Wordki.Infrastructure.Framework.ExceptionMiddleware;
 using Wordki.Utils.TimeProvider;
@@ -11,12 +11,12 @@ namespace Wordki.Api.Featuers.User.Login
 {
     public class LoginCommandHandler : IRequestHandler<LoginCommnad, string>
     {
-        private readonly WordkiDbContext dbContext;
+        private readonly WordkiDbContext2 dbContext;
         private readonly IEncrypter encrypter;
         private readonly ITimeProvider dateTimeProvider;
         private readonly IAuthenticationService authenticationService;
 
-        public LoginCommandHandler(WordkiDbContext dbContext,
+        public LoginCommandHandler(WordkiDbContext2 dbContext,
             IEncrypter encrypter,
             ITimeProvider dateTimeProvider,
             IAuthenticationService authenticationService)
@@ -42,7 +42,8 @@ namespace Wordki.Api.Featuers.User.Login
 
             dbContext.Users.Update(user);
             await dbContext.SaveChangesAsync();
-            return authenticationService.Authenticate(user.Id, new string[0]);
+            var result = authenticationService.Authenticate(user.Id, new string[0]);
+            return result;
         }
     }
 }

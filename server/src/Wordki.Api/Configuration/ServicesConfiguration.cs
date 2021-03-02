@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using Wordki.Api.Domain2;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
 using Wordki.Api.Services;
 using Wordki.Infrastructure.Framework.ExceptionMiddleware;
@@ -23,6 +24,8 @@ public static class ServicesConfiguration
             .AddScoped<IAuthenticationService, AuthenticationService>()
             .AddScoped<IEncrypter, Encrypter>()
             .AddScoped<INextRepeatCalculator, NextRepeatCalculator>()
+            .AddScoped<ICardFactory, CardFactory>()
+            .AddScoped<IGroupFactory, GroupFactory>()
             .AddIConnectionStringProvider(configuration);
     }
 

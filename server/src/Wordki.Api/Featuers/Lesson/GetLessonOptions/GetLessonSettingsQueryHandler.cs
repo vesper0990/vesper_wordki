@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Wordki.Api.Domain2;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
 using Wordki.Utils.HttpContext;
 using Wordki.Utils.TimeProvider;
@@ -12,11 +13,13 @@ namespace Wordki.Api.Featuers.Lesson.GetLessonSettings
 {
     public class GetLessonSettingsQueryHandler : IRequestHandler<GetLessonSettingsQuery, LessonSettingsDto>
     {
-        private readonly WordkiDbContext dbContext;
+        private readonly WordkiDbContext2 dbContext;
         private readonly IHttpContextProvider contextProvider;
         private readonly ITimeProvider timeProvider;
 
-        public GetLessonSettingsQueryHandler(WordkiDbContext dbContext, IHttpContextProvider contextProvider, ITimeProvider timeProvider)
+        public GetLessonSettingsQueryHandler(WordkiDbContext2 dbContext,
+        IHttpContextProvider contextProvider,
+        ITimeProvider timeProvider)
         {
             this.dbContext = dbContext;
             this.contextProvider = contextProvider;
@@ -27,27 +30,9 @@ namespace Wordki.Api.Featuers.Lesson.GetLessonSettings
         {
             var userId = contextProvider.GetUserId();
             var date = timeProvider.GetDate().AddDays(1);
-            var repetitionsCount = 0;
 
-            repetitionsCount += await dbContext.Cards.CountAsync(c =>
-            c.Group.Owner.Id == userId &&
-            c.Front.State.IsVisible &&
-             c.Front.State.NextRepeat < timeProvider.GetDate(), cancellationToken);
-
-            repetitionsCount += await dbContext.Cards.CountAsync(c =>
-             c.Group.Owner.Id == userId &&
-             c.Back.State.IsVisible &&
-              c.Back.State.NextRepeat < timeProvider.GetDate(), cancellationToken);
-
-            var newCardsCount = 0;
-
-            newCardsCount += await dbContext.Cards.CountAsync(c =>
-            c.Group.Owner.Id == userId &&
-            !c.Front.State.IsVisible, cancellationToken);
-
-            newCardsCount += await dbContext.Cards.CountAsync(c =>
-             c.Group.Owner.Id == userId &&
-             !c.Back.State.IsVisible, cancellationToken);
+            var newCardsCount = await dbContext.Details.CountAsync(d => d.NextRepeatDate == null);
+            var repetitionsCount = await dbContext.Details.CountAsync(d => d.NextRepeatDate != null && d.NextRepeatDate < timeProvider.GetDate());
 
             var backLangauges = dbContext.Groups.Select(x => x.BackLanguage).Distinct();
             var frontLangauges = dbContext.Groups.Select(x => x.FrontLanguage).Distinct();

@@ -1,40 +1,41 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Wordki.Api.Repositories.EntityFrameworkRepositories;
+using Wordki.Api.Domain2;
+using Wordki.Utils.HttpContext;
 
 namespace Wordki.Api.Featuers.Card.Update
 {
     public class UpdateCardCommandHandler : IRequestHandler<UpdateCardCommand>
     {
-        private readonly WordkiDbContext dbContext;
+        private readonly WordkiDbContext2 dbContext;
+        private readonly IHttpContextProvider httpContextProvider;
 
-        public UpdateCardCommandHandler(WordkiDbContext dbContext)
+        public UpdateCardCommandHandler(WordkiDbContext2 dbContext,
+         IHttpContextProvider httpContextProvider)
         {
             this.dbContext = dbContext;
+            this.httpContextProvider = httpContextProvider;
         }
 
         public async Task<Unit> Handle(UpdateCardCommand request, CancellationToken cancellationToken)
         {
-            ValidateRequest(request);
+            var userId = httpContextProvider.GetUserId();
+
             var card = await dbContext.Cards.SingleOrDefaultAsync(c => c.Id == request.Id);
-            card.Front.Value = request.Front.Value;
-            card.Front.Example = request.Front.Example;
-            card.Back.Value = request.Back.Value;
-            card.Back.Example = request.Back.Example;
+
+            card.FrontValue = request.Front.Value;
+            card.FrontExample = request.Front.Example;
+            card.BackValue = request.Back.Value;
+            card.BackExample = request.Back.Example;
+
             dbContext.Cards.Update(card);
+
             await dbContext.SaveChangesAsync();
+
             return Unit.Value;
         }
 
-        private void ValidateRequest(UpdateCardCommand request)
-        {
-            if (request.Id == 0)
-            {
-                throw new Exception();
-            }
-        }
     }
 }

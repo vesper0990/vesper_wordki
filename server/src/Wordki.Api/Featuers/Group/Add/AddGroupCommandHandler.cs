@@ -2,54 +2,46 @@
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
-using Wordki.Api.Repositories.EntityFrameworkRepositories;
+using Wordki.Api.Domain2;
 using Wordki.Utils.HttpContext;
-using Wordki.Utils.TimeProvider;
 
 namespace Wordki.Api.Featuers.Group.Add
 {
     public class AddGroupCommandHandler : IRequestHandler<AddGroupCommand, long>
     {
-        private readonly WordkiDbContext dbContext;
-        private readonly ITimeProvider dateTimeProvider;
+        private readonly WordkiDbContext2 dbContext;
         private readonly IHttpContextProvider contextProvider;
+        private readonly IGroupFactory groupFactory;
+        private readonly ICardFactory cardFactory;
 
         public AddGroupCommandHandler(
-            WordkiDbContext dbContext,
-             ITimeProvider dateTimeProvider,
-             IHttpContextProvider contextProvider)
+            WordkiDbContext2 dbContext,
+             IHttpContextProvider contextProvider,
+             IGroupFactory groupFactory,
+             ICardFactory cardFactory)
         {
             this.dbContext = dbContext;
-            this.dateTimeProvider = dateTimeProvider;
             this.contextProvider = contextProvider;
+            this.groupFactory = groupFactory;
+            this.cardFactory = cardFactory;
         }
 
         public async Task<long> Handle(AddGroupCommand request, CancellationToken cancellationToken)
         {
             var userId = contextProvider.GetUserId();
-            var user = await dbContext.Users.Include(u => u.Groups).SingleOrDefaultAsync(u => u.Id == userId);
-            var newGroup = new Domain.Group
-            {
-                Name = request.Name,
-                FrontLanguage = request.LanguageFront,
-                BackLanguage = request.LanguageBack,
-                Owner = user,
-                CreationDate = dateTimeProvider.GetTime()
-            };
+            var user = await dbContext.Users.SingleOrDefaultAsync(u => u.Id == userId);
+
+            var newGroup = groupFactory.Create(request.Name, request.FrontLanguage, request.BackLanguage);
+
+            user.AddGroup(newGroup);
             foreach (var card in request.Cards)
             {
-                newGroup.Cards.Add(
-                    new Domain.Card
-                    {
-                        Front = Domain.Side.New(card.Front.Value, card.Front.Example),
-                        Back = Domain.Side.New(card.Back.Value, card.Back.Example),
-                        Group = newGroup,
-                        CreationDate = dateTimeProvider.GetTime(),
-                    });
+                var newCard = cardFactory.Create(card.Front.Value, card.Back.Value, card.Front.Example, card.Back.Example);
+                newGroup.AddCard(newCard);
             }
 
-            await dbContext.Groups.AddAsync(newGroup);
-            await dbContext.SaveChangesAsync();
+            await dbContext.Groups.AddAsync(newGroup, cancellationToken);
+            await dbContext.SaveChangesAsync(cancellationToken);
 
             return newGroup.Id;
         }

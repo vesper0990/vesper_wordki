@@ -6,8 +6,8 @@ namespace Wordki.Api.Featuers.Group.Add
     public class AddGroupCommand : IRequest<long>
     {
         public string Name { get; set; }
-        public int LanguageFront { get; set; }
-        public int LanguageBack { get; set; }
+        public int FrontLanguage { get; set; }
+        public int BackLanguage { get; set; }
         public IEnumerable<Card> Cards { get; set; } = new Card[0];
     }
 

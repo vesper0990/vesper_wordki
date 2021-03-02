@@ -4,22 +4,24 @@ using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Wordki.Api.Domain;
+using Wordki.Api.Domain2;
 using Wordki.Api.Repositories.EntityFrameworkRepositories;
 using Wordki.Api.Services;
 using Wordki.Utils.HttpContext;
 using Wordki.Utils.TimeProvider;
+using Repeat = Wordki.Api.Domain2.Repeat;
 
 namespace Wordki.Api.Featuers.Lesson.Answer
 {
     public class AnswerCommnadHandler : IRequestHandler<AnswerCommand>
     {
-        private readonly WordkiDbContext dbContext;
+        private readonly WordkiDbContext2 dbContext;
         private readonly IHttpContextProvider contextProvider;
         private readonly INextRepeatCalculator nextRepeatCalculator;
         private readonly ITimeProvider timeProvider;
 
         public AnswerCommnadHandler(
-            WordkiDbContext dbContext,
+            WordkiDbContext2 dbContext,
             IHttpContextProvider contextProvider,
             INextRepeatCalculator nextRepeatCalculator,
             ITimeProvider timeProvider)
@@ -37,19 +39,20 @@ namespace Wordki.Api.Featuers.Lesson.Answer
             {
                 throw new ApiException("userId == 0");
             }
-            var card = await dbContext.Cards.Include(c => c.Repeats).SingleOrDefaultAsync(c => c.Id == request.CardId && c.Group.Owner.Id == userId, cancellationToken);
+            var card = await dbContext.Cards
+            .Include(c => c.CardDetails)
+            .ThenInclude(d => d.Repeats)
+            .SingleOrDefaultAsync(c => c.Id == request.CardId && c.Group.Owner.Id == userId, cancellationToken);
             if (card == null)
             {
                 throw new ApiException($"Card not found for id {request.CardId}");
             }
-            var lesson = await dbContext.Lessons.SingleOrDefaultAsync(l => l.Id == request.LessonId && l.User.Id == userId, cancellationToken);
+            var lesson = await dbContext.Lessons
+            .SingleOrDefaultAsync(l => l.Id == request.LessonId && l.Owner.Id == userId, cancellationToken);
             if (lesson == null)
             {
                 throw new ApiException($"Lesson not found for id {request.LessonId}");
             }
-            UpdateDrawer(request.QuestionSide == QuestionSideEnum.Heads ? card.Front.State : card.Back.State, request.repeatReuslt);
-            UpdateNextRepeat(card, request.QuestionSide);
-            AddRepeat(card, request.QuestionSide, request.repeatReuslt, lesson);
 
             await dbContext.SaveChangesAsync(cancellationToken);
 
@@ -58,22 +61,22 @@ namespace Wordki.Api.Featuers.Lesson.Answer
 
         private void AddRepeat(Domain.Card card, QuestionSideEnum questionSide, RepeatResultEnum repeatReuslt, Domain.Lesson lesson)
         {
-            var newResult = new Repeat
-            {
-                DateTime = timeProvider.GetTime(),
-                Lesson = lesson,
-                QuestionSide = questionSide,
-                Result = (int)repeatReuslt,
-                Word = card
-            };
+            // var newResult = new Repeat
+            // {
+            //     DateTime = timeProvider.GetTime(),
+            //     Lesson = lesson,
+            //     QuestionSide = questionSide,
+            //     Result = (int)repeatReuslt,
+            //     Word = card
+            // };
 
-            dbContext.Repeats.Add(newResult);
+            // dbContext.Repeats.Add(newResult);
         }
 
         private void UpdateNextRepeat(Domain.Card card, QuestionSideEnum questionSide)
         {
             var nextRepeat = nextRepeatCalculator.Calculate(card, questionSide);
-            var side = questionSide == QuestionSideEnum.Heads ? card.Front : card.Back;
+            var side = questionSide == QuestionSideEnum.Front ? card.Front : card.Back;
             side.State.NextRepeat = nextRepeat;
         }
 

@@ -2,17 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
-using Wordki.Api.Repositories.EntityFrameworkRepositories;
+using Wordki.Api.Domain2;
 using Wordki.Utils.HttpContext;
 
 namespace Wordki.Api.Featuers.Group.GetCount
 {
     public class GetCountQueryHandler : IRequestHandler<GetCountQuery, int>
     {
-        private readonly WordkiDbContext dbContext;
+        private readonly WordkiDbContext2 dbContext;
         private readonly IHttpContextProvider contextProvider;
 
-        public GetCountQueryHandler(WordkiDbContext dbContext, IHttpContextProvider contextProvider)
+        public GetCountQueryHandler(WordkiDbContext2 dbContext, IHttpContextProvider contextProvider)
         {
             this.dbContext = dbContext;
             this.contextProvider = contextProvider;

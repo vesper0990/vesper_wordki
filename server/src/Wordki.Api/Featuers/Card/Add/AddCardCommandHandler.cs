@@ -4,17 +4,17 @@ using MongoDB.Driver;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Wordki.Api.Repositories.EntityFrameworkRepositories;
+using Wordki.Api.Domain2;
 using Wordki.Utils.TimeProvider;
 
 namespace Wordki.Api.Featuers.Card.Add
 {
     public class AddCardCommandHandler : IRequestHandler<AddCardCommand, long>
     {
-        private readonly WordkiDbContext dbContext;
+        private readonly WordkiDbContext2 dbContext;
         private readonly ITimeProvider dateTimeProvider;
 
-        public AddCardCommandHandler(WordkiDbContext dbContext, ITimeProvider dateTimeProvider)
+        public AddCardCommandHandler(WordkiDbContext2 dbContext, ITimeProvider dateTimeProvider)
         {
             this.dbContext = dbContext;
             this.dateTimeProvider = dateTimeProvider;
@@ -27,15 +27,15 @@ namespace Wordki.Api.Featuers.Card.Add
             {
                 throw new Exception();
             }
-            var heads = Domain.Side.New(request.Front.Value, request.Front.Example);
-            var tails = Domain.Side.New(request.Back.Value, request.Back.Example);
-            var newCard = new Domain.Card
+            var newCard = new Domain2.Card
             {
-                Group = group,
-                Front = heads,
-                Back = tails,
-                CreationDate = dateTimeProvider.GetDate(),
+                FrontValue = request.Front.Value,
+                FrontExample = request.Front.Example,
+                BackValue = request.Back.Value,
+                BackExample = request.Back.Example,
             };
+
+            group.AddCard(newCard);
 
             await dbContext.Cards.AddAsync(newCard);
             await dbContext.SaveChangesAsync();

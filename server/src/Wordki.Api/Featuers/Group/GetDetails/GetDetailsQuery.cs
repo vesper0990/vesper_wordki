@@ -1,10 +1,9 @@
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Wordki.Api.Repositories.EntityFrameworkRepositories;
+using Wordki.Api.Domain2;
 using Wordki.Api.Responses;
 using Wordki.Utils.HttpContext;
 
@@ -17,10 +16,10 @@ namespace Wordki.Api.Featuers.Group.GetDetails
 
     public class GetDetailsQueryHandler : IRequestHandler<GetDetailsQuery, GroupDetailsDto>
     {
-        private readonly WordkiDbContext dbContext;
+        private readonly WordkiDbContext2 dbContext;
         private readonly IHttpContextProvider contextProvider;
 
-        public GetDetailsQueryHandler(WordkiDbContext dbContext, IHttpContextProvider contextProvider)
+        public GetDetailsQueryHandler(WordkiDbContext2 dbContext, IHttpContextProvider contextProvider)
         {
             this.dbContext = dbContext;
             this.contextProvider = contextProvider;
@@ -30,8 +29,15 @@ namespace Wordki.Api.Featuers.Group.GetDetails
         {
             var userId = contextProvider.GetUserId();
             var group = await dbContext.Groups
-            .Include(g => g.Cards).ThenInclude(c => c.Repeats)
-            .FirstOrDefaultAsync(g => g.Id == request.GroupId && g.Owner.Id == userId);
+            .Include(g => g.Cards)
+            .ThenInclude(c => c.CardDetails)
+            .ThenInclude(d => d.Repeats)
+            .FirstOrDefaultAsync(g => g.Owner.Id == userId && g.Id == request.GroupId);
+
+            if (group == null)
+            {
+                return null;
+            }
 
             return new GroupDetailsDto
             {
@@ -40,8 +46,8 @@ namespace Wordki.Api.Featuers.Group.GetDetails
                 LanguageBack = group.BackLanguage,
                 Name = group.Name,
                 CreationDate = group.CreationDate,
-                CardsCount = group.Cards.Count,
-                RepeatsCount = group.Cards.Select(c => c.Repeats.Count).Sum()
+                CardsCount = group.CardsCount,
+                RepeatsCount = group.Cards.SelectMany(c => c.CardDetails).SelectMany(d => d.Repeats).Count()
             };
         }
     }

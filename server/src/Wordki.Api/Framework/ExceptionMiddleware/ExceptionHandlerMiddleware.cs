@@ -23,14 +23,19 @@ namespace Wordki.Infrastructure.Framework.ExceptionMiddleware
             {
                 await next(context);
             }
-            catch(ApiException ex)
+            catch (ApiException ex)
             {
-                var result = JsonConvert.SerializeObject(new { message = ex.Message, code = ex.Code.ToString() });
+                var apiError = new ApiError
+                {
+                    Message = ex.Message,
+                    Code = ex.Code.ToString(),
+                };
+                var result = JsonConvert.SerializeObject(apiError);
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 await context.Response.WriteAsync(result);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.LogError("Exception {exception}", ex, context.Request.PathBase);
                 var result = JsonConvert.SerializeObject(new { error = ex.Message });
@@ -39,5 +44,11 @@ namespace Wordki.Infrastructure.Framework.ExceptionMiddleware
                 await context.Response.WriteAsync(result);
             }
         }
+    }
+
+    public class ApiError
+    {
+        public string Message { get; set; }
+        public string Code { get; set; }
     }
 }

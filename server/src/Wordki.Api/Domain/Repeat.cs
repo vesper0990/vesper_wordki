@@ -47,7 +47,7 @@ namespace Wordki.Api.Domain
 
     public enum QuestionSideEnum
     {
-        Heads,
-        Tails,
+        Front,
+        Back,
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Wordki.Api.Featuers.Group.Add;
+using Wordki.Api.Featuers.Group.AddExisting;
 using Wordki.Api.Featuers.Group.Delete;
 using Wordki.Api.Featuers.Group.GetCount;
 using Wordki.Api.Featuers.Group.GetDetails;
@@ -26,6 +27,10 @@ namespace Wordki.Api.Featuers.Group
 
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromBody] AddGroupCommand command) => await HandleCommand(command);
+
+        [HttpPost("add/existing")]
+        public async Task<IActionResult> AddExisting([FromBody] AddExistingCommand command) => await HandleCommand(command);
+
 
         [HttpDelete("delete/{groupId}")]
         public async Task<IActionResult> Delete([FromRoute] long groupId) => await HandleCommand(new DeleteGroupCommand { GroupId = groupId });

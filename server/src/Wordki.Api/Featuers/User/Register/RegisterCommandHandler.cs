@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
-using Wordki.Api.Repositories.EntityFrameworkRepositories;
+using Wordki.Api.Domain2;
 using Wordki.Api.Services;
 using Wordki.Infrastructure.Framework.ExceptionMiddleware;
 
@@ -10,11 +10,11 @@ namespace Wordki.Api.Featuers.User.Register
 {
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand>
     {
-        private readonly WordkiDbContext dbContext;
+        private readonly WordkiDbContext2 dbContext;
         private readonly IEncrypter encrypter;
         private readonly IUserCreator userCreator;
 
-        public RegisterCommandHandler(WordkiDbContext dbContext, IEncrypter encrypter, IUserCreator userCreator)
+        public RegisterCommandHandler(WordkiDbContext2 dbContext, IEncrypter encrypter, IUserCreator userCreator)
         {
             this.dbContext = dbContext;
             this.encrypter = encrypter;

@@ -45,6 +45,6 @@ export class DashboardHttpService extends DashboardHttpServiceBase {
     }
 
     getTodayRepeatCount(): Observable<number> {
-        return this.httpClient.get<number>(`${environment.apiUrl}/lesson/todaysCardCount`);
+        return this.httpClient.get<number>(`${environment.apiUrl}/card/repeats?source=1`);
     }
 }

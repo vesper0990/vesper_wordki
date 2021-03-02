@@ -5,7 +5,8 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Wordki.Api.Repositories.EntityFrameworkRepositories;
+using Microsoft.EntityFrameworkCore;
+using Wordki.Api.Domain2;
 using Wordki.Api.Responses;
 using Wordki.Utils.HttpContext;
 using Wordki.Utils.TimeProvider;
@@ -16,24 +17,25 @@ namespace Wordki.Api.Featuers.Card.GetRepeatsWithParams
     {
         public int? Count { get; set; }
         public int? Source { get; set; }
-        public int? QuestionLanguage { get; set; }
-        public int? AnswerLanguage { get; set; }
+        public int? Question { get; set; }
+        public int? Answer { get; set; }
     }
 
     public class GetRepeatsCountWithParamsQuery : IRequest<int>
     {
         public int? Source { get; set; }
-        public int[] Langauges { get; set; }
+        public int? Question { get; set; }
+        public int? Answer { get; set; }
     }
 
     public class GetRepeatsCountWithParamsHandler : IRequestHandler<GetRepeatsCountWithParamsQuery, int>
     {
 
-        private readonly WordkiDbContext dbContext;
+        private readonly WordkiDbContext2 dbContext;
         private readonly ITimeProvider timeProvider;
         private readonly IHttpContextProvider contextProvider;
 
-        public GetRepeatsCountWithParamsHandler(WordkiDbContext dbContext,
+        public GetRepeatsCountWithParamsHandler(WordkiDbContext2 dbContext,
             ITimeProvider timeProvider,
             IHttpContextProvider contextProvider)
         {
@@ -42,54 +44,55 @@ namespace Wordki.Api.Featuers.Card.GetRepeatsWithParams
             this.contextProvider = contextProvider;
         }
 
-        public Task<int> Handle(GetRepeatsCountWithParamsQuery request, CancellationToken cancellationToken)
+        public async Task<int> Handle(GetRepeatsCountWithParamsQuery request, CancellationToken cancellationToken)
         {
-            return null;
-        }
+            var userId = contextProvider.GetUserId();
+            var userCards = dbContext.Details
+            .Include(d => d.Card)
+            .ThenInclude(c => c.Group)
+            .Where(d => d.Owner.Id == userId);
 
-        private Expression<Func<Domain.Card, bool>> CreateExpression(GetRepeatsCountWithParamsQuery request, long userId)
-        {
-            var finalExpression = UserExpression(userId);
             if (request.Source.HasValue)
-                finalExpression = finalExpression.And(SourceExpression(request.Source.Value));
+            {
+                if (request.Source == 0) //nowe
+                {
+                    userCards = userCards.Where(c => c.NextRepeatDate == null);
+                }
+                else
+                {
+                    userCards = userCards.Where(c =>
+                        c.NextRepeatDate != null &&
+                        c.NextRepeatDate < timeProvider.GetTime());
+                }
+            }
 
-            if (request.Langauges.Length == 1)
-                finalExpression = finalExpression.And(SourceExpression(request.Source.Value));
+            if (request.Question.HasValue)
+            {
+                userCards = userCards.Where(d =>
+                    d.Direction == Domain.QuestionSideEnum.Front && d.Card.Group.FrontLanguage == request.Question ||
+                    d.Direction == Domain.QuestionSideEnum.Back && d.Card.Group.BackLanguage == request.Question);
+            }
 
-            return finalExpression;
-        }
+            if (request.Answer.HasValue)
+            {
+                userCards = userCards.Where(d =>
+                    d.Direction == Domain.QuestionSideEnum.Back && d.Card.Group.FrontLanguage == request.Answer ||
+                    d.Direction == Domain.QuestionSideEnum.Front && d.Card.Group.BackLanguage == request.Answer);
+            }
 
-        private Expression<Func<Domain.Card, bool>> UserExpression(long userId)
-        {
-            Expression<Func<Domain.Card, bool>> result = card => card.Group.Owner.Id == userId;
-            return result;
-        }
+            var results = await userCards.ToListAsync();
 
-        private Expression<Func<Domain.Card, bool>> SourceExpression(int source)
-        {
-            Expression<Func<Domain.Card, bool>> newExpr = card => !card.Front.State.IsVisible || !card.Back.State.IsVisible;
-            Expression<Func<Domain.Card, bool>> repExpr = card => card.Front.State.IsVisible || card.Back.State.IsVisible;
-            return source == 0 ? newExpr : repExpr;
-        }
-
-        private Expression<Func<Domain.Card, bool>> FrontLanguageExpression(Domain.Card card, int source)
-        {
-            return card => card.Front.State.NextRepeat < timeProvider.GetDate();
-        }
-
-        private Expression<Func<Domain.Card, bool>> BackLanguageExpression(Domain.Card card, int source)
-        {
-            return card => card.Back.State.NextRepeat < timeProvider.GetDate();
+            return await userCards.CountAsync();
         }
     }
 
     public class GetRepeatsWithParamsHandler : IRequestHandler<GetRepeatsWithParamsQuery, IEnumerable<CardRepeatDto>>
     {
-        private readonly WordkiDbContext dbContext;
+        private readonly WordkiDbContext2 dbContext;
         private readonly ITimeProvider timeProvider;
         private readonly IHttpContextProvider contextProvider;
 
-        public GetRepeatsWithParamsHandler(WordkiDbContext dbContext,
+        public GetRepeatsWithParamsHandler(WordkiDbContext2 dbContext,
             ITimeProvider timeProvider,
             IHttpContextProvider contextProvider)
         {
@@ -98,71 +101,65 @@ namespace Wordki.Api.Featuers.Card.GetRepeatsWithParams
             this.contextProvider = contextProvider;
         }
 
-        private Expression<Func<Domain.Card, bool>> UserExpression(Domain.Card card, long userId) => card => card.Group.Owner.Id == userId;
-
-        private Expression<Func<Domain.Card, bool>> SourceExpression(Domain.Card card, int source)
-        {
-            Expression<Func<Domain.Card, bool>> newExpr = card => !card.Front.State.IsVisible || !card.Back.State.IsVisible;
-            Expression<Func<Domain.Card, bool>> repExpr = card => card.Front.State.IsVisible || card.Back.State.IsVisible;
-            return source == 0 ? newExpr : repExpr;
-        }
-
-        private Expression<Func<Domain.Card, bool>> FrontLanguageExpression(Domain.Card card, int source)
-        {
-            return card => card.Front.State.NextRepeat < timeProvider.GetDate();
-        }
-
-        private Expression<Func<Domain.Card, bool>> BackLanguageExpression(Domain.Card card, int source)
-        {
-            return card => card.Back.State.NextRepeat < timeProvider.GetDate();
-        }
-
         public Task<IEnumerable<CardRepeatDto>> Handle(GetRepeatsWithParamsQuery request, CancellationToken cancellationToken)
         {
             var userId = contextProvider.GetUserId();
-            var results = new List<CardRepeatDto>();
+            var userCards = dbContext.Details
+            .Include(d => d.Card)
+            .ThenInclude(c => c.Group)
+            .Where(d => d.Owner.Id == userId);
 
-            return null;
+            if (request.Source.HasValue)
+            {
+                if (request.Source == 0) //nowe
+                {
+                    userCards = userCards.Where(c => c.NextRepeatDate == null);
+                }
+                else
+                {
+                    userCards = userCards.Where(c =>
+                        c.NextRepeatDate != null &&
+                        c.NextRepeatDate < timeProvider.GetTime());
+                }
+            }
+
+            if (request.Question.HasValue)
+            {
+                userCards = userCards.Where(d =>
+                    d.Direction == Domain.QuestionSideEnum.Front && d.Card.Group.FrontLanguage == request.Question ||
+                    d.Direction == Domain.QuestionSideEnum.Back && d.Card.Group.BackLanguage == request.Question);
+            }
+
+            if (request.Answer.HasValue)
+            {
+                userCards = userCards.Where(d =>
+                    d.Direction == Domain.QuestionSideEnum.Back && d.Card.Group.FrontLanguage == request.Answer ||
+                    d.Direction == Domain.QuestionSideEnum.Front && d.Card.Group.BackLanguage == request.Answer);
+            }
+
+            return Task.FromResult<IEnumerable<CardRepeatDto>>(
+                userCards.Select(d => ConvertIntoRepeatDto(d)));
         }
 
-        public static CardRepeatDto ConvertIntoRepeatDto(Domain.Card card, bool revert = false)
-        => revert
-        ? new CardRepeatDto
-        {
-            Id = card.Id,
-            Answer = new SideRepeatDto
+        public static CardRepeatDto ConvertIntoRepeatDto(Domain2.CardDetails details)
+            => new CardRepeatDto
             {
-                Value = card.Front.Value,
-                Example = card.Front.Example,
-                Drawer = card.Front.State.Drawer.Value,
-                Language = card.Group.FrontLanguage
-            },
-            Question = new SideRepeatDto
-            {
-                Value = card.Back.Value,
-                Example = card.Back.Example,
-                Drawer = card.Back.State.Drawer.Value,
-                Language = card.Group.BackLanguage
-            }
-        }
-        : new CardRepeatDto
-        {
-            Id = card.Id,
-            Question = new SideRepeatDto
-            {
-                Value = card.Front.Value,
-                Example = card.Front.Example,
-                Drawer = card.Front.State.Drawer.Value,
-                Language = card.Group.FrontLanguage
-            },
-            Answer = new SideRepeatDto
-            {
-                Value = card.Back.Value,
-                Example = card.Back.Example,
-                Drawer = card.Back.State.Drawer.Value,
-                Language = card.Group.BackLanguage
-            }
-        };
+                Id = details.Card.Id,
+                DetailsId = details.Id,
+                Question = new SideRepeatDto
+                {
+                    Value = details.Direction == Domain.QuestionSideEnum.Front ? details.Card.FrontValue : details.Card.BackValue,
+                    Example = details.Direction == Domain.QuestionSideEnum.Front ? details.Card.FrontExample : details.Card.BackExample,
+                    Drawer = details.Drawer,
+                    Language = details.Question
+                },
+                Answer = new SideRepeatDto
+                {
+                    Value = details.Direction == Domain.QuestionSideEnum.Front ? details.Card.BackValue : details.Card.FrontValue,
+                    Example = details.Direction == Domain.QuestionSideEnum.Front ? details.Card.BackExample : details.Card.FrontExample,
+                    Language = details.Answer
+                }
+            };
     }
 
     public class ParameterReplaceVisitor : ExpressionVisitor

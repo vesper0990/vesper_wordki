@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
+using Wordki.Api.Domain2;
 
 namespace Wordki
 {
@@ -38,6 +39,7 @@ namespace Wordki
                 .LoggingConfig(configuration)
                 .ServicesConfig(configuration)
                 .AddDbContext<WordkiDbContext>()
+                .AddDbContext<WordkiDbContext2>()
                 .AddMediatR(typeof(Startup).Assembly)
                 .AddMvc(o =>
                 {

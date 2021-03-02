@@ -1,10 +1,11 @@
 ﻿using FizzWare.NBuilder;
 using Moq;
 using System;
+using System.Collections.Generic;
 using Wordki.Api.Services;
 using Wordki.Utils.HttpContext;
 
-namespace Wordki.Tests.E2E.Feature
+namespace Wordki.Tests.E2E
 {
     public class Utils
     {
@@ -24,8 +25,8 @@ namespace Wordki.Tests.E2E.Feature
             get
             {
                 var timeProviderMock = new Mock<Wordki.Utils.TimeProvider.ITimeProvider>();
-                timeProviderMock.Setup(x => x.GetDate()).Returns(Now);
-                timeProviderMock.Setup(x => x.GetTime()).Returns(Time);
+                timeProviderMock.Setup(x => x.GetDate()).Returns(DateTimeMock.Now.Date);
+                timeProviderMock.Setup(x => x.GetTime()).Returns(DateTimeMock.Now);
                 return timeProviderMock;
             }
         }
@@ -35,7 +36,7 @@ namespace Wordki.Tests.E2E.Feature
             get
             {
                 var encrypterMock = new Mock<IEncrypter>();
-                encrypterMock.Setup(x => x.Md5Hash(It.IsAny<string>())).Returns("aaaa");
+                encrypterMock.Setup(x => x.Md5Hash(It.Is<string>(x => x.Equals("Password")))).Returns("PasswordHash");
                 return encrypterMock;
             }
         }
@@ -50,17 +51,25 @@ namespace Wordki.Tests.E2E.Feature
             }
         }
 
-        public static Api.Domain.User GetUser()
+        public static Mock<IAuthenticationService> AuthenticationService
         {
-            return new Api.Domain.User
+            get
             {
-                Id = 1,
-                Name = "UserName",
-                Password = "aaaa",
-                CreationDate = Yesterday,
-                LastLoginDate = Yesterday
-            };
+                var authenticationService = new Mock<IAuthenticationService>();
+                authenticationService.Setup(x => x.Authenticate(It.IsAny<long>(), It.IsAny<IEnumerable<string>>())).Returns("test-token");
+                return authenticationService;
+            }
         }
+
+        public static Api.Domain2.User GetUser()
+        => new Api.Domain2.User
+        {
+            Id = 1,
+            Name = "UserName",
+            Password = "PasswordHash",
+            CreationDate = DateTimeMock.Yesterday,
+            LastLoginDate = DateTimeMock.Yesterday
+        };
 
         public static Api.Domain.Group GetGroup()
         {
@@ -108,12 +117,19 @@ namespace Wordki.Tests.E2E.Feature
             return new Api.Domain.Repeat
             {
                 DateTime = Yesterday,
-                QuestionSide = Api.Domain.QuestionSideEnum.Heads,
+                QuestionSide = Api.Domain.QuestionSideEnum.Front,
                 Result = -1
             };
         }
 
         public static Api.Domain.Lesson GetLesson()
         => Builder<Api.Domain.Lesson>.CreateNew().Build();
+    }
+
+    public class DateTimeMock
+    {
+        public static DateTime Now => new DateTime(2020, 1, 13).AddHours(12);
+        public static DateTime Yesterday => new DateTime(2020, 1, 12).AddHours(12);
+        public static DateTime Tomorrow => new DateTime(2020, 1, 14).AddHours(12);
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Wordki.Api.Repositories.EntityFrameworkRepositories;
+using Wordki.Api.Domain2;
 using Wordki.Api.Responses;
 using Wordki.Utils.HttpContext;
 
@@ -12,10 +12,10 @@ namespace Wordki.Api.Featuers.Group.GetGroups
 {
     public class GetGroupsQueryHandler : IRequestHandler<GetGroupsQuery, IEnumerable<GroupDto>>
     {
-        private readonly WordkiDbContext dbContext;
+        private readonly WordkiDbContext2 dbContext;
         private readonly IHttpContextProvider httpContextProvider;
 
-        public GetGroupsQueryHandler(WordkiDbContext dbContext, IHttpContextProvider httpContextProvider)
+        public GetGroupsQueryHandler(WordkiDbContext2 dbContext, IHttpContextProvider httpContextProvider)
         {
             this.dbContext = dbContext;
             this.httpContextProvider = httpContextProvider;
@@ -25,8 +25,9 @@ namespace Wordki.Api.Featuers.Group.GetGroups
         {
             var userId = httpContextProvider.GetUserId();
             var groups = dbContext.Groups
-                .Include(g => g.Cards).ThenInclude(c => c.Repeats)
-                .Include(g => g.Owner)
+                .Include(g => g.Cards)
+                .ThenInclude(c => c.CardDetails)
+                .ThenInclude(d => d.Repeats)
                 .Where(g => g.Owner.Id == userId)
                 .Select(g => g.GetGroupDto());
             return await Task.FromResult(groups);
