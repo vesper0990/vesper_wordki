@@ -16,19 +16,17 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
         public SimpleConnectionStringProvider(IOptions<DatabaseConfig> databaseConfig)
         {
             var config = databaseConfig.Value;
-            ConnectionString = $"Host={config.Server};Port={config.Port};Database={config.Database};User Id={config.User};Password={config.Password};SSL=true";
+            ConnectionString = $"Host={config.Server};Port={config.Port};Database={config.Database};User Id={config.User};Password={config.Password}";
         }
     }
 
     public class HerokuConnectionStringProvider : IConnectionStringProvider
     {
         private readonly string PostgressTag = "DATABASE_URL";
-        private readonly ILogger<HerokuConnectionStringProvider> logger;
         public string ConnectionString { get; }
 
         public HerokuConnectionStringProvider(IConfiguration configuration, ILogger<HerokuConnectionStringProvider> logger)
         {
-            this.logger = logger;
             var value = configuration.GetValue<string>(PostgressTag);
             logger.LogInformation(value);
             value = value.Remove(0, "postgres://".Length);
@@ -50,7 +48,7 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
 
             var database = value;
 
-            ConnectionString = $"Host={host};Port={port};Database={database};User Id={user};Password={password}";
+            ConnectionString = $"Host={host};Port={port};Database={database};User Id={user};Password={password};SslMode=Require";
             logger.LogInformation(ConnectionString);
         }
     }
