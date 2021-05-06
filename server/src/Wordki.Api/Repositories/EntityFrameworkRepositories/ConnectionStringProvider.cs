@@ -16,7 +16,7 @@ namespace Wordki.Api.Repositories.EntityFrameworkRepositories
         public SimpleConnectionStringProvider(IOptions<DatabaseConfig> databaseConfig)
         {
             var config = databaseConfig.Value;
-            ConnectionString = $"Host={config.Server};Port={config.Port};Database={config.Database};User Id={config.User};Password={config.Password}";
+            ConnectionString = $"Host={config.Server};Port={config.Port};Database={config.Database};User Id={config.User};Password={config.Password};SSL=true";
         }
     }
 
