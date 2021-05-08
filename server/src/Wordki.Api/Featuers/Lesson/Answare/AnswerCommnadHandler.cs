@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Wordki.Api.Domain;
 using Wordki.Api.Domain2;
-using Wordki.Api.Repositories.EntityFrameworkRepositories;
 using Wordki.Api.Services;
 using Wordki.Utils.HttpContext;
 using Wordki.Utils.TimeProvider;
@@ -39,59 +38,54 @@ namespace Wordki.Api.Featuers.Lesson.Answer
             {
                 throw new ApiException("userId == 0");
             }
-            var card = await dbContext.Cards
-            .Include(c => c.CardDetails)
-            .ThenInclude(d => d.Repeats)
-            .SingleOrDefaultAsync(c => c.Id == request.CardId && c.Group.Owner.Id == userId, cancellationToken);
-            if (card == null)
+            var cardDetails = await dbContext.Details
+            .Include(d => d.Repeats)
+            .SingleOrDefaultAsync(d => d.Id == request.CardDetailId && d.Owner.Id == userId);
+
+            if (cardDetails == null)
             {
-                throw new ApiException($"Card not found for id {request.CardId}");
+                throw new ApiException($"CardDetails not found for id {request.CardDetailId}");
             }
+
             var lesson = await dbContext.Lessons
             .SingleOrDefaultAsync(l => l.Id == request.LessonId && l.Owner.Id == userId, cancellationToken);
+
             if (lesson == null)
             {
                 throw new ApiException($"Lesson not found for id {request.LessonId}");
             }
 
-            await dbContext.SaveChangesAsync(cancellationToken);
+            var repeat = new Repeat
+            {
+                Details = cardDetails,
+                Lesson = lesson,
+                Result = (int)request.Result,
+                Time = timeProvider.GetTime()
+            };
+            cardDetails.Repeats.Add(repeat);
+            lesson.Repeats.Add(repeat);
 
+            UpdateDrawer(cardDetails, request.Result);
+
+            var nextRepat = nextRepeatCalculator.Calculate(cardDetails);
+            cardDetails.NextRepeatDate = nextRepat;
+
+            await dbContext.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
 
-        private void AddRepeat(Domain.Card card, QuestionSideEnum questionSide, RepeatResultEnum repeatReuslt, Domain.Lesson lesson)
-        {
-            // var newResult = new Repeat
-            // {
-            //     DateTime = timeProvider.GetTime(),
-            //     Lesson = lesson,
-            //     QuestionSide = questionSide,
-            //     Result = (int)repeatReuslt,
-            //     Word = card
-            // };
-
-            // dbContext.Repeats.Add(newResult);
-        }
-
-        private void UpdateNextRepeat(Domain.Card card, QuestionSideEnum questionSide)
-        {
-            var nextRepeat = nextRepeatCalculator.Calculate(card, questionSide);
-            var side = questionSide == QuestionSideEnum.Front ? card.Front : card.Back;
-            side.State.NextRepeat = nextRepeat;
-        }
-
-        private void UpdateDrawer(State state, RepeatResultEnum repeatResult)
+        private void UpdateDrawer(CardDetails details, RepeatResultEnum repeatResult)
         {
             switch (repeatResult)
             {
                 case RepeatResultEnum.Correct:
                     {
-                        state.Drawer = Drawer.Create(state.Drawer.Value + 1);
+                        details.Drawer += 1;
                         break;
                     }
                 case RepeatResultEnum.Wrong:
                     {
-                        state.Drawer = Drawer.Create(0);
+                        details.Drawer = 0;
                         break;
                     }
             }

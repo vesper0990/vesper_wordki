@@ -6,8 +6,7 @@ namespace Wordki.Api.Featuers.Lesson.Answer
     public class AnswerCommand : IRequest
     {
         public long LessonId { get; set; }
-        public long CardId { get; set; }
-        public RepeatResultEnum repeatReuslt { get; set; }
-        public QuestionSideEnum QuestionSide { get; set; }
+        public long CardDetailId { get; set; }
+        public RepeatResultEnum Result { get; set; }
     }
 }

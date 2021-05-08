@@ -7,6 +7,5 @@ namespace Wordki.Api.Responses
         public long Id { get; set; }
         public SideDetailsDto Front { get; set; }
         public SideDetailsDto Back { get; set; }
-        public DateTime CreationDate { get; set; }
     }
 }

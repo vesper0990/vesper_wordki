@@ -18,16 +18,22 @@ namespace Wordki.Tests.E2E.Feature.CardTests.UpdateTests
         {
             await AddAsync(context.GivenEntity);
 
-            var request = new HttpRequestMessage(HttpMethod.Put, "group/update");
+            var request = new HttpRequestMessage(HttpMethod.Put, "card/update");
             request.Content = CreateContent(context.GivenRequest);
 
             var response = await Client.SendAsync(request);
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            var group = await DbContext.Groups.SingleAsync();
+            var group = await DbContext.Groups.Include(x => x.Cards).SingleAsync();
             var card = group.Cards.Single();
-            card.Should().BeEquivalentTo(context.ExpectedCard);
+            card.Should().BeEquivalentTo(context.ExpectedCard,
+            opt => opt.ExcludingNestedObjects()
+                    .IgnoringCyclicReferences()
+                    .Excluding(c => c.Group)
+                    .Excluding(c => c.CardDetails)
+                    .Excluding(c => c.BackDetails)
+                    .Excluding(c => c.FrontDetails));
         }
     }
 }

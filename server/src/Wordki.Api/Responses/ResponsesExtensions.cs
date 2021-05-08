@@ -9,7 +9,6 @@ namespace Wordki.Api.Responses
         => new CardDetailsDto
         {
             Id = card.Id,
-            CreationDate = card.CreationDate,
             Front = new SideDetailsDto
             {
                 Value = card.Front.Value,
@@ -61,7 +60,6 @@ namespace Wordki.Api.Responses
         {
             Id = card.Id,
             GroupName = card.Group.Name,
-            CreationDate = card.CreationDate,
             Front = new SideDetailsDto
             {
                 Value = card.Front.Value,

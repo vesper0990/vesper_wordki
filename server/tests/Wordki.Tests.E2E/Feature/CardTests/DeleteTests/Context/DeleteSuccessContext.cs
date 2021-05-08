@@ -6,5 +6,6 @@ namespace Wordki.Tests.E2E.Feature.CardTests.DeleteTests
     {
         public abstract User GivenEntity { get; }
         public abstract long GivenId { get; }
+        public abstract long GivenGroupId { get; }
     }
 }

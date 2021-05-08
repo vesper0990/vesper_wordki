@@ -23,7 +23,8 @@ namespace Wordki.Api.Featuers.Card.Update
         {
             var userId = httpContextProvider.GetUserId();
 
-            var card = await dbContext.Cards.SingleOrDefaultAsync(c => c.Id == request.Id);
+            var card = await dbContext.Cards
+            .SingleOrDefaultAsync(c => c.Id == request.Id);
 
             card.FrontValue = request.Front.Value;
             card.FrontExample = request.Front.Example;

@@ -35,6 +35,19 @@ namespace Wordki.Api.Featuers.Card.Add
                 BackExample = request.Back.Example,
             };
 
+            newCard.AddDetails(new CardDetails
+            {
+                Direction = Domain.QuestionSideEnum.Front,
+                Drawer = 1,
+                NextRepeatDate = null
+            });
+            newCard.AddDetails(new CardDetails
+            {
+                Direction = Domain.QuestionSideEnum.Back,
+                Drawer = 1,
+                NextRepeatDate = null
+            });
+
             group.AddCard(newCard);
 
             await dbContext.Cards.AddAsync(newCard);

@@ -8,7 +8,7 @@ namespace Wordki.Tests.E2E.Feature.CardTests.AddTests
     {
         public abstract User GivenEntity { get; }
         public abstract AddCardCommand GivenRequest { get; }
-        public HttpStatusCode ExpectedStatusCode { get; }
+        public HttpStatusCode ExpectedStatusCode => HttpStatusCode.OK;
         public abstract Card ExpectedCard { get; }
     }
 }

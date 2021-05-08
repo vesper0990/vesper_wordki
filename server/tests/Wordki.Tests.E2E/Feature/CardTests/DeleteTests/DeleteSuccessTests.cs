@@ -17,7 +17,7 @@ namespace Wordki.Tests.E2E.Feature.CardTests.DeleteTests
         {
             await AddAsync(context.GivenEntity);
 
-            var request = new HttpRequestMessage(HttpMethod.Delete, $"card/delete/{context.GivenId}");
+            var request = new HttpRequestMessage(HttpMethod.Delete, $"card/delete/{context.GivenId}/{context.GivenGroupId}");
 
             var response = await Client.SendAsync(request);
 

@@ -6,6 +6,7 @@ namespace Wordki.Tests.E2E.Feature.CardTests.DeleteTests
     {
         public override User GivenEntity { get; }
         public override long GivenId => 1;
+        public override long GivenGroupId => 1;
 
         public EmptyCard()
         {

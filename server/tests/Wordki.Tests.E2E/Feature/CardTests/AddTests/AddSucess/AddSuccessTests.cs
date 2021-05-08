@@ -30,13 +30,18 @@ namespace Wordki.Tests.E2E.Feature.CardTests.AddTests
                 .Include(x => x.CardDetails)
                 .SingleAsync(x => x.Id == cardId);
 
-            card.Should().BeEquivalentTo(context.ExpectedCard, opt => opt.ExcludingNestedObjects()
-            .IgnoringCyclicReferences()
-            .Excluding(c => c.FrontDetails));
+            card.Should().BeEquivalentTo(context.ExpectedCard,
+            opt => opt.ExcludingNestedObjects()
+                    .IgnoringCyclicReferences()
+                    .Excluding(c => c.CardDetails)
+                    .Excluding(c => c.BackDetails)
+                    .Excluding(c => c.FrontDetails));
 
             card.CardDetails.Should().BeEquivalentTo(context.ExpectedCard.CardDetails, opt =>
                 opt.Excluding(d => d.Card)
                 .Excluding(d => d.Id)
+                .Excluding(d => d.Question)
+                .Excluding(d => d.Answer)
                 .IgnoringCyclicReferences());
 
         }
